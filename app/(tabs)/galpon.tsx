@@ -6,6 +6,7 @@ import { useInventory, makeId } from '../../src/context/InventoryContext';
 import { useAuth } from '../../src/context/AuthContext';
 import {
   Button,
+  ConfirmButton,
   C,
   Chip,
   Empty,
@@ -30,11 +31,11 @@ export default function WarehousePage() {
     [cat, setCat] = useState<CategoriaMaterial>('ANDAMIOS'),
     [medida, setMedida] = useState(''),
     [bucket, setBucket] = useState<StockBucket>('cantidadGalpon'),
+    [destination, setDestination] = useState<StockBucket>('cantidadGalpon'),
     [delta, setDelta] = useState(''),
     [reason, setReason] = useState(''),
     [source, setSource] = useState(''),
-    [error, setError] = useState(''),
-    [busy, setBusy] = useState(false);
+    [error, setError] = useState('');
   const categories = ['ANDAMIOS', 'TABLONES', 'ACCESORIOS', 'OTROS'];
   const labels: Record<string, string> = {
     TODAS: 'Todos',
@@ -127,6 +128,7 @@ export default function WarehousePage() {
               {user?.role === 'ADMIN' ? (
                 <View style={s.wrap}>
                   <Button label="Editar" variant="ghost" onPress={() => open(m, 'material')} />
+                  <Button label="Mover stock" variant="secondary" onPress={() => open(m, 'movimiento')} />
                   <Button label="Ajustar" variant="secondary" onPress={() => open(m, 'ajuste')} />
                 </View>
               ) : null}
@@ -147,7 +149,7 @@ export default function WarehousePage() {
       <Sheet
         visible={!!modal}
         title={
-          modal === 'ajuste' ? 'Ajuste de inventario' : edit ? 'Editar material' : 'Nuevo material'
+          modal === 'movimiento' ? 'Mover existencias' : modal === 'ajuste' ? 'Ajuste de inventario' : edit ? 'Editar material' : 'Nuevo material'
         }
         onClose={() => setModal('')}
       >
@@ -174,33 +176,36 @@ export default function WarehousePage() {
                 .map((m) => ({ value: m.key, label: m.label }))}
               onChange={(v) => setBucket(v as StockBucket)}
             />
+            {modal === 'movimiento' ? <Select label="Destino del material" value={destination} onChange={v=>setDestination(v as StockBucket)} options={metrics.filter(m=>m.key!=='cantidadEnObra').map(m=>({value:m.key,label:m.label}))} /> : null}
             <Field
-              label="Diferencia entera (+ o −)"
+              label={modal === 'movimiento' ? 'Cantidad a mover' : 'Diferencia entera (+ o −)'}
               value={delta}
               onChangeText={setDelta}
               keyboardType="numbers-and-punctuation"
               placeholder="Ej. 20 o -3"
             />
-            <Field
+            {modal !== 'movimiento' ? <Field
               label="Procedencia / destino"
               value={source}
               onChangeText={setSource}
               placeholder="Compra, devolución externa o baja"
-            />
+            /> : null}
             <Field label="Motivo y comprobante" value={reason} onChangeText={setReason} />
             <Notice text="Las entregas y retiros se registran desde cada obra. Para devolver pérdidas/daños, usa Recuperar material." />
           </>
         )}
         {error ? <Notice text={error} tone="error" /> : null}
-        <Button
+        <ConfirmButton
           label="Guardar cambios"
-          loading={busy}
-          onPress={async () => {
-            setBusy(true);
+          title="Confirmar inventario"
+          description={modal==='material' ? `Guardar ${nombre} ${medida}. Las cantidades no cambian.` : `${edit?.nombre}: ${delta} unidades. Origen ${bucket}; destino ${modal==='movimiento' ? destination : source}. Motivo: ${reason}.`}
+          variant="primary"
+          onConfirm={async () => {
             try {
               if (modal === 'material')
                 await dispatch({
                   type: 'SAVE_MATERIAL',
+                  expectedVersion: edit?.version || 0,
                   material: {
                     id: edit?.id || makeId(),
                     nombre: nombre.trim(),
@@ -210,7 +215,8 @@ export default function WarehousePage() {
                 });
               else {
                 if (!/^[+-]?\d+$/.test(delta)) throw new Error('Usa una diferencia entera.');
-                await dispatch({
+                if(modal==='movimiento') await dispatch({type:'MOVE_STOCK',materialId:edit!.id,origen:bucket,destino:destination,cantidad:Number(delta),motivo:reason});
+                else await dispatch({
                   type: 'ADJUST',
                   materialId: edit!.id,
                   bucket,
@@ -222,8 +228,7 @@ export default function WarehousePage() {
               setModal('');
             } catch (e) {
               setError((e as Error).message);
-            } finally {
-              setBusy(false);
+              throw e;
             }
           }}
         />

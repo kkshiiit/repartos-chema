@@ -25,6 +25,7 @@ import {
   Notice,
   Screen,
   Sheet,
+  Select,
   s,
 } from '../../src/components/ui';
 import { StatusChip } from '../../src/components/StatusChip';
@@ -43,6 +44,7 @@ export default function Detail() {
   const [modal, setModal] = useState(accion === 'entrega' || accion === 'retiro' ? accion : ''),
     [error, setError] = useState(''),
     [busy, setBusy] = useState(false),
+    [recoveryDestination, setRecoveryDestination] = useState('galpon'),
     [recoverId, setRecoverId] = useState(''),
     [n, setN] = useState(1),
     [reason, setReason] = useState(''),
@@ -350,6 +352,7 @@ export default function Detail() {
               {incident.itemNombre} · {incident.cantidad - incident.recuperado} pendientes
             </Text>
             <SmartCounter value={n} max={incident.cantidad - incident.recuperado} onChange={setN} />
+            {user?.role === 'ADMIN' ? <Select label="Ubicación real" value={recoveryDestination} onChange={setRecoveryDestination} options={[{value:'galpon',label:'Recuperado al galpón'},...(o.estadoProceso==='ENTREGADO'?[{value:'obra',label:'Sigue en obra · corregir error'}]:[]),{value:'taller',label:'En taller · corregir tipo'},{value:'perdido',label:'Perdido · corregir tipo'}]} /> : null}
             <Field label="Motivo de recuperación" value={reason} onChangeText={setReason} />
             <Button
               label="Confirmar devolución"
@@ -357,7 +360,7 @@ export default function Detail() {
               onPress={() =>
                 void run(async () => {
                   await dispatch({
-                    type: 'RECOVER',
+                    ...(recoveryDestination==='galpon' ? {type:'RECOVER' as const} : {type:'CORRECT_INCIDENT' as const,destino:recoveryDestination as 'obra'|'taller'|'perdido'}),
                     obraId: o.id,
                     incidentId: recoverId,
                     cantidad: n,

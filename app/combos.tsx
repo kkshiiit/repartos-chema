@@ -152,6 +152,7 @@ export default function Combos() {
                 try {
                   await dispatch({
                     type: 'SAVE_COMBO',
+                    expectedVersion: draft.version || 0,
                     combo: { ...draft, items: draft.items.filter((i) => i.cantidad > 0) },
                   });
                   setDraft(null);

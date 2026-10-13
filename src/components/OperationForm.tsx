@@ -41,6 +41,7 @@ export function OperationForm({
     [incidents, setIncidents] = useState<IncidentInput[]>([]),
     [error, setError] = useState(''),
     [busy, setBusy] = useState(false),
+    [retiro, setRetiro] = useState(obra.fechaRetiroEstimada),
     [motivo, setMotivo] = useState(''),
     [origins, setOrigins] = useState<Record<string, string>>({}),
     [target, setTarget] = useState(''),
@@ -57,6 +58,7 @@ export function OperationForm({
       {mode === 'entrega' ? (
         <>
           <Notice text="Al confirmar, la carga pasa de galpón a obra. Revisa cantidades y responsables." />
+          <Field label="Retiro previsto · AAAA-MM-DD" value={retiro} onChangeText={setRetiro} maxLength={10} />
           {obra.materialesCargados.map((i) => (
             <Text key={i.materialId} style={s.body}>
               {i.cantidad} × {i.nombre} {i.medida}
@@ -156,6 +158,7 @@ export function OperationForm({
             if (mode === 'entrega')
               await dispatch({
                 type: 'DELIVER',
+                fechaRetiroEstimada: retiro,
                 obraId: obra.id,
                 responsables: drivers,
                 ...(shortages.length
