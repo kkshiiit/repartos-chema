@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import type { IncidentInput, ObraCard } from '../types';
 import { useInventory } from '../context/InventoryContext';
-import { Button, Chip, Field, Select, s } from './ui';
+import { Button, Chip, Field, Select, useUI } from './ui';
 import { SmartCounter } from './SmartCounter';
 export function FaltantesForm({
   obra,
@@ -13,6 +13,7 @@ export function FaltantesForm({
   value: IncidentInput[];
   onChange: (v: IncidentInput[]) => void;
 }) {
+  const { s } = useUI();
   const { state } = useInventory();
   const available = state.materiales.filter((m) => (obra.saldosEnObra[m.id] || 0) > 0);
   const [selected, setSelected] = useState(available[0]?.id || '');

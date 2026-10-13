@@ -1,3 +1,4 @@
+import { userError } from '../src/services/errors';
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { Plus, Layers } from 'lucide-react-native';
@@ -13,10 +14,11 @@ import {
   Screen,
   Select,
   Sheet,
-  s,
+  useUI,
 } from '../src/components/ui';
 import { SmartCounter } from '../src/components/SmartCounter';
 export default function Combos() {
+  const { C, s } = useUI();
   const { state, dispatch } = useInventory(),
     { user } = useAuth();
   const [draft, setDraft] = useState<ComboPreset | null>(null),
@@ -48,7 +50,7 @@ export default function Combos() {
           <View style={s.wrap}>
             {state.combos.map((c) => (
               <View key={c.id} style={[s.card, { flexGrow: 1, flexBasis: 300, maxWidth: 500 }]}>
-                <Layers size={26} color="#F87171" />
+                <Layers size={26} color={C.danger} />
                 <Text style={s.h2}>{c.nombreCombo}</Text>
                 {c.items.map((i) => (
                   <Text key={i.materialId} style={s.body}>
@@ -157,7 +159,7 @@ export default function Combos() {
                   });
                   setDraft(null);
                 } catch (e) {
-                  setError((e as Error).message);
+                  setError(userError(e));
                 } finally {
                   setBusy(false);
                 }

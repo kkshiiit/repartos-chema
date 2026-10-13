@@ -4,12 +4,12 @@ import { Plus, Search, ArrowDownToLine, Truck, Clock, Layers, Download } from 'l
 import { router } from 'expo-router';
 import { useInventory } from '../../src/context/InventoryContext';
 import { useAuth } from '../../src/context/AuthContext';
-import { Button, C, Chip, Empty, Screen, Select, s } from '../../src/components/ui';
-import { AdSlot } from '../../src/components/AdSlot';
+import { Button, Chip, Empty, Screen, Select, useUI } from '../../src/components/ui';
 import { CardObra } from '../../src/components/CardObra';
 import { DataList } from '../../src/components/DataList';
 import { obraStatus, businessDate, matchesStatusFilter } from '../../src/domain/rules';
 export default function Home() {
+  const { C, s } = useUI();
   const { state } = useInventory(),
     { user } = useAuth(),
     { width } = useWindowDimensions();
@@ -51,7 +51,7 @@ export default function Home() {
     month: 'long',
   });
   const header = (
-    <View style={{ gap: 24, paddingBottom: 20 }}>
+    <View style={{ gap: width < 600 ? 12 : 24, paddingBottom: 12 }}>
       <ScrollView
         horizontal={width < 600}
         showsHorizontalScrollIndicator={false}
@@ -65,8 +65,8 @@ export default function Home() {
             color: C.blue,
           },
           { label: 'Retiros hoy', n: counts('AMARILLO'), icon: ArrowDownToLine, color: C.yellow },
-          { label: 'Retiros vencidos', n: counts('ROJO'), icon: Clock, color: '#FB7185' },
-          { label: 'Por entregar', n: counts('PENDIENTE'), icon: Truck, color: '#A5B4FC' },
+          { label: 'Retiros vencidos', n: counts('ROJO'), icon: Clock, color: C.danger },
+          { label: 'Por entregar', n: counts('PENDIENTE'), icon: Truck, color: C.purple },
         ].map((metric) => (
           <View
             key={metric.label}
@@ -76,8 +76,8 @@ export default function Home() {
                 flexGrow: 1,
                 flexBasis: width < 600 ? 125 : '20%',
                 minWidth: width < 600 ? 125 : undefined,
-                padding: width < 600 ? 13 : 17,
-                gap: width < 600 ? 8 : 14,
+                padding: width < 600 ? 10 : 17,
+                gap: width < 600 ? 3 : 14,
               },
             ]}
           >
@@ -85,7 +85,14 @@ export default function Home() {
               <Text style={{ color: C.muted, fontSize: 12 }}>{metric.label}</Text>
               <metric.icon size={17} color={metric.color} />
             </View>
-            <Text style={{ fontSize: 30, fontWeight: '800', color: C.text, letterSpacing: -1 }}>
+            <Text
+              style={{
+                fontSize: width < 600 ? 22 : 30,
+                fontWeight: '800',
+                color: C.text,
+                letterSpacing: -1,
+              }}
+            >
               {String(metric.n).padStart(2, '0')}
               <Text style={{ fontSize: 12, color: C.subtle, fontWeight: '400' }}> obras</Text>
             </Text>
@@ -101,14 +108,15 @@ export default function Home() {
             onChangeText={setQuery}
             placeholder="Buscar cliente o dirección…"
             placeholderTextColor={C.subtle}
-            style={{ color: C.text, flex: 1, fontSize: 14, outlineStyle: 'none' } as never}
+            style={{ color: C.text, flex: 1, fontSize: 14 } as never}
           />
         </View>
         <View
-          style={{ minWidth: width < 600 ? 140 : 180, maxWidth: width < 600 ? 145 : undefined }}
+          style={{ minWidth: width < 600 ? 130 : 180, maxWidth: width < 600 ? 135 : undefined }}
         >
           <Select
             label="Zona"
+            compact={width < 600}
             value={zone}
             options={[
               { value: 'TODAS', label: 'Todas las zonas' },
@@ -125,10 +133,10 @@ export default function Home() {
       >
         {[
           { key: 'TODAS', label: 'Todas', color: C.text },
-          { key: 'ROJO', label: 'Vencidas', color: '#FB7185' },
+          { key: 'ROJO', label: 'Vencidas', color: C.danger },
           { key: 'AMARILLO', label: 'Retiro hoy', color: C.yellow },
           { key: 'VERDE', label: 'Al día', color: C.green },
-          { key: 'PENDIENTE', label: 'Por entregar', color: '#A5B4FC' },
+          { key: 'PENDIENTE', label: 'Por entregar', color: C.purple },
           { key: 'RETIRADO', label: 'Retiradas', color: C.muted },
         ].map((f) => (
           <Chip
@@ -155,7 +163,11 @@ export default function Home() {
   return (
     <Screen
       title="Tus obras, al día."
-      subtitle={`${date.charAt(0).toUpperCase() + date.slice(1)} · Cada movimiento, bajo control.`}
+      subtitle={
+        width < 600
+          ? undefined
+          : `${date.charAt(0).toUpperCase() + date.slice(1)} · Cada movimiento, bajo control.`
+      }
       scroll={false}
       action={
         user?.role === 'ADMIN' ? (
@@ -177,7 +189,16 @@ export default function Home() {
         data={filtered}
         keyExtractor={(o) => o.id}
         ListHeaderComponent={header}
-        ListFooterComponent={<AdSlot />}
+        ListFooterComponent={
+          user?.role === 'ADMIN' && width < 1000 ? (
+            <Button
+              label="Gestionar combos"
+              icon={Layers}
+              variant="secondary"
+              onPress={() => router.push('/combos')}
+            />
+          ) : null
+        }
         ListEmptyComponent={
           <Empty title="Sin obras aquí" detail="Prueba otra búsqueda o cambia los filtros." />
         }
@@ -188,14 +209,6 @@ export default function Home() {
         )}
         contentContainerStyle={{ paddingBottom: 18 }}
       />
-      {user?.role === 'ADMIN' && width < 1000 ? (
-        <Button
-          label="Gestionar combos"
-          icon={Layers}
-          variant="secondary"
-          onPress={() => router.push('/combos')}
-        />
-      ) : null}
     </Screen>
   );
 }

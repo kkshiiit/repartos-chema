@@ -1,9 +1,20 @@
 import type { ObraCard } from '../types';
+// Solo módulos JS: los archivos se guardan/comparten con expo-file-system y expo-sharing.
 export async function localDocument(
-  _kind: 'excel' | 'word',
-  _obras: ObraCard[],
+  kind: 'excel' | 'word',
+  obras: ObraCard[],
 ): Promise<Uint8Array> {
-  throw new Error(
-    'Documentos locales disponibles en la demo web. En iOS/Android configura Cloud Functions para Excel y Word.',
-  );
+  if (!obras.length) throw new Error('No hay obras para exportar.');
+  if (kind === 'word') {
+    const [{ Packer }, { remitoDocument }] = await Promise.all([
+      import('docx'),
+      import('../../functions/src/wordGenerator'),
+    ]);
+    return new Uint8Array(await Packer.toBuffer(remitoDocument(obras[0]!)));
+  }
+  const [ExcelJS, { generateExcel }] = await Promise.all([
+    import('exceljs/dist/exceljs.min.js'),
+    import('../../functions/src/excelGenerator'),
+  ]);
+  return new Uint8Array((await generateExcel(obras, ExcelJS.default.Workbook)) as ArrayBuffer);
 }

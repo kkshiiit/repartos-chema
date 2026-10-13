@@ -1,11 +1,14 @@
+import { userError } from '../../src/services/errors';
+import { ThemeToggle } from '../../src/components/ThemeToggle';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, useWindowDimensions } from 'react-native';
 import { Boxes, ArrowRight, ShieldCheck, Truck, WifiOff, HardHat } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../../src/context/AuthContext';
 import { DATA_MODE } from '../../src/services/firebase';
-import { Button, C, Field, Notice, s } from '../../src/components/ui';
+import { Button, Field, Notice, useUI } from '../../src/components/ui';
 export default function Login() {
+  const { C, s } = useUI();
   const { demoLogin, login, error: authError, reset } = useAuth();
   const [email, setEmail] = useState(''),
     [password, setPassword] = useState(''),
@@ -19,13 +22,16 @@ export default function Login() {
     try {
       await f();
     } catch (e) {
-      setError((e as Error).message);
+      setError(userError(e));
     } finally {
       setBusy(false);
     }
   };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: C.bg }}>
+      <View style={{ alignItems: 'flex-end', padding: 12 }}>
+        <ThemeToggle />
+      </View>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', padding: 24 }}
@@ -158,6 +164,7 @@ export default function Login() {
   );
 }
 function ChipItem({ icon: Icon, text }: { icon: typeof Truck; text: string }) {
+  const { C, s } = useUI();
   return (
     <View style={s.row}>
       <Icon size={17} color={C.red} />

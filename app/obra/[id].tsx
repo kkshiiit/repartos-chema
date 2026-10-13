@@ -1,5 +1,6 @@
+import { userError } from '../../src/services/errors';
 import React, { useState } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import {
   Camera,
@@ -18,7 +19,6 @@ import { useInventory, makeId } from '../../src/context/InventoryContext';
 import { useAuth } from '../../src/context/AuthContext';
 import {
   Button,
-  C,
   ConfirmButton,
   Empty,
   Field,
@@ -26,8 +26,10 @@ import {
   Screen,
   Sheet,
   Select,
-  s,
+  useUI,
 } from '../../src/components/ui';
+import { PhotoImage } from '../../src/components/PhotoImage';
+import { deleteLocalPhoto } from '../../src/services/photoCache';
 import { StatusChip } from '../../src/components/StatusChip';
 import { SmartCounter } from '../../src/components/SmartCounter';
 import { LoadEditor } from '../../src/components/LoadEditor';
@@ -37,6 +39,7 @@ import { openLink } from '../../src/services/links';
 import { selectPhoto } from '../../src/services/storageService';
 import { DATA_MODE } from '../../src/services/firebase';
 export default function Detail() {
+  const { C, s } = useUI();
   const { id, accion } = useLocalSearchParams<{ id: string; accion?: string }>(),
     { state, dispatch } = useInventory(),
     { user } = useAuth();
@@ -56,7 +59,7 @@ export default function Detail() {
     try {
       await f();
     } catch (e) {
-      setError((e as Error).message);
+      setError(userError(e));
     } finally {
       setBusy(false);
     }
@@ -254,11 +257,7 @@ export default function Detail() {
             <View style={s.wrap}>
               {o.fotos?.map((p) => (
                 <View key={p.id} style={{ width: 150, gap: 8 }}>
-                  <Image
-                    accessibilityLabel="Foto de la obra"
-                    source={{ uri: p.uri }}
-                    style={{ width: 150, height: 150, borderRadius: 10 }}
-                  />
+                  <PhotoImage photo={p} />
                   <Text style={s.muted}>
                     {p.status === 'PENDING' ? 'Subida pendiente' : 'Foto en nube'}
                   </Text>
@@ -267,9 +266,10 @@ export default function Detail() {
                       label="Borrar foto"
                       title="Eliminar foto"
                       description="Se quitará del registro. La limpieza del archivo remoto se procesa por el servidor."
-                      onConfirm={() =>
-                        dispatch({ type: 'DELETE_PHOTO', obraId: o.id, photoId: p.id })
-                      }
+                      onConfirm={async () => {
+                        await dispatch({ type: 'DELETE_PHOTO', obraId: o.id, photoId: p.id });
+                        await deleteLocalPhoto(p.id);
+                      }}
                     />
                   ) : null}
                 </View>
@@ -280,7 +280,12 @@ export default function Detail() {
         <View style={{ flexGrow: 1, flexBasis: 270, gap: 20 }}>
           <View style={s.card}>
             <Text style={s.h2}>Datos de la obra</Text>
-            <Info label="ENTREGA" value={o.fechaEntrega} />
+            <Info label="ENTREGA PREVISTA" value={o.fechaEntrega} />
+            <Info
+              label="ENTREGA EFECTIVA"
+              value={o.fechaEntregaEfectiva || 'Sin registro efectivo separado'}
+            />
+            {o.observaciones ? <Info label="OBSERVACIONES" value={o.observaciones} /> : null}
             <Info label="RETIRO ESTIMADO" value={o.fechaRetiroEstimada} />
             {o.fechaRetiroEfectiva ? (
               <Info label="RETIRO EFECTIVO" value={o.fechaRetiroEfectiva} />
@@ -352,7 +357,21 @@ export default function Detail() {
               {incident.itemNombre} · {incident.cantidad - incident.recuperado} pendientes
             </Text>
             <SmartCounter value={n} max={incident.cantidad - incident.recuperado} onChange={setN} />
-            {user?.role === 'ADMIN' ? <Select label="Ubicación real" value={recoveryDestination} onChange={setRecoveryDestination} options={[{value:'galpon',label:'Recuperado al galpón'},...(o.estadoProceso==='ENTREGADO'?[{value:'obra',label:'Sigue en obra · corregir error'}]:[]),{value:'taller',label:'En taller · corregir tipo'},{value:'perdido',label:'Perdido · corregir tipo'}]} /> : null}
+            {user?.role === 'ADMIN' ? (
+              <Select
+                label="Ubicación real"
+                value={recoveryDestination}
+                onChange={setRecoveryDestination}
+                options={[
+                  { value: 'galpon', label: 'Recuperado al galpón' },
+                  ...(o.estadoProceso === 'ENTREGADO'
+                    ? [{ value: 'obra', label: 'Sigue en obra · corregir error' }]
+                    : []),
+                  { value: 'taller', label: 'En taller · corregir tipo' },
+                  { value: 'perdido', label: 'Perdido · corregir tipo' },
+                ]}
+              />
+            ) : null}
             <Field label="Motivo de recuperación" value={reason} onChangeText={setReason} />
             <Button
               label="Confirmar devolución"
@@ -360,7 +379,12 @@ export default function Detail() {
               onPress={() =>
                 void run(async () => {
                   await dispatch({
-                    ...(recoveryDestination==='galpon' ? {type:'RECOVER' as const} : {type:'CORRECT_INCIDENT' as const,destino:recoveryDestination as 'obra'|'taller'|'perdido'}),
+                    ...(recoveryDestination === 'galpon'
+                      ? { type: 'RECOVER' as const }
+                      : {
+                          type: 'CORRECT_INCIDENT' as const,
+                          destino: recoveryDestination as 'obra' | 'taller' | 'perdido',
+                        }),
                     obraId: o.id,
                     incidentId: recoverId,
                     cantidad: n,
@@ -427,6 +451,7 @@ export default function Detail() {
   );
 }
 function Info({ label, value }: { label: string; value: string }) {
+  const { s } = useUI();
   return (
     <View style={{ gap: 5 }}>
       <Text style={s.label}>{label}</Text>

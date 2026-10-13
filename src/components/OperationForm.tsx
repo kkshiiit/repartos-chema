@@ -1,12 +1,14 @@
+import { userError } from '../services/errors';
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import type { IncidentInput, ObraCard } from '../types';
 import { useInventory } from '../context/InventoryContext';
 import { useAuth } from '../context/AuthContext';
-import { Button, Chip, Field, Notice, Select, s } from './ui';
+import { Button, Chip, Field, Notice, Select, useUI } from './ui';
 import { SmartCounter } from './SmartCounter';
 import { FaltantesForm } from './FaltantesForm';
 export function Drivers({ value, onChange }: { value: string[]; onChange: (v: string[]) => void }) {
+  const { s } = useUI();
   const { state } = useInventory();
   return (
     <View style={{ gap: 9 }}>
@@ -35,6 +37,7 @@ export function OperationForm({
   mode: 'entrega' | 'retiro' | 'faltante' | 'transferencia';
   onDone: () => void;
 }) {
+  const { s } = useUI();
   const { state, dispatch } = useInventory(),
     { user } = useAuth();
   const [drivers, setDrivers] = useState<string[]>([]),
@@ -58,7 +61,12 @@ export function OperationForm({
       {mode === 'entrega' ? (
         <>
           <Notice text="Al confirmar, la carga pasa de galpón a obra. Revisa cantidades y responsables." />
-          <Field label="Retiro previsto · AAAA-MM-DD" value={retiro} onChangeText={setRetiro} maxLength={10} />
+          <Field
+            label="Retiro previsto · AAAA-MM-DD"
+            value={retiro}
+            onChangeText={setRetiro}
+            maxLength={10}
+          />
           {obra.materialesCargados.map((i) => (
             <Text key={i.materialId} style={s.body}>
               {i.cantidad} × {i.nombre} {i.medida}
@@ -190,7 +198,7 @@ export function OperationForm({
               });
             onDone();
           } catch (e) {
-            setError((e as Error).message);
+            setError(userError(e));
           } finally {
             setBusy(false);
           }

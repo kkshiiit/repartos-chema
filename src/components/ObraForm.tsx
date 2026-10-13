@@ -1,3 +1,4 @@
+import { userError } from '../services/errors';
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { router } from 'expo-router';
@@ -5,8 +6,9 @@ import type { ObraCard } from '../types';
 import { makeId, useInventory } from '../context/InventoryContext';
 import { useAuth } from '../context/AuthContext';
 import { businessDate } from '../domain/rules';
-import { Button, Field, Notice, Screen, s } from './ui';
+import { Button, Field, Notice, Screen, useUI } from './ui';
 export function ObraForm({ obra }: { obra?: ObraCard }) {
+  const { s } = useUI();
   const { dispatch } = useInventory(),
     { user } = useAuth();
   const [nombre, setNombre] = useState(obra?.clienteNombre || ''),
@@ -56,7 +58,13 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
               onChangeText={setZona}
               placeholder="Ej. San Martín"
             />
-            <Field label="Observaciones" value={observaciones} onChangeText={setObservaciones} multiline maxLength={1000} />
+            <Field
+              label="Observaciones"
+              value={observaciones}
+              onChangeText={setObservaciones}
+              multiline
+              maxLength={1000}
+            />
             <View style={s.divider} />
             <Text style={s.h2}>Planificación</Text>
             <Field
@@ -92,10 +100,14 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
                     fechaRetiroEstimada: retiro,
                     ...(obra?.coordenadas ? { coordenadas: obra.coordenadas } : {}),
                   };
-                  await dispatch(obra ? {type:'UPDATE_OBRA',obra:data,expectedVersion:baseVersion} : {type:'CREATE_OBRA',obra:data});
+                  await dispatch(
+                    obra
+                      ? { type: 'UPDATE_OBRA', obra: data, expectedVersion: baseVersion }
+                      : { type: 'CREATE_OBRA', obra: data },
+                  );
                   router.replace(`/obra/${data.id}`);
                 } catch (e) {
-                  setError((e as Error).message);
+                  setError(userError(e));
                 } finally {
                   setBusy(false);
                 }

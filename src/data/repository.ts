@@ -1,4 +1,4 @@
-import type { AppState, Envelope, Operation } from '../types';
+import type { AppState, Envelope, Operation, UserProfile } from '../types';
 import { parseEnvelope } from './validation';
 import { applyOperation, clone } from '../domain/engine';
 export interface KeyValueStorage {
@@ -19,14 +19,17 @@ export class Repository {
     private initial: () => AppState,
     private remote?: RemoteAdapter,
   ) {}
-  private serial<T>(f: () => Promise<T>): Promise<T> {
+  private serial<T>(f: () => Promise<T>, validateExisting = true): Promise<T> {
     const run = async () => {
       const fresh = await this.storage.getItem(this.key);
+      if (!validateExisting) return f();
       if (fresh !== null) {
         const parsed = parseEnvelope(fresh);
         this.envelope = parsed;
       } else if (this.envelope) {
-        throw new Error('El almacenamiento local desapareció. Conserva esta sesión y restaura una copia; no se reiniciaron datos.');
+        throw new Error(
+          'El almacenamiento local desapareció. Conserva esta sesión y restaura una copia; no se reiniciaron datos.',
+        );
       }
       return f();
     };
@@ -51,7 +54,21 @@ export class Repository {
     return clone(e);
   }
   // Incluye incluso datos inválidos para que soporte pueda recuperarlos sin sobreescribir.
-  async exportRaw() { return this.storage.getItem(this.key); }
+  async exportRaw() {
+    return this.storage.getItem(this.key);
+  }
+  restoreDemo(raw: string, actor: UserProfile) {
+    return this.serial(async () => {
+      if (this.remote || actor.role !== 'ADMIN')
+        throw new Error('Restauración local exclusiva de administración en demo.');
+      const restored = parseEnvelope(raw);
+      if (restored.queue.length) throw new Error('No se restaura una cola remota en la demo.');
+      const original = await this.storage.getItem(this.key);
+      if (original !== null)
+        await this.storage.setItem(`${this.key}:before-restore:${Date.now()}`, original);
+      return this.persist(restored);
+    }, false);
+  }
   load() {
     return this.serial(async () => {
       if (this.envelope) return clone(this.envelope);

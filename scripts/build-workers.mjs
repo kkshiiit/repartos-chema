@@ -41,7 +41,9 @@ async function walk(dir) {
 const files = (await walk('dist')).filter(
   (f) => f !== '/sw.js' && f !== '/firebase-messaging-sw.js',
 );
-const version = createHash('sha256').update(files.join('|')).digest('hex').slice(0, 12);
+const contentHash = createHash('sha256');
+for(const file of files) contentHash.update(file).update(await readFile('dist'+file));
+const version = contentHash.digest('hex').slice(0,12);
 const worker = `const CACHE='chema-${version}';const FILES=${JSON.stringify(files)};
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('chema-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));

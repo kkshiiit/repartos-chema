@@ -7,20 +7,20 @@ import { undoReason } from '../../src/domain/engine';
 import { businessDate } from '../../src/domain/rules';
 import {
   Button,
-  C,
   ConfirmButton,
   Empty,
   Field,
   Notice,
   Screen,
   Select,
-  s,
+  useUI,
 } from '../../src/components/ui';
 import { DATA_MODE } from '../../src/services/firebase';
 import { loadHistory, HistoryCursor } from '../../src/services/historyService';
 import type { ActivityLog } from '../../src/types';
 import { DataList } from '../../src/components/DataList';
 export default function HistoryPage() {
+  const { C, s } = useUI();
   const { state, dispatch } = useInventory(),
     { user } = useAuth();
   const [query, setQuery] = useState(''),
@@ -43,7 +43,7 @@ export default function HistoryPage() {
   );
   const data = all.filter(
     (l) =>
-      `${l.accion} ${l.usuarioNombre} ${state.obras.find((o) => o.id === l.obraId)?.clienteNombre || ''}`
+      `${l.accion} ${l.usuarioNombre} ${l.obraNombre || state.obras.find((o) => o.id === l.obraId)?.clienteNombre || ''}`
         .toLowerCase()
         .includes(query.toLowerCase()) &&
       (obra === 'TODAS' || l.obraId === obra) &&
@@ -155,7 +155,9 @@ export default function HistoryPage() {
               </View>
               {l.obraId ? (
                 <Text style={s.body}>
-                  {state.obras.find((o) => o.id === l.obraId)?.clienteNombre || 'Obra eliminada'}
+                  {l.obraNombre ||
+                    state.obras.find((o) => o.id === l.obraId)?.clienteNombre ||
+                    'Obra eliminada'}
                 </Text>
               ) : null}
               {l.movimientos.map((m, i) => (
@@ -163,7 +165,10 @@ export default function HistoryPage() {
                   <ArrowRight size={14} color={C.blue} />
                   <Text style={[s.muted, { flex: 1 }]}>
                     {m.cantidad} ×{' '}
-                    {state.materiales.find((x) => x.id === m.materialId)?.nombre || m.materialId} ·{' '}
+                    {m.materialNombre ||
+                      state.materiales.find((x) => x.id === m.materialId)?.nombre ||
+                      m.materialId}{' '}
+                    ·{' '}
                     {m.origen.startsWith('obra:')
                       ? state.obras.find((o) => o.id === m.origen.slice(5))?.clienteNombre ||
                         'Obra archivada'

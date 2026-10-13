@@ -12,8 +12,9 @@ import {
 } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../../src/context/AuthContext';
-import { C, s } from '../../src/components/ui';
+import { useUI } from '../../src/components/ui';
 export default function Tabs() {
+  const { C, s } = useUI();
   const { width } = useWindowDimensions(),
     wide = width >= 1000,
     insets = useSafeAreaInsets(),
@@ -29,7 +30,7 @@ export default function Tabs() {
     <View
       style={{
         width: wide ? 216 : undefined,
-        backgroundColor: wide ? '#101A2D' : C.panel,
+        backgroundColor: wide ? C.bg : C.panel,
         borderRightWidth: wide ? 1 : 0,
         borderTopWidth: wide ? 0 : 1,
         borderColor: C.line,
@@ -71,14 +72,14 @@ export default function Tabs() {
               gap: wide ? 12 : 5,
               padding: wide ? 13 : 7,
               borderRadius: 10,
-              backgroundColor: active ? '#D32F2F19' : 'transparent',
+              backgroundColor: active ? C.dangerBg : 'transparent',
               minHeight: 48,
             }}
           >
-            <l.icon size={wide ? 19 : 21} color={active ? '#F87171' : C.subtle} />
+            <l.icon size={wide ? 19 : 21} color={active ? C.danger : C.subtle} />
             <Text
               style={{
-                color: active ? '#FCA5A5' : C.muted,
+                color: active ? C.danger : C.muted,
                 fontWeight: active ? '700' : '500',
                 fontSize: wide ? 14 : 10,
               }}

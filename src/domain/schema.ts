@@ -39,9 +39,22 @@ const incident = z
 const responsables = z.array(z.string().min(1).max(80)).max(10);
 export const actionSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('CREATE_OBRA'), obra }).strict(),
-  z.object({ type: z.literal('UPDATE_OBRA'), obra, expectedVersion: z.number().int().nonnegative().optional() }).strict(),
+  z
+    .object({
+      type: z.literal('UPDATE_OBRA'),
+      obra,
+      expectedVersion: z.number().int().nonnegative().optional(),
+    })
+    .strict(),
   z.object({ type: z.literal('DELETE_OBRA'), obraId: id }).strict(),
-  z.object({ type: z.literal('SET_LOAD'), obraId: id, items: z.array(load).max(100), expectedVersion: z.number().int().nonnegative().optional() }).strict(),
+  z
+    .object({
+      type: z.literal('SET_LOAD'),
+      obraId: id,
+      items: z.array(load).max(100),
+      expectedVersion: z.number().int().nonnegative().optional(),
+    })
+    .strict(),
   z
     .object({
       type: z.literal('DELIVER'),
@@ -126,8 +139,26 @@ export const actionSchema = z.discriminatedUnion('type', [
         .strict(),
     })
     .strict(),
-  z.object({type:z.literal('MOVE_STOCK'),materialId:id,origen:z.enum(['cantidadGalpon','cantidadEnTaller','cantidadPerdido']),destino:z.enum(['cantidadGalpon','cantidadEnTaller','cantidadPerdido']),cantidad:quantity,motivo:text}).strict(),
-  z.object({type:z.literal('CORRECT_INCIDENT'),obraId:id,incidentId:id,cantidad:quantity,destino:z.enum(['obra','taller','perdido']),motivo:text}).strict(),
+  z
+    .object({
+      type: z.literal('MOVE_STOCK'),
+      materialId: id,
+      origen: z.enum(['cantidadGalpon', 'cantidadEnTaller', 'cantidadPerdido']),
+      destino: z.enum(['cantidadGalpon', 'cantidadEnTaller', 'cantidadPerdido']),
+      cantidad: quantity,
+      motivo: text,
+    })
+    .strict(),
+  z
+    .object({
+      type: z.literal('CORRECT_INCIDENT'),
+      obraId: id,
+      incidentId: id,
+      cantidad: quantity,
+      destino: z.enum(['obra', 'taller', 'perdido']),
+      motivo: text,
+    })
+    .strict(),
   z.object({ type: z.literal('DELETE_COMBO'), comboId: id }).strict(),
   z
     .object({

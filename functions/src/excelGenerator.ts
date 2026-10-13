@@ -1,6 +1,6 @@
 import type ExcelJS from 'exceljs';
 import type { ObraCard } from '../../src/types';
-import { obraStatus, trafficLight } from '../../src/domain/rules';
+import { obraStatus } from '../../src/domain/rules';
 export async function generateExcel(obras: ObraCard[], Workbook: typeof ExcelJS.Workbook) {
   const workbook = new Workbook();
   workbook.creator = 'Grupo Chema Construcciones';
@@ -48,7 +48,16 @@ export async function generateExcel(obras: ObraCard[], Workbook: typeof ExcelJS.
       type: 'pattern',
       pattern: 'solid',
       fgColor: {
-        argb: { VERDE: 'FFDCFCE7', AMARILLO: 'FFFEF08A', ROJO: 'FFFEE2E2' }[trafficLight(o)],
+        argb: (
+          {
+            VERDE: 'FFDCFCE7',
+            AMARILLO: 'FFFEF08A',
+            ROJO: 'FFFEE2E2',
+            PENDIENTE: 'FFEDE9FE',
+            RETIRADO: 'FFE2E8F0',
+            REINGRESADO: 'FFE2E8F0',
+          } as Record<string, string>
+        )[obraStatus(o).key]!,
       },
     };
   }

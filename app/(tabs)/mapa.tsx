@@ -1,14 +1,16 @@
+import { userError } from '../../src/services/errors';
 import React, { useMemo, useState } from 'react';
 import { View, Text } from 'react-native';
 import { Navigation, LocateFixed, MapPin, ArrowUp, ArrowDown, Route } from 'lucide-react-native';
 import * as Location from 'expo-location';
 import { useInventory } from '../../src/context/InventoryContext';
-import { Button, C, Chip, Empty, Field, Notice, Screen, Sheet, s } from '../../src/components/ui';
+import { Button, Chip, Empty, Field, Notice, Screen, Sheet, useUI } from '../../src/components/ui';
 import { StatusChip } from '../../src/components/StatusChip';
 import { distanceKm, coordinates } from '../../src/domain/rules';
 import { mapsUrl } from '../../src/utils/whatsapp';
 import { openLink } from '../../src/services/links';
 export default function Trip() {
+  const { C, s } = useUI();
   const { state } = useInventory();
   const [zone, setZone] = useState('TODAS'),
     [origin, setOrigin] = useState<{ lat: number; lng: number } | null>(null),
@@ -53,7 +55,7 @@ export default function Trip() {
       await f();
       setError('');
     } catch (e) {
-      setError((e as Error).message);
+      setError(userError(e));
     } finally {
       setBusy(false);
     }
@@ -83,7 +85,7 @@ export default function Trip() {
       }
     >
       <View style={[s.card, { flexDirection: 'row', alignItems: 'center' }]}>
-        <View style={{ padding: 16, backgroundColor: '#60A5FA12', borderRadius: 15 }}>
+        <View style={{ padding: 16, backgroundColor: C.selection, borderRadius: 15 }}>
           <Route size={32} color={C.blue} />
         </View>
         <View style={{ flex: 1, gap: 5 }}>
@@ -222,7 +224,7 @@ export default function Trip() {
               setManual(false);
               setError('');
             } catch (e) {
-              setError((e as Error).message);
+              setError(userError(e));
             }
           }}
         />

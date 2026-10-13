@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Chip, Field, s } from './ui';
+import { Chip, Field, useUI } from './ui';
 export function ScaffoldSelector({
   value,
   onChange,
@@ -8,6 +8,7 @@ export function ScaffoldSelector({
   value: string;
   onChange: (v: string) => void;
 }) {
+  const { s } = useUI();
   const [custom, setCustom] = useState(
     !['70cm', '80cm', '90cm', '1.30m', '1.50m', '2.00m', ''].includes(value),
   );

@@ -1,5 +1,6 @@
+import { userError } from '../../src/services/errors';
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { Plus, Package, Warehouse, HardHat, Wrench, TriangleAlert } from 'lucide-react-native';
 import type { MaterialItem, StockBucket, CategoriaMaterial } from '../../src/types';
 import { useInventory, makeId } from '../../src/context/InventoryContext';
@@ -7,7 +8,6 @@ import { useAuth } from '../../src/context/AuthContext';
 import {
   Button,
   ConfirmButton,
-  C,
   Chip,
   Empty,
   Field,
@@ -15,12 +15,12 @@ import {
   Screen,
   Select,
   Sheet,
-  s,
+  useUI,
 } from '../../src/components/ui';
-import { AdSlot } from '../../src/components/AdSlot';
 import { DataList } from '../../src/components/DataList';
 import { ScaffoldSelector } from '../../src/components/ScaffoldSelector';
 export default function WarehousePage() {
+  const { C, s } = useUI();
   const { state, dispatch } = useInventory(),
     { user } = useAuth();
   const [query, setQuery] = useState(''),
@@ -47,8 +47,8 @@ export default function WarehousePage() {
   const metrics = [
     { key: 'cantidadGalpon', label: 'En galpón', color: C.green, icon: Warehouse },
     { key: 'cantidadEnObra', label: 'En obra', color: C.blue, icon: HardHat },
-    { key: 'cantidadEnTaller', label: 'En taller', color: '#FDBA74', icon: Wrench },
-    { key: 'cantidadPerdido', label: 'Perdido', color: '#FB7185', icon: TriangleAlert },
+    { key: 'cantidadEnTaller', label: 'En taller', color: C.orange, icon: Wrench },
+    { key: 'cantidadPerdido', label: 'Perdido', color: C.danger, icon: TriangleAlert },
   ] as const;
   const data = state.materiales.filter(
     (m) =>
@@ -80,12 +80,15 @@ export default function WarehousePage() {
       <DataList
         data={data}
         keyExtractor={(m) => m.id}
-        ListFooterComponent={<AdSlot />}
         ListHeaderComponent={
           <View style={{ gap: 20, paddingBottom: 20 }}>
-            <View style={s.wrap}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ gap: 10 }}
+            >
               {metrics.map((m) => (
-                <View key={m.key} style={[s.card, { flex: 1, minWidth: 130 }]}>
+                <View key={m.key} style={[s.card, { minWidth: 125, padding: 12, gap: 6 }]}>
                   <m.icon size={21} color={m.color} />
                   <Text style={{ color: C.text, fontSize: 28, fontWeight: '800' }}>
                     {state.materiales.reduce((n, i) => n + i[m.key], 0)}
@@ -93,7 +96,7 @@ export default function WarehousePage() {
                   <Text style={s.muted}>{m.label}</Text>
                 </View>
               ))}
-            </View>
+            </ScrollView>
             <Field
               label="Buscar material"
               value={query}
@@ -128,7 +131,11 @@ export default function WarehousePage() {
               {user?.role === 'ADMIN' ? (
                 <View style={s.wrap}>
                   <Button label="Editar" variant="ghost" onPress={() => open(m, 'material')} />
-                  <Button label="Mover stock" variant="secondary" onPress={() => open(m, 'movimiento')} />
+                  <Button
+                    label="Mover stock"
+                    variant="secondary"
+                    onPress={() => open(m, 'movimiento')}
+                  />
                   <Button label="Ajustar" variant="secondary" onPress={() => open(m, 'ajuste')} />
                 </View>
               ) : null}
@@ -149,7 +156,13 @@ export default function WarehousePage() {
       <Sheet
         visible={!!modal}
         title={
-          modal === 'movimiento' ? 'Mover existencias' : modal === 'ajuste' ? 'Ajuste de inventario' : edit ? 'Editar material' : 'Nuevo material'
+          modal === 'movimiento'
+            ? 'Mover existencias'
+            : modal === 'ajuste'
+              ? 'Ajuste de inventario'
+              : edit
+                ? 'Editar material'
+                : 'Nuevo material'
         }
         onClose={() => setModal('')}
       >
@@ -176,7 +189,16 @@ export default function WarehousePage() {
                 .map((m) => ({ value: m.key, label: m.label }))}
               onChange={(v) => setBucket(v as StockBucket)}
             />
-            {modal === 'movimiento' ? <Select label="Destino del material" value={destination} onChange={v=>setDestination(v as StockBucket)} options={metrics.filter(m=>m.key!=='cantidadEnObra').map(m=>({value:m.key,label:m.label}))} /> : null}
+            {modal === 'movimiento' ? (
+              <Select
+                label="Destino del material"
+                value={destination}
+                onChange={(v) => setDestination(v as StockBucket)}
+                options={metrics
+                  .filter((m) => m.key !== 'cantidadEnObra')
+                  .map((m) => ({ value: m.key, label: m.label }))}
+              />
+            ) : null}
             <Field
               label={modal === 'movimiento' ? 'Cantidad a mover' : 'Diferencia entera (+ o −)'}
               value={delta}
@@ -184,12 +206,14 @@ export default function WarehousePage() {
               keyboardType="numbers-and-punctuation"
               placeholder="Ej. 20 o -3"
             />
-            {modal !== 'movimiento' ? <Field
-              label="Procedencia / destino"
-              value={source}
-              onChangeText={setSource}
-              placeholder="Compra, devolución externa o baja"
-            /> : null}
+            {modal !== 'movimiento' ? (
+              <Field
+                label="Procedencia / destino"
+                value={source}
+                onChangeText={setSource}
+                placeholder="Compra, devolución externa o baja"
+              />
+            ) : null}
             <Field label="Motivo y comprobante" value={reason} onChangeText={setReason} />
             <Notice text="Las entregas y retiros se registran desde cada obra. Para devolver pérdidas/daños, usa Recuperar material." />
           </>
@@ -198,7 +222,11 @@ export default function WarehousePage() {
         <ConfirmButton
           label="Guardar cambios"
           title="Confirmar inventario"
-          description={modal==='material' ? `Guardar ${nombre} ${medida}. Las cantidades no cambian.` : `${edit?.nombre}: ${delta} unidades. Origen ${bucket}; destino ${modal==='movimiento' ? destination : source}. Motivo: ${reason}.`}
+          description={
+            modal === 'material'
+              ? `Guardar ${nombre} ${medida}. Las cantidades no cambian.`
+              : `${edit?.nombre}: ${delta} unidades. Origen ${bucket}; destino ${modal === 'movimiento' ? destination : source}. Motivo: ${reason}.`
+          }
           variant="primary"
           onConfirm={async () => {
             try {
@@ -215,19 +243,28 @@ export default function WarehousePage() {
                 });
               else {
                 if (!/^[+-]?\d+$/.test(delta)) throw new Error('Usa una diferencia entera.');
-                if(modal==='movimiento') await dispatch({type:'MOVE_STOCK',materialId:edit!.id,origen:bucket,destino:destination,cantidad:Number(delta),motivo:reason});
-                else await dispatch({
-                  type: 'ADJUST',
-                  materialId: edit!.id,
-                  bucket,
-                  delta: Number(delta),
-                  motivo: reason,
-                  procedencia: source,
-                });
+                if (modal === 'movimiento')
+                  await dispatch({
+                    type: 'MOVE_STOCK',
+                    materialId: edit!.id,
+                    origen: bucket,
+                    destino: destination,
+                    cantidad: Number(delta),
+                    motivo: reason,
+                  });
+                else
+                  await dispatch({
+                    type: 'ADJUST',
+                    materialId: edit!.id,
+                    bucket,
+                    delta: Number(delta),
+                    motivo: reason,
+                    procedencia: source,
+                  });
               }
               setModal('');
             } catch (e) {
-              setError((e as Error).message);
+              setError(userError(e));
               throw e;
             }
           }}

@@ -48,8 +48,9 @@ export function remitoDocument(o: ObraCard) {
           new Paragraph(`Cliente: ${o.clienteNombre}`),
           new Paragraph(`Obra: ${o.direccion} · ${o.localidadBarrio}`),
           new Paragraph(
-            `Entrega: ${o.fechaEntrega}    |    Retiro estimado: ${o.fechaRetiroEstimada}`,
+            `Entrega prevista: ${o.fechaEntrega}    |    Retiro estimado: ${o.fechaRetiroEstimada}`,
           ),
+          new Paragraph(`Entrega efectiva: ${o.fechaEntregaEfectiva || 'Sin registro separado'}`),
           new Table({
             width: { size: 100, type: WidthType.PERCENTAGE },
             rows: [

@@ -6,8 +6,8 @@
 - `src/components/`: UI accesible, botones de 44–48 px, SmartCounter, selectores y formularios.
 - `src/domain/`: motor puro, validación Zod, RBAC, semáforo, cantidades, transiciones y reversión. Compartido con Functions.
 - `src/data/`: adaptador local, semilla ficticia y repositorio serial con cola durable.
-- `src/context/`: sesión, inventario, conectividad y preferencia publicitaria del dispositivo.
-- `src/services/`: límites con Auth/Firestore/Storage, archivos, ubicación/enlaces, documentos y anuncios.
+- `src/context/`: sesión, inventario, conectividad.
+- `src/services/`: límites con Auth/Firestore/Storage, archivos, ubicación/enlaces y documentos.
 - `functions/src/`: transacción remota, auditoría, avisos FCM, limpieza de archivos y generadores.
 
 ## Inventario
@@ -49,6 +49,3 @@ Firebase sube a una ruta inmutable por usuario/obra/ID. Un reintento consulta el
 
 Los enlaces de descarga de fotos contienen tokens de acceso de Firebase: tratarlos como información privada y revocarlos cuando corresponda. Los documentos no usan URLs públicas: la función devuelve una ruta Storage que se descarga con autorización, con expiración y limpieza programada.
 
-## Publicidad y privacidad
-
-La integración publicitaria no recibe el repositorio ni información de obras. El único paso de datos es el ID de unidad publicitaria y la opción de anuncios no personalizados. UMP gestiona el consentimiento del dispositivo. AdMob puede tratar información técnica propia del SDK; debe declararse en la política de privacidad real. Patrocinio directo usa un enlace HTTPS explícito y no incorpora scripts de seguimiento.
