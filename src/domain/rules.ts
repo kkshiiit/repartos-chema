@@ -1,7 +1,8 @@
 import type { Action, ObraCard, UserProfile } from '../types';
 export const MAX_QUANTITY = 100000;
+export class DomainError extends Error {}
 export function ensure(condition: unknown, message: string): asserts condition {
-  if (!condition) throw new Error(message);
+  if (!condition) throw new DomainError(message);
 }
 export function quantity(value: unknown, positive = false): number {
   ensure(

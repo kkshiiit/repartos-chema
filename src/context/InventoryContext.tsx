@@ -1,3 +1,4 @@
+import { userError } from '../services/errors';
 import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
@@ -7,6 +8,7 @@ import type { Action, AppState, Envelope } from '../types';
 import { Repository } from '../data/repository';
 import { seed, emptyState } from '../data/seed';
 import { DATA_MODE, cloudAdapter } from '../services/firebase';
+import { haptic } from '../hooks/useHaptics';
 import { useAuth } from './AuthContext';
 export const makeId = () => Crypto.randomUUID();
 interface Value {
@@ -19,6 +21,8 @@ interface Value {
   dispatch: (a: Action) => Promise<void>;
   retry: () => Promise<void>;
   discard: () => Promise<void>;
+  backup: () => Promise<void>;
+  restore: (raw: string) => Promise<void>;
 }
 const Context = createContext<Value | null>(null);
 export function InventoryProvider({ children }: { children: React.ReactNode }) {
@@ -47,7 +51,7 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
       if (user && DATA_MODE === 'firebase') await repo.sync();
       setError('');
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'No se pudo sincronizar.');
+      setError(userError(e));
     } finally {
       setSyncing(false);
     }
@@ -66,7 +70,7 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
         }
       })
       .catch((e) => {
-        if (active) setError(e.message);
+        if (active) setError(userError(e));
       });
     return () => {
       active = false;
@@ -85,7 +89,11 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
     if (user && online && ready && DATA_MODE === 'firebase') {
       void Promise.resolve().then(retry);
       const timer = setInterval(() => {
-        if (NativeState.currentState === 'active' && (Platform.OS !== 'web' || document.visibilityState === 'visible')) void retry();
+        if (
+          NativeState.currentState === 'active' &&
+          (Platform.OS !== 'web' || document.visibilityState === 'visible')
+        )
+          void retry();
       }, 30000);
       const sub = NativeState.addEventListener('change', (s) => {
         if (s === 'active') void retry();
@@ -104,7 +112,7 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
         void repo
           .load()
           .then(setEnv)
-          .catch((e) => setError(e.message));
+          .catch((e) => setError(userError(e)));
     };
     globalThis.addEventListener?.('focus', refresh);
     return () => globalThis.removeEventListener?.('focus', refresh);
@@ -117,11 +125,23 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
   const value: Value = {
     state: env?.state || emptyState(),
     ready: !!env,
-    error: env?.queue.find(q => q.status === 'CONFLICT')?.error || error,
+    error: env?.queue.find((q) => q.status === 'CONFLICT')?.error || error,
     online,
     syncing,
     queue: env?.queue || [],
     retry,
+    backup: async () => {
+      if (user?.role !== 'ADMIN') throw new Error('Solo administración.');
+      const { downloadBackup } = await import('../services/backupService');
+      await downloadBackup(await repo.exportRaw());
+    },
+    restore: async (raw) => {
+      if (!user || user.role !== 'ADMIN' || DATA_MODE !== 'demo')
+        throw new Error('Restauración disponible para administración en demo.');
+      const { prepareRestore } = await import('../services/backupService');
+      await repo.restoreDemo(await prepareRestore(raw), user);
+      setError('');
+    },
     discard: async () => {
       await repo.discardConflict();
       setError('');
@@ -135,6 +155,7 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
         action,
       });
       setError('');
+      haptic();
       if (online && DATA_MODE === 'firebase') void retry();
     },
   };

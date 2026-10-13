@@ -130,33 +130,90 @@ describe('Persistencia y sincronización', () => {
 });
 
 describe('Recuperación sin restablecer datos', () => {
-  it.each(['{', '', JSON.stringify({schema:2}), JSON.stringify({schema:1,state:{},confirmed:{},queue:[]})])('conserva datos dañados o incompatibles: %s', async raw => {
-    const storage=new MemoryStorage(); storage.getItem=async k=>storage.values.get(k)??null;
-    storage.values.set('demo',raw);
-    const repo=new Repository(storage,'demo',()=>seed(now));
+  it.each([
+    '{',
+    '',
+    JSON.stringify({ schema: 2 }),
+    JSON.stringify({ schema: 1, state: {}, confirmed: {}, queue: [] }),
+  ])('conserva datos dañados o incompatibles: %s', async (raw) => {
+    const storage = new MemoryStorage();
+    storage.getItem = async (k) => storage.values.get(k) ?? null;
+    storage.values.set('demo', raw);
+    const repo = new Repository(storage, 'demo', () => seed(now));
     await expect(repo.load()).rejects.toThrow('Datos locales');
     expect(await repo.exportRaw()).toBe(raw);
   });
-  it('reintenta una lectura fallida sin escribir semilla',async()=>{
-    const storage=new MemoryStorage(); const repo=new Repository(storage,'demo',()=>seed(now));
-    await repo.load(); await repo.dispatch(op); const raw=storage.values.get('demo');
-    const original=storage.getItem.bind(storage); storage.getItem=async()=>{throw new Error('Lectura denegada');};
-    const reopened=new Repository(storage,'demo',()=>seed(now));
+  it('reintenta una lectura fallida sin escribir semilla', async () => {
+    const storage = new MemoryStorage();
+    const repo = new Repository(storage, 'demo', () => seed(now));
+    await repo.load();
+    await repo.dispatch(op);
+    const raw = storage.values.get('demo');
+    const original = storage.getItem.bind(storage);
+    storage.getItem = async () => {
+      throw new Error('Lectura denegada');
+    };
+    const reopened = new Repository(storage, 'demo', () => seed(now));
     await expect(reopened.load()).rejects.toThrow('Lectura denegada');
-    storage.getItem=original;
+    storage.getItem = original;
     expect((await reopened.load()).state.logs).toHaveLength(1);
     expect(storage.values.get('demo')).toBe(raw);
   });
-  it('conflicto reabierto sigue visible tras cada reintento',async()=>{
-    const storage=new MemoryStorage(); let commits=0;
-    const remote:RemoteAdapter={fetch:async()=>seed(now),commit:async()=>{commits++;throw Object.assign(new Error('Stock cambió'),{code:'functions/failed-precondition'});}};
-    const first=new Repository(storage,'cloud',()=>seed(now),remote);await first.load();await first.dispatch(op);await expect(first.sync()).rejects.toThrow('Stock cambió');
-    const second=new Repository(storage,'cloud',()=>seed(now),remote);await second.load();await expect(second.sync()).rejects.toThrow('Stock cambió');
-    expect(commits).toBe(1);expect((await second.load()).queue[0]?.status).toBe('CONFLICT');
-    await second.discardConflict();await second.dispatch({...op,id:'correction'});
+  it('conflicto reabierto sigue visible tras cada reintento', async () => {
+    const storage = new MemoryStorage();
+    let commits = 0;
+    const remote: RemoteAdapter = {
+      fetch: async () => seed(now),
+      commit: async () => {
+        commits++;
+        throw Object.assign(new Error('Stock cambió'), { code: 'functions/failed-precondition' });
+      },
+    };
+    const first = new Repository(storage, 'cloud', () => seed(now), remote);
+    await first.load();
+    await first.dispatch(op);
+    await expect(first.sync()).rejects.toThrow('Stock cambió');
+    const second = new Repository(storage, 'cloud', () => seed(now), remote);
+    await second.load();
+    await expect(second.sync()).rejects.toThrow('Stock cambió');
+    expect(commits).toBe(1);
+    expect((await second.load()).queue[0]?.status).toBe('CONFLICT');
+    await second.discardConflict();
+    await second.dispatch({ ...op, id: 'correction' });
   });
-  it('si el almacenamiento desaparece no reemplaza con datos semilla',async()=>{
-    const storage=new MemoryStorage(),repo=new Repository(storage,'demo',()=>seed(now));await repo.load();await repo.dispatch(op);storage.values.delete('demo');
-    await expect(repo.load()).rejects.toThrow('desapareció');expect(storage.values.has('demo')).toBe(false);
+  it('si el almacenamiento desaparece no reemplaza con datos semilla', async () => {
+    const storage = new MemoryStorage(),
+      repo = new Repository(storage, 'demo', () => seed(now));
+    await repo.load();
+    await repo.dispatch(op);
+    storage.values.delete('demo');
+    await expect(repo.load()).rejects.toThrow('desapareció');
+    expect(storage.values.has('demo')).toBe(false);
   });
+});
+
+it('restaura copia validada y archiva el original dañado antes de reemplazar', async () => {
+  const storage = new MemoryStorage(),
+    repo = new Repository(storage, 'demo', () => seed(now));
+  const good = JSON.stringify(await repo.load());
+  storage.values.set('demo', '{corrupto');
+  await expect(repo.load()).rejects.toThrow('dañados');
+  await repo.restoreDemo(good, user);
+  expect((await repo.load()).state.obras).toHaveLength(6);
+  expect(
+    [...storage.values.entries()].some(
+      ([key, value]) => key.includes('before-restore') && value === '{corrupto',
+    ),
+  ).toBe(true);
+  await expect(repo.restoreDemo(good, demoProfile('OPERADOR'))).rejects.toThrow('administración');
+});
+it('fallo de copia preventiva impide reemplazar inventario', async () => {
+  const storage = new MemoryStorage(),
+    repo = new Repository(storage, 'demo', () => seed(now));
+  const initial = JSON.stringify(await repo.load());
+  await repo.dispatch(op);
+  const before = await repo.exportRaw();
+  storage.fail = true;
+  await expect(repo.restoreDemo(initial, user)).rejects.toThrow('Disco lleno');
+  expect(await repo.exportRaw()).toBe(before);
 });

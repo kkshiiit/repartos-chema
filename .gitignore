@@ -9,3 +9,15 @@ coverage/
 test-results/
 .firebase/
 dist-native/
+
+.env.*
+!.env.example
+*.pem
+*.key
+*.jks
+*.keystore
+*service-account*.json
+*serviceAccount*.json
+android/
+ios/
+playwright-report/

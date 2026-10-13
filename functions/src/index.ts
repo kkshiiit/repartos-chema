@@ -11,7 +11,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { applyOperation, clone } from '../../src/domain/engine';
 import { commandSchema } from '../../src/domain/schema';
-import { obraStatus, validDate } from '../../src/domain/rules';
+import { matchesStatusFilter, validDate, DomainError } from '../../src/domain/rules';
 import type { AppState, UserProfile } from '../../src/types';
 import { generateExcel } from './excelGenerator';
 import { generateWord } from './wordGenerator';
@@ -52,23 +52,33 @@ export const applyMovement = onCall({ timeoutSeconds: 60, memory: '512MiB' }, as
   // Los metadatos y el actor nunca se aceptan del dispositivo.
   const receipt = db.doc(`operations/${command.id}`),
     audit = db.doc(`audit/${command.id}`);
-  if (command.action.type === 'PHOTO') {
-    const p = command.action.photo,
-      expected = `photos/${actor.uid}/${command.action.obraId}/${p.id}.jpg`;
-    if (p.storagePath !== expected || p.status !== 'SYNCED' || p.usuarioUid !== actor.uid)
-      throw new HttpsError('invalid-argument', 'Referencia de foto inválida.');
-    const [meta] = await getStorage().bucket().file(expected).getMetadata();
-    if (meta.contentType !== 'image/jpeg' || Number(meta.size) > 2097152)
-      throw new HttpsError('invalid-argument', 'Foto inválida.');
-    const url = new URL(p.uri);
-    if (
-      url.protocol !== 'https:' ||
-      url.hostname !== 'firebasestorage.googleapis.com' ||
-      !decodeURIComponent(url.pathname).endsWith(`/o/${expected}`)
-    )
-      throw new HttpsError('invalid-argument', 'URL de foto inválida.');
-  }
+  const hash = createHash('sha256').update(JSON.stringify(command.action)).digest('hex');
   try {
+    // Reintentar un comando confirmado no depende de que su foto siga existiendo.
+    const prior = await receipt.get();
+    if (prior.exists) {
+      if (prior.get('uid') !== actor.uid || prior.get('actionHash') !== hash)
+        throw new HttpsError('permission-denied', 'Identificador reutilizado.');
+      const current = await stateRef.get();
+      if (!current.exists) throw new HttpsError('failed-precondition', 'Backend sin inicializar.');
+      return current.data();
+    }
+    if (command.action.type === 'PHOTO') {
+      const p = command.action.photo,
+        expected = `photos/${actor.uid}/${command.action.obraId}/${p.id}.jpg`;
+      if (p.storagePath !== expected || p.status !== 'SYNCED' || p.usuarioUid !== actor.uid)
+        throw new HttpsError('invalid-argument', 'Referencia de foto inválida.');
+      const [meta] = await getStorage().bucket().file(expected).getMetadata();
+      if (meta.contentType !== 'image/jpeg' || Number(meta.size) > 2097152)
+        throw new HttpsError('invalid-argument', 'Foto inválida.');
+      const url = new URL(p.uri);
+      if (
+        url.protocol !== 'https:' ||
+        url.hostname !== 'firebasestorage.googleapis.com' ||
+        decodeURIComponent(url.pathname) !== `/v0/b/${getStorage().bucket().name}/o/${expected}`
+      )
+        throw new HttpsError('invalid-argument', 'URL de foto inválida.');
+    }
     return await db.runTransaction(async (tx) => {
       const [prior, doc] = await Promise.all([tx.get(receipt), tx.get(stateRef)]);
       if (!doc.exists) throw new HttpsError('failed-precondition', 'Backend sin inicializar.');
@@ -140,9 +150,13 @@ export const applyMovement = onCall({ timeoutSeconds: 60, memory: '512MiB' }, as
     });
   } catch (e) {
     if (e instanceof HttpsError) throw e;
+    if (e instanceof DomainError) throw new HttpsError('failed-precondition', e.message);
+    const code = (e as { code?: string | number }).code;
+    if (code === 404)
+      throw new HttpsError('not-found', 'La foto no está disponible. Revisa el archivo.');
     throw new HttpsError(
-      'failed-precondition',
-      e instanceof Error ? e.message : 'Movimiento rechazado.',
+      'unavailable',
+      'No se pudo confirmar con el servidor. Se conservará el intento para reintentar.',
     );
   }
 });
@@ -178,7 +192,7 @@ export const exportDocument = onCall(
         ? o.id === p.obraId
         : (!p.from || o.fechaEntrega >= p.from) &&
           (!p.to || o.fechaEntrega <= p.to) &&
-          (!p.status || p.status === 'TODAS' || obraStatus(o).key === p.status),
+          (!p.status || matchesStatusFilter(o, p.status)),
     );
     if (!obras.length) throw new HttpsError('not-found', 'Sin obras para exportar.');
     if (obras.length > 200)
@@ -204,16 +218,14 @@ export const exportDocument = onCall(
           metadata: { expiresAt: String(Date.now() + 3600000) },
         },
       });
-    await db
-      .collection('exports')
-      .add({
-        uid: actor.uid,
-        path,
-        createdAt: new Date().toISOString(),
-        expiresAt: Date.now() + 3600000,
-        kind: p.kind,
-        count: obras.length,
-      });
+    await db.collection('exports').add({
+      uid: actor.uid,
+      path,
+      createdAt: new Date().toISOString(),
+      expiresAt: Date.now() + 3600000,
+      kind: p.kind,
+      count: obras.length,
+    });
     return { path };
   },
 );
@@ -234,13 +246,17 @@ async function sendNotification(id: string) {
   const claimed = await db.runTransaction(async (tx) => {
     const doc = await tx.get(ref),
       n = doc.data();
-    if (!n || n.status === 'SENT' || (n.leaseUntil || 0) > Date.now() || (n.attempts || 0) >= 5)
+    if (!n || n.status === 'SENT' || n.status === 'EXHAUSTED' || (n.leaseUntil || 0) > Date.now())
       return null;
+    if ((n.attempts || 0) >= 5) {
+      tx.update(ref, { status: 'EXHAUSTED', leaseUntil: 0 });
+      return null;
+    }
     tx.update(ref, { leaseUntil: Date.now() + 120000, attempts: (n.attempts || 0) + 1 });
     return n;
   });
   if (!claimed) return;
-  let status: 'SENT' | 'FAILED' = 'FAILED',
+  let status: 'SENT' | 'FAILED' | 'EXHAUSTED' = 'FAILED',
     error = 'No hay tokens de administradores registrados.';
   try {
     const entries = await db.collection('pushTokens').limit(500).get();
@@ -265,6 +281,7 @@ async function sendNotification(id: string) {
   } catch (e) {
     error = e instanceof Error ? e.message : 'Error FCM';
   }
+  if (status === 'FAILED' && (claimed.attempts || 0) + 1 >= 5) status = 'EXHAUSTED';
   await db.runTransaction(async (tx) => {
     const state = await tx.get(stateRef);
     tx.update(ref, { status, error, leaseUntil: 0 });

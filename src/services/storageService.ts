@@ -2,7 +2,8 @@ import { Platform } from 'react-native';
 import * as Picker from 'expo-image-picker';
 import { ImageManipulator, SaveFormat } from 'expo-image-manipulator';
 import { File, Paths } from 'expo-file-system';
-import { ref, uploadBytes, getDownloadURL, deleteObject, getMetadata } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL, getMetadata } from 'firebase/storage';
+import { photoBytes, storePhoto } from './photoCache';
 import { firebase } from './firebase';
 import type { PhotoRef } from '../types';
 export async function selectPhoto(
@@ -27,13 +28,13 @@ export async function selectPhoto(
   const saved = await rendered.saveAsync({
     format: SaveFormat.JPEG,
     compress: 0.7,
-    base64: Platform.OS === 'web',
+    base64: false,
   });
   let uri = saved.uri;
   if (Platform.OS === 'web') {
-    uri = `data:image/jpeg;base64,${saved.base64}`;
-    if (uri.length > 1_500_000)
-      throw new Error('La foto supera el límite local. Selecciona una imagen más pequeña.');
+    const bytes = new Uint8Array(await (await fetch(saved.uri)).arrayBuffer());
+    if (bytes.length > 2 * 1024 * 1024) throw new Error('Foto demasiado grande.');
+    uri = await storePhoto(id, bytes);
   } else {
     const dest = new File(Paths.document, `chema-${id}.jpg`);
     new File(saved.uri).copy(dest);
@@ -51,7 +52,8 @@ export async function uploadPhoto(obraId: string, p: PhotoRef): Promise<PhotoRef
     if ((e as { code?: string }).code !== 'storage/object-not-found') throw e;
   }
   const blob =
-    Platform.OS === 'web' ? await (await fetch(p.uri)).blob() : await new File(p.uri).bytes();
+    (await photoBytes(p.id)) ??
+    (Platform.OS === 'web' ? await (await fetch(p.uri)).blob() : await new File(p.uri).bytes());
   if ((blob instanceof Uint8Array ? blob.byteLength : blob.size) > 2 * 1024 * 1024)
     throw new Error('Foto demasiado grande.');
   await uploadBytes(ref(firebase().storage, path), blob, { contentType: 'image/jpeg' });
@@ -61,7 +63,4 @@ export async function uploadPhoto(obraId: string, p: PhotoRef): Promise<PhotoRef
     storagePath: path,
     uri: await getDownloadURL(ref(firebase().storage, path)),
   };
-}
-export async function removeRemotePhoto(p: PhotoRef) {
-  if (p.storagePath) await deleteObject(ref(firebase().storage, p.storagePath));
 }

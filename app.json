@@ -5,7 +5,7 @@
     "scheme": "repartoschema",
     "version": "1.0.0",
     "orientation": "portrait",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.grupochema.repartos"
@@ -36,7 +36,8 @@
       "expo-secure-store",
       "expo-status-bar",
       "expo-sharing",
-      "expo-font"
+      "expo-font",
+      "expo-system-ui"
     ],
     "experiments": {
       "typedRoutes": false

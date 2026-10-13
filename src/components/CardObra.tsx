@@ -1,3 +1,4 @@
+import { userError } from '../services/errors';
 import React, { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { router } from 'expo-router';
@@ -11,22 +12,30 @@ import {
   Box,
 } from 'lucide-react-native';
 import type { ObraCard } from '../types';
+import { statusColor } from '../theme/tokens';
 import { obraStatus } from '../domain/rules';
-import { Button, C, Notice, Pending, s } from './ui';
+import { Button, Notice, Pending, useUI } from './ui';
 import { StatusChip } from './StatusChip';
 import { mapsUrl, whatsappUrl } from '../utils/whatsapp';
 import { openLink } from '../services/links';
 export function CardObra({ obra: o }: { obra: ObraCard }) {
+  const { C, s } = useUI();
   const [error, setError] = useState('');
-  const color = obraStatus(o).color;
+  const color = statusColor(obraStatus(o).key, C);
   const run = async (f: () => string) => {
     try {
       await openLink(f());
       setError('');
     } catch (e) {
-      setError((e as Error).message);
+      setError(userError(e));
     }
   };
+  const loads =
+    o.estadoProceso === 'ENTREGADO'
+      ? o.materialesCargados
+          .map((m) => ({ ...m, cantidad: o.saldosEnObra[m.materialId] || 0 }))
+          .filter((m) => m.cantidad > 0)
+      : o.materialesCargados;
   return (
     <View
       style={[
@@ -38,7 +47,7 @@ export function CardObra({ obra: o }: { obra: ObraCard }) {
         accessibilityRole="button"
         accessibilityLabel={`Abrir ${o.clienteNombre}`}
         onPress={() => router.push(`/obra/${o.id}`)}
-        style={{ padding: 19, gap: 15 }}
+        style={{ padding: 15, gap: 10 }}
       >
         <View style={[s.row, { justifyContent: 'space-between' }]}>
           <StatusChip obra={o} />
@@ -60,7 +69,7 @@ export function CardObra({ obra: o }: { obra: ObraCard }) {
           <Text style={{ color: C.muted, fontSize: 12, paddingLeft: 20 }}>{o.localidadBarrio}</Text>
         </View>
         <View style={{ backgroundColor: C.bg, borderRadius: 10, padding: 12, gap: 8 }}>
-          {o.materialesCargados.slice(0, 2).map((m) => (
+          {loads.slice(0, 2).map((m) => (
             <View key={m.materialId} style={[s.row, { gap: 8 }]}>
               <Box size={13} color={C.subtle} />
               <Text numberOfLines={1} style={{ flex: 1, fontSize: 12, color: C.muted }}>
@@ -73,7 +82,11 @@ export function CardObra({ obra: o }: { obra: ObraCard }) {
             {o.materialesCargados.length > 2
               ? `+${o.materialesCargados.length - 2} materiales`
               : o.materialesCargados.length
-                ? 'Carga preparada'
+                ? o.estadoProceso === 'PENDIENTE_ENTREGA'
+                  ? 'Carga preparada'
+                  : o.estadoProceso === 'ENTREGADO'
+                    ? 'Saldo actual en obra'
+                    : 'Carga histórica'
                 : 'Sin materiales cargados'}
           </Text>
         </View>
@@ -93,7 +106,10 @@ export function CardObra({ obra: o }: { obra: ObraCard }) {
           <View style={[s.row, { gap: 6, flexShrink: 1 }]}>
             <Users size={13} color={C.subtle} />
             <Text style={{ color: C.muted, fontSize: 11 }} numberOfLines={1}>
-              {o.entregadoPor?.join(', ') || 'Por asignar'}
+              {(o.estadoProceso === 'RETIRADO' || o.estadoProceso === 'REINGRESADO'
+                ? o.retiradoPor
+                : o.entregadoPor
+              )?.join(', ') || 'Por asignar'}
             </Text>
           </View>
           {o.syncStatus === 'PENDING' ? (

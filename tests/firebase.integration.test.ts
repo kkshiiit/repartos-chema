@@ -103,3 +103,30 @@ it('documentos privados no admiten escrituras de cliente', async () => {
     getMetadata(ref(env.unauthenticatedContext().storage(), 'exports/admin/private.xlsx')),
   );
 });
+
+it('documento existente solo es legible por ADMIN propietario antes de vencer', async () => {
+  await env.withSecurityRulesDisabled(async (c) => {
+    await uploadBytes(ref(c.storage(), 'exports/admin/valid.docx'), new Uint8Array([1, 2]), {
+      customMetadata: { expiresAt: String(Date.now() + 3600000) },
+    });
+    await uploadBytes(ref(c.storage(), 'exports/admin/expired.docx'), new Uint8Array([1, 2]), {
+      customMetadata: { expiresAt: String(Date.now() - 60000) },
+    });
+    await setDoc(doc(c.firestore(), 'users', 'other_admin'), { role: 'ADMIN' });
+  });
+  const own = env.authenticatedContext('admin', { email_verified: true }).storage();
+  await assertSucceeds(getMetadata(ref(own, 'exports/admin/valid.docx')));
+  await assertFails(getMetadata(ref(own, 'exports/admin/expired.docx')));
+  for (const uid of ['other_admin', 'operator'])
+    await assertFails(
+      getMetadata(
+        ref(
+          env.authenticatedContext(uid, { email_verified: true }).storage(),
+          'exports/admin/valid.docx',
+        ),
+      ),
+    );
+  await assertFails(
+    getMetadata(ref(env.unauthenticatedContext().storage(), 'exports/admin/valid.docx')),
+  );
+});

@@ -1,3 +1,4 @@
+import { userError } from '../services/errors';
 import React, { useState } from 'react';
 import {
   View,
@@ -30,51 +31,48 @@ import { router } from 'expo-router';
 import { useAuth } from '../context/AuthContext';
 import { useInventory } from '../context/InventoryContext';
 import { DATA_MODE } from '../services/firebase';
-export const C = {
-  bg: '#0F172A',
-  panel: '#172235',
-  panel2: '#1C2940',
-  line: '#2B3A50',
-  text: '#F4F6FA',
-  muted: '#A5B3C8',
-  subtle: '#75869F',
-  red: '#D32F2F',
-  green: '#4ADE80',
-  yellow: '#FACC15',
-  blue: '#60A5FA',
-};
-export const s = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  card: {
-    backgroundColor: C.panel,
-    borderWidth: 1,
-    borderColor: C.line,
-    borderRadius: 18,
-    padding: 20,
-    gap: 14,
-  },
-  title: { color: C.text, fontSize: 28, fontWeight: '800', letterSpacing: -0.7 },
-  h2: { color: C.text, fontSize: 19, fontWeight: '700' },
-  body: { color: C.text, fontSize: 15, lineHeight: 23 },
-  muted: { color: C.muted, fontSize: 13, lineHeight: 20 },
-  label: { color: C.muted, fontSize: 12, fontWeight: '700', letterSpacing: 0.8 },
-  input: {
-    backgroundColor: C.bg,
-    borderWidth: 1,
-    borderColor: C.line,
-    borderRadius: 11,
-    color: C.text,
-    paddingHorizontal: 14,
-    paddingVertical: 13,
-    fontSize: 15,
-    minHeight: 48,
-  },
-  divider: { height: 1, backgroundColor: C.line },
-  grow: { flex: 1 },
-  section: { gap: 14 },
-  error: { color: '#FDA4AF', fontSize: 14, lineHeight: 21 },
-});
+import { useTheme } from '../context/ThemeContext';
+import { dark, light, Colors } from '../theme/tokens';
+import { pickBackup } from '../services/files';
+import { ThemeToggle } from './ThemeToggle';
+const makeStyles = (C: Colors) =>
+  StyleSheet.create({
+    row: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+    wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+    card: {
+      backgroundColor: C.panel,
+      borderWidth: 1,
+      borderColor: C.line,
+      borderRadius: 18,
+      padding: 20,
+      gap: 14,
+    },
+    title: { color: C.text, fontSize: 28, fontWeight: '800', letterSpacing: -0.7 },
+    h2: { color: C.text, fontSize: 19, fontWeight: '700' },
+    body: { color: C.text, fontSize: 15, lineHeight: 23 },
+    muted: { color: C.muted, fontSize: 13, lineHeight: 20 },
+    label: { color: C.muted, fontSize: 12, fontWeight: '700', letterSpacing: 0.8 },
+    input: {
+      backgroundColor: C.bg,
+      borderWidth: 1,
+      borderColor: C.line,
+      borderRadius: 11,
+      color: C.text,
+      paddingHorizontal: 14,
+      paddingVertical: 13,
+      fontSize: 15,
+      minHeight: 48,
+    },
+    divider: { height: 1, backgroundColor: C.line },
+    grow: { flex: 1 },
+    section: { gap: 14 },
+    error: { color: C.danger, fontSize: 14, lineHeight: 21 },
+  });
+const styles = { dark: makeStyles(dark), light: makeStyles(light) };
+export function useUI() {
+  const { colors, mode } = useTheme();
+  return { C: colors, s: styles[mode] };
+}
 export function Button({
   label,
   onPress,
@@ -92,10 +90,12 @@ export function Button({
   loading?: boolean;
   style?: StyleProp<ViewStyle>;
 }) {
+  const { C } = useUI();
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
+      accessibilityState={{ disabled: disabled || loading, busy: loading }}
       disabled={disabled || loading}
       onPress={onPress}
       style={({ pressed }) => [
@@ -112,7 +112,7 @@ export function Button({
             variant === 'primary'
               ? C.red
               : variant === 'danger'
-                ? '#402333'
+                ? C.dangerBg
                 : variant === 'secondary'
                   ? C.panel2
                   : 'transparent',
@@ -124,13 +124,16 @@ export function Button({
       ]}
     >
       {loading ? (
-        <ActivityIndicator color="white" />
+        <ActivityIndicator color={variant === 'primary' ? C.onPrimary : C.text} />
       ) : Icon ? (
-        <Icon size={18} color={variant === 'danger' ? '#FDA4AF' : C.text} />
+        <Icon
+          size={18}
+          color={variant === 'primary' ? C.onPrimary : variant === 'danger' ? C.danger : C.text}
+        />
       ) : null}
       <Text
         style={{
-          color: variant === 'danger' ? '#FDA4AF' : C.text,
+          color: variant === 'primary' ? C.onPrimary : variant === 'danger' ? C.danger : C.text,
           fontSize: 14,
           fontWeight: '700',
         }}
@@ -141,6 +144,7 @@ export function Button({
   );
 }
 export function Field({ label, ...props }: TextInputProps & { label: string }) {
+  const { C, s } = useUI();
   return (
     <View style={{ gap: 7 }}>
       <Text style={s.label}>{label}</Text>
@@ -157,17 +161,20 @@ export function Chip({
   label,
   selected,
   onPress,
-  color = C.text,
+  color: suppliedColor,
 }: {
   label: string;
   selected?: boolean;
   onPress?: () => void;
   color?: string;
 }) {
+  const { C } = useUI();
+  const color = suppliedColor || C.text;
   return (
     <Pressable
       accessibilityRole={onPress ? 'button' : 'text'}
       accessibilityState={{ selected }}
+      aria-pressed={onPress ? selected : undefined}
       onPress={onPress}
       style={{
         minHeight: onPress ? 44 : 28,
@@ -200,13 +207,14 @@ export function Sheet({
   onClose: () => void;
   children: React.ReactNode;
 }) {
+  const { C, s } = useUI();
   return (
-    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+    <Modal visible={visible} transparent animationType="none" onRequestClose={onClose}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={{
           flex: 1,
-          backgroundColor: '#000000AA',
+          backgroundColor: C.overlay,
           justifyContent: 'center',
           alignItems: 'center',
           padding: 16,
@@ -225,6 +233,7 @@ export function Sheet({
         >
           <View style={[s.row, { padding: 20, borderBottomWidth: 1, borderColor: C.line }]}>
             <Text style={[s.h2, s.grow]}>{title}</Text>
+            <ThemeToggle />
             <Button label="Cerrar" icon={X} variant="ghost" onPress={onClose} />
           </View>
           <ScrollView
@@ -243,16 +252,19 @@ export function Select({
   value,
   options,
   onChange,
+  compact = false,
 }: {
   label: string;
+  compact?: boolean;
   value: string;
   options: { label: string; value: string }[];
   onChange: (v: string) => void;
 }) {
+  const { C, s } = useUI();
   const [open, setOpen] = useState(false);
   return (
     <View style={{ gap: 7 }}>
-      <Text style={s.label}>{label}</Text>
+      {!compact ? <Text style={s.label}>{label}</Text> : null}
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={label}
@@ -287,7 +299,8 @@ export function Notice({
   text: string;
   tone?: 'info' | 'error' | 'success';
 }) {
-  const color = tone === 'error' ? '#FDA4AF' : tone === 'success' ? C.green : C.muted;
+  const { C, s } = useUI();
+  const color = tone === 'error' ? C.danger : tone === 'success' ? C.green : C.muted;
   return (
     <View
       accessibilityRole="alert"
@@ -304,6 +317,7 @@ export function Notice({
   );
 }
 export function Empty({ title, detail }: { title: string; detail: string }) {
+  const { C, s } = useUI();
   return (
     <View style={[s.card, { padding: 34, alignItems: 'center' }]}>
       <Package size={36} color={C.subtle} />
@@ -327,15 +341,18 @@ export function Screen({
   back?: boolean;
   scroll?: boolean;
 }) {
+  const { C, s } = useUI();
   const { user, logout } = useAuth(),
     inv = useInventory(),
     { width } = useWindowDimensions();
-  const [account, setAccount] = useState(false);
+  const [account, setAccount] = useState(false),
+    [recovery, setRecovery] = useState<string | null>(null),
+    [localError, setLocalError] = useState('');
   const body = (
     <View
       style={{
-        padding: width > 800 ? 32 : 18,
-        gap: 24,
+        padding: width > 800 ? 28 : 12,
+        gap: width > 800 ? 20 : 12,
         width: '100%',
         maxWidth: 1500,
         alignSelf: 'center',
@@ -362,28 +379,33 @@ export function Screen({
                   : `${inv.queue.length} pendientes`}
           </Text>
         </View>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Abrir perfil"
-          onPress={() => setAccount(true)}
-          style={[s.row, { minHeight: 44 }]}
-        >
-          <Text style={[s.muted, { display: width < 450 ? 'none' : 'flex' }]}>{user?.nombre}</Text>
-          <View
-            style={{
-              backgroundColor: C.panel2,
-              width: 36,
-              height: 36,
-              borderRadius: 12,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
+        <View style={s.row}>
+          <ThemeToggle />
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Abrir perfil"
+            onPress={() => setAccount(true)}
+            style={[s.row, { minHeight: 44 }]}
           >
-            <Text style={{ color: C.text, fontWeight: '700' }}>
-              {user?.role === 'ADMIN' ? 'AD' : 'OP'}
+            <Text style={[s.muted, { display: width < 450 ? 'none' : 'flex' }]}>
+              {user?.nombre}
             </Text>
-          </View>
-        </Pressable>
+            <View
+              style={{
+                backgroundColor: C.panel2,
+                width: 36,
+                height: 36,
+                borderRadius: 12,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text style={{ color: C.text, fontWeight: '700' }}>
+                {user?.role === 'ADMIN' ? 'AD' : 'OP'}
+              </Text>
+            </View>
+          </Pressable>
+        </View>
       </View>
       <View style={[s.row, { justifyContent: 'space-between', flexWrap: 'wrap' }]}>
         <View style={{ gap: 7, flexShrink: 1 }}>
@@ -403,7 +425,7 @@ export function Screen({
         </View>
         {action}
       </View>
-      {inv.error || inv.queue.some(q => q.status === 'CONFLICT') ? (
+      {inv.error || inv.queue.some((q) => q.status === 'CONFLICT') ? (
         <View style={{ gap: 8 }}>
           <Notice text={inv.error || 'Conflicto pendiente de revisión.'} tone="error" />
           <Button
@@ -413,6 +435,39 @@ export function Screen({
             loading={inv.syncing}
             onPress={() => void inv.retry()}
           />
+          {user?.role === 'ADMIN' ? (
+            <>
+              <Button
+                label="Guardar copia"
+                variant="secondary"
+                onPress={() => void inv.backup().catch((e) => setLocalError(userError(e)))}
+              />
+              {DATA_MODE === 'demo' ? (
+                <Button
+                  label="Elegir recuperación"
+                  variant="secondary"
+                  onPress={() =>
+                    void pickBackup()
+                      .then(setRecovery)
+                      .catch((e) => setLocalError(userError(e)))
+                  }
+                />
+              ) : null}
+              {recovery !== null ? (
+                <ConfirmButton
+                  label="Restaurar datos"
+                  title="Recuperar desde copia"
+                  description="Se conservará el original antes de reemplazar los datos demo por la copia validada."
+                  onConfirm={async () => {
+                    await inv.restore(recovery);
+                    setRecovery(null);
+                    setLocalError('');
+                  }}
+                />
+              ) : null}
+            </>
+          ) : null}
+          {localError ? <Notice text={localError} tone="error" /> : null}
           {inv.queue.some((q) => q.status === 'CONFLICT') ? (
             <ConfirmButton
               label="Descartar rechazo"
@@ -427,7 +482,10 @@ export function Screen({
     </View>
   );
   return (
-    <SafeAreaView edges={['top', 'left', 'right']} style={{ flex: 1, backgroundColor: C.bg }}>
+    <SafeAreaView
+      edges={['top', 'bottom', 'left', 'right']}
+      style={{ flex: 1, backgroundColor: C.bg }}
+    >
       {scroll ? (
         <ScrollView
           keyboardShouldPersistTaps="handled"
@@ -487,6 +545,7 @@ export function ConfirmButton({
   onConfirm: () => Promise<void>;
   variant?: 'danger' | 'secondary' | 'primary';
 }) {
+  const { s } = useUI();
   const [open, setOpen] = useState(false),
     [busy, setBusy] = useState(false),
     [error, setError] = useState('');
@@ -505,7 +564,7 @@ export function ConfirmButton({
               await onConfirm();
               setOpen(false);
             } catch (e) {
-              setError(e instanceof Error ? e.message : 'No se pudo completar.');
+              setError(userError(e));
             } finally {
               setBusy(false);
             }
@@ -516,6 +575,7 @@ export function ConfirmButton({
   );
 }
 export function Pending() {
+  const { C, s } = useUI();
   return (
     <View style={[s.row, { gap: 5 }]}>
       <CloudOff size={13} color={C.subtle} />

@@ -15,14 +15,17 @@ async function main() {
   if (!authUser.emailVerified) throw new Error('El correo debe estar verificado.');
   const db = getFirestore();
   await db.runTransaction(async (tx) => {
-    const state = await tx.get(db.doc('system/state'));
+    const [state, prior] = await Promise.all([
+      tx.get(db.doc('system/state')),
+      tx.get(db.doc(`users/${uid}`)),
+    ]);
     if (!state.exists) tx.create(db.doc('system/state'), emptyState());
     tx.set(db.doc(`users/${uid}`), {
       uid,
       nombre,
       email: authUser.email || '',
       role,
-      createdAt: new Date().toISOString(),
+      createdAt: prior.get('createdAt') || new Date().toISOString(),
     });
   });
   console.log('Perfil guardado. El inventario existente se conserva.');

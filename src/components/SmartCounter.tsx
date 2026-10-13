@@ -1,7 +1,8 @@
+import { userError } from '../services/errors';
 import React, { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { Minus, Plus } from 'lucide-react-native';
-import { Button, C, Field, Notice, Sheet, s } from './ui';
+import { Button, Field, Notice, Sheet, useUI } from './ui';
 import { quantity, MAX_QUANTITY } from '../domain/rules';
 import { haptic } from '../hooks/useHaptics';
 export function SmartCounter({
@@ -15,6 +16,7 @@ export function SmartCounter({
   label?: string;
   max?: number;
 }) {
+  const { C, s } = useUI();
   const [open, setOpen] = useState(false),
     [draft, setDraft] = useState(''),
     [error, setError] = useState('');
@@ -95,7 +97,7 @@ export function SmartCounter({
               set(n);
               setOpen(false);
             } catch (e) {
-              setError((e as Error).message);
+              setError(userError(e));
             }
           }}
         />

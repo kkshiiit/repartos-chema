@@ -1,14 +1,16 @@
+import { userError } from '../src/services/errors';
 import React, { useState } from 'react';
 import { View, Text, Platform } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Download, FileText } from 'lucide-react-native';
 import { useInventory } from '../src/context/InventoryContext';
 import { useAuth } from '../src/context/AuthContext';
-import { Button, Field, Notice, Screen, Select, s } from '../src/components/ui';
+import { Button, Field, Notice, Screen, Select, useUI } from '../src/components/ui';
 import { exportDocument } from '../src/services/exportService';
 import { DATA_MODE } from '../src/services/firebase';
 import { obraStatus, validDate } from '../src/domain/rules';
 export default function Export() {
+  const { s } = useUI();
   const { obraId } = useLocalSearchParams<{ obraId?: string }>(),
     { state } = useInventory(),
     { user } = useAuth();
@@ -39,7 +41,7 @@ export default function Export() {
             );
       setSuccess(await exportDocument(kind, obras, user!, { from, to, status }));
     } catch (e) {
-      setError((e as Error).message);
+      setError(userError(e));
     } finally {
       setBusy(false);
     }

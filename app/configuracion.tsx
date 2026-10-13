@@ -1,30 +1,62 @@
+import { userError } from '../src/services/errors';
+import { useTheme } from '../src/context/ThemeContext';
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { router } from 'expo-router';
 import { useAuth } from '../src/context/AuthContext';
 import { useInventory } from '../src/context/InventoryContext';
 import { DATA_MODE } from '../src/services/firebase';
-import { Button, Field, Notice, Screen, s } from '../src/components/ui';
-import { useAds, adProvider, adTestMode } from '../src/context/AdsContext';
+import { Button, Chip, ConfirmButton, Field, Notice, Screen, useUI } from '../src/components/ui';
+import { pickBackup } from '../src/services/files';
 import { enableNotifications } from '../src/services/notifications';
 export default function Settings() {
-  const ads = useAds();
+  const { s } = useUI();
+  const theme = useTheme();
   const { user } = useAuth(),
-    { state, dispatch } = useInventory();
+    { state, dispatch, backup, restore } = useInventory();
   const [names, setNames] = useState<string | null>(null),
+    [restoreRaw, setRestoreRaw] = useState<string | null>(null),
+    [busy, setBusy] = useState(false),
     [error, setError] = useState(''),
     [success, setSuccess] = useState('');
   const run = async (f: () => Promise<unknown>) => {
+    setBusy(true);
     try {
       await f();
       setError('');
       setSuccess('Configuración guardada.');
     } catch (e) {
-      setError((e as Error).message);
+      setError(userError(e));
+    } finally {
+      setBusy(false);
     }
   };
   return (
     <Screen title="Configuración" back>
+      <View style={[s.card, { maxWidth: 700 }]}>
+        <Text style={s.h2}>Apariencia</Text>
+        <View style={s.wrap}>
+          {(
+            [
+              { value: 'light', label: 'Claro' },
+              { value: 'dark', label: 'Oscuro' },
+              { value: 'system', label: 'Seguir sistema' },
+            ] as const
+          ).map((option) => (
+            <Chip
+              key={option.value}
+              label={option.label}
+              selected={theme.preference === option.value}
+              onPress={() => theme.setPreference(option.value)}
+            />
+          ))}
+        </View>
+        <Text style={s.muted}>
+          El sol o la luna cambian el tema al instante. Tu elección se guarda solo en este
+          dispositivo.
+        </Text>
+        {theme.error ? <Notice text={theme.error} tone="error" /> : null}
+      </View>
       <View style={[s.card, { maxWidth: 700 }]}>
         <Text style={s.h2}>Entorno de trabajo</Text>
         <Notice
@@ -48,6 +80,7 @@ export default function Settings() {
               style={{ minHeight: 140 }}
             />
             <Button
+              loading={busy}
               label="Guardar responsables"
               onPress={() =>
                 void run(() =>
@@ -67,44 +100,44 @@ export default function Settings() {
               onPress={() => router.push('/combos')}
             />
             <Button
+              loading={busy}
               label="Activar avisos"
               variant="secondary"
               onPress={() => void run(enableNotifications)}
             />
           </>
         ) : null}
-        <View style={s.divider} />
-        <Text style={s.h2}>Publicidad discreta</Text>
-        <Text style={s.muted}>
-          Un banner al final de Obras y Galpón. Sin anuncios en entregas, retiros, fotos o
-          historial. No enviamos nombres de clientes, direcciones de obra ni coordenadas GPS al SDK
-          publicitario.
-        </Text>
-        <Notice
-          text={
-            adProvider === 'none'
-              ? 'Pendiente de configurar una cuenta AdMob o un patrocinador. No se generan ingresos.'
-              : adProvider === 'admob' && adTestMode
-                ? 'AdMob en modo de prueba. Los anuncios de prueba no generan ingresos.'
-                : ads.enabled
-                  ? 'Publicidad habilitada en este dispositivo.'
-                  : 'Publicidad desactivada en este dispositivo.'
-          }
-        />
-        {ads.error ? <Notice text={ads.error} tone="error" /> : null}
         {user?.role === 'ADMIN' ? (
-          <Button
-            label={ads.enabled ? 'Desactivar publicidad' : 'Activar publicidad'}
-            variant="secondary"
-            onPress={() => void run(() => ads.setEnabled(!ads.enabled))}
-          />
-        ) : null}
-        {adProvider === 'admob' ? (
-          <Button
-            label="Privacidad publicitaria"
-            variant="ghost"
-            onPress={() => void run(ads.privacy)}
-          />
+          <View style={s.section}>
+            <Text style={s.h2}>Copia de datos</Text>
+            <Notice text="Guarda la copia en un lugar privado. Contiene obras, historial y fotos locales; no incluye contraseñas. Los archivos Excel y Word no reemplazan esta copia." />
+            <Button
+              label="Descargar copia"
+              variant="secondary"
+              loading={busy}
+              onPress={() => void run(backup)}
+            />
+            {DATA_MODE === 'demo' ? (
+              <Button
+                label="Elegir copia"
+                variant="secondary"
+                loading={busy}
+                onPress={() => void run(async () => setRestoreRaw(await pickBackup()))}
+              />
+            ) : null}
+            {restoreRaw !== null ? (
+              <ConfirmButton
+                label="Restaurar copia"
+                title="Reemplazar datos demo"
+                description="Se validará la copia y se conservará el inventario anterior en este dispositivo antes de reemplazarlo. Esta acción cambia todas las obras de la demo."
+                onConfirm={async () => {
+                  await restore(restoreRaw);
+                  setRestoreRaw(null);
+                  setSuccess('Copia restaurada.');
+                }}
+              />
+            ) : null}
+          </View>
         ) : null}
         {error ? <Notice text={error} tone="error" /> : null}
         {success ? <Notice text={success} tone="success" /> : null}

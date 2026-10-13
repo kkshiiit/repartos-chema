@@ -1,13 +1,13 @@
 import { Stack, router, useSegments } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
+import { ThemeProvider } from '../src/context/ThemeContext';
 import React, { useEffect } from 'react';
 import { View, ActivityIndicator, Text } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider, useAuth } from '../src/context/AuthContext';
 import { InventoryProvider } from '../src/context/InventoryContext';
-import { AdsProvider } from '../src/context/AdsContext';
-import { C } from '../src/components/ui';
+import { useUI } from '../src/components/ui';
 function Navigation() {
+  const { C } = useUI();
   const { user, loading } = useAuth();
   const segments = useSegments();
   const authRoute = segments[0] === '(auth)';
@@ -26,19 +26,18 @@ function Navigation() {
     );
   return (
     <InventoryProvider key={user?.uid || 'anonymous'}>
-      <AdsProvider>
-        <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: C.bg } }} />
-      </AdsProvider>
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: C.bg } }} />
     </InventoryProvider>
   );
 }
 export default function Root() {
   return (
     <SafeAreaProvider>
-      <AuthProvider>
-        <StatusBar style="light" />
-        <Navigation />
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <Navigation />
+        </AuthProvider>
+      </ThemeProvider>
     </SafeAreaProvider>
   );
 }

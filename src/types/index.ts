@@ -100,7 +100,7 @@ export interface NotificationEvent {
   id: string;
   obraId: string;
   message: string;
-  status: 'PENDING' | 'SENT' | 'FAILED';
+  status: 'PENDING' | 'SENT' | 'FAILED' | 'EXHAUSTED';
   error?: string;
 }
 export interface DomainSnapshot {
@@ -174,8 +174,22 @@ export type Action =
       motivo: string;
       procedencia: string;
     }
-  | { type: 'MOVE_STOCK'; materialId: string; origen: StockBucket; destino: StockBucket; cantidad: number; motivo: string }
-  | { type: 'CORRECT_INCIDENT'; obraId: string; incidentId: string; cantidad: number; destino: 'obra' | 'taller' | 'perdido'; motivo: string }
+  | {
+      type: 'MOVE_STOCK';
+      materialId: string;
+      origen: StockBucket;
+      destino: StockBucket;
+      cantidad: number;
+      motivo: string;
+    }
+  | {
+      type: 'CORRECT_INCIDENT';
+      obraId: string;
+      incidentId: string;
+      cantidad: number;
+      destino: 'obra' | 'taller' | 'perdido';
+      motivo: string;
+    }
   | { type: 'SAVE_COMBO'; combo: ComboPreset; expectedVersion?: number }
   | { type: 'DELETE_COMBO'; comboId: string }
   | { type: 'RESPONSABLES'; nombres: string[] }
