@@ -1,4 +1,5 @@
 import type { AppState, Envelope, Operation } from '../types';
+import { parseEnvelope } from './validation';
 import { applyOperation, clone } from '../domain/engine';
 export interface KeyValueStorage {
   getItem(key: string): Promise<string | null>;
@@ -21,11 +22,11 @@ export class Repository {
   private serial<T>(f: () => Promise<T>): Promise<T> {
     const run = async () => {
       const fresh = await this.storage.getItem(this.key);
-      if (fresh) {
-        const parsed = JSON.parse(fresh) as Envelope;
-        if (parsed.schema !== 1 || !parsed.state || !Array.isArray(parsed.queue))
-          throw new Error('Datos locales incompatibles. Conserva una copia.');
+      if (fresh !== null) {
+        const parsed = parseEnvelope(fresh);
         this.envelope = parsed;
+      } else if (this.envelope) {
+        throw new Error('El almacenamiento local desapareció. Conserva esta sesión y restaura una copia; no se reiniciaron datos.');
       }
       return f();
     };
@@ -49,17 +50,11 @@ export class Repository {
     this.listeners.forEach((l) => l(clone(e)));
     return clone(e);
   }
+  // Incluye incluso datos inválidos para que soporte pueda recuperarlos sin sobreescribir.
+  async exportRaw() { return this.storage.getItem(this.key); }
   load() {
     return this.serial(async () => {
       if (this.envelope) return clone(this.envelope);
-      const raw = await this.storage.getItem(this.key);
-      if (raw) {
-        const e = JSON.parse(raw) as Envelope;
-        if (e.schema !== 1 || !e.state || !Array.isArray(e.queue))
-          throw new Error('Datos locales incompatibles. Conserva la copia antes de restablecer.');
-        this.envelope = e;
-        return clone(e);
-      }
       const state = this.initial();
       return this.persist({ schema: 1, confirmed: state, state, queue: [] });
     });
@@ -82,7 +77,8 @@ export class Repository {
     return this.serial(async () => {
       if (!this.remote || !this.envelope) return this.envelope;
       let e = clone(this.envelope);
-      if (e.queue.some((q) => q.status === 'CONFLICT')) return e;
+      const conflict = e.queue.find((q) => q.status === 'CONFLICT');
+      if (conflict) throw new Error(conflict.error || 'Resuelve el conflicto pendiente.');
       while (e.queue.length) {
         const item = e.queue[0]!;
         if (item.status === 'CONFLICT') {
@@ -95,7 +91,7 @@ export class Repository {
         } catch (error) {
           const code = (error as { code?: string }).code || '';
           if (
-            /failed-precondition|permission-denied|invalid-argument|not-found|resource-exhausted/.test(
+            /failed-precondition|permission-denied|invalid-argument|not-found|resource-exhausted|storage\/(unauthorized|object-not-found|invalid-argument)/.test(
               code,
             )
           ) {

@@ -12,6 +12,7 @@ export interface MaterialItem {
   nombre: string;
   categoria: CategoriaMaterial;
   medida?: string;
+  version?: number;
   cantidadGalpon: number;
   cantidadEnObra: number;
   cantidadEnTaller: number;
@@ -55,7 +56,11 @@ export interface ObraCard {
   fotos?: PhotoRef[];
   entregadoPor?: string[];
   retiradoPor?: string[];
+  /** Fecha planificada; nunca se reemplaza al confirmar la entrega. */
   fechaEntrega: string;
+  fechaEntregaEfectiva?: string;
+  observaciones?: string;
+  version?: number;
   fechaRetiroEstimada: string;
   fechaRetiroEfectiva?: string;
   estadoProceso: EstadoProceso;
@@ -64,6 +69,7 @@ export interface ObraCard {
   updatedAt: string;
 }
 export interface Movement {
+  materialNombre?: string;
   materialId: string;
   cantidad: number;
   origen: string;
@@ -77,6 +83,7 @@ export interface ActivityLog {
   usuarioNombre: string;
   accion: string;
   obraId?: string;
+  obraNombre?: string;
   payloadInverso?: { snapshot: DomainSnapshot; expectedRevision: number };
   movimientos: Movement[];
   undoneBy?: string;
@@ -85,6 +92,7 @@ export interface ActivityLog {
 }
 export interface ComboPreset {
   id: string;
+  version?: number;
   nombreCombo: string;
   items: { materialId: string; cantidad: number }[];
 }
@@ -117,6 +125,7 @@ export type ObraInput = Pick<
   | 'fechaEntrega'
   | 'fechaRetiroEstimada'
   | 'coordenadas'
+  | 'observaciones'
 >;
 export type IncidentInput = {
   materialId: string;
@@ -128,11 +137,12 @@ export type IncidentInput = {
 export type StockBucket = 'cantidadGalpon' | 'cantidadEnTaller' | 'cantidadPerdido';
 export type Action =
   | { type: 'CREATE_OBRA'; obra: ObraInput }
-  | { type: 'UPDATE_OBRA'; obra: ObraInput }
+  | { type: 'UPDATE_OBRA'; obra: ObraInput; expectedVersion?: number }
   | { type: 'DELETE_OBRA'; obraId: string }
-  | { type: 'SET_LOAD'; obraId: string; items: MaterialCargado[] }
+  | { type: 'SET_LOAD'; obraId: string; items: MaterialCargado[]; expectedVersion?: number }
   | {
       type: 'DELIVER';
+      fechaRetiroEstimada?: string;
       obraId: string;
       responsables: string[];
       origins?: { materialId: string; obraId: string; cantidad: number }[];
@@ -153,6 +163,7 @@ export type Action =
     }
   | {
       type: 'SAVE_MATERIAL';
+      expectedVersion?: number;
       material: Pick<MaterialItem, 'id' | 'nombre' | 'medida' | 'categoria'>;
     }
   | {
@@ -163,7 +174,9 @@ export type Action =
       motivo: string;
       procedencia: string;
     }
-  | { type: 'SAVE_COMBO'; combo: ComboPreset }
+  | { type: 'MOVE_STOCK'; materialId: string; origen: StockBucket; destino: StockBucket; cantidad: number; motivo: string }
+  | { type: 'CORRECT_INCIDENT'; obraId: string; incidentId: string; cantidad: number; destino: 'obra' | 'taller' | 'perdido'; motivo: string }
+  | { type: 'SAVE_COMBO'; combo: ComboPreset; expectedVersion?: number }
   | { type: 'DELETE_COMBO'; comboId: string }
   | { type: 'RESPONSABLES'; nombres: string[] }
   | { type: 'PHOTO'; obraId: string; photo: PhotoRef }

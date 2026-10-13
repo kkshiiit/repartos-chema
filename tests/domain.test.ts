@@ -302,3 +302,40 @@ it('Retiradas agrupa retiros y reingresos sin incluir alquileres activos', () =>
   expect(matchesStatusFilter({ ...o, estadoProceso: 'REINGRESADO' }, 'RETIRADO')).toBe(true);
   expect(matchesStatusFilter(o, 'RETIRADO')).toBe(false);
 });
+
+describe('Regresiones de integridad de la auditoría',()=>{
+  it('taller externo vuelve a galpón sin duplicarse ni consumir incidentes',()=>{
+    let s=apply(seed(now),{type:'ADJUST',materialId:'marco130',bucket:'cantidadEnTaller',delta:5,motivo:'Recepción externa',procedencia:'Lote externo'});
+    const total=stockTotal(s),operation=op({type:'MOVE_STOCK',materialId:'marco130',origen:'cantidadEnTaller',destino:'cantidadGalpon',cantidad:5,motivo:'Reparación terminada'});
+    s=applyOperation(s,operation,now);expect(stockTotal(s)).toBe(total);expect(s.materiales[0]!.cantidadEnTaller).toBe(0);expect(applyOperation(s,operation,now)).toBe(s);
+    expect(()=>applyOperation(s,{...operation,id:'other',actor:operator},now)).toThrow('administración');
+  });
+  it('no consume piezas asociadas a faltantes desde el movimiento libre',()=>{
+    const s=apply(seed(now),{type:'REPORT',obraId:'obra_1',incidents:[{materialId:'marco130',cantidad:2,tipo:'DANADO'}]});
+    expect(()=>apply(s,{type:'MOVE_STOCK',materialId:'marco130',origen:'cantidadEnTaller',destino:'cantidadGalpon',cantidad:1,motivo:'Incorrecto'})).toThrow('vinculados');
+  });
+  it('corrige pérdida registrada por error devolviendo al saldo de obra',()=>{
+    let s=apply(seed(now),{type:'REPORT',obraId:'obra_1',incidents:[{materialId:'marco130',cantidad:2,tipo:'PERDIDO'}]});
+    const total=stockTotal(s);s=apply(s,{type:'CORRECT_INCIDENT',obraId:'obra_1',incidentId:s.obras[0]!.faltantesRegistrados![0]!.id,cantidad:2,destino:'obra',motivo:'Conteo verificado: sigue en obra'});
+    expect(stockTotal(s)).toBe(total);expect(s.obras[0]!.saldosEnObra.marco130).toBe(16);expect(s.materiales[0]!.cantidadPerdido).toBe(0);
+  });
+  it('medidas incompatibles no se cargan ni se triangulan como equivalentes',()=>{
+    const s=seed(now),item=s.obras[4]!.materialesCargados[0]!;
+    expect(()=>apply(s,{type:'SET_LOAD',obraId:'obra_5',items:[{...item,medida:'70cm'}]})).toThrow('medida');
+    s.obras[0]!.materialesCargados[0]!.medida='70cm';
+    expect(()=>apply(s,{type:'DELIVER',obraId:'obra_5',responsables:['Fabián'],origins:[{materialId:'marco130',obraId:'obra_1',cantidad:1}],motivo:'Traslado'})).toThrow('medida');
+  });
+  it('entrega tardía conserva planificación y exige confirmar retiro coherente',()=>{
+    const s=seed(now);s.obras[4]!.fechaEntrega='2026-09-01';s.obras[4]!.fechaRetiroEstimada='2026-09-02';
+    expect(()=>apply(s,{type:'DELIVER',obraId:'obra_5',responsables:['Fabián']})).toThrow('fecha de retiro');
+    const after=apply(s,{type:'DELIVER',obraId:'obra_5',responsables:['Fabián'],fechaRetiroEstimada:'2026-10-12'});
+    expect(after.obras[4]!.fechaEntrega).toBe('2026-09-01');expect(after.obras[4]!.fechaEntregaEfectiva).toBe('2026-10-10');
+  });
+  it('edición concurrente no sobreescribe ubicación ni metadatos',()=>{
+    const s=seed(now),o=s.obras[0]!;
+    const form={id:o.id,clienteNombre:'Nuevo nombre',clienteTelefono:o.clienteTelefono,direccion:o.direccion,localidadBarrio:o.localidadBarrio,fechaEntrega:o.fechaEntrega,fechaRetiroEstimada:o.fechaRetiroEstimada};
+    const updated=apply(s,{type:'LOCATION',obraId:o.id,coordenadas:{lat:-34,lng:-58}});
+    expect(()=>apply(updated,{type:'UPDATE_OBRA',obra:form,expectedVersion:0})).toThrow('cambió');
+    expect(apply(updated,{type:'UPDATE_OBRA',obra:form,expectedVersion:1}).obras[0]!.coordenadas).toEqual({lat:-34,lng:-58});
+  });
+});

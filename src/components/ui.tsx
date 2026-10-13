@@ -403,13 +403,14 @@ export function Screen({
         </View>
         {action}
       </View>
-      {inv.error ? (
+      {inv.error || inv.queue.some(q => q.status === 'CONFLICT') ? (
         <View style={{ gap: 8 }}>
-          <Notice text={inv.error} tone="error" />
+          <Notice text={inv.error || 'Conflicto pendiente de revisión.'} tone="error" />
           <Button
             label="Reintentar"
             icon={RefreshCw}
             variant="secondary"
+            loading={inv.syncing}
             onPress={() => void inv.retry()}
           />
           {inv.queue.some((q) => q.status === 'CONFLICT') ? (

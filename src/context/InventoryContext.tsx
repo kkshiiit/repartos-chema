@@ -42,15 +42,18 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
   const retry = useCallback(async () => {
     setSyncing(true);
     try {
-      await repo.sync();
+      const loaded = await repo.load();
+      setEnv(loaded);
+      if (user && DATA_MODE === 'firebase') await repo.sync();
       setError('');
     } catch (e) {
       setError(e instanceof Error ? e.message : 'No se pudo sincronizar.');
     } finally {
       setSyncing(false);
     }
-  }, [repo]);
+  }, [repo, user]);
   useEffect(() => {
+    if (!user) return;
     let active = true;
     const off = repo.subscribe((e) => {
       if (active) setEnv(e);
@@ -69,7 +72,7 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
       active = false;
       off();
     };
-  }, [repo, retry]);
+  }, [repo, retry, user]);
   useEffect(
     () =>
       NetInfo.addEventListener((s) =>
@@ -79,9 +82,11 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
   );
   const ready = !!env;
   useEffect(() => {
-    if (online && ready && DATA_MODE === 'firebase') {
+    if (user && online && ready && DATA_MODE === 'firebase') {
       void Promise.resolve().then(retry);
-      const timer = setInterval(() => void retry(), 30000);
+      const timer = setInterval(() => {
+        if (NativeState.currentState === 'active' && (Platform.OS !== 'web' || document.visibilityState === 'visible')) void retry();
+      }, 30000);
       const sub = NativeState.addEventListener('change', (s) => {
         if (s === 'active') void retry();
       });
@@ -90,7 +95,7 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
         sub.remove();
       };
     }
-  }, [online, ready, retry]); // Cola serial; también consulta cambios de otros usuarios al volver al frente.
+  }, [online, ready, retry, user]); // Cola serial; también consulta cambios de otros usuarios al volver al frente.
   useEffect(() => {
     if (Platform.OS !== 'web') return;
     const refresh = () => {
@@ -112,7 +117,7 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
   const value: Value = {
     state: env?.state || emptyState(),
     ready: !!env,
-    error,
+    error: env?.queue.find(q => q.status === 'CONFLICT')?.error || error,
     online,
     syncing,
     queue: env?.queue || [],

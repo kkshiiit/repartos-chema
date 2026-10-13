@@ -5,10 +5,11 @@ import { useInventory } from '../context/InventoryContext';
 import { mergeLoads } from '../domain/engine';
 import { Button, Chip, Field, Notice, Select, s } from './ui';
 import { SmartCounter } from './SmartCounter';
-import { ScaffoldSelector } from './ScaffoldSelector';
+
 export function LoadEditor({ obra, onDone }: { obra: ObraCard; onDone: () => void }) {
   const { state, dispatch } = useInventory();
   const [items, setItems] = useState<MaterialCargado[]>(obra.materialesCargados),
+    [baseVersion] = useState(obra.version || 0),
     [selected, setSelected] = useState(state.materiales[0]?.id || ''),
     [error, setError] = useState(''),
     [busy, setBusy] = useState(false),
@@ -31,6 +32,7 @@ export function LoadEditor({ obra, onDone }: { obra: ObraCard; onDone: () => voi
         label="Agregar material"
         variant="secondary"
         onPress={() => {
+          try {
           const m = state.materiales.find((m) => m.id === selected);
           if (m)
             setItems(
@@ -38,6 +40,8 @@ export function LoadEditor({ obra, onDone }: { obra: ObraCard; onDone: () => voi
                 { materialId: m.id, nombre: m.nombre, medida: m.medida, cantidad: 1 },
               ]),
             );
+          setError('');
+          } catch(e) { setError((e as Error).message); }
         }}
       />
       <Select
@@ -81,10 +85,7 @@ export function LoadEditor({ obra, onDone }: { obra: ObraCard; onDone: () => voi
                 text={`⚠️ Stock bajo: Pedidos ${i.cantidad} | En Galpón ${m.cantidadGalpon}. Puedes guardar la carga. La entrega requiere procedencia autorizada.`}
               />
             ) : null}
-            <ScaffoldSelector
-              value={i.medida || ''}
-              onChange={(medida) => update(i.materialId, { medida })}
-            />
+            <Text style={s.muted}>Medida: {i.medida || 'Sin medida'}. Para otra medida, selecciona su material maestro.</Text>
             <View style={s.wrap}>
               {['Con orejas', 'Antideslizante', 'Reforzado', 'De madera'].map((apodo) => (
                 <Chip
@@ -126,6 +127,7 @@ export function LoadEditor({ obra, onDone }: { obra: ObraCard; onDone: () => voi
           try {
             await dispatch({
               type: 'SET_LOAD',
+              expectedVersion: baseVersion,
               obraId: obra.id,
               items: items.filter((i) => i.cantidad > 0),
             });

@@ -21,6 +21,7 @@ import {
   trafficLight,
   validDate,
   validId,
+  measureKey,
 } from './rules';
 export const clone = <T>(x: T): T => JSON.parse(JSON.stringify(x)) as T;
 export function snapshot(s: AppState): DomainSnapshot {
@@ -58,7 +59,7 @@ export function mergeLoads(
   for (const item of incoming) {
     const prior = map.get(item.materialId);
     if (prior) {
-      ensure(prior.medida === item.medida, 'La medida no coincide con la carga existente.');
+      ensure(measureKey(prior.medida) === measureKey(item.medida), 'La medida no coincide con la carga existente.');
       prior.cantidad = quantity(prior.cantidad + item.cantidad);
     } else map.set(item.materialId, clone(item));
   }
@@ -127,7 +128,7 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
   };
   const move = (id: string, n: number, from: string, to: string, reason: string) => {
     quantity(n, true);
-    movements.push({ materialId: id, cantidad: n, origen: from, destino: to, motivo: reason });
+    movements.push({ materialId: id, materialNombre: material(id).nombre, cantidad: n, origen: from, destino: to, motivo: reason });
   };
   const checkObra = (o: {
     id: string;
@@ -194,6 +195,10 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
         status: 'PENDING',
       });
   };
+  const unlinked = (id: string, bucket: 'cantidadGalpon' | 'cantidadEnTaller' | 'cantidadPerdido') => {
+    const reserved = bucket === 'cantidadGalpon' ? 0 : s.obras.reduce((sum,o) => sum + (o.faltantesRegistrados || []).filter(i => i.materialId === id && (i.tipo === 'DANADO' ? 'cantidadEnTaller' : 'cantidadPerdido') === bucket).reduce((n,i) => n + i.cantidad - i.recuperado,0),0);
+    return material(id)[bucket] - reserved;
+  };
   switch (a.type) {
     case 'CREATE_OBRA': {
       checkObra(a.obra);
@@ -215,6 +220,8 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
     case 'UPDATE_OBRA': {
       checkObra(a.obra);
       const o = getObra(a.obra.id);
+      ensure(a.expectedVersion === (o.version || 0), 'La obra cambió desde que abriste el formulario. Reabre y revisa los cambios.');
+      if (o.fechaEntregaEfectiva) ensure(a.obra.fechaRetiroEstimada >= o.fechaEntregaEfectiva, 'El retiro no puede preceder la entrega efectiva.');
       Object.assign(o, clone(a.obra));
       obraId = o.id;
       summary = 'Editó datos de obra';
@@ -238,6 +245,7 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
     case 'SET_LOAD': {
       const o = getObra(a.obraId);
       ensure(o.estadoProceso === 'PENDIENTE_ENTREGA', 'La carga solo se edita antes de entregar.');
+      if (a.expectedVersion !== undefined) ensure(a.expectedVersion === (o.version || 0), 'La carga cambió. Reabre el formulario.');
       ensure(a.items.length <= 100, 'Máximo 100 materiales.');
       ensure(
         new Set(a.items.map((i) => i.materialId)).size === a.items.length,
@@ -246,6 +254,7 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
       o.materialesCargados = a.items.map((i) => {
         const m = material(i.materialId);
         quantity(i.cantidad, true);
+        ensure(measureKey(i.medida) === measureKey(m.medida), 'La medida debe coincidir con el material maestro. Selecciona la variante correcta.');
         if (i.medida) required(i.medida, 'Medida', 30);
         if (i.apodo) required(i.apodo, 'Apodo', 80);
         return { ...clone(i), nombre: m.nombre };
@@ -258,6 +267,8 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
       ensure(o.estadoProceso === 'PENDIENTE_ENTREGA', 'La obra ya fue entregada o está cerrada.');
       ensure(o.materialesCargados.length, 'Agrega materiales a la carga.');
       const names = drivers(a.responsables);
+      if (a.fechaRetiroEstimada) o.fechaRetiroEstimada = validDate(a.fechaRetiroEstimada);
+      ensure(o.fechaRetiroEstimada >= businessDate(now), 'Revisa la fecha de retiro: precede la entrega efectiva de hoy.');
       const origins = a.origins || [];
       ensure(
         new Set(origins.map((x) => x.materialId)).size === origins.length,
@@ -269,6 +280,7 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
       );
       for (const i of o.materialesCargados) {
         const m = material(i.materialId);
+        ensure(measureKey(i.medida) === measureKey(m.medida), 'Medida incompatible con el stock maestro. Revisa la carga histórica.');
         const origin = origins.find((x) => x.materialId === i.materialId);
         let alternate = 0;
         if (origin) {
@@ -277,6 +289,7 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
           ensure(origin.obraId !== o.id, 'Selecciona otra obra de origen.');
           const from = getObra(origin.obraId);
           ensure(from.estadoProceso === 'ENTREGADO', 'Origen sin alquiler activo.');
+          ensure(measureKey(from.materialesCargados.find(x => x.materialId === m.id)?.medida) === measureKey(i.medida), 'La medida de origen no coincide con la carga.');
           ensure((from.saldosEnObra[m.id] || 0) >= alternate, 'Saldo insuficiente en origen.');
           required(a.motivo || '', 'Motivo');
           from.saldosEnObra[m.id]! -= alternate;
@@ -294,7 +307,7 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
       }
       o.estadoProceso = 'ENTREGADO';
       o.entregadoPor = names;
-      o.fechaEntrega = businessDate(now);
+      o.fechaEntregaEfectiva = businessDate(now);
       delete o.fechaRetiroEfectiva;
       summary = 'Confirmó la entrega';
       break;
@@ -363,6 +376,7 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
       o.entregadoPor = [];
       o.retiradoPor = [];
       delete o.fechaRetiroEfectiva;
+      delete o.fechaEntregaEfectiva;
       summary = 'Reactivó para nueva entrega';
       break;
     }
@@ -385,12 +399,14 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
       to.saldosEnObra[m.id] = (to.saldosEnObra[m.id] || 0) + a.cantidad;
       const source = from.materialesCargados.find((x) => x.materialId === m.id);
       ensure(source, 'Carga de origen no encontrada.');
+      ensure(measureKey(source.medida) === measureKey(m.medida), 'La medida histórica no coincide con el maestro. Revisa antes de transferir.');
       to.materialesCargados = mergeLoads(to.materialesCargados, [
         { ...source, cantidad: a.cantidad },
       ]);
       if (to.estadoProceso === 'PENDIENTE_ENTREGA') {
         to.estadoProceso = 'ENTREGADO';
-        to.fechaEntrega = businessDate(now);
+        ensure(to.fechaRetiroEstimada >= businessDate(now), 'Actualiza el retiro previsto de la obra destino antes de transferir.');
+        to.fechaEntregaEfectiva = businessDate(now);
       }
       to.entregadoPor = [...new Set([...(to.entregadoPor || []), ...names])];
       move(m.id, a.cantidad, `obra:${from.id}`, `obra:${to.id}`, a.motivo);
@@ -408,6 +424,9 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
       if (m.medida) required(m.medida, 'Medida', 30);
       const old = s.materiales.find((x) => x.id === m.id);
       if (old) {
+        ensure(a.expectedVersion === (old.version || 0), 'El material cambió. Reabre el formulario.');
+        if (measureKey(old.medida) !== measureKey(m.medida)) ensure(![old.cantidadGalpon, old.cantidadEnObra, old.cantidadEnTaller, old.cantidadPerdido].some(Boolean) && !s.obras.some(o => o.materialesCargados.some(i => i.materialId === old.id)), 'Cada medida necesita su propio material. Conserva esta variante y crea otra.');
+        old.version = (old.version || 0) + 1;
         old.nombre = m.nombre;
         old.categoria = m.categoria;
         old.medida = m.medida || '';
@@ -435,8 +454,7 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
       required(a.motivo, 'Motivo');
       required(a.procedencia, 'Procedencia');
       quantity(m[a.bucket] + a.delta);
-      if (a.bucket !== 'cantidadGalpon' && a.delta < 0)
-        ensure(false, 'Para recuperar taller/perdido usa el faltante de la obra.');
+      if (a.delta < 0) ensure(-a.delta <= unlinked(m.id, a.bucket), 'Hay faltantes vinculados a obras. Corrige o recupera desde la obra de origen.');
       m[a.bucket] += a.delta;
       move(
         m.id,
@@ -447,6 +465,33 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
       );
       summary = 'Ajustó inventario con procedencia';
       break;
+    }
+    case 'MOVE_STOCK': {
+      const m = material(a.materialId);
+      quantity(a.cantidad,true); required(a.motivo,'Motivo');
+      ensure(a.origen !== a.destino, 'Selecciona otro destino.');
+      ensure(unlinked(m.id,a.origen) >= a.cantidad, 'Saldo libre insuficiente. Los faltantes vinculados se recuperan desde su obra.');
+      m[a.origen] -= a.cantidad; m[a.destino] += a.cantidad;
+      move(m.id,a.cantidad,a.origen,a.destino,a.motivo);
+      summary = 'Movió existencias entre depósitos'; break;
+    }
+    case 'CORRECT_INCIDENT': {
+      const o = getObra(a.obraId), incident = o.faltantesRegistrados?.find(i=>i.id===a.incidentId);
+      ensure(incident,'Faltante no encontrado.'); quantity(a.cantidad,true); required(a.motivo,'Motivo');
+      ensure(a.cantidad <= incident.cantidad - incident.recuperado,'La cantidad supera lo pendiente.');
+      const m = material(incident.materialId), from = incident.tipo === 'DANADO' ? 'cantidadEnTaller' : 'cantidadPerdido';
+      ensure(m[from] >= a.cantidad,'Saldo insuficiente.');
+      if(a.destino==='obra') {
+        ensure(o.estadoProceso==='ENTREGADO','Solo se corrige al saldo de una obra activa.');
+        m.cantidadEnObra += a.cantidad; o.saldosEnObra[m.id] = (o.saldosEnObra[m.id] || 0) + a.cantidad;
+      } else {
+        const to = a.destino==='taller' ? 'cantidadEnTaller' : 'cantidadPerdido';
+        ensure(from!==to,'Selecciona otro destino.'); m[to] += a.cantidad;
+        (o.faltantesRegistrados ??= []).push({...incident,id:op.id+'_correction',cantidad:a.cantidad,recuperado:0,tipo:a.destino==='taller'?'DANADO':'PERDIDO',notas:a.motivo});
+      }
+      m[from]-=a.cantidad; incident.recuperado+=a.cantidad;
+      move(m.id,a.cantidad,from,a.destino==='obra'?`obra:${o.id}`:a.destino,a.motivo);
+      summary='Corrigió un faltante con motivo'; break;
     }
     case 'SAVE_COMBO': {
       const c = a.combo;
@@ -462,7 +507,10 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
         quantity(i.cantidad, true);
       }
       const index = s.combos.findIndex((x) => x.id === c.id);
-      if (index >= 0) s.combos[index] = clone(c);
+      if (index >= 0) {
+        ensure(a.expectedVersion === (s.combos[index]!.version || 0), 'El combo cambió. Reabre el formulario.');
+        s.combos[index] = {...clone(c), version:(s.combos[index]!.version || 0)+1};
+      }
       else s.combos.push(clone(c));
       summary = 'Guardó un combo';
       break;
@@ -548,6 +596,7 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
   s.appliedIds.push(op.id);
   for (const o of s.obras)
     if (touched.has(o.id)) {
+      o.version = (o.version || 0) + 1;
       o.updatedAt = now.toISOString();
       o.syncStatus = 'PENDING';
       o.estadoSemaphoro = trafficLight(o, businessDate(now));
@@ -565,7 +614,7 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
         ? 'ADMIN'
         : 'OPERADOR',
   };
-  if (obraId) log.obraId = obraId;
+  if (obraId) { log.obraId = obraId; log.obraNombre = (s.obras.find(o=>o.id===obraId) || current.obras.find(o=>o.id===obraId))?.clienteNombre; }
   // Fotos y avisos externos no son reversibles de forma transaccional: usar eliminación/recuperación explícita.
   if (
     !['UNDO', 'PHOTO', 'DELETE_PHOTO', 'REPORT'].includes(a.type) &&

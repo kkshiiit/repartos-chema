@@ -77,6 +77,8 @@ export const adminActions: Action['type'][] = [
   'REACTIVATE',
   'SAVE_MATERIAL',
   'ADJUST',
+  'MOVE_STOCK',
+  'CORRECT_INCIDENT',
   'SAVE_COMBO',
   'DELETE_COMBO',
   'RESPONSABLES',
@@ -121,4 +123,11 @@ export function matchesStatusFilter(
       ? ['RETIRADO', 'REINGRESADO'].includes(obra.estadoProceso)
       : obraStatus(obra, today).key === filter)
   );
+}
+
+// Solo normaliza la escritura de una medida. Nunca mezcla identidades de material.
+export function measureKey(value?: string): string {
+  const v = (value || '').trim().toLowerCase().replace(/\s+/g, '').replace(',', '.');
+  const match = /^(\d+(?:\.\d+)?)(cm|m)$/.exec(v);
+  return match ? `${Number(match[1])}${match[2]}` : v;
 }

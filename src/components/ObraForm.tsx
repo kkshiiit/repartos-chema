@@ -10,6 +10,8 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
   const { dispatch } = useInventory(),
     { user } = useAuth();
   const [nombre, setNombre] = useState(obra?.clienteNombre || ''),
+    [baseVersion] = useState(obra?.version || 0),
+    [observaciones, setObservaciones] = useState(obra?.observaciones || ''),
     [tel, setTel] = useState(obra?.clienteTelefono || ''),
     [direccion, setDireccion] = useState(obra?.direccion || ''),
     [zona, setZona] = useState(obra?.localidadBarrio || ''),
@@ -54,6 +56,7 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
               onChangeText={setZona}
               placeholder="Ej. San Martín"
             />
+            <Field label="Observaciones" value={observaciones} onChangeText={setObservaciones} multiline maxLength={1000} />
             <View style={s.divider} />
             <Text style={s.h2}>Planificación</Text>
             <Field
@@ -84,11 +87,12 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
                     clienteTelefono: tel.trim(),
                     direccion: direccion.trim(),
                     localidadBarrio: zona.trim(),
+                    observaciones: observaciones.trim(),
                     fechaEntrega: entrega,
                     fechaRetiroEstimada: retiro,
                     ...(obra?.coordenadas ? { coordenadas: obra.coordenadas } : {}),
                   };
-                  await dispatch({ type: obra ? 'UPDATE_OBRA' : 'CREATE_OBRA', obra: data });
+                  await dispatch(obra ? {type:'UPDATE_OBRA',obra:data,expectedVersion:baseVersion} : {type:'CREATE_OBRA',obra:data});
                   router.replace(`/obra/${data.id}`);
                 } catch (e) {
                   setError((e as Error).message);
