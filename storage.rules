@@ -1,0 +1,15 @@
+rules_version = '2';
+service firebase.storage {
+ match /b/{bucket}/o {
+  function member() { return request.auth != null && request.auth.token.email_verified == true && firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role in ['ADMIN','OPERADOR']; }
+  function admin() { return member() && firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'ADMIN'; }
+  match /photos/{uid}/{obraId}/{photoId} {
+   allow read: if member();
+   allow create: if resource == null && member() && request.auth.uid == uid && request.resource.size < 2 * 1024 * 1024 && request.resource.contentType == 'image/jpeg';
+   // Archivos inmutables. Borrado autorizado mediante operación y limpieza del backend.
+   allow update, delete: if false;
+  }
+  match /exports/{uid}/{file} { allow read: if admin() && request.auth.uid == uid && request.time.toMillis() < int(resource.metadata.expiresAt); allow write: if false; }
+  match /{allPaths=**} { allow read, write: if false; }
+ }
+}

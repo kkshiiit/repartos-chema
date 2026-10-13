@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "Repartos Chema",
+    "slug": "repartos-chema",
+    "scheme": "repartoschema",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.grupochema.repartos"
+    },
+    "android": {
+      "package": "com.grupochema.repartos"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "name": "Repartos Chema"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Permitir fotos para documentar entregas y retiros.",
+          "cameraPermission": "Permitir cámara para documentar materiales."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Usar tu ubicación al ordenar el viaje."
+        }
+      ],
+      "expo-secure-store",
+      "expo-status-bar",
+      "expo-sharing",
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}
