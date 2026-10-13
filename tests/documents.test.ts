@@ -1,0 +1,23 @@
+import { it, expect } from 'vitest';
+import ExcelJS from 'exceljs';
+import { generateExcel } from '../functions/src/excelGenerator';
+import { generateWord } from '../functions/src/wordGenerator';
+import { seed } from '../src/data/seed';
+import { mkdir, writeFile } from 'node:fs/promises';
+it('genera un XLSX institucional válido y un DOCX real', async () => {
+  const obras = seed().obras;
+  const excel = await generateExcel(obras, ExcelJS.Workbook);
+  const read = new ExcelJS.Workbook();
+  await read.xlsx.load(excel);
+  const sheet = read.getWorksheet('Logística')!;
+  expect(sheet.getCell('A1').value).toBe('REPORTE LOGÍSTICO - GRUPO CHEMA CONSTRUCCIONES');
+  expect(sheet.rowCount).toBe(obras.length + 2);
+  expect(sheet.getCell('A1').font.size).toBe(14);
+  expect(sheet.autoFilter).toBeTruthy();
+  const word = await generateWord(obras[0]!);
+  expect(word.subarray(0, 2).toString()).toBe('PK');
+  expect(word.length).toBeGreaterThan(5000);
+  await mkdir('artifacts', { recursive: true });
+  await writeFile('artifacts/reporte-demo.xlsx', Buffer.from(excel));
+  await writeFile('artifacts/remito-demo.docx', word);
+});
