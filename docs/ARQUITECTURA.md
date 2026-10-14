@@ -43,9 +43,26 @@ Se restaura el snapshot y se agrega un registro nuevo; el registro original cons
 
 ## Fotos y archivos
 
-Máximo 12 fotos por obra. JPEG 0.7, lado máximo 1024 px. En móvil se copian al directorio persistente de la app; en demo web se conserva data URI y se informa si se supera el límite local. Al agotarse la cuota no se confirma la operación.
+Máximo 12 fotos por obra. JPEG 0.7, lado máximo 1024 px. En móvil se copian al directorio persistente de la app; en web se guarda un Blob en IndexedDB y el inventario conserva una referencia corta `chema-photo:ID`. Las referencias data URI históricas siguen siendo legibles. Al agotarse la cuota no se confirma la operación.
 
-Firebase sube a una ruta inmutable por usuario/obra/ID. Un reintento consulta el objeto antes de subir, para evitar sobrescrituras. El servidor comprueba propiedad y metadatos antes de registrar la referencia. Un archivo subido cuya operación fracasa puede quedar huérfano; para producción establecer limpieza por retención tras comparar referencias, sin borrar cargas en cola.
+Firebase sube a una ruta inmutable por usuario/obra/ID. Un reintento consulta el objeto antes de subir, para evitar sobrescrituras. El servidor comprueba propiedad, bucket/ruta exactos, tamaño, MIME y cabecera JPEG antes de registrar la referencia. Un archivo subido cuya operación fracasa puede quedar huérfano; para producción establecer limpieza por retención tras comparar referencias, sin borrar cargas en cola.
 
 Los enlaces de descarga de fotos contienen tokens de acceso de Firebase: tratarlos como información privada y revocarlos cuando corresponda. Los documentos no usan URLs públicas: la función devuelve una ruta Storage que se descarga con autorización, con expiración y limpieza programada.
 
+## Recuperación y temas
+
+`src/data/validation.ts` valida el sobre persistido y sus invariantes. Una versión desconocida, JSON corrupto o fallo de lectura no autoriza sembrar datos nuevos. Los fallos de escritura no publican el cambio en UI. `Repository.restoreDemo` exige ADMIN, archiva primero el sobre anterior y solo entonces sustituye los datos. La copia completa incluye fotos en base64 exclusivamente dentro del archivo de exportación; la base de datos activa usa referencias, no imágenes incrustadas nuevas. La restauración remapea IDs y elimina inversos de otra instalación.
+
+Las fotos remotas no disponibles localmente no se descargan automáticamente al crear un respaldo. En producción se requiere además respaldo de Firestore y Storage por un administrador; una copia del cliente no es un backup íntegro del servidor. Los archivos locales huérfanos tras una restauración interrumpida no se limpian automáticamente, para evitar borrar la única copia.
+
+`ThemeContext` mantiene `chema:theme:v1`, independiente de la cola. Los tokens en `src/theme/tokens.ts` distinguen texto, superficies, borde, foco, selección y colores semánticos. `useUI` retorna estilos previamente creados para cada paleta. Cambiar tema no cambia claves de formularios ni reinicia proveedores de datos. La lectura inicial precede al montaje de pantallas. Sistema usa `useColorScheme`; un toque rápido pasa a selección manual. La barra del sistema usa Expo StatusBar/SystemUI.
+
+## Fechas, medidas y revisiones
+
+`fechaEntrega` conserva la planificación. `fechaEntregaEfectiva` se establece al entregar. Los datos históricos anteriores que carezcan de esa separación se muestran sin inventar una fecha efectiva. Retiro previsto/efectivo son campos diferentes. Reactivar limpia fechas efectivas para el nuevo ciclo conservando la planificación, que puede editarse.
+
+Una medida identifica la variante del material. Normalizar espacios y separador decimal no convierte cm en m ni intercambia piezas. Carga y triangulación verifican el maestro; un maestro usado no cambia de medida. Se crea otra variante cuando físicamente corresponde.
+
+Las ediciones de obra/material/combo contrastan versión. La carga envía versión desde la UI; la aceptación de comandos antiguos sin esa versión sigue siendo una compatibilidad del dominio que debe revisarse antes de admitir clientes externos. Las operaciones de existencias se serializan y vuelven a validar siempre en la transacción.
+
+`MOVE_STOCK` mueve stock no vinculado a faltantes. `CORRECT_INCIDENT` ajusta registros vinculados sin descontar dos veces. Un faltante sin materialId es una observación auditada con cantidad y aviso: no inventa existencias maestras.

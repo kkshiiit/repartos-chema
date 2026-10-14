@@ -44,7 +44,15 @@ El service worker almacena los archivos estáticos de la aplicación, nunca resp
 - Fotos con permisos, JPEG a calidad 0.7 y lado máximo 1024 px, persistencia local y cola de subida.
 - Lista de viaje por zona, orden manual o distancia real desde GPS, enlaces a Google Maps y remito WhatsApp. El usuario confirma el envío en WhatsApp.
 - Historial con filtros, reversión segura de la última acción dentro de cinco minutos y correcciones compensatorias. Administración puede paginar auditoría remota.
-- Excel y Word institucionales: generación local en **demo web**; backend privado implementado para móvil/producción. Se incluyen muestras reales en `artifacts/`.
+- Excel y Word institucionales: generación local en demo web, probada en Chromium; generador local móvil implementado, pendiente de ejecución en hardware. Backend privado separado para producción. Se incluyen muestras reales en `artifacts/`.
+
+## Apariencia y recuperación
+
+Al iniciar se sigue el tema del sistema. El botón de sol/luna cambia inmediatamente a una elección manual sin perder formularios. En Configuración están Claro, Oscuro y Seguir sistema. La preferencia se conserva separada del inventario.
+
+En Configuración, Administración puede **Descargar copia** con inventario e imágenes. **Elegir copia → Restaurar copia** valida el archivo y guarda preventivamente el estado anterior antes de reemplazar la demo. Protege estas copias como información interna. Un error de lectura no reinicia la aplicación con otra semilla ni borra silenciosamente el inventario.
+
+Manual: [MANUAL_USUARIO.md](docs/MANUAL_USUARIO.md). Estado para continuar: [CONTINUIDAD_CODEX.md](docs/CONTINUIDAD_CODEX.md). Resultados y límites: [INFORME_ENTREGA.md](docs/INFORME_ENTREGA.md).
 
 ## Decisiones técnicas
 
@@ -92,8 +100,8 @@ La configuración completa de Authentication, Firestore, Storage, Functions, FCM
 
 - Firebase, push y exportación cloud **implementados pero no desplegados ni verificados con una cuenta real**. FCM nativo requiere el puente adicional descrito en la guía.
 - Cámara, GPS, compartir, SecureStore y háptica requieren validación en iOS/Android físicos. Los bundles JS nativos no demuestran esas funciones del dispositivo.
-- La demo no convierte cambios a `SYNCED`: muestra guardado local y pendiente de nube. Sus fotos no tienen respaldo y se pierden al borrar almacenamiento.
-- Los documentos locales están disponibles en web. Demo móvil usa el flujo cloud después de configurarlo; no se promete generación local nativa.
+- La demo no convierte cambios a `SYNCED`: muestra guardado local y pendiente de nube. Configuración permite descargar una copia con fotos y restaurarla. Sin esa copia externa, borrar el almacenamiento pierde los datos locales.
+- Los documentos locales están probados en web; la ruta nativa JS + archivos/compartir requiere prueba en Android/iOS. No hay PDF automático.
 - El backend usa un agregado transaccional para una sola empresa: hasta 200 obras, 300 materiales y 750 KB serializados. Rechaza crecimiento excesivo; requiere particionar/archivar antes de escalar. No elimina evidencia remota para ganar espacio.
 - FCM acepta mensajes, no garantiza que el teléfono los muestre. Los reintentos pueden duplicar avisos; se incluye `eventId`/tag de colapso.
 

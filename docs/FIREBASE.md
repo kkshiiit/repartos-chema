@@ -53,7 +53,14 @@ Las fotos son JPEG y se aceptan solo en `photos/{uid}/{obraId}/{photoId}` del au
 Para descarga de documentos en web, configurar CORS del bucket para los dominios exactos de tu app. Ejemplo de archivo local a completar:
 
 ```json
-[{"origin":["DOMINIO_HTTPS_REAL_DE_LA_APP"],"method":["GET","HEAD"],"responseHeader":["Content-Type"],"maxAgeSeconds":3600}]
+[
+  {
+    "origin": ["DOMINIO_HTTPS_REAL_DE_LA_APP"],
+    "method": ["GET", "HEAD"],
+    "responseHeader": ["Content-Type"],
+    "maxAgeSeconds": 3600
+  }
+]
 ```
 
 Aplicarlo con Google Cloud CLI autenticado sobre tu bucket real. No usar `*` para documentos internos. Probar denegación a usuario ajeno, expiración y borrado. Word puede abrirse en Word/LibreOffice y exportarse a PDF; no se implementó un conversor PDF en servidor.
@@ -64,7 +71,7 @@ En Firebase Cloud Messaging, configurar Web Push y copiar la **clave pública** 
 
 Servir mediante HTTPS (localhost sirve para pruebas). En Configuración, un ADMIN pulsa **Activar avisos**, concede permiso y registra su token con `registerPushToken`. El worker de mensajería usa ámbito `/push/`; la caché offline usa otro worker en `/`.
 
-Al registrar un faltante, la transacción crea un evento durable. El trigger consulta solo tokens de usuarios con rol ADMIN vigente y solicita el envío a FCM. Si no hay tokens/configuración, conserva error/PENDING/FAILED. El reintento programado intenta como máximo cinco veces. Un estado SENT significa aceptación por FCM, no lectura ni entrega confirmada al teléfono. La app usa eventId/tag para reducir duplicación; FCM no ofrece exactamente una entrega.
+Al registrar un faltante, la transacción crea un evento durable. El trigger consulta solo tokens de usuarios con rol ADMIN vigente y solicita el envío a FCM. Si no hay tokens/configuración, conserva error/PENDING/FAILED. El reintento programado intenta como máximo cinco veces y marca EXHAUSTED al agotarlas. Conserva hashes de tokens ya aceptados para no reenviar un fallo parcial, elimina tokens invalidados y vuelve a consultar el rol ADMIN. Un corte entre la aceptación de FCM y su persistencia aún puede duplicar un aviso. Un estado SENT significa aceptación por FCM, no lectura ni entrega confirmada al teléfono. La app usa eventId/tag para reducir duplicación; FCM no ofrece exactamente una entrega.
 
 ## 7. FCM nativo (integración pendiente del build)
 
@@ -76,4 +83,14 @@ La UI móvil explica este pendiente y no registra tokens Expo como si fueran FCM
 
 ## 8. Validación y operación
 
-Las pruebas de reglas incluidas se ejecutan con emuladores, sin Firebase real. Falta validar callable functions/FCM/Storage con el proyecto elegido, IAM, CORS, despliegue y hardware. Configurar monitoreo de rechazos, errores de Functions y avisos fallidos. Antes de superar los límites del agregado, diseñar partición por material/obra y archivo auditado; no aumentar el límite de documento silenciosamente.
+Las pruebas de reglas incluidas se ejecutan con emuladores, sin Firebase real. Los handlers de movimiento se probaron con contexto Auth controlado y Firestore Emulator (concurrencia, idempotencia, autorización, revisión y deshacer). Falta validar transporte callable HTTP, FCM y Storage con el proyecto elegido, IAM, CORS, despliegue y hardware. Configurar monitoreo de rechazos, errores de Functions y avisos fallidos. Antes de superar los límites del agregado, diseñar partición por material/obra y archivo auditado; no aumentar el límite de documento silenciosamente.
+
+## 9. Seguridad pendiente antes de producción
+
+- No hay App Check/rate limiting específico de cliente habilitados: configurar y probar antes de exposición externa.
+- FCM nativo es una integración pendiente; el worker web y backend no prueban avisos reales. La desasociación de tokens al cerrar sesión y la recepción en primer plano requieren completar el ciclo de mensajería antes de uso en dispositivos compartidos.
+- Desactivar un usuario también debe revocar su perfil/rol operativo. Un perfil en caché permite captura offline; toda escritura remota vuelve a validar autorización y puede quedar en conflicto.
+- Auditorías npm del 14/10: hay avisos transitivos sin una actualización compatible verificada (ver VALIDACION). No desplegar con una afirmación de cero vulnerabilidades.
+- Fotos: los tokens de URL son secretos de acceso al objeto aunque la configuración Firebase del cliente sea pública. Limitar compartición, revisar revocación y limpieza segura de huérfanos.
+- El agregado tiene límites explícitos. Diseñar un archivo/partición y su migración auditada antes de excederlos; no aumentar a ciegas el límite ni borrar logs.
+- Programar copias de servidor, retención, recuperación ante desastre y pruebas con dos dispositivos. La copia demo no sustituye este procedimiento.
