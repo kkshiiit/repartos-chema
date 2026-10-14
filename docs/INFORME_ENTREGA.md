@@ -104,7 +104,7 @@ Riesgos pendientes: avisos transitivos npm (30 app y 9 Functions, detalle en VAL
 
 ## J. Pruebas y compilación
 
-[VALIDACION.md](VALIDACION.md) contiene comandos, cobertura y límites. Últimos resultados: **74 unitarias/documentos, 14 integración y 17 Playwright aprobadas**; typecheck, lint, Functions y web correctos. Capturas regeneradas. Android/iOS exportados a Hermes. Todo ejecutado con datos semilla y emuladores.
+[VALIDACION.md](VALIDACION.md) contiene comandos, cobertura y límites. Últimos resultados: **74 unitarias/documentos, 14 integración y 19 Playwright aprobadas**; typecheck, lint, Functions y web correctos. Capturas regeneradas. Android/iOS exportados a Hermes. Todo ejecutado con datos semilla y emuladores.
 
 El intento de APK usa Java21, Gradle9.3.1, SDK36, NDK27.1.12297006 y ARM64. Hubo fallo inicial del proxy Gradle y timeouts de SDK; se aplicó descarga reanudable verificada. **Consultar el cierre de compilación al final de este informe para el resultado definitivo.** No se ejecutó una app en dispositivo físico, ni se generó IPA en macOS.
 
@@ -141,3 +141,7 @@ Desde Android puedes descargar los paquetes del chat. No necesitas mantener tu c
 **Pendiente de desarrollo:** puente FCM nativo y ciclo completo de tokens/primer plano, selector nativo de fechas más cómodo, estrategia de archivo/partición cuando crezca el agregado, tratamiento de huérfanos y mejoras derivadas de pruebas físicas.
 
 Para continuar: leer CONTINUIDAD, comprobar Git y respaldo, revisar resultado APK, completar pendientes nativos, configurar Firebase solo con autorización y datos reales, ejecutar pruebas de dos usuarios/dispositivos antes de usar datos comerciales. No rehacer la app, no añadir publicidad, no reintroducir Cerradas, no publicar ni gastar sin permiso. No hay reanudación automática del workspace verificada; el trabajo solo avanza durante ejecuciones activas.
+
+## Validación adicional de accesibilidad (14/10, 19:30 UTC)
+
+Se añadió @axe-core/playwright solo como dependencia de desarrollo. Detectó y se corrigieron el contenedor tablist/estado seleccionado de navegación y el foco de teclado de métricas desplazables. Los dos recorridos axe, ocho pantallas en claro y oscuro, pasaron sin infracciones detectadas en las reglas WCAG A/AA seleccionadas. La suite completa actual pasó 19/19. No sustituye prueba con lectores de pantalla o teclado en dispositivos físicos. Reportes en `artifacts/validacion/axe-*.json`.

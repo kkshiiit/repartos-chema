@@ -1,0 +1,52 @@
+[
+  {
+    "route": "/",
+    "violations": [],
+    "incomplete": [
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 1
+      }
+    ]
+  },
+  {
+    "route": "/galpon",
+    "violations": [],
+    "incomplete": [
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 1
+      }
+    ]
+  },
+  {
+    "route": "/mapa",
+    "violations": [],
+    "incomplete": []
+  },
+  {
+    "route": "/historial",
+    "violations": [],
+    "incomplete": []
+  },
+  {
+    "route": "/obra/nueva",
+    "violations": [],
+    "incomplete": []
+  },
+  {
+    "route": "/obra/obra_1",
+    "violations": [],
+    "incomplete": []
+  },
+  {
+    "route": "/configuracion",
+    "violations": [],
+    "incomplete": []
+  },
+  {
+    "route": "/exportar",
+    "violations": [],
+    "incomplete": []
+  }
+]

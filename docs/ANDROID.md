@@ -1,0 +1,24 @@
+# Compilación Android interna
+
+No se necesita EAS, una cuenta paga ni Play Store para compilar localmente. Esto no implica que el dispositivo se haya probado. Consultar INFORME_ENTREGA para el resultado real de esta ejecución.
+
+Requisitos: Node/npm, **JDK 21 completo con javac**, Android SDK plataforma 36, build-tools 36.0.0, platform-tools, NDK 27.1.12297006 y CMake 3.22.1. Confirmar contra las versiones del proyecto si se actualiza Expo. El runtime Java sin compilador sirve para los emuladores de Firebase, pero no para crear el APK.
+
+```bash
+npm ci
+# JAVA_HOME debe apuntar al JDK, ANDROID_HOME al SDK real instalado.
+# No sustituir las rutas del usuario por valores ficticios.
+npm run build:android:demo
+```
+
+El script valida javac y SDK, regenera el proyecto nativo compatible con Expo, fuerza modo demo y compila ARM64. `android/` se genera y se excluye del ZIP fuente/Git. Resultado esperado solo tras build correcto: `android/app/build/outputs/apk/release/app-release.apk`.
+
+Esta variante usa la firma de desarrollo generada por la plantilla para pruebas internas. No es la identidad de firma definitiva de la empresa. Para actualizaciones y distribución real se necesita un keystore de la empresa, guardado fuera del repositorio, una política de custodia y un build autorizado. No publicar este APK en Play Store.
+
+La demo no requiere Google Services ni credenciales Firebase. No confundir el modo demo con backend productivo. Permisos de cámara/fotos/ubicación se solicitan al usar esas funciones. No hay SDK publicitario.
+
+## Particularidades del entorno remoto
+
+Se usaron SDK/NDK bajo `/workspace/android-sdk`, caché Gradle `/workspace/gradle-cache` y JDK descargado por API oficial de Adoptium con SHA-256. El proxy existente se conserva con `GRADLE_OPTS`; no desactivar TLS. `ANDROID_USER_HOME` fija una carpeta escribible; no establecer a la vez un ANDROID_PREFS_ROOT incompatible. No se modifica HOME.
+
+El resultado instalable deberá inspeccionarse con `apksigner verify`, `aapt dump badging` y ZIP CRC, y luego probarse en un Android ARM64 real. No se afirma prueba física por el mero hecho de obtener un APK.
