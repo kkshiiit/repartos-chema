@@ -29,7 +29,7 @@ const load = z
   .strict();
 const incident = z
   .object({
-    materialId: id,
+    materialId: id.optional(),
     cantidad: quantity,
     tipo: z.enum(['PERDIDO', 'DANADO']),
     notas: z.string().max(500).optional(),

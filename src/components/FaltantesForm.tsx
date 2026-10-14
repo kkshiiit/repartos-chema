@@ -18,8 +18,10 @@ export function FaltantesForm({
   const available = state.materiales.filter((m) => (obra.saldosEnObra[m.id] || 0) > 0);
   const [selected, setSelected] = useState(available[0]?.id || '');
   const add = (id: string) => {
-    if (!id) return;
-    onChange([...value, { materialId: id, cantidad: 1, tipo: 'PERDIDO', notas: '' }]);
+    onChange([
+      ...value,
+      { ...(id ? { materialId: id } : {}), cantidad: 1, tipo: 'PERDIDO', notas: '' },
+    ]);
   };
   return (
     <View style={{ gap: 15 }}>
@@ -36,24 +38,25 @@ export function FaltantesForm({
       <Select
         label="Material afectado"
         value={selected}
-        options={available.map((m) => ({
-          label: `${m.nombre} · ${obra.saldosEnObra[m.id]} en obra`,
-          value: m.id,
-        }))}
+        options={[
+          { label: 'Ítem fuera del inventario', value: '' },
+          ...available.map((m) => ({
+            label: `${m.nombre} · ${obra.saldosEnObra[m.id]} en obra`,
+            value: m.id,
+          })),
+        ]}
         onChange={setSelected}
       />
-      <Button
-        label="Agregar faltante"
-        variant="secondary"
-        disabled={!selected}
-        onPress={() => add(selected)}
-      />
+      <Button label="Agregar faltante" variant="secondary" onPress={() => add(selected)} />
       {value.map((i, index) => {
         const set = (change: Partial<IncidentInput>) =>
           onChange(value.map((v, n) => (n === index ? { ...v, ...change } : v)));
         return (
           <View key={index} style={s.card}>
-            <Text style={s.h2}>{state.materiales.find((m) => m.id === i.materialId)?.nombre}</Text>
+            <Text style={s.h2}>
+              {state.materiales.find((m) => m.id === i.materialId)?.nombre ||
+                'Sin stock maestro · no mueve existencias'}
+            </Text>
             <SmartCounter
               value={i.cantidad}
               label={`Faltante ${index + 1}`}
@@ -74,7 +77,11 @@ export function FaltantesForm({
             <Field
               label="Ítem específico"
               value={i.itemNombre || ''}
-              placeholder="Opcional · ej. candado de seguridad"
+              placeholder={
+                i.materialId
+                  ? 'Opcional · detalle del material'
+                  : 'Obligatorio · ej. candado de seguridad'
+              }
               onChangeText={(itemNombre) => set({ itemNombre })}
             />
             <Field

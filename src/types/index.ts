@@ -24,7 +24,7 @@ export interface FaltanteRegistro {
   cantidad: number;
   tipo: 'PERDIDO' | 'DANADO';
   notas?: string;
-  materialId: string;
+  materialId?: string;
   recuperado: number;
 }
 export interface MaterialCargado {
@@ -128,7 +128,7 @@ export type ObraInput = Pick<
   | 'observaciones'
 >;
 export type IncidentInput = {
-  materialId: string;
+  materialId?: string;
   cantidad: number;
   tipo: 'PERDIDO' | 'DANADO';
   notas?: string;

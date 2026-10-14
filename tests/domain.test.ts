@@ -424,3 +424,30 @@ describe('Regresiones de integridad de la auditoría', () => {
     ).toEqual({ lat: -34, lng: -58 });
   });
 });
+
+it('ítem libre no inventa material maestro ni existencias', () => {
+  const initial = seed(now);
+  let s = apply(initial, {
+    type: 'REPORT',
+    obraId: 'obra_1',
+    incidents: [
+      {
+        itemNombre: 'Candado ajeno al stock',
+        cantidad: 1,
+        tipo: 'PERDIDO',
+        notas: 'Aviso informativo',
+      },
+    ],
+  });
+  expect(s.materiales).toEqual(initial.materiales);
+  expect(s.notificaciones.at(-1)?.status).toBe('PENDING');
+  s = apply(s, {
+    type: 'RECOVER',
+    obraId: 'obra_1',
+    incidentId: s.obras[0]!.faltantesRegistrados!.at(-1)!.id,
+    cantidad: 1,
+    motivo: 'Encontrado en obra',
+  });
+  expect(s.materiales).toEqual(initial.materiales);
+  expect(s.logs[0]!.movimientos).toHaveLength(0);
+});
