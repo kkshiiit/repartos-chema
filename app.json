@@ -11,7 +11,11 @@
       "bundleIdentifier": "com.grupochema.repartos"
     },
     "android": {
-      "package": "com.grupochema.repartos"
+      "package": "com.grupochema.repartos",
+      "blockedPermissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.SYSTEM_ALERT_WINDOW"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -24,7 +28,8 @@
         "expo-image-picker",
         {
           "photosPermission": "Permitir fotos para documentar entregas y retiros.",
-          "cameraPermission": "Permitir cámara para documentar materiales."
+          "cameraPermission": "Permitir cámara para documentar materiales.",
+          "microphonePermission": false
         }
       ],
       [

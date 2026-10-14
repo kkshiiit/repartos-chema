@@ -8,7 +8,12 @@ if (spawnSync(javac, ['-version'], { stdio: 'pipe' }).status !== 0)
   throw new Error('Falta javac. Configura JAVA_HOME con un JDK 21 completo.');
 if (!process.env.ANDROID_HOME || !existsSync(process.env.ANDROID_HOME))
   throw new Error('Configura ANDROID_HOME con el SDK Android.');
-const env = { ...process.env, EXPO_PUBLIC_DATA_MODE: 'demo', EXPO_NO_TELEMETRY: '1' };
+const env = {
+  ...process.env,
+  EXPO_PUBLIC_DATA_MODE: 'demo',
+  NODE_ENV: 'production',
+  EXPO_NO_TELEMETRY: '1',
+};
 function run(command, args, cwd = root) {
   const result = spawnSync(command, args, { cwd, env, stdio: 'inherit' });
   if (result.status !== 0) process.exit(result.status || 1);
