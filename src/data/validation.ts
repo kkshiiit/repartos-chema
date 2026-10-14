@@ -62,7 +62,7 @@ const obra = z
         z
           .object({
             id,
-            materialId: id,
+            materialId: id.optional(),
             itemNombre: z.string(),
             cantidad: count,
             recuperado: count,

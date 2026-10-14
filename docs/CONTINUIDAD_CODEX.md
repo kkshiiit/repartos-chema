@@ -1,45 +1,69 @@
 # Continuidad de Repartos Chema
 
-Actualizado: 13 de octubre de 2026. Misión **en curso**, no finalizada.
+Actualizado: 14/10/2026, 07:30 UTC. **Misión en curso, no finalizada.**
 
-## Objetivo y autorización
+## Objetivo y permisos
 
-Completar la app interna offline-first conservando Expo 57, React Native y Firebase. Cero publicidad; temas claro, oscuro y sistema con acceso rápido; inventario íntegro; demo sin credenciales. El prompt de ejecución posterior reemplazó la auditoría de solo lectura. Se autorizaron modificaciones, instalaciones justificadas, pruebas, respaldos y commits locales. No publicar, crear repositorios remotos, gastar, migrar datos irreversiblemente ni desplegar producción sin autorización.
+Completar la app interna offline-first para Grupo Chema: integridad de inventario, cero publicidad, temas claro/oscuro/sistema, demo persistente sin credenciales. Modificaciones, pruebas y commits locales autorizados. No gastos, despliegues productivos, publicaciones ni repositorios remotos sin autorización. No hay automatización verificada que reanude este workspace; no se configuró ninguna.
 
 ## Fase actual
 
-Fases 1 y 2 completadas: respaldo original restaurado y Git local. Comienza fase 3: persistencia/conflictos. Las fases posteriores siguen pendientes.
+Respaldo original y versionado completos. Persistencia/inventario, retirada de anuncios, temas, documentos locales y recuperación implementados; se están cerrando integración, pruebas visuales, compilación Android y documentación. Las pruebas físicas y producción siguen pendientes.
 
-## Evidencia comprobada
+## Guardado y respaldo
 
-- Proyecto `/workspace/repartos-chema` disponible. Auditoría de referencia: `/workspace/informes/repartos-chema-auditoria-maestra-2026-10-13.md`.
-- Respaldo `/workspace/respaldos/chema-original-20261013/repartos-chema-original.zip`: 92 archivos, CRC correcto, extracción y todos los SHA-256 coincidentes. Manifiestos y `VERIFICACION.json` junto al ZIP. Excluye dependencias, compilados regenerables, temporales y secretos.
-- Git `main`, base original `5c554c4`; sin remoto. No se publicaron archivos.
-- Todavía no hay pruebas nuevas de aplicación: los resultados de la auditoría son históricos.
+- Git local `main`, sin remoto. Base `5c554c4`, datos `d258544`, temas/fotos `c634908`; consultar `git log -5` para puntos posteriores.
+- Original: `/workspace/respaldos/chema-original-20261013/repartos-chema-original.zip`, 92 archivos, CRC y todos los SHA comprobados tras extraer. No sobrescribir.
+- Punto anterior: `/workspace/entregas/puntos-control/repartos-chema-c634908.zip` y manifiestos.
+- `scripts/package.py` crea ZIP de archivos versionados con manifiesto y verifica restauración. Ejecutar con árbol limpio tras commit para que el nombre corresponda al contenido.
 
-## Plan pendiente y errores abiertos
+## Completado y comprobado
 
-1. Validación del sobre local, fallos de lectura/escritura, recuperación de conflictos persistidos y carga inicial.
-2. Inventario: salida de taller/perdido, medidas, fechas previstas/efectivas, concurrencia, correcciones e idempotencia.
-3. Eliminar totalmente publicidad y cerrar exportaciones/funciones incompletas.
-4. ThemeProvider, tokens, persistencia independiente, botón inmediato y tres opciones; UI móvil/accesibilidad.
-5. Seguridad, fotos, notificaciones, rendimiento medido y documentación Firebase.
-6. Pruebas unitarias/integración/UI, capturas nuevas, builds, investigar APK viable sin costos.
-7. Entrega ZIP, hashes, manual e informe final con límites reales.
+- Corrupción/errores de lectura/escritura no reinician datos; conflictos persistidos siguen visibles; recuperación ADMIN archiva el sobre previo antes de reemplazar.
+- Stock protegido, movimientos taller/perdido, correcciones, medidas por variante, fechas efectivas separadas, revisión de formularios y operaciones idempotentes.
+- Faltantes fuera del maestro registran ítem y aviso sin inventar stock; recuperación conserva auditoría.
+- Retiradas agrupa RETIRADO/REINGRESADO. Cero componentes/dependencias/configuración publicitaria en fuente actual.
+- Temas dinámicos y persistentes, acceso rápido en cabeceras y modales. Paletas contrastadas mediante tests.
+- Fotos web IndexedDB, copia con imágenes, IDs nuevos al restaurar, conservación preventiva y prueba de reinicio. No respaldadas automáticamente en nube demo.
+- Word y Excel descargados realmente en Chromium. Generador nativo implementado, pendiente ejecución física.
+- 14/10 `npm run check`: 74 pruebas, tipos, lint y build Functions correctos.
+- 14/10 emuladores: 11/11 (7 reglas y 4 handlers backend). Handler con contexto Auth controlado y Firestore real emulado; no acredita transporte callable HTTP/FCM.
+- 14/10 web exportada; suite UI de 16 casos en ejecución. Foto/copia/restauración pasó. Suite anterior 15/15 pasó, capturas en `artifacts/capturas`.
 
-## Decisiones y restricciones
+## Trabajo abierto
 
-Mantener cuatro secciones Obras/Galpón/Viaje/Historial. Retiradas agrupa estados técnicos RETIRADO/REINGRESADO, sin filtro Cerradas. Firebase/FCM productivos no configurados. Demo no sincroniza entre dispositivos. No inventar APK, URLs, credenciales ni pruebas físicas. GitHub tiene dos cuentas conocidas; no elegir destino externo automáticamente. Las herramientas de automatizaciones existen pero no está verificada su capacidad de reanudar este workspace de Codex. No hay continuidad automática configurada.
+- Finalizar suite UI actual y revisar capturas (320/360/390/768/1440, ambos temas).
+- Android SDK oficial instalado parcialmente; plataforma 36 disponible, build-tools/NDK/platform-tools en descarga. Sin APK aún. Revisar logs `/workspace/informes/chema-sdk-*.log`.
+- Compilar APK si viable y regenerar bundles nativos sin anuncios; probar exportaciones nativas en dispositivo cuando esté disponible.
+- Revisar seguridad restante: FCM nativo no implementado, reintentos parciales FCM, tokens al cerrar sesión, auditoría remota de deshacer. Fotos remotas usan enlaces privados con token; precisar límites.
+- Auditoría dependencias: override grpc 1.14.6 aplicado; repetir audit y documentar avisos upstream sin forzar downgrades.
+- README/ARQUITECTURA/FIREBASE requieren actualización; crear manual, validación, árbol y reporte final. Entregar ZIP fuente/web y hashes nuevos.
+- Firebase real, credenciales, CORS, usuarios verificados, FCM, hardware, firma de distribución y autorización de despliegue pendientes externos.
 
-## Archivos y comandos
+## Archivos del punto actual
 
-Base completa versionada; este documento es el primer archivo nuevo. Consultar `git status --short` y `git log --oneline` para cambios posteriores.
+FaltantesForm, dominio/schema/types/validation y tests; backupService y PhotoImage; detalle; dependencia directa buffer; nuevos tests backup/backend/recovery, configs Vitest y scripts/package.py. Ver `git show --stat` para inventario exacto. No secretos.
 
-Comandos desde la carpeta del proyecto: `npm run check`, `npm run test:integration`, `npm run build:web`, `npm run preview` y `npm run test:ui` (preview en 8081). Emuladores con proxy local: `node -r ./scripts/emulator-local.cjs ./node_modules/firebase-tools/lib/bin/firebase.js emulators:exec --project demo-repartos-chema --only firestore,storage "npx --no-install vitest run --config vitest.integration.config.mts"`.
+## Comandos
+
+Desde `/workspace/repartos-chema`:
+
+```bash
+npm run check
+XDG_CONFIG_HOME=/tmp/chema-firebase node -r ./scripts/emulator-local.cjs ./node_modules/firebase-tools/lib/bin/firebase.js emulators:exec --project demo-repartos-chema --only firestore,storage 'npx --no-install vitest run --config vitest.integration.config.mts'
+EXPO_NO_TELEMETRY=1 __UNSAFE_EXPO_HOME_DIRECTORY=/tmp/chema-expo npm run build:web
+npm run preview
+npm run test:ui -- --workers=2
+python3 scripts/package.py /workspace/entregas/puntos-control
+```
+
+Red/procesos de navegador/emuladores requieren permisos de red del sandbox. Conservar proxy y certificados. No reasignar HOME. Logs de esta ejecución: `/workspace/informes/chema-*-20261014.log`.
 
 ## Próxima acción exacta
 
-Corregir `src/data/repository.ts`, `src/context/InventoryContext.tsx` y `src/components/ui.tsx` con pruebas de corrupción, falta de espacio y conflicto reabierto. Actualizar este documento y hacer commit al verificar la fase. Después continuar inventario; no repetir la auditoría ni sobrescribir el respaldo original.
+Leer resultados de `chema-ui-20261014.log` y descargas SDK; resolver fallos, ejecutar build Android con SDK/Gradle en `/workspace`, completar documentación y paquetes. No repetir la auditoría ni recrear la app. Actualizar este documento antes de terminar.
+
+## Registro histórico (los resultados de arriba prevalecen)
 
 ## Punto de control — datos e inventario, 13/10 22:14 UTC
 

@@ -171,6 +171,17 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
     for (const [index, i] of items.entries()) {
       quantity(i.cantidad, true);
       ensure(['PERDIDO', 'DANADO'].includes(i.tipo), 'Tipo inválido.');
+      if (!i.materialId) {
+        (o.faltantesRegistrados ??= []).push({
+          id: `${op.id}_${index}`,
+          itemNombre: required(i.itemNombre || '', 'Ítem fuera del inventario', 100),
+          cantidad: i.cantidad,
+          tipo: i.tipo,
+          notas: i.notas || '',
+          recuperado: 0,
+        });
+        continue;
+      }
       const m = material(i.materialId);
       ensure(
         (o.saldosEnObra[m.id] || 0) >= i.cantidad,
@@ -394,6 +405,11 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
       quantity(a.cantidad, true);
       required(a.motivo, 'Motivo');
       ensure(a.cantidad <= i.cantidad - i.recuperado, 'La cantidad supera lo pendiente.');
+      if (!i.materialId) {
+        i.recuperado += a.cantidad;
+        summary = 'Resolvió un faltante sin stock maestro';
+        break;
+      }
       const m = material(i.materialId);
       const bucket = i.tipo === 'DANADO' ? 'cantidadEnTaller' : 'cantidadPerdido';
       ensure(m[bucket] >= a.cantidad, 'El saldo ya cambió; revisa inventario.');
@@ -561,6 +577,10 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
       ensure(
         a.cantidad <= incident.cantidad - incident.recuperado,
         'La cantidad supera lo pendiente.',
+      );
+      ensure(
+        incident.materialId,
+        'Un ítem sin stock se resuelve como recuperado, sin mover existencias.',
       );
       const m = material(incident.materialId),
         from = incident.tipo === 'DANADO' ? 'cantidadEnTaller' : 'cantidadPerdido';

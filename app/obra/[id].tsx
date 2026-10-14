@@ -217,7 +217,7 @@ export default function Detail() {
               .map((n) => (
                 <Notice
                   key={n.id}
-                  text={`Aviso a administración: ${n.status === 'SENT' ? 'aceptado por FCM (entrega al dispositivo no garantizada)' : n.status === 'FAILED' ? `fallido · ${n.error || 'reintento pendiente'}` : 'pendiente; no enviado'}`}
+                  text={`Aviso a administración: ${n.status === 'SENT' ? 'aceptado por FCM (entrega al dispositivo no garantizada)' : n.status === 'EXHAUSTED' ? 'reintentos agotados; solicita revisión administrativa' : n.status === 'FAILED' ? `fallido · ${n.error || 'reintento pendiente'}` : 'pendiente; no enviado'}`}
                 />
               ))}
           </View>
@@ -268,7 +268,8 @@ export default function Detail() {
                       description="Se quitará del registro. La limpieza del archivo remoto se procesa por el servidor."
                       onConfirm={async () => {
                         await dispatch({ type: 'DELETE_PHOTO', obraId: o.id, photoId: p.id });
-                        await deleteLocalPhoto(p.id);
+                        if (DATA_MODE === 'demo' || p.status === 'SYNCED')
+                          await deleteLocalPhoto(p.id);
                       }}
                     />
                   ) : null}
@@ -357,7 +358,7 @@ export default function Detail() {
               {incident.itemNombre} · {incident.cantidad - incident.recuperado} pendientes
             </Text>
             <SmartCounter value={n} max={incident.cantidad - incident.recuperado} onChange={setN} />
-            {user?.role === 'ADMIN' ? (
+            {user?.role === 'ADMIN' && incident.materialId ? (
               <Select
                 label="Ubicación real"
                 value={recoveryDestination}

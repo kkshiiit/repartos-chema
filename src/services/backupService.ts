@@ -56,7 +56,7 @@ export async function prepareRestore(raw: string) {
       throw new Error('Foto de respaldo inválida.');
   }
   // Las fotos se escriben con IDs nuevos: un fallo nunca pisa imágenes del inventario anterior.
-  const remapped = new Map<string, string>();
+  const remapped = new Map<string, { id: string; uri: string }>();
   for (const o of e.state.obras)
     for (const p of o.fotos || []) {
       const encoded = parsed.photos?.[p.id];
@@ -65,14 +65,15 @@ export async function prepareRestore(raw: string) {
           throw new Error('La copia no contiene todas las fotos.');
         continue;
       }
-      let uri = remapped.get(p.id);
-      if (!uri) {
+      let mapped = remapped.get(p.id);
+      if (!mapped) {
         const id = `restore_${Date.now()}_${remapped.size}`;
-        uri = await storePhoto(id, new Uint8Array(Buffer.from(encoded, 'base64')));
-        remapped.set(p.id, uri);
-        p.id = id;
+        const uri = await storePhoto(id, new Uint8Array(Buffer.from(encoded, 'base64')));
+        mapped = { id, uri };
+        remapped.set(p.id, mapped);
       }
-      p.uri = uri;
+      p.id = mapped.id;
+      p.uri = mapped.uri;
       p.status = 'PENDING';
       delete p.storagePath;
     }

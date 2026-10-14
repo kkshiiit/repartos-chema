@@ -29,9 +29,13 @@ export function PhotoImage({ photo }: { photo: PhotoRef }) {
       if (active) {
         release = source;
         setUri(source);
+        setError('');
       } else releasePhoto(source);
     })().catch(() => {
-      if (active) setError('Foto sin copia local. Reintenta al volver a abrir con conexión.');
+      if (active) {
+        setUri('');
+        setError('Foto sin copia local. Reintenta al volver a abrir con conexión.');
+      }
     });
     return () => {
       active = false;
@@ -44,7 +48,7 @@ export function PhotoImage({ photo }: { photo: PhotoRef }) {
         <Image
           source={{ uri }}
           accessibilityLabel="Foto de materiales de la obra"
-          style={{ width: 180, height: 140, borderRadius: 12 }}
+          style={{ width: 150, height: 140, borderRadius: 12 }}
         />
       ) : (
         <Text style={s.muted}>{error || 'Cargando foto…'}</Text>
