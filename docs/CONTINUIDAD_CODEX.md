@@ -1,3 +1,11 @@
+## Punto de compilación 14/10 19:34 UTC
+
+- Commit estable `52aa064`, copia restaurada verificada. Suite actual 19/19 UI (incluye axe) y check 74; backend 14/14.
+- Build JDK funciona y compila CMake ARM64, log `chema-android-jdk-build.log`; aún sin APK. No detener salvo error/timeout. JAVA_HOME `/workspace/jdk21/jdk-21.0.12.1+1` y GRADLE_OPTS añade `-Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts` para conservar CA del proxy.
+- `app.json` cambió después del prebuild en curso: bloquea RECORD_AUDIO y SYSTEM_ALERT_WINDOW y desactiva microphonePermission. **Antes de entregar APK, regenerar manifest/prebuild y recompilar con esa exclusión; verificar permisos con aapt.**
+- Web empaquetada/restaurada: `/workspace/entregas/repartos-chema-web-20261014.zip` y SHA/acta. No equivale a URL pública accesible desde Android.
+- Script nuevo `scripts/package-web.py` pendiente de commit; no sobrescribe entregas existentes. Registros actuales en artifacts/validacion. Finalizar reporte y paquetes después del resultado Android.
+
 ## Prioridad del usuario — entrega hoy 14/10 a las 21:00 Argentina
 
 Trabajar sobre la versión validada y producir APK interno ARM64; no añadir funciones ahora. Demo local sin configuración productiva. La suite web actual pasó 19/19, incluida accesibilidad axe. JDK21 oficial descargado y verificado SHA-256 en `/workspace/jdk21/jdk-21.0.12.1+1`. Build con `npm run build:android:demo`, JAVA_HOME a ese directorio, ANDROID_HOME al SDK, GRADLE_USER_HOME a caché y proxy/TLS del entorno. Log `/workspace/informes/chema-android-jdk-build.log`. No APK hasta comprobar resultado. No prometer trabajo automático entre ejecuciones.
