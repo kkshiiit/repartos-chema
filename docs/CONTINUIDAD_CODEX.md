@@ -1,3 +1,15 @@
+## Prioridad del usuario — entrega hoy 14/10 a las 21:00 Argentina
+
+Trabajar sobre la versión validada y producir APK interno ARM64; no añadir funciones ahora. Demo local sin configuración productiva. La suite web actual pasó 19/19, incluida accesibilidad axe. JDK21 oficial descargado y verificado SHA-256 en `/workspace/jdk21/jdk-21.0.12.1+1`. Build con `npm run build:android:demo`, JAVA_HOME a ese directorio, ANDROID_HOME al SDK, GRADLE_USER_HOME a caché y proxy/TLS del entorno. Log `/workspace/informes/chema-android-jdk-build.log`. No APK hasta comprobar resultado. No prometer trabajo automático entre ejecuciones.
+
+# Reanudación actual — 14/10/2026 19:29 UTC
+
+El entorno reinició procesos; archivos y commits intactos. Se levantó preview de nuevo. No hubo trabajo automático prometido entre ejecuciones. La última tentativa Android falló por JRE21 sin JAVA_COMPILER (`javac` ausente); SDK/NDK/CMake/Gradle ya instalados. Siguiente acción: descargar JDK21 oficial Adoptium en workspace, verificar SHA-256, ejecutar Gradle con JAVA_HOME de ese JDK. Log anterior `chema-android-build-final.log`.
+
+Cambios posteriores a `5530d4c` aún sin commit: dependencia de desarrollo @axe-core/playwright y test WCAG AA; tablist y aria-selected en navegación, foco de teclado en métricas. Primer axe encontró esos errores; corregidos y web regenerada. `check` pasó 74. Nueva suite 19 casos en ejecución: `/workspace/informes/chema-ui-20261014-1929.log`; la tentativa previa tras reinicio falló por preview apagado, no se cuenta como aprobada. `artifacts/validacion/ui.txt` conserva último 17/17 antes de axe.
+
+Reportes/manual/árbol creados, faltan cierre APK, actualizar resultados finales y paquetes. Respaldos `5530d4c`, `1436419`, `c634908` verificados. Releer estado abajo para detalle histórico, sin repetir auditoría.
+
 # Continuidad de Repartos Chema
 
 Actualizado: 14/10/2026, 07:40 UTC. **Misión en curso, no finalizada.**

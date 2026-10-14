@@ -7,7 +7,7 @@ Resultados de esta ejecución, no recuperados de una caché de pruebas anterior.
 | `npm run check`                                                                          | TypeScript, ESLint y build Functions correctos; 74 pruebas unitarias/documentos aprobadas                       |
 | Emuladores Firestore/Storage                                                             | 14 pruebas aprobadas: 7 reglas y 7 handlers de backend                                                          |
 | `npm run build:web`                                                                      | Exportación `dist/` correcta y worker offline generado                                                          |
-| `npm run test:ui -- --workers=2`                                                         | 17 casos aprobados, 1.8 minutos en la última ejecución                                                          |
+| `npm run test:ui -- --workers=2`                                                         | 19 casos aprobados, 2.1 minutos en la última ejecución                                                          |
 | `expo export --platform android --platform ios --output-dir dist-native --max-workers 2` | Dos bundles Hermes generados; no son APK/IPA                                                                    |
 | Capturas                                                                                 | 48 PNG reales actuales: 12 pantallas × 2 anchos × 2 temas                                                       |
 | Fuente sin anuncios                                                                      | Búsqueda de identificadores propios y dependencias; ver registro de entrega                                     |
@@ -67,3 +67,7 @@ Se actualizó `@grpc/grpc-js` mediante override compatible a 1.14.6. Quedan `bra
 Pendientes: TalkBack/VoiceOver, fuente ampliada nativa y teclado físico, cámara/GPS/permisos/revocación/compartir reales, sesiones SecureStore en hardware, notificaciones FCM, transporte Auth/callable, dos usuarios reales desconectados y reconectados, batería/RAM/FPS y arranque en Android de gama baja. No hay métricas inventadas. Las 48 capturas no acreditan revisión visual manual exhaustiva de todos los estados.
 
 No se implementó PDF automático ni firma digital. No hay una URL pública de preview verificada. La compilación web no demuestra funcionamiento de todos los procesos de negocio en Android.
+
+## Validación adicional de accesibilidad (14/10, 19:30 UTC)
+
+Se añadió @axe-core/playwright solo como dependencia de desarrollo. Detectó y se corrigieron el contenedor tablist/estado seleccionado de navegación y el foco de teclado de métricas desplazables. Los dos recorridos axe, ocho pantallas en claro y oscuro, pasaron sin infracciones detectadas en las reglas WCAG A/AA seleccionadas. La suite completa actual pasó 19/19. No sustituye prueba con lectores de pantalla o teclado en dispositivos físicos. Reportes en `artifacts/validacion/axe-*.json`.

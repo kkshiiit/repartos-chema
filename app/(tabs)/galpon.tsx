@@ -83,6 +83,8 @@ export default function WarehousePage() {
         ListHeaderComponent={
           <View style={{ gap: 20, paddingBottom: 20 }}>
             <ScrollView
+              tabIndex={0}
+              accessibilityLabel="Resumen de existencias, desplazable"
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{ gap: 10 }}

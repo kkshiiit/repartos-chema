@@ -57,49 +57,60 @@ export default function Tabs() {
           <Text style={[s.label, { fontSize: 10, marginBottom: 9 }]}>OPERACIÓN</Text>
         </>
       ) : null}
-      {links.map((l) => {
-        const active = path === l.path;
-        return (
-          <Pressable
-            key={l.path}
-            accessibilityRole="tab"
-            accessibilityState={{ selected: active }}
-            onPress={() => router.replace(l.path as '/')}
-            style={{
-              flex: wide ? undefined : 1,
-              flexDirection: wide ? 'row' : 'column',
-              alignItems: 'center',
-              gap: wide ? 12 : 5,
-              padding: wide ? 13 : 7,
-              borderRadius: 10,
-              backgroundColor: active ? C.dangerBg : 'transparent',
-              minHeight: 48,
-            }}
-          >
-            <l.icon size={wide ? 19 : 21} color={active ? C.danger : C.subtle} />
-            <Text
+      <View
+        accessibilityRole="tablist"
+        accessibilityLabel="Secciones principales"
+        style={{
+          flex: wide ? undefined : 1,
+          flexDirection: wide ? 'column' : 'row',
+          gap: wide ? 10 : 2,
+        }}
+      >
+        {links.map((l) => {
+          const active = path === l.path;
+          return (
+            <Pressable
+              key={l.path}
+              accessibilityRole="tab"
+              accessibilityState={{ selected: active }}
+              aria-selected={active}
+              onPress={() => router.replace(l.path as '/')}
               style={{
-                color: active ? C.danger : C.muted,
-                fontWeight: active ? '700' : '500',
-                fontSize: wide ? 14 : 10,
+                flex: wide ? undefined : 1,
+                flexDirection: wide ? 'row' : 'column',
+                alignItems: 'center',
+                gap: wide ? 12 : 5,
+                padding: wide ? 13 : 7,
+                borderRadius: 10,
+                backgroundColor: active ? C.dangerBg : 'transparent',
+                minHeight: 48,
               }}
             >
-              {l.label}
-            </Text>
-            {wide && active ? (
-              <View
+              <l.icon size={wide ? 19 : 21} color={active ? C.danger : C.subtle} />
+              <Text
                 style={{
-                  marginLeft: 'auto',
-                  width: 5,
-                  height: 5,
-                  borderRadius: 3,
-                  backgroundColor: C.red,
+                  color: active ? C.danger : C.muted,
+                  fontWeight: active ? '700' : '500',
+                  fontSize: wide ? 14 : 10,
                 }}
-              />
-            ) : null}
-          </Pressable>
-        );
-      })}
+              >
+                {l.label}
+              </Text>
+              {wide && active ? (
+                <View
+                  style={{
+                    marginLeft: 'auto',
+                    width: 5,
+                    height: 5,
+                    borderRadius: 3,
+                    backgroundColor: C.red,
+                  }}
+                />
+              ) : null}
+            </Pressable>
+          );
+        })}
+      </View>
       {wide ? (
         <>
           <View style={[s.divider, { marginVertical: 16 }]} />

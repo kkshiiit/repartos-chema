@@ -53,6 +53,8 @@ export default function Home() {
   const header = (
     <View style={{ gap: width < 600 ? 12 : 24, paddingBottom: 12 }}>
       <ScrollView
+        tabIndex={0}
+        accessibilityLabel="Resumen de obras, desplazable"
         horizontal={width < 600}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ flexDirection: 'row', gap: 12, flex: width < 600 ? undefined : 1 }}
