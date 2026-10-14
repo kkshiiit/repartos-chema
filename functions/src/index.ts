@@ -71,6 +71,9 @@ export const applyMovement = onCall({ timeoutSeconds: 60, memory: '512MiB' }, as
       const [meta] = await getStorage().bucket().file(expected).getMetadata();
       if (meta.contentType !== 'image/jpeg' || Number(meta.size) > 2097152)
         throw new HttpsError('invalid-argument', 'Foto inválida.');
+      const [bytes] = await getStorage().bucket().file(expected).download();
+      if (bytes.length < 4 || bytes[0] !== 0xff || bytes[1] !== 0xd8 || bytes[2] !== 0xff)
+        throw new HttpsError('invalid-argument', 'El archivo no contiene una imagen JPEG.');
       const url = new URL(p.uri);
       if (
         url.protocol !== 'https:' ||
@@ -117,6 +120,10 @@ export const applyMovement = onCall({ timeoutSeconds: 60, memory: '512MiB' }, as
           'Se alcanzó el límite del agregado. Requiere partición antes de ampliar.',
         );
       const stored = compact(next);
+      const undoAudit =
+        command.action.type === 'UNDO'
+          ? await tx.get(db.doc(`audit/${command.action.logId}`))
+          : null;
       if (Buffer.byteLength(JSON.stringify(stored)) > 750000)
         throw new HttpsError(
           'resource-exhausted',
@@ -130,6 +137,7 @@ export const applyMovement = onCall({ timeoutSeconds: 60, memory: '512MiB' }, as
       });
       const log = next.logs[0]!;
       tx.create(audit, JSON.parse(JSON.stringify(log)));
+      if (undoAudit?.exists) tx.update(undoAudit.ref, { undoneBy: command.id });
       if (
         next.notificaciones.some((n) => n.id === command.id) &&
         !before.notificaciones.some((n) => n.id === command.id)
@@ -260,23 +268,52 @@ async function sendNotification(id: string) {
     error = 'No hay tokens de administradores registrados.';
   try {
     const entries = await db.collection('pushTokens').limit(500).get();
-    const allowed: string[] = [];
-    for (const token of entries.docs) {
-      const user = await db.doc(`users/${token.get('uid')}`).get();
-      if (user.get('role') === 'ADMIN') allowed.push(token.get('token'));
-    }
+    const uids = [...new Set(entries.docs.map((t) => String(t.get('uid'))))];
+    const profiles = uids.length
+      ? await db.getAll(...uids.map((uid) => db.doc(`users/${uid}`)))
+      : [];
+    const admins = new Set(profiles.filter((p) => p.get('role') === 'ADMIN').map((p) => p.id));
+    const accepted = new Set<string>(claimed.acceptedTokenIds || []);
+    const allowed = entries.docs.filter(
+      (token) => admins.has(token.get('uid')) && !accepted.has(token.id),
+    );
     if (allowed.length) {
       const result = await getMessaging().sendEachForMulticast({
-        tokens: allowed,
-        notification: { title: 'Repartos Chema', body: String(claimed.message) },
+        tokens: allowed.map((t) => String(t.get('token'))),
+        // No mostrar datos de clientes en la pantalla bloqueada del dispositivo.
+        notification: {
+          title: 'Repartos Chema',
+          body: 'Hay un faltante registrado. Abre la aplicación para revisarlo.',
+        },
         data: { eventId: id, obraId: String(claimed.obraId) },
         android: { collapseKey: id },
         webpush: { notification: { tag: id } },
       });
-      if (result.failureCount === 0) {
+      let failed = 0;
+      for (const [index, response] of result.responses.entries()) {
+        const token = allowed[index]!;
+        if (response.success) accepted.add(token.id);
+        else if (
+          [
+            'messaging/registration-token-not-registered',
+            'messaging/invalid-registration-token',
+          ].includes(response.error?.code || '')
+        )
+          await token.ref.delete();
+        else failed++;
+      }
+      // Persistir destinatarios aceptados evita reenviarles un fallo parcial posterior.
+      await ref.update({ acceptedTokenIds: [...accepted] });
+      if (failed === 0 && accepted.size > 0) {
         status = 'SENT';
         error = '';
-      } else error = `${result.failureCount} destinatarios rechazados; se reintentará.`;
+      } else
+        error = failed
+          ? `${failed} destinatarios pendientes; se reintentará.`
+          : 'No quedan tokens válidos. Activa los avisos otra vez.';
+    } else if (accepted.size > 0) {
+      status = 'SENT';
+      error = '';
     }
   } catch (e) {
     error = e instanceof Error ? e.message : 'Error FCM';

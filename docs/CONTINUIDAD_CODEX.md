@@ -1,6 +1,6 @@
 # Continuidad de Repartos Chema
 
-Actualizado: 14/10/2026, 07:30 UTC. **Misión en curso, no finalizada.**
+Actualizado: 14/10/2026, 07:40 UTC. **Misión en curso, no finalizada.**
 
 ## Objetivo y permisos
 
@@ -27,17 +27,17 @@ Respaldo original y versionado completos. Persistencia/inventario, retirada de a
 - Fotos web IndexedDB, copia con imágenes, IDs nuevos al restaurar, conservación preventiva y prueba de reinicio. No respaldadas automáticamente en nube demo.
 - Word y Excel descargados realmente en Chromium. Generador nativo implementado, pendiente ejecución física.
 - 14/10 `npm run check`: 74 pruebas, tipos, lint y build Functions correctos.
-- 14/10 emuladores: 11/11 (7 reglas y 4 handlers backend). Handler con contexto Auth controlado y Firestore real emulado; no acredita transporte callable HTTP/FCM.
-- 14/10 web exportada; suite UI de 16 casos en ejecución. Foto/copia/restauración pasó. Suite anterior 15/15 pasó, capturas en `artifacts/capturas`.
+- 14/10 emuladores: 14/14 (7 reglas y 7 handlers backend, incluidos documentos privados y bytes JPEG). Handler con contexto Auth controlado y Firestore real emulado; no acredita transporte callable HTTP/FCM.
+- 14/10 web exportada; suite UI actual 17/17 aprobada (incluye triangulación/daño/recuperación y foto/copia/restauración). 48 capturas en `artifacts/capturas`. Bundles Hermes Android/iOS generados, no son APK.
 
 ## Trabajo abierto
 
-- Finalizar suite UI actual y revisar capturas (320/360/390/768/1440, ambos temas).
+- Suite UI final aprobada. Capturas dashboard 390 claro/oscuro revisadas visualmente; falta validación física/ampliación de texto.
 - Android SDK oficial instalado parcialmente; plataforma 36 disponible, build-tools/NDK/platform-tools en descarga. Sin APK aún. Revisar logs `/workspace/informes/chema-sdk-*.log`.
 - Compilar APK si viable y regenerar bundles nativos sin anuncios; probar exportaciones nativas en dispositivo cuando esté disponible.
-- Revisar seguridad restante: FCM nativo no implementado, reintentos parciales FCM, tokens al cerrar sesión, auditoría remota de deshacer. Fotos remotas usan enlaces privados con token; precisar límites.
+- Revisar seguridad restante: FCM nativo no implementado, reintentos parciales FCM, tokens al cerrar sesión. Auditoría remota de deshacer corregida y probada. Reintentos parciales FCM implementados, pendientes de prueba FCM real. Fotos remotas usan enlaces privados con token; precisar límites.
 - Auditoría dependencias: override grpc 1.14.6 aplicado; repetir audit y documentar avisos upstream sin forzar downgrades.
-- README/ARQUITECTURA/FIREBASE requieren actualización; crear manual, validación, árbol y reporte final. Entregar ZIP fuente/web y hashes nuevos.
+- README/ARQUITECTURA/FIREBASE actualizados; manual, validación, cambios y árbol creados. Completar reporte final y entregar ZIP fuente/web con hashes nuevos.
 - Firebase real, credenciales, CORS, usuarios verificados, FCM, hardware, firma de distribución y autorización de despliegue pendientes externos.
 
 ## Archivos del punto actual
@@ -86,3 +86,10 @@ Leer resultados de `chema-ui-20261014.log` y descargas SDK; resolver fallos, eje
 - Auditoría npm detectó 34 alertas (22 altas, 12 moderadas), varias transitivas de herramientas. No usar `audit fix --force` (propone downgrades incompatibles). Aplicando override compatible @grpc/grpc-js 1.14.6. Braces 3.0.3 y node-forge 1.4.0 siguen siendo últimas versiones consultadas, con avisos abiertos; registrar límites de producción. Informe original `/workspace/informes/chema-npm-audit-app.json`.
 - Android: `expo prebuild --platform android --no-install --skip-dependency-update react,react-native` exitoso. Directorio generado ignorado en Git; todavía NO APK. Descargando herramientas SDK oficiales para investigar build local gratuito. Sin claves Firebase ni publicación.
 - Próximo paso exacto: terminar instalación SDK si viable; corregir checks de última fuente, build web, suite UI completa (incluida foto/backup), integración de 7 reglas, validaciones de Functions, documentación y paquetes con hashes. Actualizar este archivo y commits antes de cualquier interrupción. Misión sigue pendiente.
+
+## Punto Android 14/10 07:40 UTC
+
+- Gradle 9.3.1 descargado y plugins Kotlin compilando. Log `/workspace/informes/chema-android-build.log`. JVM precisa `GRADLE_OPTS` con proxy heredado del entorno; no desactivar TLS. SDK plataforma36/build-tools36/platform-tools instalados.
+- SDK CLI NDK agotó 480 s; descarga oficial con curl reanudable `/workspace/scratch/android-ndk-r27b-linux.zip`, log `chema-ndk-curl.log`. Tamaño esperado 663976775, SHA1 oficial 6fc476b2e57d7c01ac0c95817746b927035b9749; validar antes de extraer a `/workspace/android-sdk/ndk/27.1.12297006`. CMake3.22.1 reintento por CLI.
+- Build: desde android, `ANDROID_HOME=/workspace/android-sdk ANDROID_USER_HOME=/workspace/android-user GRADLE_USER_HOME=/workspace/gradle-cache GRADLE_OPTS='-Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080' ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a --max-workers=2`. Configuración del proxy solo para este entorno. No APK comprobado todavía.
+- Último commit de recuperación `1436419`, ZIP verificado correspondiente en puntos-control. Cambios actuales de cierre requieren commit.

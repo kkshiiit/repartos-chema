@@ -101,3 +101,71 @@ it('una edición obsoleta es rechazada y no pisa la versión confirmada', async 
     'Nombre confirmado',
   );
 });
+it('deshacer actualiza la evidencia original y conserva ambos registros remotos', async () => {
+  const delivery = request('delivery', {
+    type: 'DELIVER',
+    obraId: 'obra_5',
+    responsables: ['Fabián'],
+  });
+  await applyMovement.run(delivery);
+  const undo = request('undo', { type: 'UNDO', logId: delivery.data.id });
+  await applyMovement.run(undo);
+  expect((await db.doc(`audit/${delivery.data.id}`).get()).get('undoneBy')).toBe(undo.data.id);
+  expect((await db.doc(`audit/${undo.data.id}`).get()).exists).toBe(true);
+  const state = (await db.doc('system/state').get()).data();
+  expect(state.materiales).toEqual(seed().materiales);
+});
+
+it('exporta Excel y Word privados a Storage Emulator y rechaza filtros inválidos', async () => {
+  const { getStorage } = require('firebase-admin/storage');
+  for (const kind of ['excel', 'word']) {
+    const result = await exportDocument.run({
+      auth: { uid: 'demo_admin', token: { email_verified: true } },
+      data: { kind, ...(kind === 'word' ? { obraId: 'obra_1' } : {}) },
+    });
+    expect(result.path).toMatch(/^exports\/demo_admin\//);
+    const file = getStorage().bucket().file(result.path);
+    const [metadata] = await file.getMetadata();
+    expect(Number(metadata.metadata.expiresAt)).toBeGreaterThan(Date.now());
+    const [bytes] = await file.download();
+    expect(bytes.subarray(0, 2).toString()).toBe('PK');
+    expect(bytes.length).toBeGreaterThan(5000);
+  }
+  await expect(
+    exportDocument.run({
+      auth: { uid: 'demo_admin', token: { email_verified: true } },
+      data: { kind: 'excel', from: '2026-02-30' },
+    }),
+  ).rejects.toMatchObject({ code: 'invalid-argument' });
+});
+it('valida bytes JPEG y registra una foto solo una vez', async () => {
+  const { getStorage } = require('firebase-admin/storage');
+  const bucket = getStorage().bucket();
+  const id = `${prefix}_photo`;
+  const storagePath = `photos/demo_admin/obra_1/${id}.jpg`;
+  const file = bucket.file(storagePath);
+  await file.save(Buffer.from('<html>no es JPEG</html>'), {
+    resumable: false,
+    contentType: 'image/jpeg',
+  });
+  const command = request('photo', {
+    type: 'PHOTO',
+    obraId: 'obra_1',
+    photo: {
+      id,
+      storagePath,
+      uri: `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(storagePath)}`,
+      status: 'SYNCED',
+      usuarioUid: 'demo_admin',
+    },
+  });
+  await expect(applyMovement.run(command)).rejects.toMatchObject({ code: 'invalid-argument' });
+  await file.save(Buffer.from([255, 216, 255, 217]), {
+    resumable: false,
+    contentType: 'image/jpeg',
+  });
+  await applyMovement.run(command);
+  await file.delete();
+  await applyMovement.run(command); // El recibo confirmado no depende de que la foto siga existiendo.
+  expect((await db.doc('system/state').get()).get('revision')).toBe(1);
+});

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { View, Text, AppState, Platform } from 'react-native';
+import { useFocusEffect } from 'expo-router';
 import { History, ArrowRight } from 'lucide-react-native';
 import { useInventory } from '../../src/context/InventoryContext';
 import { useAuth } from '../../src/context/AuthContext';
@@ -28,11 +29,18 @@ export default function HistoryPage() {
     [actor, setActor] = useState('TODOS'),
     [date, setDate] = useState(''),
     [now, setNow] = useState(new Date());
-  useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 10000);
-    return () => clearInterval(timer);
-  }, []);
-  const users = [...new Map(state.logs.map((l) => [l.usuarioUid, l.usuarioNombre])).entries()];
+  useFocusEffect(
+    useCallback(() => {
+      const timer = setInterval(() => {
+        if (
+          AppState.currentState !== 'background' &&
+          (Platform.OS !== 'web' || document.visibilityState === 'visible')
+        )
+          setNow(new Date());
+      }, 10000);
+      return () => clearInterval(timer);
+    }, []),
+  );
   const [older, setOlder] = useState<ActivityLog[]>([]),
     [cursor, setCursor] = useState<HistoryCursor>(),
     [more, setMore] = useState(true),
@@ -41,6 +49,11 @@ export default function HistoryPage() {
   const all = [...new Map([...older, ...state.logs].map((l) => [l.id, l])).values()].sort((a, b) =>
     b.timestamp.localeCompare(a.timestamp),
   );
+  const users = [...new Map(all.map((l) => [l.usuarioUid, l.usuarioNombre])).entries()];
+  const works = new Map(
+    all.filter((l) => l.obraId).map((l) => [l.obraId!, l.obraNombre || 'Obra eliminada']),
+  );
+  for (const o of state.obras) works.set(o.id, o.clienteNombre);
   const data = all.filter(
     (l) =>
       `${l.accion} ${l.usuarioNombre} ${l.obraNombre || state.obras.find((o) => o.id === l.obraId)?.clienteNombre || ''}`
@@ -74,7 +87,7 @@ export default function HistoryPage() {
                   value={obra}
                   options={[
                     { value: 'TODAS', label: 'Todas las obras' },
-                    ...state.obras.map((o) => ({ value: o.id, label: o.clienteNombre })),
+                    ...[...works].map(([value, label]) => ({ value, label })),
                   ]}
                   onChange={setObra}
                 />
