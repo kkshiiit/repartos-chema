@@ -22,3 +22,9 @@ La demo no requiere Google Services ni credenciales Firebase. No confundir el mo
 Se usaron SDK/NDK bajo `/workspace/android-sdk`, caché Gradle `/workspace/gradle-cache` y JDK descargado por API oficial de Adoptium con SHA-256. El proxy existente se conserva con `GRADLE_OPTS`; no desactivar TLS. `ANDROID_USER_HOME` fija una carpeta escribible; no establecer a la vez un ANDROID_PREFS_ROOT incompatible. No se modifica HOME.
 
 El resultado instalable deberá inspeccionarse con `apksigner verify`, `aapt dump badging` y ZIP CRC, y luego probarse en un Android ARM64 real. No se afirma prueba física por el mero hecho de obtener un APK.
+
+## APK de esta entrega
+
+Compilación final correcta11m10, ARM64 Android7+, firma APKv2 verificada, 49.078.452bytes. No probado físicamente. Descargar `repartos-chema-demo-arm64.apk` desde el chat, abrirlo en Android y autorizar la instalación desde ese navegador/gestor solo si confías en esta entrega. No desactivar protecciones generales del dispositivo. Si Android rechaza la instalación, conservar el mensaje exacto; no desinstalar una versión con datos sin exportar antes su copia JSON.
+
+Abrir Repartos Chema y elegir perfil de prueba ADMIN u OPERADOR. Los datos son locales de demostración; no se comparten entre celulares. Firma con clave de prueba de plantilla: pendiente clave productiva administrada.
