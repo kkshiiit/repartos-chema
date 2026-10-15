@@ -26,7 +26,7 @@ Pruebas Android físicas (arranque/persistencia/fotos/documentos/GPS/háptica), 
 
 ## Próxima acción exacta
 
-1. Terminar respaldo de artefactos de demo en Releases del repositorio privado, verificar descargas y actualizar este punto. La fuente y el historial ya están en main. No ejecutar despliegues productivos.
+1. Probar el APK entregado en Android físico y registrar errores concretos. El respaldo del código en GitHub está completado. Subida opcional de APK/ZIP a Releases bloqueada por HTTP401 de uploads.github.com; no repetir login ni afirmar que esos binarios están en GitHub. No ejecutar despliegues productivos.
 2. Confirmar con el usuario instalación del APK en Android ARM64 y registrar cualquier error concreto; no atribuir pruebas físicas a esta sesión.
 3. Retomar pendientes productivos solo con configuración real/autorización necesaria. Preservar copias JSON de datos antes de migraciones.
 
@@ -53,3 +53,11 @@ La segunda autorización se completó y guardó fuera del proyecto, en GH_CONFIG
 Se intentó crear kkshiiit/repartos-chema privado por `gh repo create`: GraphQL Resource not accessible by integration. Un intento controlado por REST POST user/repos confirmó HTTP403 y el mismo motivo. No se creó repositorio, remoto ni push. No es rechazo de auto-review: GitHub deniega la acción a la integración autenticada. No repetir autorizaciones idénticas. Usuario debe crear el repositorio privado desde github.com/new; puede dejarlo vacío. Al recibir confirmación, verificar identidad/privacidad y subir sin repetir autorización comercial ya concedida. Si caduca la autenticación, usar conexión MCP existente y verificar permisos del nuevo repositorio.
 
 Revisión independiente previa al respaldo:328 blobs del historial alcanzable (10,28MB), patrones de secretos comunes sin credenciales reales reconocibles; única coincidencia de URL de prueba example.com. .env.example vacío de claves; semilla y documentos demo. No certifica ausencia absoluta, sí revisión comprobada. Últimos commits solo contienen documentación. No hubo cambios funcionales ni nuevas pruebas de app en esta solicitud.
+
+## Cierre comprobado del respaldo privado — 15/10
+
+Repositorio https://github.com/kkshiiit/repartos-chema, privado, main, permisos ADMIN. Primer push b691e52 y actualización documental ad66b61 completados. Se clonó desde GitHub en /tmp/chema-github-restaurado-ad66b61: HEAD ad66b61f1a5a55c2dddacfc997129e8918a20932 y git fsck sin errores. El último commit documental posterior debe verificarse también con ls-remote/pull. No se modificó lógica de aplicación en esta continuación; no se repitieron suites históricas.
+
+La conexión heredada actual permite gh api y git push/clone; no depende de /tmp/chema-gh-auth, que ya no existe tras reinicio. No imprimir credenciales. Intento de release de prueba v1.0.0-demo.1 falló al subir activos: uploads.github.com HTTP401 Bad credentials. Consulta REST posterior de releases devolvió lista vacía. No hay APK/ZIP en Releases, no hay release público/privado publicado, ni despliegue. Evitar ofrecer enlaces de descarga de assets que no existen.
+
+APK y ZIP íntegros siguen en /workspace/entregas/Repartos-Chema/instalador/repartos-chema-demo-arm64.apk y /workspace/entregas/Repartos-Chema-entrega-ed606fd.zip, entregados en chat. APK SHA256 c906e5646918ea3f1c12e1015c6b475fd5989d84f2fb283eb25ef39d5a2401c5 reconfirmado. El respaldo fuente de GitHub incluye docs/CONTINUIDAD_CODEX.md y los resultados de pruebas para recuperación entre entornos.

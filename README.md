@@ -4,7 +4,7 @@ Aplicación interna de Grupo Chema Construcciones, construida con Expo 57, React
 
 ## Descargar en Android
 
-Repositorio privado de respaldo: [kkshiiit/repartos-chema](https://github.com/kkshiiit/repartos-chema). Los paquetes preparados se guardan en [Releases](https://github.com/kkshiiit/repartos-chema/releases); requiere iniciar sesión con acceso al repositorio.
+Repositorio privado de respaldo: [kkshiiit/repartos-chema](https://github.com/kkshiiit/repartos-chema). El código y su historial están respaldados allí. El APK y el ZIP completo se entregaron por el chat; no están en Releases: el servicio de subida rechazó la autenticación con HTTP401. No confundir la descarga del código fuente de GitHub con un instalador.
 
 El APK de demo es ARM64, Android7 o superior, versión1.0.0. Firma APKv2 e integridad verificadas, todavía sin prueba en dispositivo físico. Los perfiles ADMIN/OPERADOR son ficticios y los datos se guardan en cada dispositivo; no se comparten mediante Firebase. Ver [guía Android](docs/ANDROID.md).
 
