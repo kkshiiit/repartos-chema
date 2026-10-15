@@ -163,3 +163,7 @@ Carpeta preparada en `/workspace/entregas/Repartos-Chema`; no equivale a carpeta
 ## Actualización del respaldo GitHub — 15/10
 
 El usuario creó kkshiiit/repartos-chema privado. Se subió main con el historial completo sin force push; el commit remoto b691e525ee7f7f203ebac50ee2a787c648d589e1 coincidió con el local después del reinicio del entorno. La revisión de historial y los commits posteriores no encontró credenciales reconocibles; .env.example contiene solo campos de configuración. No se configuraron workflows ni despliegues. Los bloqueos de creación descritos antes son antecedentes resueltos mediante creación manual por el usuario. La fuente se restauró mediante clonación independiente y git fsck correcto. La subida adicional de APK/ZIP a Releases falló con HTTP401 de uploads.github.com; releases consultados después: lista vacía. Los binarios continúan disponibles en la entrega del chat, no en GitHub.
+
+## Entrega adicional del APK en GitHub
+
+Tras informar el usuario que no podía descargar desde el chat, se guardó el APK en la rama privada `descargas`. [Descargar APK](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.0.0-demo.1/repartos-chema-demo-arm64.apk). GitHub confirma49.078.452bytes; restauración independiente mediante Git, SHA256 y CRC coincidentes. Rama main conserva el código. Releases sigue sin activos y el ZIP completo permanece en la entrega local. No se desplegó la app ni se activaron servicios Railway/Firebase. La prueba física Android sigue pendiente.
