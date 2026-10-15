@@ -1,8 +1,18 @@
 # Conectar el equipo desde Android
 
-Estado comprobado el 15/10/2026: el usuario confirmó que **no tiene un proyecto Firebase**. La demo 1.1 funciona localmente; distintos teléfonos todavía no comparten alquileres. No se creó un proyecto, no se activó facturación y no se desplegaron servicios.
+Estado actualizado el 15/10/2026: después de indicar que no tenía proyecto, el usuario proporcionó **ID `repartos-chema`**, **número `658913591865`**, tipo de entorno «Sin especificar». Estos datos proceden del usuario; todavía no se verificaron contra la API de Google porque no hay una cuenta autorizada en la sesión. La demo 1.1 funciona localmente; distintos teléfonos todavía no comparten alquileres. Codex no creó un proyecto, no activó facturación y no desplegó servicios.
 
-## Primer paso desde el celular, sin tarjeta ni PC
+Se guardó `.firebaserc` con el alias explícito `chema` → `repartos-chema`. No se definió un proyecto `default`, para evitar que un comando sin destino elija producción por omisión. Las pruebas de emuladores siguen usando explícitamente `demo-repartos-chema`. No se cambió `.env` ni el modo demo del APK.
+
+## Siguiente paso actual desde Android
+
+No crear otro proyecto. Abrir [Configuración general de repartos-chema](https://console.firebase.google.com/project/repartos-chema/settings/general) con la cuenta Google propietaria y registrar una aplicación **web** mediante el botón `</>`, con nombre Repartos Chema. No habilitar Hosting durante el registro. El SDK JS de esta app necesita la configuración web incluso al ejecutarse dentro del APK.
+
+Copiar el objeto público `firebaseConfig` mostrado por Firebase. Sus identificadores y API key de cliente no son una cuenta de servicio ni dan permisos administrativos por sí solos; las reglas y Auth protegen los datos. No copiar claves privadas, JSON de cuentas de servicio ni códigos OAuth. No construir `appId`, `apiKey`, dominio o bucket a partir del número del proyecto: se deben obtener los valores reales.
+
+Si Storage todavía no tiene bucket, no crearlo ni inventar su nombre. La configuración de ese servicio y Functions depende de la decisión de facturación pendiente. Recibir la configuración pública tampoco autoriza ni permite automáticamente desplegar servicios administrativos.
+
+## Paso inicial anterior, ya contestado por el usuario
 
 1. Abrir [Firebase Console](https://console.firebase.google.com/) con la cuenta Google que deba ser propietaria de los datos de Grupo Chema. No compartir esa contraseña con el equipo ni con el asistente.
 2. Elegir crear un proyecto, con nombre **Repartos Chema**. Revisar el identificador que propone Google: debe ser único y no debe inventarse en la configuración antes de crearlo. Si aparece una opción de Google Analytics, puede dejarse desactivada; no es necesaria para los alquileres.
@@ -17,7 +27,7 @@ El backend implementado usa Cloud Functions para aplicar movimientos e invitacio
 
 La documentación oficial consultada el 15/10/2026 exige el plan **Blaze**, vinculado a una cuenta Cloud Billing, para Cloud Functions y Cloud Storage. Las cuotas sin cargo no garantizan una factura de cero; las alertas de presupuesto no equivalen a un límite que detenga todos los gastos.
 
-Antes de conectar teléfonos reales se requiere autorización específica para vincular facturación y desplegar. No está concedida por la respuesta «no tengo». No se cambió de proveedor ni se rediseñó el backend para eludir este requisito.
+Antes de conectar teléfonos reales se requiere autorización específica para vincular facturación y desplegar. No está concedida por proporcionar el ID del proyecto. No se cambió de proveedor ni se rediseñó el backend para eludir este requisito.
 
 Referencias oficiales:
 
