@@ -1,3 +1,23 @@
+# Uso de Repartos Chema 1.1
+
+Al abrir por primera vez aparece una guía de cuatro pasos; se puede omitir y volver a ver desde Ajustes. Ingresá tu nombre para identificar tus movimientos. En la demo todo se guarda en el mismo celular: no ingreses datos comerciales pensando que se comparten automáticamente.
+
+- **Alquileres:** agregá un alquiler con cliente, dirección y fechas; prepará cuerpos, tablones, ruedas y accesorios. Al entregar elegí el flete e indicá quién recibió.
+- **Depósito:** consultá Disponibles, Alquilados, A reparar y Perdido. Agregar crea una pieza con stockcero; un ajuste con procedencia registra las existencias. Las acciones están debajo del nombre.
+- **Viaje:** primero vencidos y retiros de hoy; después entregas y alquileres aún en plazo. Podés reordenar manualmente o usar la ubicación. Abrir recorrido lanza Google Maps en uno o varios tramos. El último vuelve al depósito; Volver al depósito abre el pin directamente.
+- **Historial:** movimientos con nombre, fecha, cantidades y procedencia. Deshacer solo dentro de5minutos si no hay un movimiento posterior incompatible.
+- **Ajustes:** Apariencia, Equipo, dirección del depósito, responsables del flete, combos y copias. El sol/luna de las secciones principales alterna el tema; las ventanas ya no lo repiten.
+
+El depósito inicial corresponde al enlace entregado por el usuario: Formosa y Cuba, Villa Ballester. Cambiar la dirección en Ajustes modifica solo ese dispositivo. Se conserva al cerrar la app.
+
+En la demo, el primer nombre puede gestionar participantes locales y generar invitaciones locales de prueba. No equivalen a autenticación ni vinculan otros celulares. En producción, cada dispositivo usa Firebase Auth y una invitación de un solo uso; el responsable puede retirar el acceso sin borrar el historial. Hace falta configurar los servicios reales antes de compartir el equipo.
+
+**Actualizar Android:** instalar el APK nuevo sobre la versión anterior, sin desinstalarla. Antes de cualquier cambio importante, descargar copiaJSON desde Ajustes. El código fuente respaldado en GitHub no copia los datos de cada celular. Si el sistema rechaza una actualización, conservar el mensaje exacto y no borrar la versión con datos.
+
+---
+
+## Manual anterior y operaciones detalladas
+
 # Manual de Repartos Chema
 
 ## Antes de usar datos reales

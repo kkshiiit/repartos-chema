@@ -1,3 +1,4 @@
+import { login } from './helpers';
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -6,8 +7,7 @@ for (const theme of ['light', 'dark'] as const) {
     test.setTimeout(180000);
     await page.setViewportSize({ width: 390, height: 844 });
     await page.emulateMedia({ colorScheme: theme });
-    await page.goto('/');
-    await page.getByRole('button', { name: 'Administración', exact: true }).click();
+    await login(page);
     const reports = [];
     for (const route of [
       '/',

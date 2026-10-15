@@ -366,6 +366,9 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
       }
       o.estadoProceso = 'ENTREGADO';
       o.entregadoPor = names;
+      if (a.recibidoPor?.trim())
+        o.recibidoPor = required(a.recibidoPor.trim(), 'Quien recibió', 80);
+      else delete o.recibidoPor;
       o.fechaEntregaEfectiva = businessDate(now);
       delete o.fechaRetiroEfectiva;
       summary = 'Confirmó la entrega';
@@ -441,6 +444,7 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
       o.retiradoPor = [];
       delete o.fechaRetiroEfectiva;
       delete o.fechaEntregaEfectiva;
+      delete o.recibidoPor;
       summary = 'Reactivó para nueva entrega';
       break;
     }

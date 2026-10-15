@@ -28,7 +28,6 @@ export default function Combos() {
   return (
     <Screen
       title="Combos de carga"
-      subtitle="Menos toques. La misma precisión."
       back
       action={
         user?.role === 'ADMIN' ? (

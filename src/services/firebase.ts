@@ -63,6 +63,10 @@ export const cloudAdapter: RemoteAdapter = {
     return snap.data() as AppState;
   },
   async commit(operation: Operation) {
+    if (firebase().auth.currentUser?.uid !== operation.actor.uid)
+      throw new Error(
+        'La operación pertenece a otra sesión. Vuelve al acceso original para revisar sus pendientes.',
+      );
     if (operation.action.type === 'PHOTO' && operation.action.photo.status !== 'SYNCED') {
       const { uploadPhoto } = await import('./storageService');
       operation = {

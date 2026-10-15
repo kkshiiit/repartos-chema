@@ -47,7 +47,7 @@ export default function Export() {
     }
   };
   return (
-    <Screen title="Documentos" subtitle="Reportes y remitos con identidad Chema." back>
+    <Screen title="Documentos" back>
       <View style={[s.card, { maxWidth: 750 }]}>
         {user?.role !== 'ADMIN' ? (
           <Notice text="Solo administración puede exportar documentos." />

@@ -1,117 +1,156 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-  sendPasswordResetEmail,
-} from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
-import type { UserProfile, UserRole } from '../types';
+import { onAuthStateChanged, signInAnonymously, signOut } from 'firebase/auth';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { httpsCallable } from 'firebase/functions';
+import type { UserProfile } from '../types';
+import type { TeamMember } from '../domain/team';
+import { teamName, invitationToken } from '../domain/team';
 import { DATA_MODE, firebase } from '../services/firebase';
+import { localSession, clearLocalSession, enterLocalTeam } from '../services/teamService';
 import { cachedProfile, saveProfile } from '../services/profileCache';
-import { demoProfile } from '../data/seed';
 interface AuthValue {
   user: UserProfile | null;
+  membership: TeamMember | null;
+  canManageTeam: boolean;
   loading: boolean;
   error: string;
-  demoLogin: (role: UserRole) => Promise<void>;
-  login: (email: string, password: string) => Promise<void>;
+  enterTeam: (nombre: string, invitation?: string) => Promise<void>;
   logout: () => Promise<void>;
-  reset: (email: string) => Promise<void>;
 }
 const Context = createContext<AuthValue | null>(null);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserProfile | null>(null),
+    [membership, setMember] = useState<TeamMember | null>(null),
     [loading, setLoading] = useState(true),
     [error, setError] = useState('');
+  const apply = (m: TeamMember | null) => {
+    setMember(m);
+    setUser(
+      m ? { uid: m.uid, nombre: m.nombre, email: '', role: 'ADMIN', createdAt: m.createdAt } : null,
+    );
+  };
   useEffect(() => {
-    let active = true;
-    let unsubscribe: (() => void) | undefined;
-    const start = async () => {
-      if (DATA_MODE === 'demo') {
-        const role = await AsyncStorage.getItem('chema:demo-role');
+    let active = true,
+      offProfile: (() => void) | undefined;
+    if (DATA_MODE === 'demo') {
+      void localSession()
+        .then((m) => {
+          if (active) apply(m);
+        })
+        .catch(() => {
+          if (active)
+            setError('No se pudo recuperar el acceso local. Los alquileres se conservan.');
+        })
+        .finally(() => {
+          if (active) setLoading(false);
+        });
+      return () => {
+        active = false;
+      };
+    }
+    const services = firebase();
+    const off = onAuthStateChanged(services.auth, (current) => {
+      offProfile?.();
+      if (!current) {
         if (active) {
-          if (role === 'ADMIN' || role === 'OPERADOR') setUser(demoProfile(role));
+          apply(null);
           setLoading(false);
         }
         return;
       }
-      const services = firebase();
-      if (!active) return;
-      unsubscribe = onAuthStateChanged(services.auth, async (current) => {
-        if (!active) return;
-        setLoading(true);
-        try {
-          if (current?.emailVerified) {
-            let p: UserProfile | null = null;
-            try {
-              const d = await getDoc(doc(services.db, 'users', current.uid));
-              const data = d.data() as UserProfile | undefined;
-              if (!data || !['ADMIN', 'OPERADOR'].includes(data.role))
-                throw new Error('Solicita un perfil al administrador.');
-              p = { ...data, uid: current.uid };
-              await saveProfile(p);
-            } catch (e) {
-              const code = (e as { code?: string }).code || '';
-              if (!/unavailable|network-request-failed/.test(code)) throw e;
-              p = await cachedProfile(current.uid);
-              if (!p) throw new Error('Conéctate una vez para validar tu perfil.');
-            }
-            if (active && services.auth.currentUser?.uid === current.uid) setUser(p);
+      offProfile = onSnapshot(
+        doc(services.db, 'users', current.uid),
+        (snapshot) => {
+          if (!active) return;
+          const d = snapshot.data();
+          if (d?.teamAccess === true && d.active === true) {
+            const m: TeamMember = {
+              uid: current.uid,
+              nombre: d.nombre,
+              createdAt: d.createdAt,
+              active: true,
+              owner: d.teamOwner === true,
+            };
+            apply(m);
+            void saveProfile({
+              uid: m.uid,
+              nombre: m.nombre,
+              email: '',
+              role: 'ADMIN',
+              createdAt: m.createdAt,
+            }).catch(() => {});
+            setError('');
           } else {
-            if (active) {
-              setUser(null);
-              if (current) setError('Verifica tu correo antes de ingresar.');
+            apply(null);
+            if (d?.active === false)
+              setError('Tu acceso al equipo fue retirado. Contacta al responsable.');
+          }
+          setLoading(false);
+        },
+        async (e) => {
+          if (!active) return;
+          if (/unavailable|network-request-failed/.test(e.code)) {
+            const p = await cachedProfile(current.uid);
+            if (active && p) {
+              setUser(p);
+              setMember({
+                uid: p.uid,
+                nombre: p.nombre,
+                createdAt: p.createdAt,
+                owner: false,
+                active: true,
+              });
             }
+          } else {
+            apply(null);
+            setError('No se pudo validar el acceso al equipo.');
           }
-        } catch (e) {
-          if (active) {
-            setUser(null);
-            setError(e instanceof Error ? e.message : 'No se pudo validar el perfil.');
-          }
-        } finally {
           if (active) setLoading(false);
-        }
-      });
-    };
-    void start().catch((e) => {
-      if (active) {
-        setError(e instanceof Error ? e.message : 'No se pudo iniciar la sesión.');
-        setLoading(false);
-      }
+        },
+      );
     });
     return () => {
       active = false;
-      unsubscribe?.();
+      off();
+      offProfile?.();
     };
   }, []);
   const value: AuthValue = {
     user,
+    membership,
+    canManageTeam: membership?.owner === true,
     loading,
     error,
-    demoLogin: async (role) => {
-      await AsyncStorage.setItem('chema:demo-role', role);
-      setUser(demoProfile(role));
-    },
-    login: async (email, password) => {
+    enterTeam: async (nombre, input = '') => {
+      const name = teamName(nombre);
       setError('');
+      if (DATA_MODE === 'demo') {
+        apply(await enterLocalTeam(name, input));
+        return;
+      }
+      const token = invitationToken(input),
+        services = firebase();
+      if (!services.auth.currentUser) await signInAnonymously(services.auth);
       try {
-        const result = await signInWithEmailAndPassword(firebase().auth, email.trim(), password);
-        if (!result.user.emailVerified) throw new Error('Verifica tu correo para ingresar.');
-      } catch {
+        const response = await httpsCallable<{ nombre: string; token: string }, TeamMember>(
+          services.functions,
+          'joinTeam',
+        )({ nombre: name, token });
+        apply(response.data);
+      } catch (e) {
+        const message = (e as { message?: string }).message || '';
         throw new Error(
-          'No se pudo ingresar. Revisa las credenciales y la verificación del correo.',
+          message.includes('invitación') || message.includes('acceso')
+            ? message
+            : 'No se pudo ingresar al equipo. Revisa la invitación y la conexión.',
         );
       }
     },
     logout: async () => {
-      if (DATA_MODE === 'demo') await AsyncStorage.removeItem('chema:demo-role');
+      if (DATA_MODE === 'demo') await clearLocalSession();
       else await signOut(firebase().auth);
-      setUser(null);
-    },
-    reset: async (email) => {
-      await sendPasswordResetEmail(firebase().auth, email.trim());
+      apply(null);
+      setError('');
     },
   };
   return <Context.Provider value={value}>{children}</Context.Provider>;

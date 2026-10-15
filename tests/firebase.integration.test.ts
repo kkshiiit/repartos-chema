@@ -130,3 +130,34 @@ it('documento existente solo es legible por ADMIN propietario antes de vencer', 
     getMetadata(ref(env.unauthenticatedContext().storage(), 'exports/admin/valid.docx')),
   );
 });
+
+it('miembros invitados sin correo acceden solo mientras su membresía siga activa', async () => {
+  await env.withSecurityRulesDisabled(async (c) => {
+    await setDoc(doc(c.firestore(), 'users', 'invited'), {
+      role: 'ADMIN',
+      teamAccess: true,
+      active: true,
+    });
+  });
+  const c = env.authenticatedContext('invited', { email_verified: false });
+  await assertSucceeds(getDoc(doc(c.firestore(), 'system', 'state')));
+  await assertFails(
+    setDoc(doc(c.firestore(), 'users', 'invited'), { role: 'ADMIN', active: true }),
+  );
+  await assertSucceeds(
+    uploadBytes(
+      ref(c.storage(), 'photos/invited/rental/photo.jpg'),
+      new Uint8Array([255, 216, 255]),
+      { contentType: 'image/jpeg' },
+    ),
+  );
+  await env.withSecurityRulesDisabled(async (c) => {
+    await setDoc(doc(c.firestore(), 'users', 'invited'), {
+      role: 'ADMIN',
+      teamAccess: true,
+      active: false,
+    });
+  });
+  await assertFails(getDoc(doc(c.firestore(), 'system', 'state')));
+  await assertFails(getMetadata(ref(c.storage(), 'photos/invited/rental/photo.jpg')));
+});

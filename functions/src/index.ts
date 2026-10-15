@@ -20,10 +20,19 @@ const db = getFirestore();
 const stateRef = db.doc('system/state');
 setGlobalOptions({ region: 'us-central1', maxInstances: 10 });
 async function profile(req: CallableRequest): Promise<UserProfile> {
-  if (!req.auth?.uid || req.auth.token.email_verified !== true)
-    throw new HttpsError('unauthenticated', 'Se requiere correo verificado.');
+  if (!req.auth?.uid) throw new HttpsError('unauthenticated', 'Se requiere acceso al equipo.');
   const snap = await db.doc(`users/${req.auth.uid}`).get();
-  const p = snap.data() as UserProfile | undefined;
+  const data = snap.data();
+  if (data?.active === false) throw new HttpsError('permission-denied', 'Acceso revocado.');
+  if (
+    req.auth.token.email_verified !== true &&
+    !(data?.teamAccess === true && data?.active === true)
+  )
+    throw new HttpsError(
+      'unauthenticated',
+      'Se requiere una invitación válida o correo verificado.',
+    );
+  const p = data as UserProfile | undefined;
   if (!p || !['ADMIN', 'OPERADOR'].includes(p.role))
     throw new HttpsError('permission-denied', 'Perfil no autorizado.');
   return { ...p, uid: req.auth.uid };
@@ -101,7 +110,7 @@ export const applyMovement = onCall({ timeoutSeconds: 60, memory: '512MiB' }, as
       // Revalidar rol dentro de la transacción, incluso si cambió durante la petición.
       const userDoc = await tx.get(db.doc(`users/${actor.uid}`));
       const currentRole = userDoc.get('role');
-      if (!['ADMIN', 'OPERADOR'].includes(currentRole))
+      if (userDoc.get('active') === false || !['ADMIN', 'OPERADOR'].includes(currentRole))
         throw new HttpsError('permission-denied', 'Perfil revocado.');
       const now = new Date();
       const next = applyOperation(
@@ -272,7 +281,11 @@ async function sendNotification(id: string) {
     const profiles = uids.length
       ? await db.getAll(...uids.map((uid) => db.doc(`users/${uid}`)))
       : [];
-    const admins = new Set(profiles.filter((p) => p.get('role') === 'ADMIN').map((p) => p.id));
+    const admins = new Set(
+      profiles
+        .filter((p) => p.get('role') === 'ADMIN' && p.get('active') !== false)
+        .map((p) => p.id),
+    );
     const accepted = new Set<string>(claimed.acceptedTokenIds || []);
     const allowed = entries.docs.filter(
       (token) => admins.has(token.get('uid')) && !accepted.has(token.id),
@@ -366,3 +379,5 @@ export const cleanDocuments = onSchedule('every 60 minutes', async () => {
     await d.ref.delete();
   }
 });
+
+export { joinTeam, createTeamInvitation, listTeam, removeTeamMember } from './team';

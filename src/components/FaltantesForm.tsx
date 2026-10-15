@@ -26,7 +26,7 @@ export function FaltantesForm({
   return (
     <View style={{ gap: 15 }}>
       <Text style={s.muted}>
-        Solo el material que sigue en obra puede pasar a taller o perdido. Lo ya registrado no se
+        Solo el material que sigue alquiladas puede pasar a taller o perdido. Lo ya registrado no se
         descuenta otra vez.
       </Text>
       <View style={s.wrap}>
@@ -41,7 +41,7 @@ export function FaltantesForm({
         options={[
           { label: 'Ítem fuera del inventario', value: '' },
           ...available.map((m) => ({
-            label: `${m.nombre} · ${obra.saldosEnObra[m.id]} en obra`,
+            label: `${m.nombre} · ${obra.saldosEnObra[m.id]} alquiladas`,
             value: m.id,
           })),
         ]}

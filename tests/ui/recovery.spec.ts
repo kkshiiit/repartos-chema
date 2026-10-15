@@ -1,8 +1,8 @@
+import { login } from './helpers';
 import { test, expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 test('foto local, copia descargada y restauración sobreviven al reinicio', async ({ page }) => {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'Administración', exact: true }).click();
+  await login(page);
   await page.goto('/obra/obra_1');
   const photo = page.waitForEvent('filechooser');
   await page.getByRole('button', { name: 'Elegir foto', exact: true }).click();

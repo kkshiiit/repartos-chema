@@ -51,6 +51,7 @@ const obra = z
     fechaRetiroEstimada: date,
     fechaRetiroEfectiva: date.optional(),
     fechaEntregaEfectiva: date.optional(),
+    recibidoPor: z.string().max(80).optional(),
     estadoProceso: z.enum(['PENDIENTE_ENTREGA', 'ENTREGADO', 'RETIRADO', 'REINGRESADO']),
     estadoSemaphoro: z.enum(['VERDE', 'AMARILLO', 'ROJO']),
     syncStatus: z.enum(['SYNCED', 'PENDING']),

@@ -451,3 +451,20 @@ it('ítem libre no inventa material maestro ni existencias', () => {
   expect(s.materiales).toEqual(initial.materiales);
   expect(s.logs[0]!.movimientos).toHaveLength(0);
 });
+
+it('la entrega conserva quien recibió y deshacer restaura también ese dato', () => {
+  const original = seed(now);
+  const command = op({
+    type: 'DELIVER',
+    obraId: 'obra_5',
+    responsables: ['Fabián'],
+    recibidoPor: '  Ana Pérez  ',
+  });
+  const delivered = applyOperation(original, command, now);
+  expect(delivered.obras.find((o) => o.id === 'obra_5')!.recibidoPor).toBe('Ana Pérez');
+  expect(remitoText(delivered.obras.find((o) => o.id === 'obra_5')!)).toContain(
+    'Recibió: Ana Pérez',
+  );
+  const undone = applyOperation(delivered, op({ type: 'UNDO', logId: delivered.logs[0]!.id }), now);
+  expect(undone.obras.find((o) => o.id === 'obra_5')!.recibidoPor).toBeUndefined();
+});
