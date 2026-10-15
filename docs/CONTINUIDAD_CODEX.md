@@ -39,3 +39,7 @@ scripts/package.py y package-web.py generan ZIPs sin sobrescribir, verifican res
 ## Solicitud posterior: crear GitHub (15/10)
 
 Usuario reiteró autorización para crear y respaldar en kkshiiit. Conector sigue sin creación; GH_TOKEN sigue inválido. Se inició autenticación oficial GitHub CLI por device flow, sin GH_TOKEN, sesión de terminal54625. Usuario debe autorizar en github.com/login/device con el código temporal mostrado en el chat (no guardarlo aquí). No hay autenticación confirmada ni repositorio creado todavía. Al retomar, comprobar `env -u GH_TOKEN gh auth status` y perfil real antes de crear; exigir kkshiiit. Si el flujo caducó, iniciar uno nuevo. No pedir tokens por chat. Mantener repositorio privado; verificar destino y secreto antes del push.
+
+## Recuperación de autorización GitHub
+
+El usuario autorizó el device flow, pero gh terminó con Authentication complete seguido de error mkdir /home/agent/.config/gh: read-only file system. No quedó credencial utilizable. Se preparó /tmp/chema-gh-auth con permisos700, escritura comprobada y fuera del proyecto. Nuevo login en curso, sesión67278, `env -u GH_TOKEN GH_CONFIG_DIR=/tmp/chema-gh-auth gh auth login --hostname github.com --git-protocol https --web`. No guardar código temporal ni token en documentación. Comprobar identidad kkshiiit con ese GH_CONFIG_DIR antes de crear/subir. La autorización del usuario para repositorio privado sigue vigente.
