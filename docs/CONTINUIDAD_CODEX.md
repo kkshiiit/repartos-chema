@@ -35,3 +35,7 @@ Pruebas Android físicas (arranque/persistencia/fotos/documentos/GPS/háptica), 
 Desde /workspace/repartos-chema: npm run check; npm run build:web; npm run preview; npm run test:ui -- --workers=2. Integración: npm run test:integration (ver docs/VALIDACION.md para proxy del entorno). APK: npm run build:android:demo con JDK21 completo y SDK36; SDK en /workspace/android-sdk, JAVA_HOME=/workspace/jdk21/jdk-21.0.12.1+1, GRADLE_USER_HOME=/workspace/gradle-cache, ANDROID_USER_HOME=/workspace/android-user. Mantener proxy y trustStore=/etc/ssl/certs/java/cacerts; no desactivar TLS.
 
 scripts/package.py y package-web.py generan ZIPs sin sobrescribir, verifican restauración/hashes. Ver docs/INFORME_ENTREGA.md, ANDROID.md y MANUAL_USUARIO.md.
+
+## Solicitud posterior: crear GitHub (15/10)
+
+Usuario reiteró autorización para crear y respaldar en kkshiiit. Conector sigue sin creación; GH_TOKEN sigue inválido. Se inició autenticación oficial GitHub CLI por device flow, sin GH_TOKEN, sesión de terminal54625. Usuario debe autorizar en github.com/login/device con el código temporal mostrado en el chat (no guardarlo aquí). No hay autenticación confirmada ni repositorio creado todavía. Al retomar, comprobar `env -u GH_TOKEN gh auth status` y perfil real antes de crear; exigir kkshiiit. Si el flujo caducó, iniciar uno nuevo. No pedir tokens por chat. Mantener repositorio privado; verificar destino y secreto antes del push.
