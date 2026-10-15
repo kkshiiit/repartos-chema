@@ -45,9 +45,9 @@ export default function WarehousePage() {
     OTROS: 'Otros',
   };
   const metrics = [
-    { key: 'cantidadGalpon', label: 'En galpón', color: C.green, icon: Warehouse },
-    { key: 'cantidadEnObra', label: 'En obra', color: C.blue, icon: HardHat },
-    { key: 'cantidadEnTaller', label: 'En taller', color: C.orange, icon: Wrench },
+    { key: 'cantidadGalpon', label: 'Disponibles', color: C.green, icon: Warehouse },
+    { key: 'cantidadEnObra', label: 'Alquilados', color: C.blue, icon: HardHat },
+    { key: 'cantidadEnTaller', label: 'A reparar', color: C.orange, icon: Wrench },
     { key: 'cantidadPerdido', label: 'Perdido', color: C.danger, icon: TriangleAlert },
   ] as const;
   const data = state.materiales.filter(
@@ -68,12 +68,11 @@ export default function WarehousePage() {
   };
   return (
     <Screen
-      title="El galpón"
-      subtitle="Cada pieza tiene su lugar. Y su registro."
+      title="Depósito"
       scroll={false}
       action={
         user?.role === 'ADMIN' ? (
-          <Button label="Nuevo material" icon={Plus} onPress={() => open(null, 'material')} />
+          <Button label="Agregar" icon={Plus} onPress={() => open(null, 'material')} />
         ) : undefined
       }
     >
@@ -90,7 +89,7 @@ export default function WarehousePage() {
               contentContainerStyle={{ gap: 10 }}
             >
               {metrics.map((m) => (
-                <View key={m.key} style={[s.card, { minWidth: 125, padding: 12, gap: 6 }]}>
+                <View key={m.key} style={[s.card, { minWidth: 106, padding: 12, gap: 6 }]}>
                   <m.icon size={21} color={m.color} />
                   <Text style={{ color: C.text, fontSize: 28, fontWeight: '800' }}>
                     {state.materiales.reduce((n, i) => n + i[m.key], 0)}
@@ -100,7 +99,7 @@ export default function WarehousePage() {
               ))}
             </ScrollView>
             <Field
-              label="Buscar material"
+              label="Buscar pieza"
               value={query}
               onChangeText={setQuery}
               placeholder="Nombre o medida"
@@ -118,11 +117,11 @@ export default function WarehousePage() {
           </View>
         }
         ListEmptyComponent={
-          <Empty title="Sin materiales" detail="Cambia los filtros o agrega un material." />
+          <Empty title="Sin piezas" detail="Cambia los filtros o agrega una pieza." />
         }
         renderItem={({ item: m }) => (
           <View style={[s.card, { marginBottom: 12 }]}>
-            <View style={[s.row, { flexWrap: 'wrap' }]}>
+            <View style={[s.row, { alignItems: 'flex-start' }]}>
               <Package size={22} color={C.subtle} />
               <View style={s.grow}>
                 <Text style={s.h2}>
@@ -130,18 +129,18 @@ export default function WarehousePage() {
                 </Text>
                 <Text style={s.muted}>{labels[m.categoria]}</Text>
               </View>
-              {user?.role === 'ADMIN' ? (
-                <View style={s.wrap}>
-                  <Button label="Editar" variant="ghost" onPress={() => open(m, 'material')} />
-                  <Button
-                    label="Mover stock"
-                    variant="secondary"
-                    onPress={() => open(m, 'movimiento')}
-                  />
-                  <Button label="Ajustar" variant="secondary" onPress={() => open(m, 'ajuste')} />
-                </View>
-              ) : null}
             </View>
+            {user?.role === 'ADMIN' ? (
+              <View style={[s.wrap, { gap: 6 }]}>
+                <Button label="Editar" variant="ghost" onPress={() => open(m, 'material')} />
+                <Button
+                  label="Mover stock"
+                  variant="secondary"
+                  onPress={() => open(m, 'movimiento')}
+                />
+                <Button label="Ajustar" variant="secondary" onPress={() => open(m, 'ajuste')} />
+              </View>
+            ) : null}
             <View style={s.wrap}>
               {metrics.map((metric) => (
                 <View key={metric.key} style={{ flex: 1, minWidth: 65, paddingVertical: 8 }}>
@@ -163,8 +162,8 @@ export default function WarehousePage() {
             : modal === 'ajuste'
               ? 'Ajuste de inventario'
               : edit
-                ? 'Editar material'
-                : 'Nuevo material'
+                ? 'Editar pieza'
+                : 'Agregar pieza'
         }
         onClose={() => setModal('')}
       >
@@ -217,7 +216,7 @@ export default function WarehousePage() {
               />
             ) : null}
             <Field label="Motivo y comprobante" value={reason} onChangeText={setReason} />
-            <Notice text="Las entregas y retiros se registran desde cada obra. Para devolver pérdidas/daños, usa Recuperar material." />
+            <Notice text="Las entregas y retiros se registran desde cada alquiler. Para devolver pérdidas/daños, usa Recuperar material." />
           </>
         )}
         {error ? <Notice text={error} tone="error" /> : null}

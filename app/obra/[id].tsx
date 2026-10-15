@@ -124,7 +124,7 @@ export default function Detail() {
                     <ConfirmButton
                       label="Reactivar"
                       title="Preparar nueva entrega"
-                      description="La obra volverá a pendiente. Revisa fechas y carga antes de entregar de nuevo."
+                      description="El alquiler volverá a pendiente. Revisa fechas y carga antes de entregar de nuevo."
                       variant="secondary"
                       onConfirm={() => dispatch({ type: 'REACTIVATE', obraId: o.id })}
                     />
@@ -184,7 +184,7 @@ export default function Detail() {
                     </Text>
                   </View>
                   <Text style={s.muted}>
-                    {o.saldosEnObra[m.materialId] || 0} actualmente en obra
+                    {o.saldosEnObra[m.materialId] || 0} actualmente alquiladas
                   </Text>
                   <View style={s.divider} />
                 </View>
@@ -298,7 +298,7 @@ export default function Detail() {
           }}
         >
           <View style={s.card}>
-            <Text style={s.h2}>Datos de la obra</Text>
+            <Text style={s.h2}>Datos de el alquiler</Text>
             <Info label="ENTREGA PREVISTA" value={o.fechaEntrega} />
             <Info
               label="ENTREGA EFECTIVA"
@@ -310,6 +310,7 @@ export default function Detail() {
               <Info label="RETIRO EFECTIVO" value={o.fechaRetiroEfectiva} />
             ) : null}
             <Info label="TELÉFONO" value={o.clienteTelefono || 'Sin teléfono'} />
+            <Info label="RECIBIÓ" value={o.recibidoPor || 'Sin registrar'} />
             <Info label="ENTREGADO POR" value={o.entregadoPor?.join(', ') || 'Por asignar'} />
             <Info label="RETIRADO POR" value={o.retiradoPor?.join(', ') || 'Por asignar'} />
             {user?.role === 'ADMIN' ? (
@@ -340,8 +341,8 @@ export default function Detail() {
           </View>
           {user?.role === 'ADMIN' ? (
             <ConfirmButton
-              label="Eliminar obra"
-              title="Eliminar esta obra"
+              label="Eliminar alquiler"
+              title="Eliminar este alquiler"
               description="Solo se permite sin alquiler activo, fotos ni faltantes abiertos. Se conservará la evidencia en el historial."
               onConfirm={async () => {
                 await dispatch({ type: 'DELETE_OBRA', obraId: o.id });
@@ -360,7 +361,7 @@ export default function Detail() {
             retiro: 'Inspección de retiro',
             faltante: 'Registrar faltante',
             transferencia: 'Triangulación directa',
-            recuperar: 'Devolver al galpón',
+            recuperar: 'Devolver al depósito',
             ubicacion: 'Ubicación de obra',
           }[modal] || 'Operación'
         }
@@ -382,9 +383,9 @@ export default function Detail() {
                 value={recoveryDestination}
                 onChange={setRecoveryDestination}
                 options={[
-                  { value: 'galpon', label: 'Recuperado al galpón' },
+                  { value: 'galpon', label: 'Recuperado al depósito' },
                   ...(o.estadoProceso === 'ENTREGADO'
-                    ? [{ value: 'obra', label: 'Sigue en obra · corregir error' }]
+                    ? [{ value: 'obra', label: 'Sigue alquiladas · corregir error' }]
                     : []),
                   { value: 'taller', label: 'En taller · corregir tipo' },
                   { value: 'perdido', label: 'Perdido · corregir tipo' },
@@ -434,7 +435,7 @@ export default function Detail() {
                 })
               }
             />
-            <Notice text="Usa tu GPS solo si estás físicamente en esta obra. También puedes ingresar coordenadas manualmente." />
+            <Notice text="Usa tu GPS solo si estás físicamente en este alquiler. También puedes ingresar coordenadas manualmente." />
             <Field
               label="Latitud"
               value={lat}

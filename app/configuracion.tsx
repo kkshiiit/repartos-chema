@@ -1,3 +1,6 @@
+import { DepotSettings } from '../src/components/DepotSettings';
+import { TeamSettings } from '../src/components/TeamSettings';
+import { useWelcome } from '../src/components/WelcomeProvider';
 import { userError } from '../src/services/errors';
 import { useTheme } from '../src/context/ThemeContext';
 import React, { useState } from 'react';
@@ -12,6 +15,7 @@ import { enableNotifications } from '../src/services/notifications';
 export default function Settings() {
   const { s } = useUI();
   const theme = useTheme();
+  const { openWelcome } = useWelcome();
   const { user } = useAuth(),
     { state, dispatch, backup, restore } = useInventory();
   const [names, setNames] = useState<string | null>(null),
@@ -32,7 +36,10 @@ export default function Settings() {
     }
   };
   return (
-    <Screen title="Configuración" back>
+    <Screen title="Ajustes" back>
+      <Button label="Ver bienvenida" variant="secondary" onPress={openWelcome} />
+      <TeamSettings />
+      <DepotSettings />
       <View style={[s.card, { maxWidth: 700 }]}>
         <Text style={s.h2}>Apariencia</Text>
         <View style={s.wrap}>
@@ -52,8 +59,8 @@ export default function Settings() {
           ))}
         </View>
         <Text style={s.muted}>
-          El sol o la luna cambian el tema al instante. Tu elección se guarda solo en este
-          dispositivo.
+          Tu elección se guarda en este dispositivo. También podés cambiarla desde la cabecera
+          principal.
         </Text>
         {theme.error ? <Notice text={theme.error} tone="error" /> : null}
       </View>
@@ -110,7 +117,7 @@ export default function Settings() {
         {user?.role === 'ADMIN' ? (
           <View style={s.section}>
             <Text style={s.h2}>Copia de datos</Text>
-            <Notice text="Guarda la copia en un lugar privado. Contiene obras, historial y fotos locales; no incluye contraseñas. Los archivos Excel y Word no reemplazan esta copia." />
+            <Notice text="Guarda la copia en un lugar privado. Contiene alquileres, historial y fotos locales; no incluye contraseñas. Los archivos Excel y Word no reemplazan esta copia." />
             <Button
               label="Descargar copia"
               variant="secondary"
@@ -129,7 +136,7 @@ export default function Settings() {
               <ConfirmButton
                 label="Restaurar copia"
                 title="Reemplazar datos demo"
-                description="Se validará la copia y se conservará el inventario anterior en este dispositivo antes de reemplazarlo. Esta acción cambia todas las obras de la demo."
+                description="Se validará la copia y se conservará el inventario anterior en este dispositivo antes de reemplazarlo. Esta acción cambia todos los alquileres de la demo."
                 onConfirm={async () => {
                   await restore(restoreRaw);
                   setRestoreRaw(null);

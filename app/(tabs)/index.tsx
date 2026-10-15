@@ -45,23 +45,18 @@ export default function Home() {
     [state.obras, zone, status, query, today],
   );
   const counts = (key: string) => state.obras.filter((o) => obraStatus(o).key === key).length;
-  const date = new Date(`${businessDate()}T12:00:00`).toLocaleDateString('es-AR', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-  });
   const header = (
     <View style={{ gap: width < 600 ? 12 : 24, paddingBottom: 12 }}>
       <ScrollView
         tabIndex={0}
-        accessibilityLabel="Resumen de obras, desplazable"
+        accessibilityLabel="Resumen de alquileres, desplazable"
         horizontal={width < 600}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ flexDirection: 'row', gap: 12, flex: width < 600 ? undefined : 1 }}
       >
         {[
           {
-            label: 'Obras activas',
+            label: 'Alquilados',
             n: state.obras.filter((o) => o.estadoProceso === 'ENTREGADO').length,
             icon: Layers,
             color: C.blue,
@@ -96,7 +91,7 @@ export default function Home() {
               }}
             >
               {String(metric.n).padStart(2, '0')}
-              <Text style={{ fontSize: 12, color: C.subtle, fontWeight: '400' }}> obras</Text>
+              <Text style={{ fontSize: 12, color: C.subtle, fontWeight: '400' }}></Text>
             </Text>
           </View>
         ))}
@@ -105,7 +100,7 @@ export default function Home() {
         <View style={[s.input, s.row, { flexGrow: 1, flexBasis: width < 600 ? 155 : 230 }]}>
           <Search size={18} color={C.subtle} />
           <TextInput
-            accessibilityLabel="Buscar obras"
+            accessibilityLabel="Buscar alquileres"
             value={query}
             onChangeText={setQuery}
             placeholder="Buscar cliente o dirección…"
@@ -121,7 +116,7 @@ export default function Home() {
             compact={width < 600}
             value={zone}
             options={[
-              { value: 'TODAS', label: 'Todas las zonas' },
+              { value: 'TODAS', label: 'Zona' },
               ...zones.map((z) => ({ value: z, label: z })),
             ]}
             onChange={setZone}
@@ -134,12 +129,12 @@ export default function Home() {
         contentContainerStyle={{ gap: 8 }}
       >
         {[
-          { key: 'TODAS', label: 'Todas', color: C.text },
-          { key: 'ROJO', label: 'Vencidas', color: C.danger },
+          { key: 'TODAS', label: 'Todos', color: C.text },
+          { key: 'ROJO', label: 'Vencidos', color: C.danger },
           { key: 'AMARILLO', label: 'Retiro hoy', color: C.yellow },
           { key: 'VERDE', label: 'Al día', color: C.green },
           { key: 'PENDIENTE', label: 'Por entregar', color: C.purple },
-          { key: 'RETIRADO', label: 'Retiradas', color: C.muted },
+          { key: 'RETIRADO', label: 'Retirados', color: C.muted },
         ].map((f) => (
           <Chip
             key={f.key}
@@ -152,7 +147,7 @@ export default function Home() {
       </ScrollView>
       <View style={[s.row, { justifyContent: 'space-between' }]}>
         <Text style={s.h2}>
-          En la operación{' '}
+          Resultados{' '}
           <Text style={{ color: C.subtle, fontSize: 14, fontWeight: '400' }}>
             {' '}
             / {filtered.length}
@@ -164,12 +159,7 @@ export default function Home() {
   );
   return (
     <Screen
-      title="Tus obras, al día."
-      subtitle={
-        width < 600
-          ? undefined
-          : `${date.charAt(0).toUpperCase() + date.slice(1)} · Cada movimiento, bajo control.`
-      }
+      title="Alquileres"
       scroll={false}
       action={
         user?.role === 'ADMIN' ? (
@@ -180,7 +170,7 @@ export default function Home() {
               variant="secondary"
               onPress={() => router.push('/exportar')}
             />
-            <Button label="Nueva obra" icon={Plus} onPress={() => router.push('/obra/nueva')} />
+            <Button label="Nuevo alquiler" icon={Plus} onPress={() => router.push('/obra/nueva')} />
           </View>
         ) : undefined
       }
@@ -202,7 +192,7 @@ export default function Home() {
           ) : null
         }
         ListEmptyComponent={
-          <Empty title="Sin obras aquí" detail="Prueba otra búsqueda o cambia los filtros." />
+          <Empty title="Sin alquileres" detail="Prueba otra búsqueda o cambia los filtros." />
         }
         renderItem={({ item }) => (
           <View style={{ paddingRight: columns > 1 ? 14 : 0, paddingBottom: 16 }}>

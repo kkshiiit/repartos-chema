@@ -46,7 +46,7 @@ export function remitoDocument(o: ObraCard) {
           }),
           new Paragraph({ text: 'REMITO DE MATERIALES', heading: 'Heading1' }),
           new Paragraph(`Cliente: ${o.clienteNombre}`),
-          new Paragraph(`Obra: ${o.direccion} · ${o.localidadBarrio}`),
+          new Paragraph(`Destino: ${o.direccion} · ${o.localidadBarrio}`),
           new Paragraph(
             `Entrega prevista: ${o.fechaEntrega}    |    Retiro estimado: ${o.fechaRetiroEstimada}`,
           ),
@@ -84,6 +84,7 @@ export function remitoDocument(o: ObraCard) {
             text: 'ACLARACIÓN Y FIRMA DE RECIBIDO',
             spacing: { before: 400, after: 600 },
           }),
+          new Paragraph(`Recibió: ${o.recibidoPor || 'Sin registrar'}`),
           new Paragraph('Firma: ______________________________________________'),
           new Paragraph('Aclaración: __________________________________________'),
           new Paragraph('Documento: __________________  Fecha: _________________'),

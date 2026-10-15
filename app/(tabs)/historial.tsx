@@ -51,7 +51,7 @@ export default function HistoryPage() {
   );
   const users = [...new Map(all.map((l) => [l.usuarioUid, l.usuarioNombre])).entries()];
   const works = new Map(
-    all.filter((l) => l.obraId).map((l) => [l.obraId!, l.obraNombre || 'Obra eliminada']),
+    all.filter((l) => l.obraId).map((l) => [l.obraId!, l.obraNombre || 'Alquiler eliminado']),
   );
   for (const o of state.obras) works.set(o.id, o.clienteNombre);
   const data = all.filter(
@@ -64,11 +64,7 @@ export default function HistoryPage() {
       (!date || businessDate(new Date(l.timestamp)) === date),
   );
   return (
-    <Screen
-      title="Cada movimiento cuenta"
-      subtitle="Trazabilidad, responsables y correcciones en un lugar."
-      scroll={false}
-    >
+    <Screen title="Historial" scroll={false}>
       <DataList
         data={data}
         keyExtractor={(l) => l.id}
@@ -78,15 +74,15 @@ export default function HistoryPage() {
               label="Buscar actividad"
               value={query}
               onChangeText={setQuery}
-              placeholder="Acción, obra o responsable"
+              placeholder="Acción, alquiler o responsable"
             />
             <View style={s.wrap}>
               <View style={{ flex: 1, minWidth: 180 }}>
                 <Select
-                  label="Obra"
+                  label="Alquiler"
                   value={obra}
                   options={[
-                    { value: 'TODAS', label: 'Todas las obras' },
+                    { value: 'TODAS', label: 'Todos los alquileres' },
                     ...[...works].map(([value, label]) => ({ value, label })),
                   ]}
                   onChange={setObra}
@@ -170,7 +166,7 @@ export default function HistoryPage() {
                 <Text style={s.body}>
                   {l.obraNombre ||
                     state.obras.find((o) => o.id === l.obraId)?.clienteNombre ||
-                    'Obra eliminada'}
+                    'Alquiler eliminado'}
                 </Text>
               ) : null}
               {l.movimientos.map((m, i) => (

@@ -1,174 +1,137 @@
-import { userError } from '../../src/services/errors';
-import { ThemeToggle } from '../../src/components/ThemeToggle';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, useWindowDimensions } from 'react-native';
-import { Boxes, ArrowRight, ShieldCheck, Truck, WifiOff, HardHat } from 'lucide-react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  useWindowDimensions,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ArrowRight, Link, BookOpen } from 'lucide-react-native';
 import { useAuth } from '../../src/context/AuthContext';
-import { DATA_MODE } from '../../src/services/firebase';
+import { useWelcome } from '../../src/components/WelcomeProvider';
 import { Button, Field, Notice, useUI } from '../../src/components/ui';
+import { DATA_MODE } from '../../src/services/firebase';
+import { userError } from '../../src/services/errors';
+import { useLocalSearchParams } from 'expo-router';
 export default function Login() {
-  const { C, s } = useUI();
-  const { demoLogin, login, error: authError, reset } = useAuth();
-  const [email, setEmail] = useState(''),
-    [password, setPassword] = useState(''),
+  const { C, s } = useUI(),
+    { width } = useWindowDimensions(),
+    { enterTeam, error: authError } = useAuth(),
+    { openWelcome } = useWelcome();
+  const params = useLocalSearchParams<{ token?: string }>();
+  const [name, setName] = useState(''),
+    [invite, setInvite] = useState(params.token || ''),
+    [showInvite, setShowInvite] = useState(!!params.token || DATA_MODE === 'firebase'),
     [busy, setBusy] = useState(false),
-    [error, setError] = useState(''),
-    [notice, setNotice] = useState('');
-  const { width } = useWindowDimensions();
-  const run = async (f: () => Promise<void>) => {
+    [error, setError] = useState('');
+  async function enter() {
     setBusy(true);
     setError('');
     try {
-      await f();
+      await enterTeam(name, invite);
     } catch (e) {
       setError(userError(e));
     } finally {
       setBusy(false);
     }
-  };
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: C.bg }}>
-      <View style={{ alignItems: 'flex-end', padding: 12 }}>
-        <ThemeToggle />
-      </View>
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', padding: 24 }}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
-        <View
-          style={{
-            width: '100%',
-            maxWidth: 1050,
-            alignSelf: 'center',
-            flexDirection: width > 800 ? 'row' : 'column',
-            gap: width > 800 ? 80 : 30,
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: 'center',
+            padding: width < 400 ? 24 : 36,
           }}
         >
-          <View style={{ flex: 1, gap: 28, justifyContent: 'center' }}>
-            <View style={s.row}>
-              <View style={{ backgroundColor: C.red, padding: 13, borderRadius: 13 }}>
-                <Boxes size={27} color="white" />
+          <View style={{ width: '100%', maxWidth: 460, alignSelf: 'center', gap: 30 }}>
+            <View style={{ alignItems: 'center', gap: 18, paddingTop: 12 }}>
+              <Image
+                source={require('../../assets/brand/grupo-chema.png')}
+                resizeMode="contain"
+                accessibilityLabel="Logo Grupo Chema Construcciones"
+                style={{ width: 230, height: 158, opacity: 0.9 }}
+              />
+              <View style={{ gap: 6 }}>
+                <Text
+                  accessibilityRole="header"
+                  style={{
+                    color: C.text,
+                    fontSize: 32,
+                    lineHeight: 38,
+                    fontWeight: '800',
+                    textAlign: 'center',
+                    letterSpacing: -1,
+                  }}
+                >
+                  Grupo Chema{`\n`}Construcciones
+                </Text>
+                <Text style={[s.muted, { textAlign: 'center', marginTop: 8 }]}>
+                  Repartos · Alquiler de andamios
+                </Text>
               </View>
-              <View>
-                <Text style={{ color: C.text, fontWeight: '900', fontSize: 22 }}>
-                  CHEMA<Text style={{ color: C.red }}>.</Text>
-                </Text>
-                <Text style={{ color: C.muted, fontSize: 10, letterSpacing: 2 }}>
-                  CONSTRUCCIONES
-                </Text>
-              </View>
             </View>
-            <Text
-              style={{
-                fontSize: width > 800 ? 54 : 34,
-                fontWeight: '800',
-                color: C.text,
-                lineHeight: width > 800 ? 62 : 41,
-                letterSpacing: -1.7,
-              }}
-            >
-              Cada equipo.{`\n`}Cada obra.{`\n`}Todo en orden.
-            </Text>
-            <Text style={[s.muted, { fontSize: 16, maxWidth: 360, lineHeight: 25 }]}>
-              La operación de Grupo Chema, desde el galpón hasta la última entrega.
-            </Text>
-            <View style={s.wrap}>
-              <ChipItem icon={Truck} text="Entregas y retiros" />
-              <ChipItem icon={WifiOff} text="Trabajo sin conexión" />
-            </View>
-          </View>
-          <View
-            style={[
-              s.card,
-              { flex: 1, padding: 30, alignSelf: 'center', width: '100%', maxWidth: 440, gap: 22 },
-            ]}
-          >
-            <View style={{ gap: 9 }}>
-              <Text style={s.label}>REPARTOS CHEMA</Text>
-              <Text style={[s.h2, { fontSize: 25 }]}>
-                {DATA_MODE === 'demo' ? 'Entrá a la operación' : 'Bienvenido de nuevo'}
-              </Text>
-              <Text style={s.muted}>
-                {DATA_MODE === 'demo'
-                  ? 'Elegí un perfil para explorar la aplicación.'
-                  : 'Ingresá con tu cuenta de la empresa.'}
-              </Text>
-            </View>
-            {DATA_MODE === 'demo' ? (
-              <>
-                <Notice text="DEMOSTRACIÓN LOCAL · Datos ficticios. Sin autenticación real ni sincronización cloud." />
-                <Button
-                  label="Administración"
-                  icon={ShieldCheck}
-                  loading={busy}
-                  onPress={() => void run(() => demoLogin('ADMIN'))}
-                />
-                <Button
-                  label="Operación"
-                  icon={HardHat}
-                  variant="secondary"
-                  disabled={busy}
-                  onPress={() => void run(() => demoLogin('OPERADOR'))}
-                />
-                <Text style={s.muted}>
-                  Administración gestiona obras e inventario. Operación registra el trabajo en
-                  campo.
-                </Text>
-              </>
-            ) : (
-              <>
+            <View style={[s.card, { padding: 24, gap: 20 }]}>
+              <Text style={s.h2}>Ingresar al equipo</Text>
+              <Field
+                label="Tu nombre"
+                placeholder="¿Cómo te llamás?"
+                value={name}
+                onChangeText={setName}
+                autoCapitalize="words"
+                maxLength={60}
+                autoComplete="name"
+                returnKeyType="go"
+                onSubmitEditing={() => void enter()}
+              />
+              {showInvite ? (
                 <Field
-                  label="Correo electrónico"
-                  value={email}
-                  onChangeText={setEmail}
+                  label="Enlace de invitación"
+                  placeholder="Pegá la invitación del equipo"
+                  value={invite}
+                  onChangeText={setInvite}
                   autoCapitalize="none"
-                  keyboardType="email-address"
-                  autoComplete="email"
+                  autoCorrect={false}
                 />
-                <Field
-                  label="Contraseña"
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry
-                  autoComplete="current-password"
-                />
+              ) : null}
+              {error || authError ? <Notice text={error || authError} tone="error" /> : null}
+              <Button
+                label="Entrar"
+                icon={ArrowRight}
+                loading={busy}
+                onPress={() => void enter()}
+              />
+              {!showInvite ? (
                 <Button
-                  label="Ingresar"
-                  icon={ArrowRight}
-                  loading={busy}
-                  onPress={() => void run(() => login(email, password))}
-                />
-                <Button
-                  label="Recuperar acceso"
+                  label="Tengo una invitación"
+                  icon={Link}
                   variant="ghost"
-                  onPress={() =>
-                    void run(async () => {
-                      await reset(email);
-                      setNotice('Si la cuenta existe, recibirás un correo de recuperación.');
-                    })
-                  }
+                  onPress={() => setShowInvite(true)}
                 />
-              </>
-            )}
-            {error || authError ? <Notice text={error || authError} tone="error" /> : null}
-            {notice ? <Notice text={notice} tone="success" /> : null}
-            <View style={s.divider} />
-            <Text style={{ color: C.subtle, textAlign: 'center', fontSize: 11 }}>
-              Herramienta interna · Grupo Chema Construcciones
-            </Text>
+              ) : null}
+              {DATA_MODE === 'demo' ? (
+                <Text style={[s.muted, { fontSize: 12 }]}>
+                  Prueba local · Los datos se guardan en este celular. Compartir entre celulares
+                  requiere conectar el equipo.
+                </Text>
+              ) : (
+                <Text style={s.muted}>
+                  Usá el enlace que te compartió el responsable del equipo.
+                </Text>
+              )}
+            </View>
+            <Button label="Cómo se usa" icon={BookOpen} variant="ghost" onPress={openWelcome} />
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
-  );
-}
-function ChipItem({ icon: Icon, text }: { icon: typeof Truck; text: string }) {
-  const { C, s } = useUI();
-  return (
-    <View style={s.row}>
-      <Icon size={17} color={C.red} />
-      <Text style={s.muted}>{text}</Text>
-    </View>
   );
 }

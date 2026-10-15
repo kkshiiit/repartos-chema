@@ -1,7 +1,8 @@
 rules_version = '2';
 service firebase.storage {
  match /b/{bucket}/o {
-  function member() { return request.auth != null && request.auth.token.email_verified == true && firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role in ['ADMIN','OPERADOR']; }
+  function profile() { return firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data; }
+  function member() { return request.auth != null && profile().get('active',true) != false && profile().role in ['ADMIN','OPERADOR'] && ((profile().get('teamAccess',false) == true && profile().get('active',false) == true) || request.auth.token.get('email_verified',false) == true); }
   function admin() { return member() && firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'ADMIN'; }
   match /photos/{uid}/{obraId}/{photoId} {
    allow read: if member();

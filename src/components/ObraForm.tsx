@@ -22,11 +22,7 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
     [error, setError] = useState(''),
     [busy, setBusy] = useState(false);
   return (
-    <Screen
-      title={obra ? 'Editar obra' : 'Nueva obra'}
-      subtitle="El primer paso de una entrega en orden."
-      back
-    >
+    <Screen title={obra ? 'Editar alquiler' : 'Nuevo alquiler'} back>
       <View style={[s.card, { maxWidth: 700, width: '100%', alignSelf: 'center', gap: 20 }]}>
         {user?.role !== 'ADMIN' ? (
           <Notice text="Solo administración puede gestionar obras." tone="error" />
@@ -37,7 +33,7 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
               label="Nombre del cliente"
               value={nombre}
               onChangeText={setNombre}
-              placeholder="Cliente o nombre de la obra"
+              placeholder="Cliente o nombre de el alquiler"
             />
             <Field
               label="Teléfono con país"
@@ -84,7 +80,7 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
             </Text>
             {error ? <Notice text={error} tone="error" /> : null}
             <Button
-              label="Guardar obra"
+              label="Guardar alquiler"
               loading={busy}
               onPress={async () => {
                 setBusy(true);

@@ -1,65 +1,53 @@
 import { test, expect } from '@playwright/test';
-import type { Page } from '@playwright/test';
-async function login(page: Page) {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'Administración', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Tus obras, al día.' })).toBeVisible();
-}
-async function bg(page: Page) {
+import { login } from './helpers';
+async function bg(page: import('@playwright/test').Page) {
   return page.evaluate(() => document.documentElement.style.colorScheme);
 }
-test('tema sistema en vivo, alternancia manual, persistencia y formulario sin pérdida', async ({
+test('tema automático conserva formulario y no hay selectores repetidos en ventanas', async ({
   page,
 }) => {
   await page.emulateMedia({ colorScheme: 'light' });
   await login(page);
   expect(await bg(page)).toBe('light');
+  await page.getByRole('button', { name: 'Nuevo alquiler', exact: true }).click();
+  await page.getByLabel('Nombre del cliente', { exact: true }).fill('Borrador sin perder');
+  await expect(page.getByRole('button', { name: /Activar modo/ })).toHaveCount(0);
   await page.emulateMedia({ colorScheme: 'dark' });
   await expect.poll(() => bg(page)).toBe('dark');
-  const before = await page.evaluate(() => localStorage.getItem('chema:demo:v1'));
-  await page.getByRole('button', { name: 'Nueva obra', exact: true }).click();
-  await page.getByLabel('Nombre del cliente', { exact: true }).fill('Borrador sin perder');
-  await page.getByRole('button', { name: 'Activar modo claro', exact: true }).last().click();
-  expect(await bg(page)).toBe('light');
   await expect(page.getByLabel('Nombre del cliente', { exact: true })).toHaveValue(
     'Borrador sin perder',
   );
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Activar modo claro', exact: true }).click();
   await page.emulateMedia({ colorScheme: 'dark' });
   expect(await bg(page)).toBe('light');
-  expect(await page.evaluate(() => localStorage.getItem('chema:demo:v1'))).toBe(before);
-  await page.goto('/configuracion');
-  await expect(page.getByRole('button', { name: 'Claro', exact: true })).toHaveAttribute(
-    'aria-pressed',
-    'true',
-  );
   await page.reload();
-  await expect(
-    page.getByRole('button', { name: 'Activar modo oscuro', exact: true }).last(),
-  ).toBeVisible();
+  await expect.poll(() => bg(page)).toBe('light');
+  await page.goto('/configuracion');
   await page.getByRole('button', { name: 'Seguir sistema', exact: true }).click();
   await expect.poll(() => bg(page)).toBe('dark');
+  await page.goto('/obra/obra_5');
+  await page.getByRole('button', { name: 'Preparar carga', exact: true }).click();
+  await expect(page.getByRole('button', { name: /Activar modo/ })).toHaveCount(0);
+  await page.getByLabel('Apodo de esta carga', { exact: true }).first().fill('Borrador modal');
   await page.emulateMedia({ colorScheme: 'light' });
   await expect.poll(() => bg(page)).toBe('light');
-  await page.getByRole('button', { name: 'Activar modo oscuro', exact: true }).last().click();
-  await expect.poll(() => bg(page)).toBe('dark');
-  await page.goto('/obra/obra_5');
-  await page.getByRole('button', { name: 'Preparar carga', exact: true }).last().click();
-  await page.getByLabel('Apodo de esta carga', { exact: true }).first().fill('Borrador modal');
-  await page.getByRole('button', { name: 'Activar modo claro', exact: true }).last().click();
   await expect(page.getByLabel('Apodo de esta carga', { exact: true }).first()).toHaveValue(
     'Borrador modal',
   );
-  expect(await page.evaluate(() => localStorage.getItem('chema:demo:v1'))).toBe(before);
 });
 for (const width of [320, 360, 390, 768, 1440])
   for (const theme of ['light', 'dark'] as const) {
-    test(`pantallas ${width}px ${theme} sin desbordamiento`, async ({ page }) => {
+    test(`pantallas ${width}px ${theme} sin recortes`, async ({ page }) => {
       test.setTimeout(180000);
       const errors: string[] = [];
       page.on('pageerror', (e) => errors.push(e.message));
       await page.setViewportSize({ width, height: width > 1000 ? 1000 : 844 });
       await page.emulateMedia({ colorScheme: theme, reducedMotion: 'reduce' });
-      const capture = async (name: string) => {
+      await page.addInitScript(() => localStorage.setItem('chema:welcome:v2', 'done'));
+      await page.goto('/');
+      await expect(page.getByLabel('Tu nombre', { exact: true })).toBeVisible();
+      async function capture(name: string) {
         expect(
           await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
           name,
@@ -69,42 +57,39 @@ for (const width of [320, 360, 390, 768, 1440])
             path: `artifacts/capturas/${width}-${theme}-${name}.png`,
             fullPage: true,
           });
-      };
-      await page.goto('/');
-      await expect(page.getByRole('button', { name: 'Administración', exact: true })).toBeVisible();
+      }
       await capture('login');
-      await page.getByRole('button', { name: 'Administración', exact: true }).click();
-      await expect(page.getByRole('heading', { name: 'Tus obras, al día.' })).toBeVisible();
+      await page.getByLabel('Tu nombre', { exact: true }).fill('Equipo de prueba');
+      await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+      await expect(page.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible();
       await capture('obras');
-      const screens = [
-        ['galpon', 'El galpón'],
-        ['mapa', 'El viaje'],
-        ['historial', 'Cada movimiento cuenta'],
-        ['obra/nueva', 'Nueva obra'],
-        ['obra/obra_5', 'Casa Los Aromos'],
-        ['combos', 'Combos de carga'],
-        ['configuracion', 'Configuración'],
-        ['exportar', 'Documentos'],
-      ] as const;
-      for (const [route] of screens) {
+      for (const route of [
+        'galpon',
+        'mapa',
+        'historial',
+        'obra/nueva',
+        'obra/obra_5',
+        'combos',
+        'configuracion',
+        'exportar',
+      ]) {
         await page.goto('/' + route);
-        await expect(
-          page
-            .getByRole('button', {
-              name: theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro',
-              exact: true,
-            })
-            .last(),
-        ).toBeVisible();
-        await expect(page.getByRole('heading').last()).toBeVisible();
-        if (route === 'obra/obra_5') {
-          // Un contenedor con overflow oculto puede recortar controles sin ampliar el documento.
+        await expect(page.getByRole('heading').first()).toBeVisible();
+        await expect(page.getByRole('button', { name: /Activar modo/ })).toHaveCount(
+          ['galpon', 'mapa', 'historial'].includes(route) ? 1 : 0,
+        );
+        if (route === 'obra/obra_5')
           for (const name of ['Preparar carga', 'Documento', 'Ubicación']) {
-            const bounds = await page.getByRole('button', { name, exact: true }).boundingBox();
-            expect(bounds).not.toBeNull();
-            expect(bounds!.x).toBeGreaterThanOrEqual(0);
-            expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width + 1);
+            const b = await page.getByRole('button', { name, exact: true }).boundingBox();
+            expect(b).not.toBeNull();
+            expect(b!.x).toBeGreaterThanOrEqual(0);
+            expect(b!.x + b!.width).toBeLessThanOrEqual(width + 1);
           }
+        if (route === 'galpon') {
+          const box = await page.getByText('Marco de andamio 1.30m', { exact: true }).boundingBox();
+          expect(box).not.toBeNull();
+          expect(box!.width).toBeGreaterThan(140);
+          expect(box!.height).toBeLessThan(90);
         }
         await capture(route.replaceAll('/', '-'));
       }
@@ -117,6 +102,7 @@ for (const width of [320, 360, 390, 768, 1440])
         await expect(
           page.getByRole('button', { name: 'Confirmar operación', exact: true }),
         ).toBeVisible();
+        await expect(page.getByRole('button', { name: /Activar modo/ })).toHaveCount(0);
         await capture(name!);
       }
       expect(errors).toEqual([]);

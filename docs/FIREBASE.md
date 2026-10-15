@@ -94,3 +94,19 @@ Las pruebas de reglas incluidas se ejecutan con emuladores, sin Firebase real. L
 - Fotos: los tokens de URL son secretos de acceso al objeto aunque la configuración Firebase del cliente sea pública. Limitar compartición, revisar revocación y limpieza segura de huérfanos.
 - El agregado tiene límites explícitos. Diseñar un archivo/partición y su migración auditada antes de excederlos; no aumentar a ciegas el límite ni borrar logs.
 - Programar copias de servidor, retención, recuperación ante desastre y pruebas con dos dispositivos. La copia demo no sustituye este procedimiento.
+
+## Acceso del equipo por invitación (versión 1.1)
+
+La interfaz ya no pide elegir roles ni compartir una contraseña. Cada dispositivo usa una identidad anónima **real de Firebase Auth**, persistente según la plataforma; el nombre identifica quién registra movimientos. Todos los integrantes activos comparten el único espacio de Grupo Chema y sus permisos operativos. Solo el propietario interno gestiona invitaciones y bajas. Los roles técnicos se conservan en el dominio para compatibilidad con los datos y reglas anteriores; no son opciones de entrada.
+
+No habilitado en la demo distribuida. Para configurarlo con acceso al proyecto real:
+
+1. Habilitar el proveedor Anónimo de Firebase Authentication. Completar las variables Firebase reales y seleccionar modo firebase. No poner una cuenta de servicio en la app.
+2. Inicializar el propietario desde un equipo administrativo autorizado. Para vincular una identidad anónima existente, obtener su UID de Authentication después del primer intento de ingreso y ejecutar el script administrativo de bootstrap con `UID ADMIN "Nombre" --team-owner`. El script usa credenciales administrativas reales, comprueba que el UID existe, crea `system/team` solo si no existe y rechaza reemplazar a otro propietario. El inventario existente se conserva. Una cuenta anterior de correo verificado también puede inicializarse por la vía existente. **No existe una reclamación abierta de propietario desde el cliente.**
+3. Desplegar, con autorización, `joinTeam`, `createTeamInvitation`, `listTeam`, `removeTeamMember` y las reglas actualizadas junto con los endpoints existentes. Cloud Functions puede exigir facturación; no se desplegó ni se activó facturación en esta entrega.
+4. El propietario entra con su nombre desde el dispositivo cuyo UID se inicializó. Desde Ajustes crea invitaciones de un uso con vencimiento de24horas. El servidor almacena SHA256 del secreto, no el enlace completo. Se puede abrir `repartoschema://equipo/unirse?token=...` en la app o pegarlo en Ingresar al equipo. No registrar esos enlaces en analítica ni documentación.
+5. Unirse valida invitación, vencimiento, consumo único y propietario activo dentro de transacción. Limita intentos fallidos por UID. Las bajas conservan documentos, auditoría y movimientos, y bloquean Functions, Firestore y Storage. La app escucha cambios del perfil mientras está conectada. Un dispositivo sin conexión puede conservar datos que ya conocía; no se promete borrado remoto ni revocación inmediata offline.
+
+Las pruebas de emuladores cubren esos handlers y reglas; no prueban emisión de tokens Auth, transporte callable público, apertura de enlaces en Android físico ni un despliegue real. Falta configurar App Check/controles globales de abuso, respaldar el acceso propietario y definir recuperación cuando cambia o pierde el celular. Los límites de datos del agregado siguen vigentes. Una persona puede conseguir otra identidad en otro dispositivo; no tratar el nombre como control de identidad.
+
+La demo guarda un directorio local aparte del inventario. El primer nombre gestiona invitaciones locales de prueba. Cambiar de nombre conserva los alquileres del dispositivo; **no comparte datos con otros teléfonos**. La invitación local no debe usarse para incorporar celulares al equipo real.

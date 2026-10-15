@@ -1,3 +1,7 @@
+# Punto vigente — rediseño 1.1 en ejecución
+
+Continuar desde [CONTINUIDAD_REDISENO.md](CONTINUIDAD_REDISENO.md). El usuario probó el APK anterior y pidió cambios visuales, bienvenida, nombre/invitación de equipo y depósito fijo. Logo real recibido. No confundir la demo1.0 publicada en rama descargas con el APK1.1 en compilación.
+
 # Continuidad de Repartos Chema
 
 Actualizado15/10/2026 UTC, 14/10 por la noche Argentina. La misión de producción sigue pendiente.

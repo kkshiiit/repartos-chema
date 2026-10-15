@@ -25,7 +25,7 @@ export function LoadEditor({ obra, onDone }: { obra: ObraCard; onDone: () => voi
         label="Agregar material"
         value={selected}
         options={state.materiales.map((m) => ({
-          label: `${m.nombre} ${m.medida || ''} · ${m.cantidadGalpon} en galpón`,
+          label: `${m.nombre} ${m.medida || ''} · ${m.cantidadGalpon} en depósito`,
           value: m.id,
         }))}
         onChange={setSelected}
@@ -86,7 +86,7 @@ export function LoadEditor({ obra, onDone }: { obra: ObraCard; onDone: () => voi
             />
             {m && i.cantidad > m.cantidadGalpon ? (
               <Notice
-                text={`⚠️ Stock bajo: Pedidos ${i.cantidad} | En Galpón ${m.cantidadGalpon}. Puedes guardar la carga. La entrega requiere procedencia autorizada.`}
+                text={`⚠️ Stock bajo: Pedidos ${i.cantidad} | En Depósito ${m.cantidadGalpon}. Puedes guardar la carga. La entrega requiere procedencia autorizada.`}
               />
             ) : null}
             <Text style={s.muted}>

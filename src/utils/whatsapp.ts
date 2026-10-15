@@ -3,17 +3,18 @@ export function remitoText(o: ObraCard): string {
   return [
     'REMITO · GRUPO CHEMA CONSTRUCCIONES',
     `Cliente: ${o.clienteNombre}`,
-    `Obra: ${o.direccion} · ${o.localidadBarrio}`,
+    `Destino: ${o.direccion} · ${o.localidadBarrio}`,
     `Entrega prevista: ${o.fechaEntrega}`,
     `Entrega efectiva: ${o.fechaEntregaEfectiva || 'Sin registro separado'}`,
     `Retiro estimado: ${o.fechaRetiroEstimada}`,
     '',
-    'Materiales:',
+    'Andamios y accesorios:',
     ...o.materialesCargados.map(
       (m) =>
         `• ${m.cantidad} × ${m.nombre}${m.medida ? ` · ${m.medida}` : ''}${m.apodo ? ` (${m.apodo})` : ''}`,
     ),
     '',
+    `Recibió: ${o.recibidoPor || 'Sin registrar'}`,
     `Entrega: ${o.entregadoPor?.join(', ') || 'Por asignar'}`,
     `Retiro: ${o.retiradoPor?.join(', ') || 'Por asignar'}`,
     'Repartos Chema · Remito informativo',

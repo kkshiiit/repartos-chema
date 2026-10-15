@@ -1,3 +1,4 @@
+import { WelcomeProvider } from '../src/components/WelcomeProvider';
 import { Stack, router, useSegments } from 'expo-router';
 import { ThemeProvider } from '../src/context/ThemeContext';
 import React, { useEffect } from 'react';
@@ -10,7 +11,7 @@ function Navigation() {
   const { C } = useUI();
   const { user, loading } = useAuth();
   const segments = useSegments();
-  const authRoute = segments[0] === '(auth)';
+  const authRoute = segments[0] === '(auth)' || segments[0] === 'equipo';
   useEffect(() => {
     if (!loading) {
       if (!user && !authRoute) router.replace('/(auth)/login');
@@ -35,7 +36,9 @@ export default function Root() {
     <SafeAreaProvider>
       <ThemeProvider>
         <AuthProvider>
-          <Navigation />
+          <WelcomeProvider>
+            <Navigation />
+          </WelcomeProvider>
         </AuthProvider>
       </ThemeProvider>
     </SafeAreaProvider>

@@ -2,9 +2,10 @@ export type ThemePreference = 'light' | 'dark' | 'system';
 export const THEME_KEY = 'chema:theme:v1';
 export const dark = {
   bg: '#0F172A',
-  panel: '#172235',
-  panel2: '#1C2940',
+  panel: '#172133',
+  panel2: '#1E2A3E',
   line: '#63738D',
+  hairline: '#344158',
   text: '#F4F6FA',
   muted: '#B5C2D5',
   subtle: '#A4B3C9',
@@ -26,10 +27,11 @@ export const dark = {
 };
 export type Colors = typeof dark;
 export const light: Colors = {
-  bg: '#F1F4F8',
+  bg: '#F4F6F9',
   panel: '#FFFFFF',
-  panel2: '#E7EDF4',
+  panel2: '#EAF0F6',
   line: '#78889C',
+  hairline: '#D6DEE8',
   text: '#172033',
   muted: '#3F4D62',
   subtle: '#4E5E73',

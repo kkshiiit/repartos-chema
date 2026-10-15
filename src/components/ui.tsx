@@ -22,7 +22,7 @@ import {
   Check,
   ChevronDown,
   CloudOff,
-  LogOut,
+  Settings,
   Package,
   RefreshCw,
   X,
@@ -42,16 +42,16 @@ const makeStyles = (C: Colors) =>
     card: {
       backgroundColor: C.panel,
       borderWidth: 1,
-      borderColor: C.line,
-      borderRadius: 18,
-      padding: 20,
+      borderColor: C.hairline,
+      borderRadius: 16,
+      padding: 18,
       gap: 14,
     },
-    title: { color: C.text, fontSize: 28, fontWeight: '800', letterSpacing: -0.7 },
-    h2: { color: C.text, fontSize: 19, fontWeight: '700' },
+    title: { color: C.text, fontSize: 26, fontWeight: '800', letterSpacing: -0.5 },
+    h2: { color: C.text, fontSize: 18, fontWeight: '700', lineHeight: 25 },
     body: { color: C.text, fontSize: 15, lineHeight: 23 },
     muted: { color: C.muted, fontSize: 13, lineHeight: 20 },
-    label: { color: C.muted, fontSize: 12, fontWeight: '700', letterSpacing: 0.8 },
+    label: { color: C.muted, fontSize: 12, fontWeight: '700', letterSpacing: 0.2 },
     input: {
       backgroundColor: C.bg,
       borderWidth: 1,
@@ -63,8 +63,8 @@ const makeStyles = (C: Colors) =>
       fontSize: 15,
       minHeight: 48,
     },
-    divider: { height: 1, backgroundColor: C.line },
-    grow: { flex: 1 },
+    divider: { height: 1, backgroundColor: C.hairline },
+    grow: { flex: 1, minWidth: 0 },
     section: { gap: 14 },
     error: { color: C.danger, fontSize: 14, lineHeight: 21 },
   });
@@ -136,10 +136,40 @@ export function Button({
           color: variant === 'primary' ? C.onPrimary : variant === 'danger' ? C.danger : C.text,
           fontSize: 14,
           fontWeight: '700',
+          flexShrink: 1,
+          textAlign: 'center',
         }}
       >
         {label}
       </Text>
+    </Pressable>
+  );
+}
+export function IconButton({
+  label,
+  icon: Icon,
+  onPress,
+}: {
+  label: string;
+  icon: React.ComponentType<{ size: number; color: string }>;
+  onPress: () => void;
+}) {
+  const { C } = useUI();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      onPress={onPress}
+      style={({ pressed }) => ({
+        minHeight: 44,
+        minWidth: 44,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: pressed ? C.selection : C.panel,
+        borderRadius: 12,
+      })}
+    >
+      <Icon size={21} color={C.text} />
     </Pressable>
   );
 }
@@ -179,10 +209,10 @@ export function Chip({
       style={{
         minHeight: onPress ? 44 : 28,
         paddingHorizontal: 13,
-        paddingVertical: onPress ? 11 : 5,
+        paddingVertical: onPress ? 10 : 5,
         borderRadius: 9,
         borderWidth: 1,
-        borderColor: selected ? color : C.line,
+        borderColor: selected ? color : C.hairline,
         backgroundColor: selected ? `${color}16` : C.panel,
         flexDirection: 'row',
         alignItems: 'center',
@@ -208,6 +238,7 @@ export function Sheet({
   children: React.ReactNode;
 }) {
   const { C, s } = useUI();
+  const { width } = useWindowDimensions();
   return (
     <Modal visible={visible} transparent animationType="none" onRequestClose={onClose}>
       <KeyboardAvoidingView
@@ -215,7 +246,7 @@ export function Sheet({
         style={{
           flex: 1,
           backgroundColor: C.overlay,
-          justifyContent: 'center',
+          justifyContent: width < 600 ? 'flex-end' : 'center',
           alignItems: 'center',
           padding: 16,
         }}
@@ -224,21 +255,21 @@ export function Sheet({
           style={{
             width: '100%',
             maxWidth: 560,
-            maxHeight: '92%',
+            maxHeight: '90%',
             backgroundColor: C.panel,
             borderRadius: 20,
             borderWidth: 1,
-            borderColor: C.line,
+            borderColor: C.hairline,
           }}
+          accessibilityViewIsModal
         >
-          <View style={[s.row, { padding: 20, borderBottomWidth: 1, borderColor: C.line }]}>
+          <View style={[s.row, { padding: 16, borderBottomWidth: 1, borderColor: C.hairline }]}>
             <Text style={[s.h2, s.grow]}>{title}</Text>
-            <ThemeToggle />
-            <Button label="Cerrar" icon={X} variant="ghost" onPress={onClose} />
+            <IconButton label="Cerrar" icon={X} onPress={onClose} />
           </View>
           <ScrollView
             keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{ padding: 20, gap: 18 }}
+            contentContainerStyle={{ padding: 16, gap: 16 }}
           >
             {children}
           </ScrollView>
@@ -278,15 +309,29 @@ export function Select({
       </Pressable>
       <Sheet visible={open} title={label} onClose={() => setOpen(false)}>
         {options.map((o) => (
-          <Button
+          <Pressable
             key={o.value}
-            label={o.label}
-            variant={o.value === value ? 'primary' : 'secondary'}
+            accessibilityRole="button"
+            accessibilityLabel={o.label}
+            accessibilityState={{ selected: o.value === value }}
+            aria-pressed={o.value === value}
             onPress={() => {
               onChange(o.value);
               setOpen(false);
             }}
-          />
+            style={({ pressed }) => [
+              s.row,
+              {
+                minHeight: 48,
+                padding: 12,
+                borderRadius: 10,
+                backgroundColor: o.value === value || pressed ? C.selection : 'transparent',
+              },
+            ]}
+          >
+            <Text style={[s.body, { flex: 1 }]}>{o.label}</Text>
+            {o.value === value ? <Check size={19} color={C.text} /> : null}
+          </Pressable>
         ))}
       </Sheet>
     </View>
@@ -342,89 +387,71 @@ export function Screen({
   scroll?: boolean;
 }) {
   const { C, s } = useUI();
-  const { user, logout } = useAuth(),
+  const { user } = useAuth(),
     inv = useInventory(),
     { width } = useWindowDimensions();
-  const [account, setAccount] = useState(false),
-    [recovery, setRecovery] = useState<string | null>(null),
+  const [recovery, setRecovery] = useState<string | null>(null),
     [localError, setLocalError] = useState('');
   const body = (
     <View
       style={{
-        padding: width > 800 ? 28 : 12,
-        gap: width > 800 ? 20 : 12,
+        padding: width > 800 ? 28 : 16,
+        gap: width > 800 ? 24 : 18,
         width: '100%',
         maxWidth: 1500,
         alignSelf: 'center',
         flex: scroll ? undefined : 1,
       }}
     >
-      <View style={[s.row, { justifyContent: 'space-between' }]}>
-        <View style={s.row}>
-          <View
-            style={{
-              width: 7,
-              height: 7,
-              borderRadius: 5,
-              backgroundColor: inv.online ? C.green : C.yellow,
-            }}
-          />
-          <Text style={s.muted}>
-            {DATA_MODE === 'demo'
-              ? 'DEMO · Guardado local'
-              : !inv.online
-                ? 'Sin conexión'
-                : inv.syncing
-                  ? 'Sincronizando…'
-                  : `${inv.queue.length} pendientes`}
-          </Text>
-        </View>
-        <View style={s.row}>
-          <ThemeToggle />
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Abrir perfil"
-            onPress={() => setAccount(true)}
-            style={[s.row, { minHeight: 44 }]}
-          >
-            <Text style={[s.muted, { display: width < 450 ? 'none' : 'flex' }]}>
-              {user?.nombre}
-            </Text>
-            <View
-              style={{
-                backgroundColor: C.panel2,
-                width: 36,
-                height: 36,
-                borderRadius: 12,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <Text style={{ color: C.text, fontWeight: '700' }}>
-                {user?.role === 'ADMIN' ? 'AD' : 'OP'}
-              </Text>
-            </View>
-          </Pressable>
-        </View>
-      </View>
-      <View style={[s.row, { justifyContent: 'space-between', flexWrap: 'wrap' }]}>
-        <View style={{ gap: 7, flexShrink: 1 }}>
+      <View style={{ gap: 8 }}>
+        <View style={[s.row, { justifyContent: 'space-between' }]}>
           {back ? (
-            <Button
+            <IconButton
               label="Volver"
               icon={ArrowLeft}
-              variant="ghost"
               onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))}
-              style={{ alignSelf: 'flex-start', paddingHorizontal: 0 }}
             />
           ) : null}
-          <Text accessibilityRole="header" style={s.title}>
+          <Text accessibilityRole="header" style={[s.title, { flex: 1, minWidth: 0 }]}>
             {title}
           </Text>
-          {subtitle ? <Text style={s.muted}>{subtitle}</Text> : null}
+          {!back ? (
+            <View style={[s.row, { gap: 6 }]}>
+              <ThemeToggle />
+              <IconButton
+                label="Abrir ajustes"
+                icon={Settings}
+                onPress={() => router.push('/configuracion')}
+              />
+            </View>
+          ) : null}
         </View>
-        {action}
+        {subtitle ? <Text style={s.muted}>{subtitle}</Text> : null}
+        {!back ? (
+          <View style={[s.row, { gap: 6 }]}>
+            <View
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: 3,
+                backgroundColor: inv.online ? C.green : C.yellow,
+              }}
+            />
+            <Text style={{ color: C.muted, fontSize: 12 }}>
+              {DATA_MODE === 'demo'
+                ? 'Demo · En este dispositivo'
+                : !inv.online
+                  ? 'Sin conexión'
+                  : inv.syncing
+                    ? 'Sincronizando…'
+                    : inv.queue.length
+                      ? `${inv.queue.length} pendientes`
+                      : 'Guardado en el equipo'}
+            </Text>
+          </View>
+        ) : null}
       </View>
+      {action ? <View style={{ alignSelf: 'stretch' }}>{action}</View> : null}
       {inv.error || inv.queue.some((q) => q.status === 'CONFLICT') ? (
         <View style={{ gap: 8 }}>
           <Notice text={inv.error || 'Conflicto pendiente de revisión.'} tone="error" />
@@ -483,7 +510,7 @@ export function Screen({
   );
   return (
     <SafeAreaView
-      edges={['top', 'bottom', 'left', 'right']}
+      edges={back ? ['top', 'bottom', 'left', 'right'] : ['top', 'left', 'right']}
       style={{ flex: 1, backgroundColor: C.bg }}
     >
       {scroll ? (
@@ -496,39 +523,6 @@ export function Screen({
       ) : (
         body
       )}
-      <Sheet visible={account} title="Tu perfil" onClose={() => setAccount(false)}>
-        <Text style={s.h2}>{user?.nombre}</Text>
-        <Chip label={user?.role === 'ADMIN' ? 'Administración' : 'Operación'} selected />
-        <Notice
-          text={
-            DATA_MODE === 'demo'
-              ? 'Perfil de prueba. No equivale a una cuenta autenticada. Los datos de ejemplo se comparten entre ambos perfiles en este dispositivo.'
-              : 'Cuenta verificada de Firebase. El servidor valida el rol de cada operación.'
-          }
-        />
-        <Text style={s.muted}>
-          {DATA_MODE === 'demo'
-            ? 'Sin nube ni notificaciones enviadas.'
-            : 'El inventario se confirma mediante transacciones del servidor.'}
-        </Text>
-        <Button
-          label="Configuración"
-          variant="secondary"
-          onPress={() => {
-            setAccount(false);
-            router.push('/configuracion');
-          }}
-        />
-        <Button
-          label="Cambiar sesión"
-          icon={LogOut}
-          variant="secondary"
-          onPress={() => {
-            setAccount(false);
-            void logout();
-          }}
-        />
-      </Sheet>
     </SafeAreaView>
   );
 }
@@ -579,7 +573,9 @@ export function Pending() {
   return (
     <View style={[s.row, { gap: 5 }]}>
       <CloudOff size={13} color={C.subtle} />
-      <Text style={{ fontSize: 11, color: C.muted }}>Pendiente de nube</Text>
+      <Text style={{ fontSize: 11, color: C.muted }}>
+        {DATA_MODE === 'demo' ? 'Guardado local' : 'Pendiente de nube'}
+      </Text>
     </View>
   );
 }

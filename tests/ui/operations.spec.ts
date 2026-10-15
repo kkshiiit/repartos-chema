@@ -1,8 +1,8 @@
+import { login } from './helpers';
 import { test, expect } from '@playwright/test';
 test('retiro y reingreso conservan el total', async ({ page }) => {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'Administración', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Tus obras, al día.' })).toBeVisible();
+  await login(page);
+  await expect(page.getByRole('heading', { name: 'Alquileres' })).toBeVisible();
   const total = () =>
     page.evaluate(() => {
       const s = JSON.parse(localStorage.getItem('chema:demo:v1')!).state;
@@ -36,13 +36,12 @@ test('retiro y reingreso conservan el total', async ({ page }) => {
 
 test('triangulación, daño y recuperación conservan existencias y procedencia', async ({ page }) => {
   const state = () => page.evaluate(() => JSON.parse(localStorage.getItem('chema:demo:v1')!).state);
-  await page.goto('/');
-  await page.getByRole('button', { name: 'Administración', exact: true }).click();
+  await login(page);
   await page.goto('/obra/obra_1');
   const before = await state();
   await page.getByRole('button', { name: 'Triangular', exact: true }).click();
   await page.getByRole('button', { name: 'Fabián', exact: true }).click();
-  await page.getByRole('button', { name: 'Obra destino', exact: true }).click();
+  await page.getByRole('button', { name: 'Alquiler destino', exact: true }).click();
   await page.getByRole('button', { name: 'Casa Los Aromos', exact: true }).click();
   await page
     .getByLabel('Motivo de transferencia', { exact: true })

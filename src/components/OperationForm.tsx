@@ -41,6 +41,7 @@ export function OperationForm({
   const { state, dispatch } = useInventory(),
     { user } = useAuth();
   const [drivers, setDrivers] = useState<string[]>([]),
+    [received, setReceived] = useState(''),
     [incidents, setIncidents] = useState<IncidentInput[]>([]),
     [error, setError] = useState(''),
     [busy, setBusy] = useState(false),
@@ -60,7 +61,14 @@ export function OperationForm({
       {mode !== 'faltante' ? <Drivers value={drivers} onChange={setDrivers} /> : null}
       {mode === 'entrega' ? (
         <>
-          <Notice text="Al confirmar, la carga pasa de galpón a obra. Revisa cantidades y responsables." />
+          <Notice text="Confirmá las piezas y el flete antes de entregar." />
+          <Field
+            label="Recibió"
+            placeholder="Nombre de quien recibió los andamios"
+            value={received}
+            onChangeText={setReceived}
+            maxLength={80}
+          />
           <Field
             label="Retiro previsto · AAAA-MM-DD"
             value={retiro}
@@ -78,11 +86,11 @@ export function OperationForm({
             return (
               <View key={i.materialId} style={{ gap: 10 }}>
                 <Notice
-                  text={`⚠️ Stock bajo: Pedidos ${i.cantidad} | En Galpón ${stock}. ${i.nombre}: faltan ${missing}.`}
+                  text={`⚠️ Stock bajo: Pedidos ${i.cantidad} | En Depósito ${stock}. ${i.nombre}: faltan ${missing}.`}
                 />
                 {user?.role === 'ADMIN' ? (
                   <Select
-                    label={`Obra de origen · ${i.nombre}`}
+                    label={`Alquiler de origen · ${i.nombre}`}
                     value={origins[i.materialId] || ''}
                     options={state.obras
                       .filter(
@@ -118,8 +126,8 @@ export function OperationForm({
           <Notice
             text={
               mode === 'retiro'
-                ? 'El material sano vuelve a galpón. Registra aquí solo los nuevos daños o pérdidas de esta inspección.'
-                : 'El material afectado sale del saldo de esta obra. El aviso a administración quedará pendiente hasta que el servicio FCM lo confirme.'
+                ? 'El material sano vuelve a depósito. Registra aquí solo los nuevos daños o pérdidas de esta inspección.'
+                : 'El material afectado sale del saldo de este alquiler. El aviso a administración quedará pendiente hasta que el servicio FCM lo confirme.'
             }
           />
           <FaltantesForm obra={obra} value={incidents} onChange={setIncidents} />
@@ -128,7 +136,7 @@ export function OperationForm({
       {mode === 'transferencia' ? (
         <>
           <Select
-            label="Obra destino"
+            label="Alquiler destino"
             value={target}
             options={state.obras
               .filter(
@@ -153,7 +161,7 @@ export function OperationForm({
           />
           <SmartCounter value={cantidad} onChange={setCantidad} />
           <Field label="Motivo de transferencia" value={motivo} onChangeText={setMotivo} />
-          <Notice text="Traslado directo entre obras. No suma disponibilidad al galpón." />
+          <Notice text="Traslado directo entre obras. No suma disponibilidad al depósito." />
         </>
       ) : null}
       {error ? <Notice text={error} tone="error" /> : null}
@@ -166,6 +174,7 @@ export function OperationForm({
             if (mode === 'entrega')
               await dispatch({
                 type: 'DELIVER',
+                recibidoPor: received.trim(),
                 fechaRetiroEstimada: retiro,
                 obraId: obra.id,
                 responsables: drivers,

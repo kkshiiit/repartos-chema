@@ -55,7 +55,7 @@ export function CardObra({ obra: o }: { obra: ObraCard }) {
         </View>
         <View style={{ gap: 7 }}>
           <Text
-            numberOfLines={1}
+            numberOfLines={2}
             style={{ color: C.text, fontSize: 19, fontWeight: '700', letterSpacing: -0.4 }}
           >
             {o.clienteNombre}
@@ -80,14 +80,14 @@ export function CardObra({ obra: o }: { obra: ObraCard }) {
           ))}
           <Text style={{ fontSize: 11, color: C.subtle }}>
             {o.materialesCargados.length > 2
-              ? `+${o.materialesCargados.length - 2} materiales`
+              ? `+${o.materialesCargados.length - 2} piezas`
               : o.materialesCargados.length
                 ? o.estadoProceso === 'PENDIENTE_ENTREGA'
                   ? 'Carga preparada'
                   : o.estadoProceso === 'ENTREGADO'
-                    ? 'Saldo actual en obra'
+                    ? 'Piezas alquiladas'
                     : 'Carga histórica'
-                : 'Sin materiales cargados'}
+                : 'Carga sin preparar'}
           </Text>
         </View>
         <View style={s.row}>
@@ -120,7 +120,13 @@ export function CardObra({ obra: o }: { obra: ObraCard }) {
         </View>
       </Pressable>
       <View
-        style={{ flexDirection: 'row', borderTopWidth: 1, borderColor: C.line, padding: 8, gap: 3 }}
+        style={{
+          flexDirection: 'row',
+          borderTopWidth: 1,
+          borderColor: C.hairline,
+          padding: 8,
+          gap: 3,
+        }}
       >
         <Button
           label="GPS"
@@ -142,7 +148,7 @@ export function CardObra({ obra: o }: { obra: ObraCard }) {
               ? 'Entregar'
               : o.estadoProceso === 'ENTREGADO'
                 ? 'Retirar'
-                : 'Ver obra'
+                : 'Ver alquiler'
           }
           variant="secondary"
           onPress={() =>

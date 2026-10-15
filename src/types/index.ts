@@ -55,6 +55,7 @@ export interface ObraCard {
   fotosUrls?: string[];
   fotos?: PhotoRef[];
   entregadoPor?: string[];
+  recibidoPor?: string;
   retiradoPor?: string[];
   /** Fecha planificada; nunca se reemplaza al confirmar la entrega. */
   fechaEntrega: string;
@@ -142,6 +143,7 @@ export type Action =
   | { type: 'SET_LOAD'; obraId: string; items: MaterialCargado[]; expectedVersion?: number }
   | {
       type: 'DELIVER';
+      recibidoPor?: string;
       fechaRetiroEstimada?: string;
       obraId: string;
       responsables: string[];

@@ -9,7 +9,7 @@ export default function Edit() {
   return obra ? (
     <ObraForm obra={obra} />
   ) : (
-    <Screen title="Editar obra" back>
+    <Screen title="Editar alquiler" back>
       <Empty title="Obra no encontrada" detail="Vuelve al listado." />
     </Screen>
   );

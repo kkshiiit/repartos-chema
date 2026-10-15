@@ -58,6 +58,7 @@ export const actionSchema = z.discriminatedUnion('type', [
   z
     .object({
       type: z.literal('DELIVER'),
+      recibidoPor: z.string().trim().max(80).optional(),
       fechaRetiroEstimada: z.string().max(10).optional(),
       obraId: id,
       responsables,
