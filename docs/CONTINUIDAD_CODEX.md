@@ -43,3 +43,11 @@ Usuario reiteró autorización para crear y respaldar en kkshiiit. Conector sigu
 ## Recuperación de autorización GitHub
 
 El usuario autorizó el device flow, pero gh terminó con Authentication complete seguido de error mkdir /home/agent/.config/gh: read-only file system. No quedó credencial utilizable. Se preparó /tmp/chema-gh-auth con permisos700, escritura comprobada y fuera del proyecto. Nuevo login en curso, sesión67278, `env -u GH_TOKEN GH_CONFIG_DIR=/tmp/chema-gh-auth gh auth login --hostname github.com --git-protocol https --web`. No guardar código temporal ni token en documentación. Comprobar identidad kkshiiit con ese GH_CONFIG_DIR antes de crear/subir. La autorización del usuario para repositorio privado sigue vigente.
+
+## Estado GitHub comprobado: autorización recibida, creación denegada
+
+La segunda autorización se completó y guardó fuera del proyecto, en GH_CONFIG_DIR=/tmp/chema-gh-auth (directorio700, hosts.yml600). Error posterior de gitconfig global se evita con GIT_CONFIG_GLOBAL=/tmp/chema-gh-auth/gitconfig. Ejecutar gh con esas variables y sin GH_TOKEN heredado (inválido). `gh api user --jq .login` confirmó kkshiiit. No imprimir ni versionar el contenido de hosts.yml.
+
+Se intentó crear kkshiiit/repartos-chema privado por `gh repo create`: GraphQL Resource not accessible by integration. Un intento controlado por REST POST user/repos confirmó HTTP403 y el mismo motivo. No se creó repositorio, remoto ni push. No es rechazo de auto-review: GitHub deniega la acción a la integración autenticada. No repetir autorizaciones idénticas. Usuario debe crear el repositorio privado desde github.com/new; puede dejarlo vacío. Al recibir confirmación, verificar identidad/privacidad y subir sin repetir autorización comercial ya concedida. Si caduca la autenticación, usar conexión MCP existente y verificar permisos del nuevo repositorio.
+
+Revisión independiente previa al respaldo:328 blobs del historial alcanzable (10,28MB), patrones de secretos comunes sin credenciales reales reconocibles; única coincidencia de URL de prueba example.com. .env.example vacío de claves; semilla y documentos demo. No certifica ausencia absoluta, sí revisión comprobada. Últimos commits solo contienen documentación. No hubo cambios funcionales ni nuevas pruebas de app en esta solicitud.
