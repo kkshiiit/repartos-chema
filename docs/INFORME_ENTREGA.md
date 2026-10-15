@@ -106,7 +106,7 @@ Riesgos pendientes: avisos transitivos npm (30 app y 9 Functions, detalle en VAL
 
 [VALIDACION.md](VALIDACION.md) contiene comandos, cobertura y límites. Últimos resultados: **74 unitarias/documentos, 14 integración y 19 Playwright aprobadas**; typecheck, lint, Functions y web correctos. Capturas regeneradas. Android/iOS exportados a Hermes. Todo ejecutado con datos semilla y emuladores.
 
-El intento de APK usa Java21, Gradle9.3.1, SDK36, NDK27.1.12297006 y ARM64. Hubo fallo inicial del proxy Gradle y timeouts de SDK; se aplicó descarga reanudable verificada. **Consultar el cierre de compilación al final de este informe para el resultado definitivo.** No se ejecutó una app en dispositivo físico, ni se generó IPA en macOS.
+El intento de APK usa Java21, Gradle9.3.1, SDK36, NDK27.1.12297006 y ARM64. Hubo fallo inicial del proxy Gradle y timeouts de SDK; se aplicó descarga reanudable verificada. La compilación final terminó correctamente; ver el cierre de compilación de este informe. No se ejecutó una app en dispositivo físico, ni se generó IPA en macOS.
 
 ## K. Entrega y uso
 
@@ -149,3 +149,13 @@ Se añadió @axe-core/playwright solo como dependencia de desarrollo. Detectó y
 ## Corrección visual adicional
 
 La revisión manual detectó que el detalle podía recortar controles en móvil aunque el documento no aumentara de ancho. Se corrigió flexShrink/maxWidth de ambas columnas y se añadió comprobación de los límites de Preparar carga, Documento y Ubicación en cada ancho/tema. La suite posterior aprobó 19/19 (4,6 min), con verificación de los controles a 320, 360, 390, 768 y 1440 px en ambos temas; captura de detalle móvil revisada. También se excluyeron micrófono y superposición de ventanas de los permisos Android: la aplicación solo captura fotos y no necesita esos accesos.
+
+## Cierre de compilación y respaldo — 14/10, 22:25 Argentina
+
+APK real generado: `instalador/repartos-chema-demo-arm64.apk`, 49.078.452 bytes, Android 7+ (SDK24), ARM64, paquete com.grupochema.repartos, versión1.0.0. Gradle terminó código0 en11m10. Firma APKv2 verificada por apksigner, CRC correcto, SHA256 c906e5646918ea3f1c12e1015c6b475fd5989d84f2fb283eb25ef39d5a2401c5. Permisos finales sin RECORD_AUDIO, SYSTEM_ALERT_WINDOW ni AD_ID. La firma utiliza clave de prueba de la plantilla: sirve para probar esta demo interna, no sustituye firma productiva administrada. No se ejecutó en dispositivo físico; instalar no acredita cámara, exportaciones nativas, GPS ni todos los procesos. No se publicó en ninguna tienda.
+
+La hora objetivo de21:00 no se cumplió. Se entrega demo local, sin Firebase productivo y sin trabajo automático entre sesiones. Suite final web19/19 en4,6min; check74 pruebas/tipos/lint/Functions y web correctos, integración previa14/14. Captura de detalle móvil revisada sin recorte.
+
+Usuario autorizó respaldo GitHub privado en kkshiiit. MCP GitHub accede a repositorios, pero no tiene creación disponible; CLI no tiene credencial válida. No existe Repartos Chema entre repositorios accesibles. Se solicitó crear kkshiiit/repartos-chema privado con README y compartir enlace. No se subió código ni se publicó aplicación.
+
+Carpeta preparada en `/workspace/entregas/Repartos-Chema`; no equivale a carpeta creada en la PC del usuario. El ZIP contenedor permite extraerla en Documentos. Contiene código, historial Git bundle, copia original, web, documentación, capturas y APK. Para datos comerciales usar también copias JSON desde Configuración: la copia de código no respalda automáticamente datos guardados en cada dispositivo.
