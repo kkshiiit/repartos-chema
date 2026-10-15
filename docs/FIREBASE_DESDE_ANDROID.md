@@ -1,5 +1,15 @@
 # Conectar el equipo desde Android
 
+## Estado vigente: Authentication ya responde
+
+El usuario confirmó «listo» después de la indicación de inicializar Authentication y habilitar Anónimo. Repetición de solo lectura el 15/10/2026 a las **17:39 de Argentina** (20:39UTC): **HTTP200**. La API devolvió `projectId: "658913591865"` —en esta respuesta usa el identificador numérico—, coincidente con el número proporcionado por el usuario, y dominios `localhost`, `repartos-chema.firebaseapp.com`, `repartos-chema.web.app`. Evidencia: `artifacts/validacion/firebase-auth-20261015T203927Z.json`.
+
+El error previo CONFIGURATION_NOT_FOUND ya no se reproduce en este endpoint. Esta consulta confirma que la configuración pública de Auth está disponible; **no comprueba un inicio de sesión anónimo** ni enumera proveedores, permisos administrativos, reglas, base de datos, bucket o plan de facturación. La habilitación de Anónimo está confirmada por el usuario, pendiente de prueba funcional autorizada. No se crearon usuarios ni datos durante la comprobación.
+
+**Próxima dependencia:** decidir si se autoriza vincular facturación Blaze y desplegar el backend. No hay autorización específica para esos pasos. Se debe explicar que las cuotas sin cargo no garantizan costo cero, resolver acceso administrativo Google por un flujo oficial, verificar el estado real del proyecto y revisar región/límites antes de cualquier cambio. No pedir otra vez inicializar Auth, registrar app web ni pegar configuración. No activar el perfil Firebase ni publicar un APK conectado a servicios ausentes. La app distribuida conserva el modo demo local.
+
+Si el usuario mantiene el requisito de cero gastos, conservar la demo y documentar que la arquitectura actual no habilita compartir datos con Functions/Storage en Spark. Evaluar una alternativa requeriría acordar un cambio de arquitectura y validarla; no relajar reglas ni sustituir proveedores automáticamente.
+
 ## Estado más reciente: configuración web recibida
 
 El usuario proporcionó el objeto público `firebaseConfig` de la aplicación web, incluido un measurementId. Se preparó `.env.firebase.local` con los seis campos usados por el SDK, región `us-central1` y VAPID vacío. Es un **perfil de conexión pendiente**, ignorado por Git y no cargado automáticamente por Expo; no se copió a `.env` ni se cambió el APK. No se agregó Analytics ni se usa el measurementId.
