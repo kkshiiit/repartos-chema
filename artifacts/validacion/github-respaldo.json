@@ -1,0 +1,12 @@
+{
+  "repositorio": "https://github.com/kkshiiit/repartos-chema",
+  "privado": true,
+  "rama": "main",
+  "commitClonadoVerificado": "ad66b61f1a5a55c2dddacfc997129e8918a20932",
+  "restauracion": "git clone completo y git fsck sin errores",
+  "secretoReview": "patrones en historial y revision de diffs, sin credenciales reconocibles; no certificacion absoluta",
+  "releases": [],
+  "binariosEnGithub": false,
+  "bloqueoAssets": "uploads.github.com HTTP401 Bad credentials",
+  "pruebasAplicacionNuevas": false
+}
