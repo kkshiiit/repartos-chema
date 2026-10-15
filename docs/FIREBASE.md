@@ -2,6 +2,10 @@
 
 No se ejecutó ningún despliegue ni se utilizaron credenciales reales. Este procedimiento lo realiza un administrador autorizado del proyecto.
 
+**Estado vigente 15/10/2026:** el usuario confirmó que no tiene proyecto Firebase. Ver [primeros pasos desde Android y comprobación de accesos](FIREBASE_DESDE_ANDROID.md). El flujo de entrada actual es el de **equipo por invitación** al final de este documento. Las instrucciones de correo/contraseña y roles de las secciones 1 y 3 describen compatibilidad administrativa anterior; no son el ingreso ofrecido por la interfaz 1.1. Para el equipo nuevo se habilita Auth **Anónimo** y se inicializa el propietario por bootstrap, sin selector de roles público.
+
+**Facturación:** Cloud Functions y Cloud Storage requieren Blaze según la documentación oficial consultada hoy. No basta con las cuotas sin cargo para garantizar ausencia de cobros. Ningún despliegue ni vinculación de Cloud Billing está autorizado automáticamente por crear un proyecto Spark.
+
 ## 1. Proyecto y aplicaciones
 
 Crear/seleccionar un proyecto Firebase de Grupo Chema. Registrar una aplicación web para la configuración del SDK JS. Habilitar Authentication con correo/contraseña, Firestore y Storage. Usar plan que permita Cloud Functions/Cloud Scheduler y definir presupuesto/alertas apropiados a la empresa.
