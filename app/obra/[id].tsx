@@ -79,7 +79,16 @@ export default function Detail() {
       action={<StatusChip obra={o} />}
     >
       <View style={[s.wrap, { gap: 16 }]}>
-        <View style={{ flexGrow: 2, flexBasis: 500, gap: 20 }}>
+        <View
+          style={{
+            flexGrow: 2,
+            flexBasis: 500,
+            flexShrink: 1,
+            minWidth: 0,
+            maxWidth: '100%',
+            gap: 20,
+          }}
+        >
           <View style={s.card}>
             <Text style={s.h2}>Operación</Text>
             <View style={s.wrap}>
@@ -278,7 +287,16 @@ export default function Detail() {
             </View>
           </View>
         </View>
-        <View style={{ flexGrow: 1, flexBasis: 270, gap: 20 }}>
+        <View
+          style={{
+            flexGrow: 1,
+            flexBasis: 270,
+            flexShrink: 1,
+            minWidth: 0,
+            maxWidth: '100%',
+            gap: 20,
+          }}
+        >
           <View style={s.card}>
             <Text style={s.h2}>Datos de la obra</Text>
             <Info label="ENTREGA PREVISTA" value={o.fechaEntrega} />

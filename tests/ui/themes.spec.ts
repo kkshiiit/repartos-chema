@@ -97,6 +97,15 @@ for (const width of [320, 360, 390, 768, 1440])
             .last(),
         ).toBeVisible();
         await expect(page.getByRole('heading').last()).toBeVisible();
+        if (route === 'obra/obra_5') {
+          // Un contenedor con overflow oculto puede recortar controles sin ampliar el documento.
+          for (const name of ['Preparar carga', 'Documento', 'Ubicación']) {
+            const bounds = await page.getByRole('button', { name, exact: true }).boundingBox();
+            expect(bounds).not.toBeNull();
+            expect(bounds!.x).toBeGreaterThanOrEqual(0);
+            expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width + 1);
+          }
+        }
         await capture(route.replaceAll('/', '-'));
       }
       for (const [id, button, name] of [

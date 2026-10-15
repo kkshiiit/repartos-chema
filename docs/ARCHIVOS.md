@@ -1,6 +1,6 @@
-# Árbol de archivos de la entrega
+# Archivos versionados de Repartos Chema
 
-Fuente mantenida; excluye node_modules, dist, android/ios generados y cachés. Las 48 capturas se agrupan para facilitar lectura.
+Inventario del código y documentación. Los directorios android, dist, node_modules y el SDK se regeneran y no se incluyen en Git. Capturas y resultados están en artifacts.
 
 ```text
 .env.example
@@ -21,10 +21,71 @@ app/exportar.tsx
 app/obra/[id].tsx
 app/obra/editar.tsx
 app/obra/nueva.tsx
+artifacts/capturas/1440-dark-combos.png
+artifacts/capturas/1440-dark-configuracion.png
+artifacts/capturas/1440-dark-entrega.png
+artifacts/capturas/1440-dark-exportar.png
+artifacts/capturas/1440-dark-galpon.png
+artifacts/capturas/1440-dark-historial.png
+artifacts/capturas/1440-dark-login.png
+artifacts/capturas/1440-dark-mapa.png
+artifacts/capturas/1440-dark-obra-nueva.png
+artifacts/capturas/1440-dark-obra-obra_5.png
+artifacts/capturas/1440-dark-obras.png
+artifacts/capturas/1440-dark-retiro.png
+artifacts/capturas/1440-light-combos.png
+artifacts/capturas/1440-light-configuracion.png
+artifacts/capturas/1440-light-entrega.png
+artifacts/capturas/1440-light-exportar.png
+artifacts/capturas/1440-light-galpon.png
+artifacts/capturas/1440-light-historial.png
+artifacts/capturas/1440-light-login.png
+artifacts/capturas/1440-light-mapa.png
+artifacts/capturas/1440-light-obra-nueva.png
+artifacts/capturas/1440-light-obra-obra_5.png
+artifacts/capturas/1440-light-obras.png
+artifacts/capturas/1440-light-retiro.png
+artifacts/capturas/390-dark-combos.png
+artifacts/capturas/390-dark-configuracion.png
+artifacts/capturas/390-dark-entrega.png
+artifacts/capturas/390-dark-exportar.png
+artifacts/capturas/390-dark-galpon.png
+artifacts/capturas/390-dark-historial.png
+artifacts/capturas/390-dark-login.png
+artifacts/capturas/390-dark-mapa.png
+artifacts/capturas/390-dark-obra-nueva.png
+artifacts/capturas/390-dark-obra-obra_5.png
+artifacts/capturas/390-dark-obras.png
+artifacts/capturas/390-dark-retiro.png
+artifacts/capturas/390-light-combos.png
+artifacts/capturas/390-light-configuracion.png
+artifacts/capturas/390-light-entrega.png
+artifacts/capturas/390-light-exportar.png
+artifacts/capturas/390-light-galpon.png
+artifacts/capturas/390-light-historial.png
+artifacts/capturas/390-light-login.png
+artifacts/capturas/390-light-mapa.png
+artifacts/capturas/390-light-obra-nueva.png
+artifacts/capturas/390-light-obra-obra_5.png
+artifacts/capturas/390-light-obras.png
+artifacts/capturas/390-light-retiro.png
 artifacts/dashboard-desktop.png
 artifacts/dashboard-mobile.png
 artifacts/remito-demo.docx
 artifacts/reporte-demo.xlsx
+artifacts/validacion/audit.json
+artifacts/validacion/axe-dark.json
+artifacts/validacion/axe-light.json
+artifacts/validacion/build.txt
+artifacts/validacion/check.txt
+artifacts/validacion/functions-audit.json
+artifacts/validacion/integration.txt
+artifacts/validacion/metricas-bundle.json
+artifacts/validacion/native-bundles.txt
+artifacts/validacion/publicidad.json
+artifacts/validacion/ui.txt
+docs/ANDROID.md
+docs/ARCHIVOS.md
 docs/ARQUITECTURA.md
 docs/CAMBIOS.md
 docs/CONTINUIDAD_CODEX.md
@@ -45,8 +106,10 @@ functions/tsconfig.json
 package-lock.json
 package.json
 playwright.config.ts
+scripts/build-android-demo.mjs
 scripts/build-workers.mjs
 scripts/emulator-local.cjs
+scripts/package-web.py
 scripts/package.py
 scripts/serve.mjs
 src/components/CardObra.tsx
@@ -100,6 +163,7 @@ tests/domain.test.ts
 tests/firebase.integration.test.ts
 tests/repository.test.ts
 tests/themes.test.ts
+tests/ui/accessibility.spec.ts
 tests/ui/app.spec.ts
 tests/ui/operations.spec.ts
 tests/ui/recovery.spec.ts
@@ -107,5 +171,4 @@ tests/ui/themes.spec.ts
 tsconfig.json
 vitest.config.mts
 vitest.integration.config.mts
-artifacts/capturas/ (48 PNG: 390 y 1440 px, claro/oscuro)
 ```
