@@ -1,0 +1,8 @@
+{
+  "fechaUTC": "2026-10-15T20:33:00.565008+00:00",
+  "proyectoSolicitado": "repartos-chema",
+  "operacion": "GET configuración pública Auth; sin crear usuarios ni datos",
+  "http": 400,
+  "estado": null,
+  "mensaje": "CONFIGURATION_NOT_FOUND"
+}

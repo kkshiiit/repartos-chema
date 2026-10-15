@@ -1,10 +1,22 @@
 # Conectar el equipo desde Android
 
+## Estado más reciente: configuración web recibida
+
+El usuario proporcionó el objeto público `firebaseConfig` de la aplicación web, incluido un measurementId. Se preparó `.env.firebase.local` con los seis campos usados por el SDK, región `us-central1` y VAPID vacío. Es un **perfil de conexión pendiente**, ignorado por Git y no cargado automáticamente por Expo; no se copió a `.env` ni se cambió el APK. No se agregó Analytics ni se usa el measurementId.
+
+El perfil se interpretó con `node:util.parseEnv`: proyecto, número y appId son coherentes; `.env.example` conserva modo demo. Esa comprobación local no demuestra acceso al proyecto o funcionamiento de servicios. Se conservó una copia separada en `/workspace/respaldos/firebase-config-20261015`, directorio700/archivo600, con SHA256 y restauración comprobada. Los ZIP de código no contienen este perfil; ante pérdida del entorno se vuelve a obtener desde la consola del propietario.
+
+Comprobación remota de solo lectura, 15/10/2026 20:33 UTC: `GET` de configuración pública de Auth devolvió **HTTP400 / CONFIGURATION_NOT_FOUND**. No se crearon usuarios ni se modificaron datos. Evidencia sin API key: `artifacts/validacion/firebase-config-publica.json`. El resultado suele indicar que Authentication no está inicializado, pero no permite afirmar el estado exacto de la consola, los proveedores habilitados, las reglas, Firestore, Storage o la facturación. El nombre de bucket del SDK tampoco demuestra que el bucket esté creado.
+
+**Próxima acción del propietario desde Android:** abrir [Firebase Authentication de repartos-chema](https://console.firebase.google.com/project/repartos-chema/authentication), pulsar Comenzar si aparece y habilitar **Anónimo** en Método de acceso. No habilitar SMS ni cambiar a Blaze para este paso. Confirmar al asistente cuando esté listo para repetir la consulta pública. No enviar contraseñas ni códigos OAuth. No volver a pedir el firebaseConfig ni registrar otra aplicación web.
+
+Habilitar Auth no conecta por sí solo el inventario: todavía hacen falta acceso administrativo autorizado, decisión explícita de facturación y despliegue backend/reglas, inicialización segura del propietario y pruebas con dos teléfonos. No ejecutar `signInAnonymously` como prueba de solo lectura: crearía un usuario real. No activar el perfil conectado hasta completar esas dependencias.
+
 Estado actualizado el 15/10/2026: después de indicar que no tenía proyecto, el usuario proporcionó **ID `repartos-chema`**, **número `658913591865`**, tipo de entorno «Sin especificar». Estos datos proceden del usuario; todavía no se verificaron contra la API de Google porque no hay una cuenta autorizada en la sesión. La demo 1.1 funciona localmente; distintos teléfonos todavía no comparten alquileres. Codex no creó un proyecto, no activó facturación y no desplegó servicios.
 
 Se guardó `.firebaserc` con el alias explícito `chema` → `repartos-chema`. No se definió un proyecto `default`, para evitar que un comando sin destino elija producción por omisión. Las pruebas de emuladores siguen usando explícitamente `demo-repartos-chema`. No se cambió `.env` ni el modo demo del APK.
 
-## Siguiente paso actual desde Android
+## Paso anterior: registro web, ya respondido
 
 No crear otro proyecto. Abrir [Configuración general de repartos-chema](https://console.firebase.google.com/project/repartos-chema/settings/general) con la cuenta Google propietaria y registrar una aplicación **web** mediante el botón `</>`, con nombre Repartos Chema. No habilitar Hosting durante el registro. El SDK JS de esta app necesita la configuración web incluso al ejecutarse dentro del APK.
 

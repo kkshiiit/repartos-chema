@@ -1,5 +1,7 @@
 # Configurar Firebase para producción
 
+**Actualización de configuración:** ya se recibió el `firebaseConfig` web real del usuario y se guardó fuera de Git en `.env.firebase.local`, como perfil no activo. No usar Analytics. Consulta pública Auth HTTP400 `CONFIGURATION_NOT_FOUND` (15/10/2026 20:33UTC); inicialización/proveedor Anónimo requieren revisión en consola. Ver [guía Android vigente](FIREBASE_DESDE_ANDROID.md). No confundir configuración del cliente con autorización administrativa, backend desplegado o bucket existente.
+
 No se ejecutó ningún despliegue ni se utilizaron credenciales reales. Este procedimiento lo realiza un administrador autorizado del proyecto.
 
 **Estado vigente 15/10/2026:** el usuario proporcionó ID `repartos-chema`, número `658913591865`, entorno «Sin especificar». Se guardó el alias explícito `chema` en `.firebaserc`, sin destino `default`. Aún no hay acceso administrativo Google ni configuración pública completa del SDK, facturación autorizada o despliegue. Ver [pasos actuales desde Android y comprobación de accesos](FIREBASE_DESDE_ANDROID.md). El flujo de entrada actual es el de **equipo por invitación** al final de este documento. Las instrucciones de correo/contraseña y roles de las secciones 1 y 3 describen compatibilidad administrativa anterior; no son el ingreso ofrecido por la interfaz 1.1. Para el equipo nuevo se habilita Auth **Anónimo** y se inicializa el propietario por bootstrap, sin selector de roles público.
