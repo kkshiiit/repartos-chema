@@ -1,0 +1,38 @@
+
+> repartos-chema@1.0.0 build:web
+> expo export --platform web && node scripts/build-workers.mjs
+
+Starting Metro Bundler
+
+Web Bundled 92789ms node_modules/expo-router/entry.js (3001 modules)
+
+› Assets (19):
+assets/brand/grupo-chema.9c39b43d453f56c60666916910042bd1.png (375KB)
+node_modules/expo-router/assets/arrow_down.017bc6ba3fc25503e5eb5e53826d48a8.png (9.5KB)
+node_modules/expo-router/assets/error.d1ea1496f9057eb392d5bbf3732a61b7.png (469B)
+node_modules/expo-router/assets/file.19eeb73b9593a38f8e9f418337fc7d10.png (138B)
+node_modules/expo-router/assets/forward.d8b800c443b8972542883e0b9de2bdc6.png (188B)
+node_modules/expo-router/assets/pkg.ab19f4cbc543357183a20571f68380a3.png (364B)
+node_modules/expo-router/assets/react-navigation/elements/back-icon-mask.0a328cd9c1afd0afe8e3b1ec5165b1b4.png (653B)
+node_modules/expo-router/assets/react-navigation/elements/back-icon.35ba0eaec5a4f5ed12ca16fabeae451d.png (207B)
+node_modules/expo-router/assets/react-navigation/elements/clear-icon.c94f6478e7ae0cdd9f15de1fcb9e5e55.png (4 variations | 425B)
+node_modules/expo-router/assets/react-navigation/elements/close-icon.808e1b1b9b53114ec2838071a7e6daa7.png (4 variations | 235B)
+node_modules/expo-router/assets/react-navigation/elements/search-icon.286d67d3f74808a60a78d3ebf1a5fb57.png (928B)
+node_modules/expo-router/assets/sitemap.412dd9275b6b48ad28f5e3d81bb1f626.png (465B)
+node_modules/expo-router/assets/unmatched.20e71bdf79e3a97bf55fd9e164041578.png (4.8KB)
+
+› web bundles (7):
+_expo/static/js/web/backupService-03c6a578f7696bddeee92b6da747f964.js (30KB)
+_expo/static/js/web/entry-0c0a480c2623c6962c49abd057d2907b.js (5.4MB)
+_expo/static/js/web/excelGenerator-50c3a35079362796ef0f275b9d384a37.js (1.9KB)
+_expo/static/js/web/exceljs-130dc14b82e91ace0b721ca219e6b695.js (944KB)
+_expo/static/js/web/index-380d2a9439828060f593916d277b0690.js (498KB)
+_expo/static/js/web/index-6269e646368141d1524c09d750ca0c35.js (59KB)
+_expo/static/js/web/wordGenerator-1b4b341459506ebecf6e00e5073ffd87.js (501KB)
+
+› Files (2):
+index.html (1.2KB)
+metadata.json (49B)
+
+Exported: dist
+Worker offline generado. FCM: sin configuración; no activado

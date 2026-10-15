@@ -28,3 +28,7 @@ El resultado instalable deberá inspeccionarse con `apksigner verify`, `aapt dum
 Compilación final correcta11m10, ARM64 Android7+, firma APKv2 verificada, 49.078.452bytes. No probado físicamente. Descargar `repartos-chema-demo-arm64.apk` desde el chat, abrirlo en Android y autorizar la instalación desde ese navegador/gestor solo si confías en esta entrega. No desactivar protecciones generales del dispositivo. Si Android rechaza la instalación, conservar el mensaje exacto; no desinstalar una versión con datos sin exportar antes su copia JSON.
 
 Abrir Repartos Chema y elegir perfil de prueba ADMIN u OPERADOR. Los datos son locales de demostración; no se comparten entre celulares. Firma con clave de prueba de plantilla: pendiente clave productiva administrada.
+
+## Actualización1.1.0
+
+versionCode2, mismo certificado de prueba que1.0. Instalar encima sin desinstalar; copiar datos JSON antes. APK definitivo candidato v1.1.0-demo.2 en rama descargas del GitHub privado. Primer build completo14m2 y corrección incremental2m23. No son pruebas físicas. El parser de invitaciones ya no depende de URL de navegador; regresión unitaria reproducida y corregida.

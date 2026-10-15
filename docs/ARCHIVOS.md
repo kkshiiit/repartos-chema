@@ -1,6 +1,6 @@
-# Archivos versionados de Repartos Chema
+# Archivos del proyecto
 
-Inventario del código y documentación. Los directorios android, dist, node_modules y el SDK se regeneran y no se incluyen en Git. Capturas y resultados están en artifacts.
+Código, documentación, pruebas y evidencia versionados. node_modules, android, dist y funciones compiladas se regeneran y no se incluyen como fuente. Los APK están en la rama descargas.
 
 ```text
 .env.example
@@ -17,6 +17,7 @@ app/(tabs)/mapa.tsx
 app/_layout.tsx
 app/combos.tsx
 app/configuracion.tsx
+app/equipo/unirse.tsx
 app/exportar.tsx
 app/obra/[id].tsx
 app/obra/editar.tsx
@@ -69,29 +70,54 @@ artifacts/capturas/390-light-obra-nueva.png
 artifacts/capturas/390-light-obra-obra_5.png
 artifacts/capturas/390-light-obras.png
 artifacts/capturas/390-light-retiro.png
+artifacts/capturas/bienvenida-1.png
 artifacts/dashboard-desktop.png
 artifacts/dashboard-mobile.png
 artifacts/remito-demo.docx
 artifacts/reporte-demo.xlsx
+artifacts/validacion/android-apk.txt
+artifacts/validacion/android-build.txt
+artifacts/validacion/android-firma.txt
+artifacts/validacion/android-permisos.txt
+artifacts/validacion/android-verificacion.json
 artifacts/validacion/audit.json
 artifacts/validacion/axe-dark.json
 artifacts/validacion/axe-light.json
 artifacts/validacion/build.txt
 artifacts/validacion/check.txt
 artifacts/validacion/functions-audit.json
+artifacts/validacion/github-respaldo.json
 artifacts/validacion/integration.txt
 artifacts/validacion/metricas-bundle.json
 artifacts/validacion/native-bundles.txt
 artifacts/validacion/publicidad.json
+artifacts/validacion/rediseno-android-apk.txt
+artifacts/validacion/rediseno-android-build.txt
+artifacts/validacion/rediseno-android-firma.txt
+artifacts/validacion/rediseno-android-incremental.txt
+artifacts/validacion/rediseno-android-permisos.txt
+artifacts/validacion/rediseno-android-verificacion.json
+artifacts/validacion/rediseno-check.txt
+artifacts/validacion/rediseno-github.json
+artifacts/validacion/rediseno-integracion.txt
+artifacts/validacion/rediseno-metricas.json
+artifacts/validacion/rediseno-ui-deposito.txt
+artifacts/validacion/rediseno-ui-parser.txt
+artifacts/validacion/rediseno-ui.txt
+artifacts/validacion/rediseno-web.txt
 artifacts/validacion/ui.txt
+assets/brand/grupo-chema.png
 docs/ANDROID.md
 docs/ARCHIVOS.md
 docs/ARQUITECTURA.md
 docs/CAMBIOS.md
 docs/CONTINUIDAD_CODEX.md
+docs/CONTINUIDAD_REDISENO.md
+docs/ENTREGA_1_1.md
 docs/FIREBASE.md
 docs/INFORME_ENTREGA.md
 docs/MANUAL_USUARIO.md
+docs/REDISENO_1_1.md
 docs/VALIDACION.md
 eslint.config.js
 firebase.json
@@ -101,6 +127,7 @@ functions/package.json
 functions/src/bootstrap.ts
 functions/src/excelGenerator.ts
 functions/src/index.ts
+functions/src/team.ts
 functions/src/wordGenerator.ts
 functions/tsconfig.json
 package-lock.json
@@ -114,6 +141,7 @@ scripts/package.py
 scripts/serve.mjs
 src/components/CardObra.tsx
 src/components/DataList.tsx
+src/components/DepotSettings.tsx
 src/components/FaltantesForm.tsx
 src/components/LoadEditor.tsx
 src/components/ObraForm.tsx
@@ -122,7 +150,9 @@ src/components/PhotoImage.tsx
 src/components/ScaffoldSelector.tsx
 src/components/SmartCounter.tsx
 src/components/StatusChip.tsx
+src/components/TeamSettings.tsx
 src/components/ThemeToggle.tsx
+src/components/WelcomeProvider.tsx
 src/components/ui.tsx
 src/context/AuthContext.tsx
 src/context/InventoryContext.tsx
@@ -133,10 +163,12 @@ src/data/validation.ts
 src/domain/engine.ts
 src/domain/rules.ts
 src/domain/schema.ts
+src/domain/team.ts
 src/hooks/useHaptics.ts
 src/services/authPersistence.native.ts
 src/services/authPersistence.ts
 src/services/backupService.ts
+src/services/depotSettings.ts
 src/services/errors.ts
 src/services/exportService.ts
 src/services/files.ts
@@ -150,9 +182,11 @@ src/services/photoCache.ts
 src/services/photoCache.web.ts
 src/services/profileCache.ts
 src/services/storageService.ts
+src/services/teamService.ts
 src/theme/tokens.ts
 src/types/exceljs-browser.d.ts
 src/types/index.ts
+src/utils/trip.ts
 src/utils/whatsapp.ts
 src/workers/firebase-messaging-sw.ts
 storage.rules
@@ -162,12 +196,18 @@ tests/documents.test.ts
 tests/domain.test.ts
 tests/firebase.integration.test.ts
 tests/repository.test.ts
+tests/team-backend.integration.test.ts
+tests/team.test.ts
 tests/themes.test.ts
+tests/trip.test.ts
 tests/ui/accessibility.spec.ts
 tests/ui/app.spec.ts
+tests/ui/helpers.ts
 tests/ui/operations.spec.ts
 tests/ui/recovery.spec.ts
 tests/ui/themes.spec.ts
+tests/ui/trip.spec.ts
+tests/ui/welcome.spec.ts
 tsconfig.json
 vitest.config.mts
 vitest.integration.config.mts

@@ -1,6 +1,6 @@
-# Punto vigente — rediseño 1.1 en ejecución
+# Punto vigente — rediseño 1.1 y APK actualizado
 
-Continuar desde [CONTINUIDAD_REDISENO.md](CONTINUIDAD_REDISENO.md). El usuario probó el APK anterior y pidió cambios visuales, bienvenida, nombre/invitación de equipo y depósito fijo. Logo real recibido. No confundir la demo1.0 publicada en rama descargas con el APK1.1 en compilación.
+Continuar desde [CONTINUIDAD_REDISENO.md](CONTINUIDAD_REDISENO.md). El usuario probó el APK anterior y pidió cambios visuales, bienvenida, nombre/invitación de equipo y depósito fijo. Logo real recibido. No confundir la demo1.0 publicada en rama descargas con el APK1.1 definitivo en ruta demo.2.
 
 # Continuidad de Repartos Chema
 

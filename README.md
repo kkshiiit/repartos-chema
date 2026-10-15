@@ -4,11 +4,17 @@ Aplicación interna de Grupo Chema Construcciones, construida con Expo 57, React
 
 ## Descargar en Android
 
-**[Descargar APK Android — demo1.0.0](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.0.0-demo.1/repartos-chema-demo-arm64.apk)** (49MB). Requiere iniciar sesión en GitHub con acceso al repositorio privado. Si el enlace directo no descarga, abrir [la ficha del APK](https://github.com/kkshiiit/repartos-chema/blob/descargas/android/v1.0.0-demo.1/repartos-chema-demo-arm64.apk) y tocar Download raw file / Descargar archivo sin procesar.
+**[Descargar APK Android — demo 1.1.0](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.1.0-demo.2/repartos-chema-demo-arm64.apk)** (49,5MB). Requiere iniciar sesión en GitHub con acceso al repositorio privado. Si el enlace directo no descarga, abrir [la ficha del APK](https://github.com/kkshiiit/repartos-chema/blob/descargas/android/v1.1.0-demo.2/repartos-chema-demo-arm64.apk) y tocar Download raw file / Descargar archivo sin procesar.
 
 APK guardado en la rama independiente `descargas`; código e historial en `main`. Se recuperó el archivo desde GitHub mediante una clonación nueva y su SHA256/CRC coincidieron con el original. No hay Releases: su servicio de subida rechazó la autenticación. El ZIP completo sigue en la entrega del chat. No se activaron Railway, Firebase ni servicios de pago para esta descarga.
 
-El APK de demo es ARM64, Android7 o superior, versión1.0.0. Firma APKv2 e integridad verificadas, todavía sin prueba en dispositivo físico. Los perfiles ADMIN/OPERADOR son ficticios y los datos se guardan en cada dispositivo; no se comparten mediante Firebase. Ver [guía Android](docs/ANDROID.md).
+El APK de demo es ARM64, Android 7 o superior, versión 1.1.0. Firma APKv2 e integridad verificadas, todavía sin prueba en dispositivo físico. El nombre identifica movimientos locales sin autenticar una cuenta; los datos se guardan en cada dispositivo; no se comparten mediante Firebase. Ver [guía Android](docs/ANDROID.md).
+
+## Novedades 1.1
+
+Logo original, bienvenida de cuatro pasos, pantallas Alquileres/Depósito/Viaje/Historial, nombres de piezas sin comprimir y sin lemas extensos ni distintivo AD. Tema en la cabecera principal y Ajustes; no se repite en las ventanas. Viaje prioriza retiros y vuelve al depósito fijo de Formosa y Cuba, Villa Ballester. Se registra quién recibió la entrega.
+
+[Ver capturas y validación del rediseño](docs/ENTREGA_1_1.md). La versión 1.1.0 incrementa versionCode a 2 y usa el mismo certificado de la demo anterior: actualizar encima, con copiaJSON previa, sin desinstalar. La instalación física de esta actualización todavía debe comprobarse.
 
 ## Ejecutar la demo
 
@@ -21,7 +27,7 @@ cp .env.example .env
 npm run web
 ```
 
-Abrir la URL que indique Expo. Elegir **Administración** u **Operación**; son perfiles ficticios, no cuentas reales. Las fechas de la semilla se calculan al iniciar por primera vez. No se inventaron teléfonos, coordenadas ni credenciales.
+Abrir la URL que indique Expo. Ingresar tu nombre; identifica los movimientos de la demo, no autentica una cuenta real. Las fechas de la semilla se calculan al iniciar por primera vez. No se inventaron teléfonos, coordenadas ni credenciales.
 
 Para móvil, instalar Expo Go compatible con SDK 57, ejecutar `npm start` y abrir el QR en la misma red. Si la tienda aún no ofrece esa versión de Expo Go, usar un development build compatible.
 
@@ -44,11 +50,11 @@ El service worker almacena los archivos estáticos de la aplicación, nunca resp
 
 ## Funcionalidad
 
-- Obras con búsqueda, zona, prioridad de retiro y semáforo calculado con el calendario de Buenos Aires. **Retiradas agrupa RETIRADO y REINGRESADO; se quitó el filtro Cerradas.**
+- Obras con búsqueda, zona, prioridad de retiro y semáforo calculado con el calendario de Buenos Aires. **Retirados agrupa RETIRADO y REINGRESADO; no existe un filtro Cerradas separado.**
 - Alta/edición de obras, cargas con contadores, medidas personalizadas, apodos y combos con revisión.
 - Entregas, retiros inspeccionados, triangulación directa, daños, pérdidas y recuperaciones con auditoría.
 - Stock por galpón, obra, taller y perdido; ajustes administrativos con origen/destino y motivo.
-- Responsables configurables; selección de perfil demo o autenticación Firebase con correo verificado.
+- Responsables configurables, ingreso por nombre y equipo por invitación. Demo local; producción preparada con identidades Firebase Auth e invitaciones de un uso, pendiente de configurar.
 - Fotos con permisos, JPEG a calidad 0.7 y lado máximo 1024 px, persistencia local y cola de subida.
 - Lista de viaje por zona, orden manual o distancia real desde GPS, enlaces a Google Maps y remito WhatsApp. El usuario confirma el envío en WhatsApp.
 - Historial con filtros, reversión segura de la última acción dentro de cinco minutos y correcciones compensatorias. Administración puede paginar auditoría remota.

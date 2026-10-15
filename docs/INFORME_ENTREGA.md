@@ -1,3 +1,7 @@
+# Actualización vigente: versión 1.1.0
+
+El rediseño pedido desde Android está documentado y probado en [ENTREGA_1_1.md](ENTREGA_1_1.md). APK definitivo en rama privada descargas, candidato v1.1.0-demo.2. Este informe anterior se conserva como historia; sus referencias a selector de roles y resultados previos no describen la interfaz vigente. Para continuar leer CONTINUIDAD_REDISENO.md.
+
 # Repartos Chema — informe de implementación y entrega
 
 Fecha: 14 de octubre de 2026. Empresa: Grupo Chema Construcciones. Uso exclusivamente interno. Este informe diferencia demo comprobada, código implementado y dependencias productivas pendientes. La misión general no se declara finalizada mientras resten los criterios de aceptación físicos/productivos correspondientes.

@@ -1,0 +1,12 @@
+
+> repartos-chema@1.0.0 test:ui
+> playwright test tests/ui/trip.spec.ts --workers=1
+
+
+Running 1 test using 1 worker
+
+(node:7756) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/ui/trip.spec.ts:3:5 › viaje vuelve al depósito fijo y recupera el cambio de Ajustes sin alterar inventario (5.7s)
+
+  1 passed (8.0s)

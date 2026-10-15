@@ -1,0 +1,11 @@
+{
+  "repositorio": "kkshiiit/repartos-chema",
+  "privado": true,
+  "rama": "descargas",
+  "commit": "ce93ad5",
+  "ruta": "android/v1.1.0-demo.2/repartos-chema-demo-arm64.apk",
+  "bytes": 49474956,
+  "sha256": "4dec382aa887c0e20a9bfead6f12d503400065a4e911cd8a714c9803aa8a13d9",
+  "restauracion": "archivo recuperado de FETCH_HEAD en repositorio Git independiente, SHA256 y CRC correctos",
+  "pruebaDescargaAndroid": false
+}
