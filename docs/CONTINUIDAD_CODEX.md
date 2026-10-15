@@ -1,6 +1,6 @@
 # Punto vigente — rediseño 1.1 y APK actualizado
 
-Continuar desde [CONTINUIDAD_REDISENO.md](CONTINUIDAD_REDISENO.md). El usuario probó el APK anterior y pidió cambios visuales, bienvenida, nombre/invitación de equipo y depósito fijo. Logo real recibido. No confundir la demo1.0 publicada en rama descargas con el APK1.1 definitivo en ruta demo.2.
+Continuar desde [CONTINUIDAD_REDISENO.md](CONTINUIDAD_REDISENO.md). El APK definitivo y los ZIP fuente/web ya están en GitHub privado, recuperados y verificados. La siguiente tarea requiere probarlo en el celular y obtener el ID/configuración de Firebase para el equipo real. El usuario probó el APK anterior y pidió cambios visuales, bienvenida, nombre/invitación de equipo y depósito fijo. Logo real recibido. No confundir la demo1.0 publicada en rama descargas con el APK1.1 definitivo en ruta demo.2.
 
 # Continuidad de Repartos Chema
 
