@@ -1,5 +1,7 @@
 # Configurar Firebase para producción
 
+**Verificación posterior 15/10,17:39 Argentina:** configuración pública de Auth responde HTTP200 y número658913591865 coincide. Resuelto el error CONFIGURATION_NOT_FOUND en esa consulta; usuario confirmó habilitación Anónimo. No se probó ingreso ni se crearon usuarios. Evidencia `artifacts/validacion/firebase-auth-20261015T203927Z.json`. Siguiente bloqueo: autorización explícita de facturación/despliegue y acceso administrativo Google, no más registro web/configuración ni inicialización Auth.
+
 **Actualización de configuración:** ya se recibió el `firebaseConfig` web real del usuario y se guardó fuera de Git en `.env.firebase.local`, como perfil no activo. No usar Analytics. Consulta pública Auth HTTP400 `CONFIGURATION_NOT_FOUND` (15/10/2026 20:33UTC); inicialización/proveedor Anónimo requieren revisión en consola. Ver [guía Android vigente](FIREBASE_DESDE_ANDROID.md). No confundir configuración del cliente con autorización administrativa, backend desplegado o bucket existente.
 
 No se ejecutó ningún despliegue ni se utilizaron credenciales reales. Este procedimiento lo realiza un administrador autorizado del proyecto.

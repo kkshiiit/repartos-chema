@@ -1,0 +1,13 @@
+{
+  "fechaUTC": "2026-10-15T20:39:27.862508+00:00",
+  "proyectoSolicitado": "repartos-chema",
+  "operacion": "GET configuración pública Auth después de confirmación del usuario; sin crear usuarios ni datos",
+  "http": 200,
+  "projectId": "658913591865",
+  "projectNumber": null,
+  "authorizedDomains": [
+    "localhost",
+    "repartos-chema.firebaseapp.com",
+    "repartos-chema.web.app"
+  ]
+}
