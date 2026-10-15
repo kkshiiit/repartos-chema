@@ -4,7 +4,7 @@
 
 Starting Metro Bundler
 
-Web Bundled 5310ms node_modules/expo-router/entry.js (2992 modules)
+Web Bundled 285632ms node_modules/expo-router/entry.js (2992 modules)
 
 › Assets (18):
 node_modules/expo-router/assets/arrow_down.017bc6ba3fc25503e5eb5e53826d48a8.png (9.5KB)
@@ -22,7 +22,7 @@ node_modules/expo-router/assets/unmatched.20e71bdf79e3a97bf55fd9e164041578.png (
 
 › web bundles (7):
 _expo/static/js/web/backupService-b83707557693267d08a1ae4608de8c74.js (30KB)
-_expo/static/js/web/entry-9124f4c74a3b004c3e1dcc1f57156afc.js (5.4MB)
+_expo/static/js/web/entry-2eb63577fc14a437acbb4b0177b6b8a4.js (5.4MB)
 _expo/static/js/web/excelGenerator-fa630e760c6c10d6afb6515daa0d3679.js (1.9KB)
 _expo/static/js/web/exceljs-e608d1213ffbe6de9140d1e320c60cbb.js (944KB)
 _expo/static/js/web/index-204a170b31f9a3e4468303e52dad0b10.js (498KB)

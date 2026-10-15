@@ -92,7 +92,7 @@ Se probaron anchos 320/360/390/768/1440 sin scroll horizontal accidental del doc
 
 Documentos pesados se cargan al exportar. Las fotos nuevas web son Blob en IndexedDB, no base64 dentro de cada snapshot de inventario. Se conserva un solo inverso vigente. Polling de sincronización en primer plano y reloj del historial solo con esa pantalla activa; la caché offline usa hashes del contenido. Consultas de perfiles para avisos se agrupan en backend.
 
-Medición de archivos de la exportación web del 14/10: entry principal **5.370.187 bytes**, JS total **7.477.092 bytes**, archivos totales **7.498.727 bytes**, sin compresión de transporte. La medición anterior del entry era 6.346.672 bytes; no se atribuye toda la diferencia a una sola corrección. Bundles Hermes Android/iOS ~11 MB cada uno; no son medidas de RAM.
+Medición de archivos de la exportación web del 14/10: entry principal **5.370.584 bytes**, JS total **7.477.489 bytes**, archivos totales **7.499.124 bytes**, sin compresión de transporte. La medición anterior del entry era 6.346.672 bytes; no se atribuye toda la diferencia a una sola corrección. Bundles Hermes Android/iOS ~11 MB cada uno; no son medidas de RAM.
 
 No se midieron FPS, batería, memoria, arranque en gama baja ni latencia de producción. La duración de suites no equivale a latencia de usuario. El agregado limita 200 obras/300 materiales/750 KB; requiere una estrategia de archivo y partición antes de crecer. No se hizo una migración riesgosa por rendimiento.
 
@@ -145,3 +145,7 @@ Para continuar: leer CONTINUIDAD, comprobar Git y respaldo, revisar resultado AP
 ## Validación adicional de accesibilidad (14/10, 19:30 UTC)
 
 Se añadió @axe-core/playwright solo como dependencia de desarrollo. Detectó y se corrigieron el contenedor tablist/estado seleccionado de navegación y el foco de teclado de métricas desplazables. Los dos recorridos axe, ocho pantallas en claro y oscuro, pasaron sin infracciones detectadas en las reglas WCAG A/AA seleccionadas. La suite completa actual pasó 19/19. No sustituye prueba con lectores de pantalla o teclado en dispositivos físicos. Reportes en `artifacts/validacion/axe-*.json`.
+
+## Corrección visual adicional
+
+La revisión manual detectó que el detalle podía recortar controles en móvil aunque el documento no aumentara de ancho. Se corrigió flexShrink/maxWidth de ambas columnas y se añadió comprobación de los límites de Preparar carga, Documento y Ubicación en cada ancho/tema. La suite posterior aprobó 19/19 (4,6 min), con verificación de los controles a 320, 360, 390, 768 y 1440 px en ambos temas; captura de detalle móvil revisada. También se excluyeron micrófono y superposición de ventanas de los permisos Android: la aplicación solo captura fotos y no necesita esos accesos.

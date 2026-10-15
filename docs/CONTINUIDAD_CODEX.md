@@ -1,3 +1,32 @@
+# Estado vigente — 15/10/2026 01:15 UTC (14/10, 22:15 Argentina)
+
+La misión sigue en curso. El objetivo de las 21:00 Argentina ya pasó; no afirmar entrega terminada ni continuidad entre sesiones.
+
+## Cambio autorizado por el usuario
+
+Solicitó una carpeta para guardar todo en su PC y usar GitHub; eligió **kkshiiit**. Está autorizado el respaldo privado de este proyecto en esa cuenta. No usar nokaraempire ni repositorios ajenos. No hay acceso al disco de su PC: carpeta preparada en `/workspace/entregas/Repartos-Chema`, con snapshot de 167 archivos verificado CRC/SHA256. No presentarla como carpeta creada en su computadora.
+
+La conexión MCP GitHub funciona y lista cinco repositorios accesibles, ninguno Repartos Chema. No existe herramienta de creación de repositorios en esta sesión; `gh auth status` rechaza GH_TOKEN. Se pidió crear desde Android `kkshiiit/repartos-chema`, privado, con README, y compartir enlace. No se enviaron archivos ni se configuró remoto todavía. No solicitar tokens por chat.
+
+## Estado técnico comprobado
+
+- Git main HEAD `c83e0e8`; modificaciones de detalle móvil, prueba de límites, evidencias y documentos aún sin commit. Copias originales intactas.
+- `npm run check` de la última corrección terminó código 0: tipos, lint, 74 pruebas y build Functions. Web actual exportada correctamente. Integración previa 14/14; UI previa 19/19.
+- Primera compilación APK terminó BUILD SUCCESSFUL en 18m22, pero su manifest era anterior a la exclusión de permisos; no se entregó como final.
+- Compilación final con app.json actualizado en curso: `/workspace/informes/chema-android-final.log`, sesión2940. Script prebuild regenera android; usar caché Gradle/NDK existente. No confundir el primer éxito con el APK final.
+- UI con prueba nueva de recorte móvil aprobada 19/19, código 0 (4,6 minutos): `/workspace/informes/chema-ui-final.log`, sesión90075. Preview ya estaba escuchando en8081; segundo arranque EADDRINUSE no indica fallo de aplicación.
+
+## Próxima acción exacta
+
+1. Leer logs finales de Android/UI; corregir fallos reales. Verificar APK con apksigner/aapt, CRC y SHA256, ausencia de permisos audio/overlay/anuncios; copiar solo versión final a carpeta instalador. Hardware aún no probado.
+2. Inspeccionar captura nueva de detalle móvil, actualizar evidencias, reportes y capturas. Empaquetar web actual con nombre nuevo.
+3. Commit local coherente; ZIP fuente con manifest y restauración; Git bundle para preservar historial. Preparar carpeta única descargable con documentos y copias.
+4. Si usuario aporta repo privado kkshiiit/repartos-chema, comprobar privacidad/permisos y subir únicamente fuente/configuración sin secretos. No crear sitios ni desplegar producción.
+5. Producción Firebase/FCM y dispositivos físicos siguen pendientes. No hay automatización real de reanudación configurada.
+
+---
+## Historial de puntos anteriores (prevalece el estado vigente de arriba)
+
 ## Punto de compilación 14/10 19:34 UTC
 
 - Commit estable `52aa064`, copia restaurada verificada. Suite actual 19/19 UI (incluye axe) y check 74; backend 14/14.

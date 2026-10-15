@@ -21,3 +21,7 @@
 Historial incorpora obras/usuarios de registros antiguos y deja de refrescarse en pestañas inactivas; deshacer marca la auditoría remota original; comprobación de cabecera JPEG; envío FCM parcial conserva destinatarios aceptados, quita tokens inválidos y usa texto sin cliente en la pantalla bloqueada (FCM real pendiente). Nuevas pruebas de transferencia/daño/recuperación, documentos en Storage Emulator y fotos. Documentación/manual/validación/entrega y regeneración de builds y capturas.
 
 Para diferencias exactas: `git diff 5c554c4..HEAD --stat`, `git log --oneline` y `git show COMMIT`. Los archivos generados y capturas pueden cambiar entre pruebas por fechas dinámicas de la demo.
+
+## Accesibilidad y preparación Android
+
+`52aa064`: 19 pruebas UI aprobadas, axe sin infracciones en ocho pantallas por tema, contenedor tablist/aria-selected y métricas con foco. `c83e0e8`: paquete web restaurable, exclusión de permisos Android innecesarios y script de compilación. JDK21 completo instalado en workspace tras detectar que el runtime anterior no tenía javac. Corrección posterior de columnas del detalle y prueba de controles recortados; resultado final en VALIDACION.
