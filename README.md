@@ -10,6 +10,8 @@ APK guardado en la rama independiente `descargas`; código e historial en `main`
 
 El APK de demo es ARM64, Android 7 o superior, versión 1.1.0. Firma APKv2 e integridad verificadas, todavía sin prueba en dispositivo físico. El nombre identifica movimientos locales sin autenticar una cuenta; los datos se guardan en cada dispositivo; no se comparten mediante Firebase. Ver [guía Android](docs/ANDROID.md).
 
+[Descargar código fuente y manifiesto](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/respaldos/v1.1/repartos-chema-89abc6c.zip) · [Descargar versión web reproducible](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/respaldos/v1.1/repartos-chema-web-1.1.zip). Copias recuperadas desde GitHub con SHA256/CRC coincidentes. El ZIP fuente se puede extraer en una carpeta de la PC; no contiene dependencias regenerables ni credenciales. Los datos de cada celular se respaldan por separado desde Ajustes.
+
 ## Novedades 1.1
 
 Logo original, bienvenida de cuatro pasos, pantallas Alquileres/Depósito/Viaje/Historial, nombres de piezas sin comprimir y sin lemas extensos ni distintivo AD. Tema en la cabecera principal y Ajustes; no se repite en las ventanas. Viaje prioriza retiros y vuelve al depósito fijo de Formosa y Cuba, Villa Ballester. Se registra quién recibió la entrega.

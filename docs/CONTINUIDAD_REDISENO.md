@@ -26,7 +26,7 @@ APK final /workspace/entregas/Repartos-Chema-1.1-final/repartos-chema-demo-arm64
 
 ## Próxima acción exacta
 
-El APK demo.2 ya está respaldado y verificado. Cerrar commit documental/ZIP y push si falta; comprobar git status y remoto antes de repetir. Luego probar la actualización con el usuario y continuar la configuración Firebase pendiente. No volver a compilar ni rediseñar esta versión sin un fallo concreto o un cambio nuevo.
+Cierre completado: fuente y corrección nativa en main89abc6c, APK definitivo y respaldos en descargas6b7f587. ZIP fuente repartos-chema-89abc6c.zip (208 archivos) y web1.1 restaurados y comprobados, también recuperados desde GitHub con CRC/SHA iguales. La siguiente acción es probar la actualización con el usuario y continuar la configuración Firebase pendiente según su respuesta. No volver a compilar ni rediseñar esta versión sin un fallo concreto o un cambio nuevo.
 
 Usuario recibió pregunta sobre si existe proyecto Firebase y su ID. No configurar proyectos/facturación ni desplegar sin los datos/autorización correspondientes. No pedir contraseñas/tokens por chat.
 
