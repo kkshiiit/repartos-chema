@@ -2,6 +2,12 @@
 
 Aplicación interna de Grupo Chema Construcciones, construida con Expo 57, React Native 0.86, React 19 y TypeScript 6. Incluye una demo persistente sin credenciales y una integración Firebase separada. **No está desplegada ni conectada a un proyecto de producción.**
 
+## Descargar en Android
+
+Repositorio privado de respaldo: [kkshiiit/repartos-chema](https://github.com/kkshiiit/repartos-chema). Los paquetes preparados se guardan en [Releases](https://github.com/kkshiiit/repartos-chema/releases); requiere iniciar sesión con acceso al repositorio.
+
+El APK de demo es ARM64, Android7 o superior, versión1.0.0. Firma APKv2 e integridad verificadas, todavía sin prueba en dispositivo físico. Los perfiles ADMIN/OPERADOR son ficticios y los datos se guardan en cada dispositivo; no se comparten mediante Firebase. Ver [guía Android](docs/ANDROID.md).
+
 ## Ejecutar la demo
 
 Requisitos: Node 22.13+ o Node 24.3+, npm. El entorno de trabajo usó Node 24.19. Para desplegar Functions se selecciona Node 22.

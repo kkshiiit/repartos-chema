@@ -18,7 +18,7 @@ App interna Expo57/RN0.86/TS6 offline-first. Preservar inventario, cero anuncios
 
 Original intacto /workspace/respaldos/chema-original-20261013. ZIPs en /workspace/entregas y puntos-control, con SHA256/restauración verificada. No sobrescribir originales. Git bundle c83e0e8 fue clonado en /tmp y HEAD coincidió.
 
-MCP GitHub lista cinco repositorios de kkshiiit, ninguno Repartos Chema; no dispone de creación de repositorios. gh auth status rechaza GH_TOKEN; sin esa variable tampoco hay login. Se pidió crear desde Android kkshiiit/repartos-chema privado, con README, y compartir enlace. Aún no remoto ni subida. No pedir contraseñas/tokens por chat. El usuario ya autorizó respaldar en esa cuenta: no repetir autorización, solo verificar destino privado/acceso.
+Repositorio privado confirmado: https://github.com/kkshiiit/repartos-chema. Origin configurado y primer push completado; rama main remota b691e525ee7f7f203ebac50ee2a787c648d589e1 coincidió exactamente con la local al reanudar. Cuenta kkshiiit, permisos ADMIN. La credencial temporal en /tmp se perdió al reiniciar, pero Git y gh funcionan con la conexión heredada actual: no volver a pedir autorización sin comprobar primero las herramientas. No imprimir secretos. El historial de intentos anteriores se conserva abajo como antecedente, no como bloqueo vigente.
 
 ## Pendientes reales
 
@@ -26,7 +26,7 @@ Pruebas Android físicas (arranque/persistencia/fotos/documentos/GPS/háptica), 
 
 ## Próxima acción exacta
 
-1. Si hay enlace del repo privado, leer metadata y confirmar kkshiiit/repartos-chema, visibilidad y permisos; subir fuente/configuración sin secretos mediante herramientas disponibles. No mezclar otros proyectos.
+1. Terminar respaldo de artefactos de demo en Releases del repositorio privado, verificar descargas y actualizar este punto. La fuente y el historial ya están en main. No ejecutar despliegues productivos.
 2. Confirmar con el usuario instalación del APK en Android ARM64 y registrar cualquier error concreto; no atribuir pruebas físicas a esta sesión.
 3. Retomar pendientes productivos solo con configuración real/autorización necesaria. Preservar copias JSON de datos antes de migraciones.
 
@@ -36,7 +36,9 @@ Desde /workspace/repartos-chema: npm run check; npm run build:web; npm run previ
 
 scripts/package.py y package-web.py generan ZIPs sin sobrescribir, verifican restauración/hashes. Ver docs/INFORME_ENTREGA.md, ANDROID.md y MANUAL_USUARIO.md.
 
-## Solicitud posterior: crear GitHub (15/10)
+## Historial de autenticación (resuelto; prevalece el estado de GitHub anterior)
+
+### Solicitud posterior: crear GitHub (15/10)
 
 Usuario reiteró autorización para crear y respaldar en kkshiiit. Conector sigue sin creación; GH_TOKEN sigue inválido. Se inició autenticación oficial GitHub CLI por device flow, sin GH_TOKEN, sesión de terminal54625. Usuario debe autorizar en github.com/login/device con el código temporal mostrado en el chat (no guardarlo aquí). No hay autenticación confirmada ni repositorio creado todavía. Al retomar, comprobar `env -u GH_TOKEN gh auth status` y perfil real antes de crear; exigir kkshiiit. Si el flujo caducó, iniciar uno nuevo. No pedir tokens por chat. Mantener repositorio privado; verificar destino y secreto antes del push.
 

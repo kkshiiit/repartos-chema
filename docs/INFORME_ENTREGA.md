@@ -159,3 +159,7 @@ La hora objetivo de21:00 no se cumplió. Se entrega demo local, sin Firebase pro
 Usuario autorizó respaldo GitHub privado en kkshiiit. MCP GitHub accede a repositorios, pero no tiene creación disponible; CLI no tiene credencial válida. No existe Repartos Chema entre repositorios accesibles. Se solicitó crear kkshiiit/repartos-chema privado con README y compartir enlace. No se subió código ni se publicó aplicación.
 
 Carpeta preparada en `/workspace/entregas/Repartos-Chema`; no equivale a carpeta creada en la PC del usuario. El ZIP contenedor permite extraerla en Documentos. Contiene código, historial Git bundle, copia original, web, documentación, capturas y APK. Para datos comerciales usar también copias JSON desde Configuración: la copia de código no respalda automáticamente datos guardados en cada dispositivo.
+
+## Actualización del respaldo GitHub — 15/10
+
+El usuario creó kkshiiit/repartos-chema privado. Se subió main con el historial completo sin force push; el commit remoto b691e525ee7f7f203ebac50ee2a787c648d589e1 coincidió con el local después del reinicio del entorno. La revisión de historial y los commits posteriores no encontró credenciales reconocibles; .env.example contiene solo campos de configuración. No se configuraron workflows ni despliegues. Los bloqueos de creación descritos antes son antecedentes resueltos mediante creación manual por el usuario. Se prepara copia de APK y ZIP en Releases privados.
