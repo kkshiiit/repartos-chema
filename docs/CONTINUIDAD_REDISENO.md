@@ -28,7 +28,9 @@ APK final /workspace/entregas/Repartos-Chema-1.1-final/repartos-chema-demo-arm64
 
 Cierre completado: fuente y corrección nativa en main89abc6c, APK definitivo y respaldos en descargas6b7f587. ZIP fuente repartos-chema-89abc6c.zip (208 archivos) y web1.1 restaurados y comprobados, también recuperados desde GitHub con CRC/SHA iguales. La siguiente acción es probar la actualización con el usuario y continuar la configuración Firebase pendiente según su respuesta. No volver a compilar ni rediseñar esta versión sin un fallo concreto o un cambio nuevo.
 
-Usuario recibió pregunta sobre si existe proyecto Firebase y su ID. No configurar proyectos/facturación ni desplegar sin los datos/autorización correspondientes. No pedir contraseñas/tokens por chat.
+Usuario respondió **«no tengo»**: no existe proyecto Firebase conocido. Comprobación del 15/10: complemento Firebase instalado/habilitado, pero sin herramientas MCP Firebase invocables en esta sesión; CLI local15.33.0 y `login:list` en configuración temporal informa No authorized accounts. Entorno sin identidades de salida/secretos configurados. No se creó proyecto ni se inició sesión Google ni se desplegó. Functions y Storage requieren Blaze según documentación oficial vigente; no activar facturación sin autorización específica. Guía lista en [FIREBASE_DESDE_ANDROID.md](FIREBASE_DESDE_ANDROID.md). Próximo paso dependiente: el usuario crea proyecto Spark en su cuenta desde Android y proporciona solo su ID; después resolver autorización oficial y decisión de facturación antes del despliegue. No pedir contraseñas/tokens por chat. APK sigue demo local y no se actualizará solo por crear Firebase.
+
+Esta continuación solo actualiza documentación; no cambió código, datos, configuración ni dependencias. No se repitieron suites de aplicación: los resultados anteriores siguen referidos al código 89abc6c. Guardar commit y ZIP verificado de este punto y respaldarlo en main privado.
 
 ## Pendientes reales
 
