@@ -39,3 +39,22 @@ it('solo propietario activo expulsa; no se puede expulsar al propietario', () =>
   expect(() => assertRemoval({ ...actor, active: false }, other)).toThrow();
   expect(() => assertRemoval(actor, actor)).toThrow();
 });
+
+it('interpreta enlaces de invitación sin depender del parser URL parcial de React Native', () => {
+  const Original = globalThis.URL;
+  try {
+    globalThis.URL = class {
+      constructor() {
+        throw new Error('Parser nativo parcial');
+      }
+    } as unknown as typeof URL;
+    expect(invitationToken('repartoschema://equipo/unirse?token=' + 'ab'.repeat(32))).toBe(
+      'ab'.repeat(32),
+    );
+    expect(invitationToken('repartoschema:///equipo/unirse?token=' + 'ab'.repeat(32))).toBe(
+      'ab'.repeat(32),
+    );
+  } finally {
+    globalThis.URL = Original;
+  }
+});

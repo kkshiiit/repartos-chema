@@ -21,19 +21,11 @@ export function invitationToken(input: string) {
   if (!value) return '';
   let token = value;
   if (value.includes('://')) {
-    let url: URL;
-    try {
-      url = new URL(value);
-    } catch {
-      throw new Error('El enlace de invitación no es válido.');
-    }
-    if (
-      url.protocol !== 'repartoschema:' ||
-      url.hostname !== 'equipo' ||
-      url.pathname !== '/unirse'
-    )
-      throw new Error('Usa un enlace de invitación de Repartos Chema.');
-    token = url.searchParams.get('token') || '';
+    // React Native 0.86 solo interpreta host/path de HTTP en su URL global.
+    // El enlace propio tiene un formato cerrado; no necesita un parser web.
+    const match = /^repartoschema:\/\/\/?equipo\/unirse\?token=([a-f0-9]{64})$/.exec(value);
+    if (!match) throw new Error('Usa un enlace de invitación de Repartos Chema.');
+    token = match[1]!;
   }
   if (!/^[a-f0-9]{64}$/.test(token))
     throw new Error('La invitación no es válida. Revisa el enlace completo.');
