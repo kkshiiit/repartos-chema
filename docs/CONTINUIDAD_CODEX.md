@@ -26,7 +26,7 @@ Pruebas Android físicas (arranque/persistencia/fotos/documentos/GPS/háptica), 
 
 ## Próxima acción exacta
 
-1. Probar el APK entregado en Android físico y registrar errores concretos. El respaldo del código en GitHub está completado. Subida opcional de APK/ZIP a Releases bloqueada por HTTP401 de uploads.github.com; no repetir login ni afirmar que esos binarios están en GitHub. No ejecutar despliegues productivos.
+1. Probar el APK entregado en Android físico y registrar errores concretos. El respaldo del código en GitHub está completado. APK ya respaldado en rama descargas, ver cierre de entrega al final. Solo Releases sigue bloqueado por HTTP401 y el ZIP completo aún no está en GitHub. No repetir login. No ejecutar despliegues productivos.
 2. Confirmar con el usuario instalación del APK en Android ARM64 y registrar cualquier error concreto; no atribuir pruebas físicas a esta sesión.
 3. Retomar pendientes productivos solo con configuración real/autorización necesaria. Preservar copias JSON de datos antes de migraciones.
 
@@ -61,3 +61,13 @@ Repositorio https://github.com/kkshiiit/repartos-chema, privado, main, permisos 
 La conexión heredada actual permite gh api y git push/clone; no depende de /tmp/chema-gh-auth, que ya no existe tras reinicio. No imprimir credenciales. Intento de release de prueba v1.0.0-demo.1 falló al subir activos: uploads.github.com HTTP401 Bad credentials. Consulta REST posterior de releases devolvió lista vacía. No hay APK/ZIP en Releases, no hay release público/privado publicado, ni despliegue. Evitar ofrecer enlaces de descarga de assets que no existen.
 
 APK y ZIP íntegros siguen en /workspace/entregas/Repartos-Chema/instalador/repartos-chema-demo-arm64.apk y /workspace/entregas/Repartos-Chema-entrega-ed606fd.zip, entregados en chat. APK SHA256 c906e5646918ea3f1c12e1015c6b475fd5989d84f2fb283eb25ef39d5a2401c5 reconfirmado. El respaldo fuente de GitHub incluye docs/CONTINUIDAD_CODEX.md y los resultados de pruebas para recuperación entre entornos.
+
+## APK descargable desde GitHub — 15/10 (estado vigente)
+
+El usuario no podía descargar desde el chat y autorizó subir el APK utilizando los complementos necesarios. Se consultaron guías Railway/Firebase; no se crearon proyectos ni servicios, ni hubo gastos. Se aprovechó el GitHub privado ya autorizado.
+
+Rama independiente descargas, commit9d4ab3c, con README y android/v1.0.0-demo.1/repartos-chema-demo-arm64.apk más SHA256. Código principal en main. No fusionar descargas con main: su función es almacenar los binarios solicitados, no código fuente. Repositorio auxiliar local /workspace/entregas/apk-github-20261015.
+
+GitHub API confirmó49078452 bytes y blob6941a48e00b87b28f00a5a460ae8af7d0004dc2e. Clonación nueva en /tmp/chema-apk-restaurado-20261015 recuperó el APK completo; SHA256 c906e5646918ea3f1c12e1015c6b475fd5989d84f2fb283eb25ef39d5a2401c5 y CRC correctos. Descarga binaria mediante gh api raw no fue usable en este entorno (transform: short source buffer); la comprobación válida fue restauración por Git, no navegador Android. El archivo real almacenado en GitHub está íntegro.
+
+Enlace privado estable: https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.0.0-demo.1/repartos-chema-demo-arm64.apk. Alternativa: ficha blob/descargas/... y Download raw file. Usuario debe iniciar sesión con kkshiiit o cuenta autorizada. Pendiente probar instalación/funciones físicas, no reconstruir el APK ni pedir credenciales para acceder a la ficha.
