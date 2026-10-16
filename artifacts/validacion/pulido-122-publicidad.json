@@ -1,0 +1,6 @@
+{
+  "alcance": "app, src, dependencias declaradas/lock, app.json, .env.example",
+  "archivosInspeccionados": 71,
+  "coincidenciasPublicidadPropia": [],
+  "nota": "Inspecci\u00f3n est\u00e1tica; no equivale a instrumentaci\u00f3n de red Android f\u00edsico."
+}

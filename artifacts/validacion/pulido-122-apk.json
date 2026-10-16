@@ -1,0 +1,16 @@
+{
+  "version": "1.2.2",
+  "versionCode": 5,
+  "codigoFuncional": "bae300e80e6644226f0df408faae632461582c26",
+  "archivo": "repartos-chema-local-1.2.2-arm64.apk",
+  "bytes": 49499336,
+  "sha256": "43835da902859f6c5af77947d315fb8ec2922d9921cebe558948460b0f1ba8eb",
+  "certificadoSHA256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+  "firmaV2": true,
+  "certificadoCoincideCon121": true,
+  "CRC": "correcto",
+  "ABI": "arm64-v8a",
+  "minSDK": 24,
+  "pruebaFisica": false,
+  "generadoUTC": "2026-10-16T23:01:03.355968+00:00"
+}
