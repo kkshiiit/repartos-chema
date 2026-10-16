@@ -8,7 +8,7 @@ GitHub privado autorizado: kkshiiit/repartos-chema. Trabajar en main y hacer com
 
 ## Código guardado y situación de integración
 
-- Base entregada1.2.0:327c653, funcionala820afe, APK a52f581 en descargas.
+- Base entregada 1.2.0: 327c653, funcional a820afe, APK a52f581 en descargas.
 - Aparecieron cambios remotos hasta 31cd72d: importación JSON y APK1.2.1/code 4. El push9174621 fue rechazado; se conservaron ambas líneas y se integraron sin force/reset.
 - Último bloque funcional combinado: **bae300e80e6644226f0df408faae632461582c26**, ya en main remoto y respaldado en /workspace/entregas/pulido-1.2.2/repartos-chema-bae300e.zip.260 archivos, CRC/restauraciónSHA correctos. Consultar git log y ls-remote para commits documentales posteriores.
 - Código de nube incompleto separado en trabajo/gratuito-pausado-20261016/0f179f9. No fusionarlo en esta edición individual.
@@ -38,12 +38,20 @@ GitHub privado autorizado: kkshiiit/repartos-chema. Trabajar en main y hacer com
 - APKs anteriores:1.2.0 completo en descargas/android/v1.2.0-local.1;1.2.1 dividido en partes en descargas/android/v1.2.1-local.1. Se reconstruyó 1.2.1 localmente y verificó SHA8135af0ed6193fd25d10b16d9dda2c13776d6b474b078106d810c9966d09f029. Certificado coincide con1.2.0. Archivo temporal /tmp/chema-121-cert-comparison.apk para comparar el nuevo instalador.
 - La nueva entrega debe ser **un APK completo**, no partes para reconstruir en el celular. Ruta prevista android/v1.2.2-local.1/repartos-chema-local-1.2.2-arm64.apk.
 
+## Entrega publicada y verificada
+
+- Main: bloque APK `f77a2dc`, pruebas/documentación `adbdc0e`; el commit posterior de cierre solo actualiza README/checkpoint/evidencia. Consultar `git log -1` para su hash.
+- Descargas: **bb0bfba2da69af18572d8bbd4674443f9bfeae5b**. APK completo1.2.2 y ZIP fuente `repartos-chema-f77a2dc.zip` (271 archivos), sin borrar entregas previas.
+- [Descargar APK](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.2.2-local.1/repartos-chema-local-1.2.2-arm64.apk). Repositorio privado: iniciar sesión con acceso.
+- APK y ZIP recuperados desde GitHub mediante fetch en repositorio independiente `/tmp/chema-restauracion-122`; SHA/CRC coinciden y los271 archivos fuente restaurados coinciden con el manifiesto. Evidencia `artifacts/validacion/pulido-122-github.json`.
+- Fuente ZIP SHA256 `9c4963dc405d3666888a5727c5560b9b963c8383d9bc4f266267332330eb6994`. Respaldo local `/workspace/entregas/pulido-1.2.2`.
+
 ## Próxima acción exacta
 
-1. Guardar/push evidencia y docs actualizados. Generar ZIP fuente mediante scripts/package.py, que verifica restauración y excluye.env/secretos/dependencias.
-2. Fetch y ff-only de descargas en /workspace/entregas/apk-github-20261015, publicar APK completo+SHA+fuenteZIP con nombre versionado. Si main/descargas avanzan, inspeccionar e integrar; nunca forzar.
-3. Recuperar APK desde GitHub en repositorio independiente, verificar SHA/CRC y guardar evidencia. Actualizar README/manual y este checkpoint con enlace/hashes/commits reales; push final.
-4. Entregar enlace APK al usuario. Copia JSON previa y actualización encima sin desinstalar. Probar Android físico con usuario antes de declararlo validado.
+1. La edición local1.2.2 está compilada, publicada y verificada como archivo; no requiere recompilar por documentación.
+2. Antes de otros cambios: leer este checkpoint, git status/log/fetch y comprobar main/descargas. No duplicar las correcciones ya probadas.
+3. Siguiente validación necesaria: el usuario guarda JSON fuera de la app e instala1.2.2 encima, sin desinstalar. Confirmar conservación de datos, selector JSON/vista previa/cancelación/importación/deshacer, Compartir Word/Excel y responsables con teclado real.
+4. Si aparece un fallo físico, reproducirlo sin borrar datos, corregir con prueba y subir main antes de una compilación con nueva versión. Mantener instaladores previos. No retomar Firebase/multiusuario por iniciativa propia.
 
 ## Pendientes reales y herramientas
 

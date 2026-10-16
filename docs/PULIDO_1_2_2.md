@@ -43,7 +43,7 @@ Captura nueva real revisada: [alta de responsable, web móvil claro](../artifact
 
 Compilación Gradle completa ARM64 **correcta en 9m 38s**, 658 tareas. APK 1.2.2/code5, paquete `com.grupochema.repartos`, Android 7+ (SDK24), 49.499.336 bytes. Firma v2, certificado coincidente con 1.2.1, ZIP/CRC y ABI comprobados. Sin permisos publicitarios/contactos/SMS/gestión global de almacenamiento ni clave de la configuración Firebase local en el bundle. Evidencias `pulido-122-{android,firma,metadata}.txt` y `pulido-122-apk.json`. Advertencia Gradle sobre APIs obsoletas para una futura actualización a Gradle10; no impide esta compilación.
 
-SHA256: `43835da902859f6c5af77947d315fb8ec2922d9921cebe558948460b0f1ba8eb`. Archivo completo preparado en `/workspace/entregas/pulido-1.2.2/repartos-chema-local-1.2.2-arm64.apk`; publicación y recuperación desde GitHub pendientes de comprobar en el siguiente bloque. No se probó físicamente.
+SHA256: `43835da902859f6c5af77947d315fb8ec2922d9921cebe558948460b0f1ba8eb`. Archivo completo preparado en `/workspace/entregas/pulido-1.2.2/repartos-chema-local-1.2.2-arm64.apk`; publicado como archivo completo en `descargas`, commit `bb0bfba2da69af18572d8bbd4674443f9bfeae5b`. Se recuperó el APK y el ZIP fuente desde GitHub en un repositorio independiente: SHA/CRC correctos, y restauración de los 271 archivos fuente coincidente con el manifiesto. Evidencia `artifacts/validacion/pulido-122-github.json`. No se probó físicamente.
 
 ## Límites y pendientes reales
 
