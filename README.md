@@ -1,22 +1,20 @@
-# Corrección de importación JSON 1.2.1
-
-Candidato Android individual: revisión automática del JSON antes de confirmar, errores claros y recuperación de la última importación. El archivo original de cinco pedidos pasa validación y persistencia; 107 pruebas aprobadas. APK completo adjunto en el chat y respaldo por partes en la rama descargas; subida del APK único bloqueada por límite de16MiB del conector. No se probaron instalación ni selector en hardware. Ver [evidencias, construcción y límites](docs/IMPORTACION_JSON_1_2_1.md).
-
----
-
 # Repartos Chema
 
-Aplicación interna de Grupo Chema Construcciones, construida con Expo57, React Native0.86, React19 y TypeScript6. **La edición actual1.2 es individual y local/offline, sin servicios pagos ni dependencia de Firebase/Cloudflare.** La integración cloud histórica está separada y no desplegada.
+Aplicación interna de Grupo Chema Construcciones, construida con Expo57, React Native0.86, React19 y TypeScript6. **La edición actual 1.2.2 es individual y local/offline, sin servicios pagos ni dependencia de Firebase/Cloudflare.** La integración cloud histórica está separada y no desplegada.
 
 ## Descargar en Android
 
-**[Descargar APK Android1.2.0 — uso individual local](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.2.0-local.1/repartos-chema-local-1.2.0-arm64.apk)** (49,5MB). Requiere iniciar sesión en GitHub con acceso al repositorio privado. Si no descarga, abrir [la ficha del APK](https://github.com/kkshiiit/repartos-chema/blob/descargas/android/v1.2.0-local.1/repartos-chema-local-1.2.0-arm64.apk) y tocar Download raw file / Descargar archivo sin procesar.
+**[Descargar APK completo Android 1.2.2 — uso individual local](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.2.2-local.1/repartos-chema-local-1.2.2-arm64.apk)** (49,5 MB). Iniciar sesión en GitHub con acceso al repositorio privado. Si no descarga, abrir [la ficha del APK](https://github.com/kkshiiit/repartos-chema/blob/descargas/android/v1.2.2-local.1/repartos-chema-local-1.2.2-arm64.apk) y tocar Download raw file / Descargar archivo sin procesar. Es un archivo completo, no hay que unir partes.
 
-APK en rama independiente `descargas`, commita52f581; código/historial en main. Versiones anteriores conservadas. No se activaron servicios pagos ni despliegue productivo. La evidencia de recuperación desde GitHub se registra en docs/CONTINUIDAD_LOCAL.md.
+Android 7+, ARM64, versión 1.2.2/code5. Firma v2/CRC y mismo certificado que 1.2.1 verificados. **Todavía sin instalación o pruebas físicas.** Guardar copia JSON fuera de la app y actualizar encima sin desinstalar. Instalación nueva vacía; la actualización conserva los datos. SHA256: `43835da902859f6c5af77947d315fb8ec2922d9921cebe558948460b0f1ba8eb`.
 
-ARM64, Android7+, versión1.2.0/code3. Firma v2/CRC e igualdad del certificado anterior verificados, todavía sin prueba física. Instalación nueva vacía; actualización conserva datos existentes. Guardar JSON y actualizar encima sin desinstalar. SHA256: `063019c53294fdb6d43e3916faad7d0d0f9b03312fdabed03d47de917f589962`. Ver [manual local Android](docs/USO_LOCAL_ANDROID.md) y [pruebas/límites](docs/ENTREGA_LOCAL_1_2.md).
+Incluye agregar responsable desde la operación, Word independiente de filtros Excel, rutas nativas de documentos/copias sin sobrescritura y revisión JSON antes de confirmar. Validación nueva: 108 pruebas, 6 recorridos web locales/accesibilidad, lint sin errores ni advertencias y compilación Gradle completa correcta. Consultar [pruebas y límites](docs/PULIDO_1_2_2.md) y [manual Android](docs/USO_LOCAL_ANDROID.md).
 
-[Código fuente1.2 y manifiesto](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/respaldos/v1.2-local/repartos-chema-8008596.zip). ZIP con restauración SHA256/CRC comprobada, sin dependencias regenerables ni credenciales. Los datos de cada celular se respaldan por separado desde Ajustes.
+Instalador en rama `descargas`, commit `bb0bfba`; código e historial en main. Versiones anteriores conservadas. Sin servicios pagos, despliegue productivo ni sincronización entre teléfonos. Firma interna de plantilla.
+
+[Descargar código fuente y manifiesto SHA256](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/respaldos/v1.2.2-local/repartos-chema-f77a2dc.zip). ZIP de 271 archivos con restauración SHA256/CRC comprobada, sin credenciales ni dependencias regenerables. Los datos de cada celular se respaldan por separado desde Ajustes. [Captura actual de entrega](artifacts/capturas/pulido-122-responsable.png).
+
+La entrega histórica [1.2.1](docs/IMPORTACION_JSON_1_2_1.md) queda conservada; 1.2.2 incorpora esas correcciones JSON en un APK único.
 
 ## Novedades 1.1
 
@@ -72,7 +70,7 @@ El service worker almacena los archivos estáticos de la aplicación, nunca resp
 
 Al iniciar se sigue el tema del sistema. El botón de sol/luna cambia inmediatamente a una elección manual sin perder formularios. En Configuración están Claro, Oscuro y Seguir sistema. La preferencia se conserva separada del inventario.
 
-En Configuración, Administración puede **Descargar copia** con inventario e imágenes. **Elegir copia → Restaurar copia** valida el archivo y guarda preventivamente el estado anterior antes de reemplazar la demo. Protege estas copias como información interna. Un error de lectura no reinicia la aplicación con otra semilla ni borra silenciosamente el inventario.
+En Configuración, Administración puede **Descargar copia** con inventario e imágenes. **Elegir copia → Confirmar importación** muestra un resumen y valida el archivo; guarda preventivamente el estado anterior antes de reemplazar los datos locales. Cancelar no modifica datos y Deshacer última importación permite recuperar el estado previo. Protege estas copias como información interna. Un error de lectura no reinicia la aplicación con otra semilla ni borra silenciosamente el inventario.
 
 Manual: [MANUAL_USUARIO.md](docs/MANUAL_USUARIO.md). Estado para continuar: [CONTINUIDAD_CODEX.md](docs/CONTINUIDAD_CODEX.md). Resultados y límites: [INFORME_ENTREGA.md](docs/INFORME_ENTREGA.md).
 

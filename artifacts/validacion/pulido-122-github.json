@@ -1,0 +1,24 @@
+{
+  "descargasCommit": "bb0bfba2da69af18572d8bbd4674443f9bfeae5b",
+  "verificadoUTC": "2026-10-16T23:03:22.872595+00:00",
+  "metodo": "fetch GitHub en repositorio independiente, git show y verificaci\u00f3n SHA/CRC/restauraci\u00f3n ZIP",
+  "archivos": [
+    {
+      "rutaRemota": "android/v1.2.2-local.1/repartos-chema-local-1.2.2-arm64.apk",
+      "bytes": 49499336,
+      "sha256": "43835da902859f6c5af77947d315fb8ec2922d9921cebe558948460b0f1ba8eb",
+      "igualManifiesto": true,
+      "CRC": "correcto",
+      "restauracionCompletaFuente": null
+    },
+    {
+      "rutaRemota": "respaldos/v1.2.2-local/repartos-chema-f77a2dc.zip",
+      "bytes": 4122163,
+      "sha256": "9c4963dc405d3666888a5727c5560b9b963c8383d9bc4f266267332330eb6994",
+      "igualManifiesto": true,
+      "CRC": "correcto",
+      "restauracionCompletaFuente": 271
+    }
+  ],
+  "pruebaFisicaAndroid": false
+}
