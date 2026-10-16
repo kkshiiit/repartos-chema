@@ -1,0 +1,40 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> repartos-chema@1.0.0 check
+> npm run typecheck && npm run lint && npm test && npm --prefix functions run build
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> repartos-chema@1.0.0 typecheck
+> tsc --noEmit
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> repartos-chema@1.0.0 lint
+> eslint app src tests functions/src
+
+
+/workspace/scratch/e18908837ef1/repartos-chema/tests/ui/accessibility.spec.ts
+  3:8  warning  Using exported name 'AxeBuilder' as identifier for default import  import/no-named-as-default
+
+✖ 1 problem (0 errors, 1 warning)
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> repartos-chema@1.0.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /workspace/scratch/e18908837ef1/repartos-chema
+
+
+ Test Files  12 passed (12)
+      Tests  107 passed (107)
+   Start at  18:54:38
+   Duration  846ms (import 39%, transform 30%, tests 29%, worker 2%)
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> repartos-chema-functions@1.0.0 build
+> tsc
+

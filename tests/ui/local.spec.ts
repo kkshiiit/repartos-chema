@@ -110,9 +110,12 @@ test('individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y o
   const picker = page.waitForEvent('filechooser');
   await page.getByRole('button', { name: 'Elegir copia', exact: true }).click();
   await (await picker).setFiles({ name: 'copia.json', mimeType: 'application/json', buffer: raw });
-  await page.getByRole('button', { name: 'Restaurar copia', exact: true }).click();
-  await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
-  await expect(page.getByText('Copia restaurada.', { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Confirmar importación', exact: true }).click();
+  await expect(
+    page.getByText('Importación completada: 1 alquiler guardado en este celular.', {
+      exact: true,
+    }),
+  ).toBeVisible();
   await page.goto('/');
   await page.evaluate(async () => {
     await navigator.serviceWorker.ready;

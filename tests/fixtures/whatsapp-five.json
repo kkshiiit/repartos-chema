@@ -1,0 +1,673 @@
+{
+  "format": "chema-backup-v1",
+  "createdAt": "2026-10-16T04:21:26.277Z",
+  "envelope": {
+    "schema": 1,
+    "state": {
+      "revision": 0,
+      "obras": [
+        {
+          "id": "whatsapp_ignacio_2509",
+          "clienteNombre": "Igancio",
+          "clienteTelefono": "",
+          "direccion": "Anchordoqui 1014",
+          "localidadBarrio": "Sáenz Peña",
+          "fechaEntrega": "2026-09-25",
+          "fechaRetiroEstimada": "2026-10-16",
+          "estadoProceso": "PENDIENTE_ENTREGA",
+          "estadoSemaphoro": "VERDE",
+          "syncStatus": "PENDING",
+          "materialesCargados": [
+            {
+              "materialId": "cuerpo_130",
+              "nombre": "Cuerpo de andamio",
+              "cantidad": 2,
+              "medida": "1.30 m"
+            },
+            {
+              "materialId": "cuerpo_080",
+              "nombre": "Cuerpo de andamio",
+              "cantidad": 1,
+              "medida": "0.80 m"
+            },
+            {
+              "materialId": "corto_comun",
+              "nombre": "Corto",
+              "cantidad": 6
+            },
+            {
+              "materialId": "largo_comun",
+              "nombre": "Largo",
+              "cantidad": 4
+            },
+            {
+              "materialId": "rueda",
+              "nombre": "Rueda",
+              "cantidad": 4
+            },
+            {
+              "materialId": "tablon",
+              "nombre": "Tablón",
+              "cantidad": 2
+            }
+          ],
+          "saldosEnObra": {},
+          "observaciones": "WhatsApp: ENTREGA 25/09. Entre A. Moriondo y José E. Batallán. Figura LISTO 08/10: se conserva como observación de preparación, NO se presume entregado. Fecha de retiro NO informada; 16/10 es valor técnico provisorio para importar. Nombre escrito «Igancio» en la captura (confirmar si es «Ignacio»).",
+          "updatedAt": "2026-10-16T04:21:26.277Z"
+        },
+        {
+          "id": "whatsapp_carina_2509",
+          "clienteNombre": "Carina",
+          "clienteTelefono": "",
+          "direccion": "Acassuso 7223",
+          "localidadBarrio": "Liniers",
+          "fechaEntrega": "2026-09-25",
+          "fechaRetiroEstimada": "2026-10-16",
+          "estadoProceso": "PENDIENTE_ENTREGA",
+          "estadoSemaphoro": "VERDE",
+          "syncStatus": "PENDING",
+          "materialesCargados": [
+            {
+              "materialId": "cuerpo_130",
+              "nombre": "Cuerpo de andamio",
+              "cantidad": 3,
+              "medida": "1.30 m"
+            },
+            {
+              "materialId": "largo_comun",
+              "nombre": "Largo",
+              "cantidad": 6
+            },
+            {
+              "materialId": "corto_comun",
+              "nombre": "Corto",
+              "cantidad": 6
+            },
+            {
+              "materialId": "tablon",
+              "nombre": "Tablón",
+              "cantidad": 3
+            }
+          ],
+          "saldosEnObra": {},
+          "observaciones": "WhatsApp: ENTREGA 25/09. Entre Carhué y Guaminí. No se confirma entrega efectiva. Fecha de retiro NO informada; 16/10 es valor técnico provisorio para importar.",
+          "updatedAt": "2026-10-16T04:21:26.277Z"
+        },
+        {
+          "id": "whatsapp_padre_ashkar",
+          "clienteNombre": "Padre Ashkar (sin nombre de cliente)",
+          "clienteTelefono": "",
+          "direccion": "Padre Ashkar 234",
+          "localidadBarrio": "Villa Lynch",
+          "fechaEntrega": "2026-10-16",
+          "fechaRetiroEstimada": "2026-10-16",
+          "estadoProceso": "PENDIENTE_ENTREGA",
+          "estadoSemaphoro": "VERDE",
+          "syncStatus": "PENDING",
+          "materialesCargados": [
+            {
+              "materialId": "cuerpo_130",
+              "nombre": "Cuerpo de andamio",
+              "cantidad": 3,
+              "medida": "1.30 m"
+            },
+            {
+              "materialId": "tablon",
+              "nombre": "Tablón",
+              "cantidad": 2
+            },
+            {
+              "materialId": "rueda",
+              "nombre": "Rueda",
+              "cantidad": 4
+            },
+            {
+              "materialId": "corto_comun",
+              "nombre": "Corto",
+              "cantidad": 6
+            },
+            {
+              "materialId": "largo_comun",
+              "nombre": "Largo",
+              "cantidad": 6
+            }
+          ],
+          "saldosEnObra": {},
+          "observaciones": "WhatsApp: entre Indalecio Gómez y Rosales. Mensaje editado el 02/10; NO especifica fecha de entrega. Figura LISTO: preparación, no entrega confirmada. Fechas de entrega y retiro 16/10 son PROVISORIAS porque la app exige ambos campos. Confirmarlas.",
+          "updatedAt": "2026-10-16T04:21:26.277Z"
+        },
+        {
+          "id": "whatsapp_instituto_santa_ana_0910",
+          "clienteNombre": "Instituto Santa Ana",
+          "clienteTelefono": "",
+          "direccion": "Bv. Ballester 4705",
+          "localidadBarrio": "Villa Ballester",
+          "fechaEntrega": "2026-10-09",
+          "fechaRetiroEstimada": "2026-10-13",
+          "estadoProceso": "PENDIENTE_ENTREGA",
+          "estadoSemaphoro": "VERDE",
+          "syncStatus": "PENDING",
+          "materialesCargados": [
+            {
+              "materialId": "cuerpo_080",
+              "nombre": "Cuerpo de andamio",
+              "cantidad": 3,
+              "medida": "0.80 m"
+            },
+            {
+              "materialId": "tablon",
+              "nombre": "Tablón",
+              "cantidad": 3
+            },
+            {
+              "materialId": "rueda",
+              "nombre": "Rueda",
+              "cantidad": 4
+            },
+            {
+              "materialId": "largo_azul",
+              "nombre": "Largo azul",
+              "cantidad": 6
+            },
+            {
+              "materialId": "corto_azul",
+              "nombre": "Corto azul",
+              "cantidad": 6
+            }
+          ],
+          "saldosEnObra": {},
+          "observaciones": "WhatsApp: ENTREGA 09/10, HASTA 13/10 (se interpreta 13/10 como fecha estimada de retiro; confirmar). Entre Pueyrredón (C. 110) y Alvear; B1653 Villa Ballester, PBA. Entrega efectiva no confirmada.",
+          "updatedAt": "2026-10-16T04:21:26.277Z"
+        },
+        {
+          "id": "whatsapp_carlos_0910",
+          "clienteNombre": "Carlos",
+          "clienteTelefono": "",
+          "direccion": "Malvinas 3130",
+          "localidadBarrio": "San Andrés",
+          "fechaEntrega": "2026-10-16",
+          "fechaRetiroEstimada": "2026-10-16",
+          "estadoProceso": "PENDIENTE_ENTREGA",
+          "estadoSemaphoro": "VERDE",
+          "syncStatus": "PENDING",
+          "materialesCargados": [
+            {
+              "materialId": "cuerpo_sin_medida",
+              "nombre": "Cuerpo de andamio (medida a confirmar)",
+              "cantidad": 3
+            },
+            {
+              "materialId": "tablon",
+              "nombre": "Tablón",
+              "cantidad": 3
+            },
+            {
+              "materialId": "cuerpo_baranda_seguridad",
+              "nombre": "Cuerpo de barandillas de seguridad",
+              "cantidad": 1
+            },
+            {
+              "materialId": "rueda",
+              "nombre": "Rueda",
+              "cantidad": 4
+            },
+            {
+              "materialId": "corto_azul",
+              "nombre": "Corto azul",
+              "cantidad": 8
+            },
+            {
+              "materialId": "largo_azul",
+              "nombre": "Largo azul",
+              "cantidad": 6
+            }
+          ],
+          "saldosEnObra": {},
+          "observaciones": "WhatsApp: mensaje del 09/10, sin fecha explícita de entrega ni retiro. Los 3 cuerpos no indican medida, SE CONSERVAN SEPARADOS de cuerpos de 1,30 m y 0,80 m. Fechas 16/10 son técnicas y PROVISORIAS: corregir antes de programar. «1 cuespo de varandillas de seguridad» normalizado a «Cuerpo de barandillas de seguridad».",
+          "updatedAt": "2026-10-16T04:21:26.277Z"
+        }
+      ],
+      "materiales": [
+        {
+          "id": "cuerpo_130",
+          "nombre": "Cuerpo de andamio",
+          "categoria": "ANDAMIOS",
+          "medida": "1.30 m",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        },
+        {
+          "id": "cuerpo_080",
+          "nombre": "Cuerpo de andamio",
+          "categoria": "ANDAMIOS",
+          "medida": "0.80 m",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        },
+        {
+          "id": "cuerpo_sin_medida",
+          "nombre": "Cuerpo de andamio (medida a confirmar)",
+          "categoria": "ANDAMIOS",
+          "medida": "",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        },
+        {
+          "id": "cuerpo_baranda_seguridad",
+          "nombre": "Cuerpo de barandillas de seguridad",
+          "categoria": "ANDAMIOS",
+          "medida": "",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        },
+        {
+          "id": "corto_comun",
+          "nombre": "Corto",
+          "categoria": "ACCESORIOS",
+          "medida": "",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        },
+        {
+          "id": "largo_comun",
+          "nombre": "Largo",
+          "categoria": "ACCESORIOS",
+          "medida": "",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        },
+        {
+          "id": "corto_azul",
+          "nombre": "Corto azul",
+          "categoria": "ACCESORIOS",
+          "medida": "",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        },
+        {
+          "id": "largo_azul",
+          "nombre": "Largo azul",
+          "categoria": "ACCESORIOS",
+          "medida": "",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        },
+        {
+          "id": "rueda",
+          "nombre": "Rueda",
+          "categoria": "ACCESORIOS",
+          "medida": "",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        },
+        {
+          "id": "tablon",
+          "nombre": "Tablón",
+          "categoria": "TABLONES",
+          "medida": "",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        }
+      ],
+      "combos": [],
+      "responsables": [],
+      "notificaciones": [],
+      "logs": [],
+      "appliedIds": []
+    },
+    "confirmed": {
+      "revision": 0,
+      "obras": [
+        {
+          "id": "whatsapp_ignacio_2509",
+          "clienteNombre": "Igancio",
+          "clienteTelefono": "",
+          "direccion": "Anchordoqui 1014",
+          "localidadBarrio": "Sáenz Peña",
+          "fechaEntrega": "2026-09-25",
+          "fechaRetiroEstimada": "2026-10-16",
+          "estadoProceso": "PENDIENTE_ENTREGA",
+          "estadoSemaphoro": "VERDE",
+          "syncStatus": "PENDING",
+          "materialesCargados": [
+            {
+              "materialId": "cuerpo_130",
+              "nombre": "Cuerpo de andamio",
+              "cantidad": 2,
+              "medida": "1.30 m"
+            },
+            {
+              "materialId": "cuerpo_080",
+              "nombre": "Cuerpo de andamio",
+              "cantidad": 1,
+              "medida": "0.80 m"
+            },
+            {
+              "materialId": "corto_comun",
+              "nombre": "Corto",
+              "cantidad": 6
+            },
+            {
+              "materialId": "largo_comun",
+              "nombre": "Largo",
+              "cantidad": 4
+            },
+            {
+              "materialId": "rueda",
+              "nombre": "Rueda",
+              "cantidad": 4
+            },
+            {
+              "materialId": "tablon",
+              "nombre": "Tablón",
+              "cantidad": 2
+            }
+          ],
+          "saldosEnObra": {},
+          "observaciones": "WhatsApp: ENTREGA 25/09. Entre A. Moriondo y José E. Batallán. Figura LISTO 08/10: se conserva como observación de preparación, NO se presume entregado. Fecha de retiro NO informada; 16/10 es valor técnico provisorio para importar. Nombre escrito «Igancio» en la captura (confirmar si es «Ignacio»).",
+          "updatedAt": "2026-10-16T04:21:26.277Z"
+        },
+        {
+          "id": "whatsapp_carina_2509",
+          "clienteNombre": "Carina",
+          "clienteTelefono": "",
+          "direccion": "Acassuso 7223",
+          "localidadBarrio": "Liniers",
+          "fechaEntrega": "2026-09-25",
+          "fechaRetiroEstimada": "2026-10-16",
+          "estadoProceso": "PENDIENTE_ENTREGA",
+          "estadoSemaphoro": "VERDE",
+          "syncStatus": "PENDING",
+          "materialesCargados": [
+            {
+              "materialId": "cuerpo_130",
+              "nombre": "Cuerpo de andamio",
+              "cantidad": 3,
+              "medida": "1.30 m"
+            },
+            {
+              "materialId": "largo_comun",
+              "nombre": "Largo",
+              "cantidad": 6
+            },
+            {
+              "materialId": "corto_comun",
+              "nombre": "Corto",
+              "cantidad": 6
+            },
+            {
+              "materialId": "tablon",
+              "nombre": "Tablón",
+              "cantidad": 3
+            }
+          ],
+          "saldosEnObra": {},
+          "observaciones": "WhatsApp: ENTREGA 25/09. Entre Carhué y Guaminí. No se confirma entrega efectiva. Fecha de retiro NO informada; 16/10 es valor técnico provisorio para importar.",
+          "updatedAt": "2026-10-16T04:21:26.277Z"
+        },
+        {
+          "id": "whatsapp_padre_ashkar",
+          "clienteNombre": "Padre Ashkar (sin nombre de cliente)",
+          "clienteTelefono": "",
+          "direccion": "Padre Ashkar 234",
+          "localidadBarrio": "Villa Lynch",
+          "fechaEntrega": "2026-10-16",
+          "fechaRetiroEstimada": "2026-10-16",
+          "estadoProceso": "PENDIENTE_ENTREGA",
+          "estadoSemaphoro": "VERDE",
+          "syncStatus": "PENDING",
+          "materialesCargados": [
+            {
+              "materialId": "cuerpo_130",
+              "nombre": "Cuerpo de andamio",
+              "cantidad": 3,
+              "medida": "1.30 m"
+            },
+            {
+              "materialId": "tablon",
+              "nombre": "Tablón",
+              "cantidad": 2
+            },
+            {
+              "materialId": "rueda",
+              "nombre": "Rueda",
+              "cantidad": 4
+            },
+            {
+              "materialId": "corto_comun",
+              "nombre": "Corto",
+              "cantidad": 6
+            },
+            {
+              "materialId": "largo_comun",
+              "nombre": "Largo",
+              "cantidad": 6
+            }
+          ],
+          "saldosEnObra": {},
+          "observaciones": "WhatsApp: entre Indalecio Gómez y Rosales. Mensaje editado el 02/10; NO especifica fecha de entrega. Figura LISTO: preparación, no entrega confirmada. Fechas de entrega y retiro 16/10 son PROVISORIAS porque la app exige ambos campos. Confirmarlas.",
+          "updatedAt": "2026-10-16T04:21:26.277Z"
+        },
+        {
+          "id": "whatsapp_instituto_santa_ana_0910",
+          "clienteNombre": "Instituto Santa Ana",
+          "clienteTelefono": "",
+          "direccion": "Bv. Ballester 4705",
+          "localidadBarrio": "Villa Ballester",
+          "fechaEntrega": "2026-10-09",
+          "fechaRetiroEstimada": "2026-10-13",
+          "estadoProceso": "PENDIENTE_ENTREGA",
+          "estadoSemaphoro": "VERDE",
+          "syncStatus": "PENDING",
+          "materialesCargados": [
+            {
+              "materialId": "cuerpo_080",
+              "nombre": "Cuerpo de andamio",
+              "cantidad": 3,
+              "medida": "0.80 m"
+            },
+            {
+              "materialId": "tablon",
+              "nombre": "Tablón",
+              "cantidad": 3
+            },
+            {
+              "materialId": "rueda",
+              "nombre": "Rueda",
+              "cantidad": 4
+            },
+            {
+              "materialId": "largo_azul",
+              "nombre": "Largo azul",
+              "cantidad": 6
+            },
+            {
+              "materialId": "corto_azul",
+              "nombre": "Corto azul",
+              "cantidad": 6
+            }
+          ],
+          "saldosEnObra": {},
+          "observaciones": "WhatsApp: ENTREGA 09/10, HASTA 13/10 (se interpreta 13/10 como fecha estimada de retiro; confirmar). Entre Pueyrredón (C. 110) y Alvear; B1653 Villa Ballester, PBA. Entrega efectiva no confirmada.",
+          "updatedAt": "2026-10-16T04:21:26.277Z"
+        },
+        {
+          "id": "whatsapp_carlos_0910",
+          "clienteNombre": "Carlos",
+          "clienteTelefono": "",
+          "direccion": "Malvinas 3130",
+          "localidadBarrio": "San Andrés",
+          "fechaEntrega": "2026-10-16",
+          "fechaRetiroEstimada": "2026-10-16",
+          "estadoProceso": "PENDIENTE_ENTREGA",
+          "estadoSemaphoro": "VERDE",
+          "syncStatus": "PENDING",
+          "materialesCargados": [
+            {
+              "materialId": "cuerpo_sin_medida",
+              "nombre": "Cuerpo de andamio (medida a confirmar)",
+              "cantidad": 3
+            },
+            {
+              "materialId": "tablon",
+              "nombre": "Tablón",
+              "cantidad": 3
+            },
+            {
+              "materialId": "cuerpo_baranda_seguridad",
+              "nombre": "Cuerpo de barandillas de seguridad",
+              "cantidad": 1
+            },
+            {
+              "materialId": "rueda",
+              "nombre": "Rueda",
+              "cantidad": 4
+            },
+            {
+              "materialId": "corto_azul",
+              "nombre": "Corto azul",
+              "cantidad": 8
+            },
+            {
+              "materialId": "largo_azul",
+              "nombre": "Largo azul",
+              "cantidad": 6
+            }
+          ],
+          "saldosEnObra": {},
+          "observaciones": "WhatsApp: mensaje del 09/10, sin fecha explícita de entrega ni retiro. Los 3 cuerpos no indican medida, SE CONSERVAN SEPARADOS de cuerpos de 1,30 m y 0,80 m. Fechas 16/10 son técnicas y PROVISORIAS: corregir antes de programar. «1 cuespo de varandillas de seguridad» normalizado a «Cuerpo de barandillas de seguridad».",
+          "updatedAt": "2026-10-16T04:21:26.277Z"
+        }
+      ],
+      "materiales": [
+        {
+          "id": "cuerpo_130",
+          "nombre": "Cuerpo de andamio",
+          "categoria": "ANDAMIOS",
+          "medida": "1.30 m",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        },
+        {
+          "id": "cuerpo_080",
+          "nombre": "Cuerpo de andamio",
+          "categoria": "ANDAMIOS",
+          "medida": "0.80 m",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        },
+        {
+          "id": "cuerpo_sin_medida",
+          "nombre": "Cuerpo de andamio (medida a confirmar)",
+          "categoria": "ANDAMIOS",
+          "medida": "",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        },
+        {
+          "id": "cuerpo_baranda_seguridad",
+          "nombre": "Cuerpo de barandillas de seguridad",
+          "categoria": "ANDAMIOS",
+          "medida": "",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        },
+        {
+          "id": "corto_comun",
+          "nombre": "Corto",
+          "categoria": "ACCESORIOS",
+          "medida": "",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        },
+        {
+          "id": "largo_comun",
+          "nombre": "Largo",
+          "categoria": "ACCESORIOS",
+          "medida": "",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        },
+        {
+          "id": "corto_azul",
+          "nombre": "Corto azul",
+          "categoria": "ACCESORIOS",
+          "medida": "",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        },
+        {
+          "id": "largo_azul",
+          "nombre": "Largo azul",
+          "categoria": "ACCESORIOS",
+          "medida": "",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        },
+        {
+          "id": "rueda",
+          "nombre": "Rueda",
+          "categoria": "ACCESORIOS",
+          "medida": "",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        },
+        {
+          "id": "tablon",
+          "nombre": "Tablón",
+          "categoria": "TABLONES",
+          "medida": "",
+          "cantidadGalpon": 0,
+          "cantidadEnObra": 0,
+          "cantidadEnTaller": 0,
+          "cantidadPerdido": 0
+        }
+      ],
+      "combos": [],
+      "responsables": [],
+      "notificaciones": [],
+      "logs": [],
+      "appliedIds": []
+    },
+    "queue": []
+  },
+  "photos": {}
+}

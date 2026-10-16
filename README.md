@@ -1,3 +1,9 @@
+# Corrección de importación JSON 1.2.1
+
+Candidato Android individual: revisión automática del JSON antes de confirmar, errores claros y recuperación de la última importación. El archivo original de cinco pedidos pasa validación y persistencia; 107 pruebas aprobadas. APK completo adjunto en el chat y respaldo por partes en la rama descargas; subida del APK único bloqueada por límite de16MiB del conector. No se probaron instalación ni selector en hardware. Ver [evidencias, construcción y límites](docs/IMPORTACION_JSON_1_2_1.md).
+
+---
+
 # Repartos Chema
 
 Aplicación interna de Grupo Chema Construcciones, construida con Expo57, React Native0.86, React19 y TypeScript6. **La edición actual1.2 es individual y local/offline, sin servicios pagos ni dependencia de Firebase/Cloudflare.** La integración cloud histórica está separada y no desplegada.
@@ -122,3 +128,4 @@ La configuración completa de Authentication, Firestore, Storage, Functions, FCM
 - FCM acepta mensajes, no garantiza que el teléfono los muestre. Los reintentos pueden duplicar avisos; se incluye `eventId`/tag de colapso.
 
 El árbol de archivos está en [ARCHIVOS.md](docs/ARCHIVOS.md).
+
