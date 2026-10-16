@@ -7,12 +7,22 @@ import { useAuth } from '../context/AuthContext';
 import { Button, Chip, Field, Notice, Select, useUI } from './ui';
 import { SmartCounter } from './SmartCounter';
 import { FaltantesForm } from './FaltantesForm';
+import { LOCAL_ONLY } from '../services/localMode';
+import { required } from '../domain/rules';
 export function Drivers({ value, onChange }: { value: string[]; onChange: (v: string[]) => void }) {
   const { s } = useUI();
-  const { state } = useInventory();
+  const { state, dispatch } = useInventory();
+  const { user } = useAuth();
+  const [adding, setAdding] = useState(false),
+    [draft, setDraft] = useState(''),
+    [busy, setBusy] = useState(false),
+    [error, setError] = useState('');
   return (
     <View style={{ gap: 9 }}>
       <Text style={s.label}>RESPONSABLES / FLETE</Text>
+      {!state.responsables.length ? (
+        <Notice text="Agregá el nombre de quien realiza la entrega o el retiro." />
+      ) : null}
       <View style={s.wrap}>
         {state.responsables.map((n) => (
           <Chip
@@ -25,6 +35,59 @@ export function Drivers({ value, onChange }: { value: string[]; onChange: (v: st
           />
         ))}
       </View>
+      {user?.role === 'ADMIN' ? (
+        adding ? (
+          <View style={{ gap: 10 }}>
+            <Field
+              label="Nombre del responsable"
+              value={draft}
+              onChangeText={setDraft}
+              maxLength={80}
+              autoFocus
+              autoCapitalize="words"
+            />
+            {error ? <Notice text={error} tone="error" /> : null}
+            <Button
+              label="Guardar responsable"
+              loading={busy}
+              onPress={async () => {
+                setBusy(true);
+                try {
+                  const name = required(draft.trim().replace(/\s+/g, ' '), 'Responsable', 80);
+                  const existing = state.responsables.find(
+                    (n) => n.toLocaleLowerCase('es') === name.toLocaleLowerCase('es'),
+                  );
+                  if (!existing)
+                    await dispatch({
+                      type: 'RESPONSABLES',
+                      nombres: [...state.responsables, name],
+                    });
+                  onChange([...new Set([...value, existing || name])]);
+                  setAdding(false);
+                  setDraft('');
+                  setError('');
+                } catch (e) {
+                  setError(userError(e));
+                } finally {
+                  setBusy(false);
+                }
+              }}
+            />
+            <Button
+              label="Cancelar"
+              variant="ghost"
+              disabled={busy}
+              onPress={() => {
+                setAdding(false);
+                setDraft('');
+                setError('');
+              }}
+            />
+          </View>
+        ) : (
+          <Button label="Agregar responsable" variant="secondary" onPress={() => setAdding(true)} />
+        )
+      ) : null}
     </View>
   );
 }
@@ -127,7 +190,9 @@ export function OperationForm({
             text={
               mode === 'retiro'
                 ? 'El material sano vuelve a depósito. Registra aquí solo los nuevos daños o pérdidas de esta inspección.'
-                : 'El material afectado sale del saldo de este alquiler. El aviso a administración quedará pendiente hasta que el servicio FCM lo confirme.'
+                : LOCAL_ONLY
+                  ? 'El material afectado sale del saldo alquilado y queda registrado en el historial de este celular. No se envían avisos externos.'
+                  : 'El material afectado sale del saldo de este alquiler. El aviso a administración quedará pendiente hasta que el servicio FCM lo confirme.'
             }
           />
           <FaltantesForm obra={obra} value={incidents} onChange={setIncidents} />

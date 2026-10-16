@@ -27,9 +27,11 @@ export default function Export() {
     setError('');
     setSuccess('');
     try {
-      if (from) validDate(from);
-      if (to) validDate(to);
-      if (from && to && from > to) throw new Error('Rango de fechas inválido.');
+      if (kind === 'excel') {
+        if (from) validDate(from);
+        if (to) validDate(to);
+        if (from && to && from > to) throw new Error('Rango de fechas inválido.');
+      }
       const obras =
         kind === 'word'
           ? state.obras.filter((o) => o.id === selection)
@@ -57,7 +59,7 @@ export default function Export() {
               text={
                 DATA_MODE === 'demo'
                   ? Platform.OS === 'web'
-                    ? 'Demo web: Excel y Word se generan localmente con tus datos. No se envían a la nube.'
+                    ? 'Excel y Word se generan en este dispositivo. No se envían a la nube.'
                     : 'Excel y Word se generan en este celular y se comparten con las aplicaciones instaladas. No requieren servicios en la nube.'
                   : 'Generación privada en Cloud Functions. El archivo requiere autenticación y se elimina automáticamente.'
               }
@@ -98,7 +100,7 @@ export default function Export() {
             <View style={s.divider} />
             <Text style={s.h2}>Remito institucional · Word</Text>
             <Select
-              label="Obra"
+              label="Alquiler"
               value={selection}
               options={state.obras.map((o) => ({ value: o.id, label: o.clienteNombre }))}
               onChange={setSelected}

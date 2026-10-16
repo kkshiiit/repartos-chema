@@ -1,5 +1,9 @@
 # Punto vigente — APK individual local 1.2.0 entregado
 
+## Trabajo posterior — pulido1.2.1 en preparación
+
+Usuario pidió pulir la app local. Cambios acotados y probados: responsable se agrega/selecciona dentro de entrega sin ir a Ajustes; Word no queda bloqueado por filtro Excel; nombres de archivo nativos distintos con creación sin sobrescritura; mensaje de faltante local sin FCM.95pruebas y3recorridos web aprobados, pruebas rojas previas conservadas. Ver PULIDO_1_2_1.md. Versión1.2.1/code4 preparada, aún no se afirma APK nuevo. Próximo paso: commit/push main, compilar ARM64 y verificar/publicar/recuperar desde GitHub. APK1.2.0 disponible y preservado. Ninguna nube ni facturación.
+
 ## Cierre verificado de esta ejecución
 
 APK individual1.2.0/code3 ya en GitHub privado, rama `descargas`, commit `a52f581e875658dc97b91f818508cf8ca7023e60`. [Descargar APK](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.2.0-local.1/repartos-chema-local-1.2.0-arm64.apk). SHA256 `063019c53294fdb6d43e3916faad7d0d0f9b03312fdabed03d47de917f589962`,49.483.920bytes. Recuperado desde GitHub en repositorio independiente: SHA/CRC iguales; ZIPfuente8008596 también recuperado e íntegro. Evidencia local-120-github.json. No se probó descarga ni instalación en navegador Android físico.
