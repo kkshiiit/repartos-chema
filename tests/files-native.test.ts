@@ -1,4 +1,5 @@
 import { it, expect, vi, beforeEach } from 'vitest';
+import { saveFile } from '../src/services/files';
 const files = vi.hoisted(() => new Map<string, Uint8Array>());
 vi.mock('react-native', () => ({ Platform: { OS: 'android' } }));
 vi.mock('expo-file-system', () => ({
@@ -22,7 +23,6 @@ vi.mock('expo-sharing', () => ({
   shareAsync: async () => undefined,
 }));
 vi.mock('expo-document-picker', () => ({ getDocumentAsync: async () => ({ canceled: true }) }));
-import { saveFile } from '../src/services/files';
 beforeEach(() => files.clear());
 it('dos copias nativas conservan ambos archivos aunque se compartan en el mismo milisegundo', async () => {
   const clock = vi.spyOn(Date, 'now').mockReturnValue(1000);

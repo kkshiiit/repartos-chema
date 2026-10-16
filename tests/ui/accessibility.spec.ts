@@ -1,6 +1,6 @@
 import { login } from './helpers';
 import { test, expect } from '@playwright/test';
-import AxeBuilder from '@axe-core/playwright';
+import { AxeBuilder } from '@axe-core/playwright';
 import { mkdir, writeFile } from 'node:fs/promises';
 for (const theme of ['light', 'dark'] as const) {
   test(`accesibilidad automatizada WCAG AA ${theme}`, async ({ page }) => {

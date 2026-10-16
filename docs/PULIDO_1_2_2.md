@@ -1,5 +1,11 @@
 # Pulido local 1.2.2
 
+## Validación final antes del cierre Android
+
+La suite visual final pasó **6/6 en 2,2 minutos**: los cuatro recorridos locales/JSON y dos comprobaciones Axe en claro/oscuro. Lint final: **0 errores y 0 advertencias** tras ordenar dos imports de pruebas; prueba del guardado de archivos repetida correctamente. La captura real `artifacts/capturas/pulido-122-responsable.png` fue revisada. Son cambios de pruebas/documentación posteriores al código funcional bae300e; no requieren otro APK ni cambian inventario.
+
+Compilación Android1.2.2/code5 iniciada desde código guardado en GitHub. Log `artifacts/validacion/pulido-122-android.txt`. Pendiente verificar instalador al finalizar y subir un APK completo a descargas, preservando1.2.0/1.2.1. Certificado de1.2.1 reconstruida desde sus partes y validada localmente, para comparar el APK final. No se ejecutaron pruebas físicas.
+
 ## Integración con cambios nuevos de main
 
 El primer push del pulido9174621 fue rechazado porque main había avanzado hasta31cd72d con mejoras JSON y APK1.2.1/code4. No se forzó ni descartó nada. Se integraron esos commits, conservando selector Android ampliado, validación/vista previa JSON, cancelación sin cambios y Deshacer última importación. El único conflicto fue el recorrido UI: mantiene el alta de responsable dentro de entrega y usa el nuevo diálogo de importación. Se corrigió el singular «1 alquiler guardado».

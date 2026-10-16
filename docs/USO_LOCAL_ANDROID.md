@@ -1,5 +1,7 @@
 # Repartos Chema 1.2 — uso individual en Android
 
+La versión1.2.2 conserva las funciones de1.2.0 y las mejoras de importación JSON de1.2.1. Además permite agregar al responsable desde una entrega/retiro, genera Word aunque el filtro Excel tenga un error y guarda documentos/copias nativas con rutas distintas. Consultar PULIDO_1_2_2.md para el estado real de compilación/publicación.
+
 Esta edición guarda datos en un solo celular. No requiere Firebase, Cloudflare, cuenta paga ni conexión para registrar movimientos. WhatsApp y mapas externos sí necesitan las aplicaciones/conectividad correspondientes. No comparte inventario con otros celulares.
 
 ## Instalar o actualizar
@@ -10,7 +12,7 @@ Una instalación nueva comienza sin materiales, alquileres ni responsables ficti
 
 ## Primera carga
 
-1. Ajustes → Responsables: escribir el nombre del chofer/responsable, uno por línea, y guardar.
+1. Agregar al chofer/responsable desde la propia entrega o retiro mediante Agregar responsable. Se guarda y selecciona para esa operación. También se puede preparar la lista en Ajustes → Responsables, uno por línea. Los nombres no son cuentas autenticadas.
 2. Depósito → Agregar: crear cada pieza y su medida. El stock comienza en cero.
 3. En la pieza, Ajustar: registrar cantidad inicial positiva, procedencia «Inventario inicial» y motivo del recuento. Confirmar. No inventar stock ni usar cantidades negativas como cantidad inicial.
 4. Alquileres → Nuevo alquiler: cliente, dirección, zona y fechas. Preparar carga, revisar cantidades y guardar.
@@ -27,7 +29,9 @@ Empezar vacío no es una limpieza automática. Guardar el JSON en Archivos: una 
 
 Ajustes → Descargar copia → elegir una app o ubicación de guardado disponible. Conviene guardar una copia al terminar cada jornada y copiarla a otro lugar privado cuando sea posible. Excel/Word no sustituyen esta copia.
 
-Para restaurar: Ajustes → Elegir copia → seleccionar JSON completo de Repartos Chema → Restaurar copia → confirmar. Se valida el formato y se conserva el estado anterior antes de reemplazarlo. Un archivo corrupto no debe iniciar una base vacía ni borrar lo existente. Las copias antiguas de nube con operaciones pendientes requieren revisión; no se descartan sus movimientos para importarlas.
+Para importar: Ajustes → Elegir copia → seleccionar JSON completo de Repartos Chema → revisar cantidades de alquileres/materiales → Confirmar importación. Elegir el archivo no cambia datos; Cancelar importación conserva el inventario activo. Los inventarios se reemplazan, no se suman. Se valida el formato y se archiva el estado anterior antes del cambio. Deshacer última importación recupera ese estado. Un archivo corrupto no inicia una base vacía ni borra lo existente. Las copias antiguas de nube con operaciones pendientes requieren revisión; no se descartan sus movimientos para importarlas.
+
+Recuperar anterior corresponde a Empezar vacío. Deshacer última importación corresponde a la importación JSON. Ambas conservan el estado activo antes de recuperar. Guardar también copias fuera de la app; los archivos internos no sobreviven a una desinstalación o borrado del almacenamiento.
 
 ## Documentos, fotos y navegación
 

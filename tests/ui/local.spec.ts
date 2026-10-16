@@ -55,6 +55,7 @@ test('individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y o
   ).toBeVisible();
   await page.getByRole('button', { name: 'Agregar responsable', exact: true }).click();
   await page.getByLabel('Nombre del responsable', { exact: true }).fill('Persona local');
+  await page.screenshot({path:'artifacts/capturas/pulido-122-responsable.png',fullPage:true});
   await page.getByRole('button', { name: 'Guardar responsable', exact: true }).click();
   await expect.poll(async () => (await state()).responsables).toEqual(['Persona local']);
   await page.getByLabel('Recibió', { exact: true }).fill('Receptor de prueba');
