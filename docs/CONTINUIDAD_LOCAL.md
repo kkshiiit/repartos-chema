@@ -1,5 +1,11 @@
 # Prioridad vigente — APK individual local 1.2.0
 
+## APK compilado y verificado
+
+Gradle código0 en10m2s. Código funcionala820afe y manuale140b51 en main. APK `/workspace/entregas/local-1.2.0/repartos-chema-local-1.2.0-arm64.apk`,49.483.920bytes, SHA256 `063019c53294fdb6d43e3916faad7d0d0f9b03312fdabed03d47de917f589962`. Versión1.2.0/code3, Android7+,ARM64; firma v2/CRC y certificado igual a1.1 verificados. Configuración Firebase ausente del bundle. No probado físicamente.
+
+Siguiente acción inmediata: guardar/push evidencias en main, publicar APK+SHA y fuenteZIP en descargas/android/v1.2.0-local.1, recuperar binario desde GitHub y compararSHA/CRC. Luego registrar commit/enlace reales aquí. No recompilar sin cambio o fallo nuevo. Ver ENTREGA_LOCAL_1_2.md.
+
 Solicitud del usuario al reanudar: APK ARM64 para una persona, hoy por la mañana, sin depender de Firebase, Cloudflare ni servicios pagos. Preservar datos, JSON import/export, inicio vacío y commits/push antes de compilar. No desplegar nube.
 
 El trabajo gratuito incompleto quedó guardado en rama privada `trabajo/gratuito-pausado-20261016`, commit `0f179f9`. No mezclar con esta entrega. Main parte de `aabe9d8`.

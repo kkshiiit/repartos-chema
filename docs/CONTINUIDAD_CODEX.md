@@ -2,6 +2,8 @@
 
 ## PRIORIDAD ACTUAL: entrega local individual 1.2.0
 
+APK1.2.0/code3 compilado correctamente10m2s y verificado v2/CRC/ARM64/mismo certificado1.1. Local `/workspace/entregas/local-1.2.0/repartos-chema-local-1.2.0-arm64.apk`,SHA256063019c53294fdb6d43e3916faad7d0d0f9b03312fdabed03d47de917f589962. No Android físico. Códigoa820afe y manuale140b51 respaldados. Próxima acción exacta: guardar evidencias en main, publicar en descargas y restaurar desde GitHub verificando hash. Leer CONTINUIDAD_LOCAL/ENTREGA_LOCAL_1_2.
+
 Check final aprobado94/94, tipos y Functions build correctos, lint0errores/1warning histórico. Guardar este bloque en main antes de iniciar Gradle; los hashes de commit se consultan con git log/ls-remote, sin inventar un APK nuevo hasta verificarlo.
 
 Último bloque funcional respaldado `22792ce`. Recorrido local2/2 aprobado, JSON/restauración/stock20→19/1→20/0/offline/temas/documentos web; generador móvil Word/Excel1/1 en Node, no hardware. Código nativo Word usa ArrayBuffer. APK1.2/code3 todavía por compilar y publicar. Ver CONTINUIDAD_LOCAL para errores iniciales de los tests y resultados. Ningún dispositivo ADB conectado. Check final en curso; antes de compilar debe estar aprobado y el siguiente commit subido a main.
