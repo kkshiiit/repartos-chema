@@ -1,0 +1,63 @@
+
+> repartos-chema@1.0.0 test:ui
+> playwright test tests/ui/local.spec.ts --workers=1
+
+
+Running 2 tests using 1 worker
+
+(node:11979) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/ui/local.spec.ts:5:5 › individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y offline (6.1s)
+(node:12114) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/ui/local.spec.ts:99:5 › temas locales persisten y conservan el formulario (6.8s)
+
+
+  1) tests/ui/local.spec.ts:5:5 › individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y offline 
+
+    TypeError: Cannot read properties of undefined (reading 'cantidadGalpon')
+
+      82 |   await page.getByRole('button',{name:'Recuperar anterior',exact:true}).click();
+      83 |   await page.getByRole('button',{name:'Confirmar',exact:true}).click();
+    > 84 |   await expect.poll(async()=>(await state()).materiales[0].cantidadGalpon).toBe(20);
+         |                                                            ^
+      85 |   const picker=page.waitForEvent('filechooser');
+      86 |   await page.getByRole('button',{name:'Elegir copia',exact:true}).click();
+      87 |   await(await picker).setFiles({name:'copia.json',mimeType:'application/json',buffer:raw});
+        at /workspace/repartos-chema/tests/ui/local.spec.ts:84:60
+        at /workspace/repartos-chema/tests/ui/local.spec.ts:84:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/local-individual-vacío-sto-eb768-o-JSON-documentos-y-offline/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/local-individual-vacío-sto-eb768-o-JSON-documentos-y-offline/error-context.md
+
+  2) tests/ui/local.spec.ts:99:5 › temas locales persisten y conservan el formulario ───────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "dark"
+    Received: undefined
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      102 |   await page.getByLabel('Nombre del cliente',{exact:true}).fill('Borrador conservado');
+      103 |   await page.emulateMedia({colorScheme:'dark'});
+    > 104 |   await expect.poll(()=>page.evaluate(()=>document.documentElement.dataset.theme)).toBe('dark');
+          |                                                                                    ^
+      105 |   await expect(page.getByLabel('Nombre del cliente',{exact:true})).toHaveValue('Borrador conservado');
+      106 |   await page.goto('/configuracion');
+      107 |   await page.getByRole('button',{name:'Claro',exact:true}).click();await page.reload();
+        at /workspace/repartos-chema/tests/ui/local.spec.ts:104:84
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/local-temas-locales-persisten-y-conservan-el-formulario/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/local-temas-locales-persisten-y-conservan-el-formulario/error-context.md
+
+  2 failed
+    tests/ui/local.spec.ts:5:5 › individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y offline 
+    tests/ui/local.spec.ts:99:5 › temas locales persisten y conservan el formulario ────────────────
