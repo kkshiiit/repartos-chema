@@ -10,7 +10,7 @@ export async function localDocument(
       import('docx'),
       import('../../functions/src/wordGenerator'),
     ]);
-    return new Uint8Array(await Packer.toBuffer(remitoDocument(obras[0]!)));
+    return new Uint8Array(await Packer.toArrayBuffer(remitoDocument(obras[0]!)));
   }
   const [ExcelJS, { generateExcel }] = await Promise.all([
     import('exceljs/dist/exceljs.min.js'),

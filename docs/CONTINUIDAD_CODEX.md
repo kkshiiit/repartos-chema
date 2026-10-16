@@ -2,6 +2,10 @@
 
 ## PRIORIDAD ACTUAL: entrega local individual 1.2.0
 
+Check final aprobado94/94, tipos y Functions build correctos, lint0errores/1warning histórico. Guardar este bloque en main antes de iniciar Gradle; los hashes de commit se consultan con git log/ls-remote, sin inventar un APK nuevo hasta verificarlo.
+
+Último bloque funcional respaldado `22792ce`. Recorrido local2/2 aprobado, JSON/restauración/stock20→19/1→20/0/offline/temas/documentos web; generador móvil Word/Excel1/1 en Node, no hardware. Código nativo Word usa ArrayBuffer. APK1.2/code3 todavía por compilar y publicar. Ver CONTINUIDAD_LOCAL para errores iniciales de los tests y resultados. Ningún dispositivo ADB conectado. Check final en curso; antes de compilar debe estar aprobado y el siguiente commit subido a main.
+
 El usuario reemplazó la prioridad de nube por un APK individual, sin servicios externos, con inventario inicialmente vacío y preservación de datos existentes. Leer [CONTINUIDAD_LOCAL.md](CONTINUIDAD_LOCAL.md). Trabajo Cloudflare incompleto conservado en `trabajo/gratuito-pausado-20261016`/`0f179f9`, ya subido a GitHub; no es la versión a entregar. Main local parte de aabe9d8. Bloque inicial: 93 tests/typecheck/lint aprobados; validación UI y compilación1.2 todavía pendientes. No confundir APK1.1 previo con uno nuevo. Fecha de la solicitud al reanudar:16/10UTC (consultar hora Argentina para informar plazos).
 
 **Estado más reciente,15/10/2026 17:39 Argentina:** usuario confirmó Auth listo. Lectura pública repetida HTTP200, número de proyecto658913591865 coincidente, dominios de repartos-chema; evidencia `artifacts/validacion/firebase-auth-20261015T203927Z.json`. El error previo CONFIGURATION_NOT_FOUND no se reproduce. Anónimo habilitado según usuario; no se probó sign-in ni se crearon usuarios/datos. Próxima dependencia: decisión explícita sobre facturación Blaze/despliegue y resolver autorización administrativa Google. No repetir registro web ni solicitud de configuración ni habilitación Auth. Perfil preparado sigue ignorado/no activo, APK demo. Solo evidencia/documentación en esta continuación; no se volvieron a correr suites históricas.

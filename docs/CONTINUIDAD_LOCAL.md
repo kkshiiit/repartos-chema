@@ -14,6 +14,12 @@ El trabajo gratuito incompleto quedó guardado en rama privada `trabajo/gratuito
 
 ## Pruebas y estado
 
+Check final completo:94/94, typecheck correcto, lint0errores/1warning histórico de import AxeBuilder, Functions build correcto. Comando `npm run check`, evidencia local-120-check-final.txt. No se ejecutó despliegue ni se necesita Functions para la app local.
+
+Actualización antes de compilar: bloque inicial `22792ce` ya en main remoto. Web individual compiló correctamente. Recorrido Playwright individual2/2 en11,2s: inicio vacío; creación material/ajuste20 con procedencia; alquiler/carga; entrega19/1; deshacer20/0; nueva entrega/retiro/reingreso20/0; Word/Excel descargables; JSON export/import; Empezar vacío/Recuperar anterior; reapertura offline; cero solicitudes Firebase/Cloudflare; temas y formulario conservado. Evidencia local-120-ui-final.txt y capturas local-120-*.png. Primera ejecución falló por dos errores del test (lectura antes de restauración y atributo de tema inexistente), corregidos; no ocultar local-120-ui.txt.
+
+Generador móvil Word pasó de salida nodebuffer a ArrayBuffer para evitar depender de Buffer global. Prueba local-documents genera DOCX real y abre XLSX institucional,1/1 aprobado en Node; no equivale a usar Compartir en Android físico. ADB no detecta dispositivos conectados. Cámara, galería, GPS externo, selector JSON y Compartir nativos siguen pendientes físicos; no bloquear la entrega ni declararlos probados.
+
 `npm run check`: 93 pruebas aprobadas, typecheck/lint/Functions build sin errores (ver artifacts/validacion/local-120-check.txt). Esas pruebas se ejecutaron antes del último refuerzo que obliga modo demo con LOCAL_ONLY; repetir la comprobación final antes de compilar. Cinco pruebas nuevas cubren inicio vacío, actualización con datos, recuperación tras reinicio, fallo de archivo previo y corrupción sin reseed.
 
 Pendiente inmediato: recorrido Playwright individual empezando vacío y creando stock/alquiler real de prueba; entregar/retirar/deshacer/historial/offline/JSON/documentos/temas. Exportar web con LOCAL_ONLY=true. Guardar/push código antes de compilar ARM64. No afirmar pruebas físicas de Android: adb existe, no se encontró emulador/KVM; revisar dispositivo disponible antes de declarar validado nativo.
