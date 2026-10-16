@@ -1,5 +1,9 @@
 # Compilación Android interna
 
+## Edición individual1.2.0 — prioridad actual
+
+App1.2.0/versionCode3, mismo package. El script `build:android:demo` se conserva por compatibilidad, pero ahora fija `EXPO_PUBLIC_LOCAL_ONLY=true` y modo demo/local: instalación nueva vacía, actualización conserva datos existentes. No inicializa servicios remotos ni requiere cuenta paga. La configuración Firebase preparada aparte no se carga en este build. Ver [manual local](USO_LOCAL_ANDROID.md) y [continuidad vigente](CONTINUIDAD_LOCAL.md). Las secciones de entrega1.0/1.1 de abajo son históricas, no acreditan pruebas de1.2.
+
 No se necesita EAS, una cuenta paga ni Play Store para compilar localmente. Esto no implica que el dispositivo se haya probado. Consultar INFORME_ENTREGA para el resultado real de esta ejecución.
 
 Requisitos: Node/npm, **JDK 21 completo con javac**, Android SDK plataforma 36, build-tools 36.0.0, platform-tools, NDK 27.1.12297006 y CMake 3.22.1. Confirmar contra las versiones del proyecto si se actualiza Expo. El runtime Java sin compilador sirve para los emuladores de Firebase, pero no para crear el APK.
