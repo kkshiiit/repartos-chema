@@ -1,6 +1,5 @@
 import { Platform } from 'react-native';
-import { File, Paths } from 'expo-file-system';
-import * as Sharing from 'expo-sharing';
+import { saveFile } from './files';
 import { httpsCallable } from 'firebase/functions';
 import { getBytes, ref } from 'firebase/storage';
 import type { ObraCard, UserProfile } from '../types';
@@ -42,10 +41,6 @@ export async function exportDocument(
     setTimeout(() => URL.revokeObjectURL(url), 30000);
     return 'Descarga preparada.';
   }
-  const file = new File(Paths.cache, name);
-  file.write(bytes);
-  if (await Sharing.isAvailableAsync())
-    await Sharing.shareAsync(file.uri, { mimeType: mime, dialogTitle: 'Compartir documento' });
-  else throw new Error(`Archivo guardado en caché, pero compartir no está disponible.`);
+  await saveFile(name, bytes, mime, 'Compartir documento');
   return 'Documento listo para compartir.';
 }

@@ -1,0 +1,69 @@
+
+> repartos-chema@1.0.0 test:ui
+> playwright test tests/ui/local.spec.ts --grep individual:|remito Word --workers=2
+
+
+Running 2 tests using 1 worker
+
+(node:611) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/ui/local.spec.ts:5:5 › individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y offline (8.1s)
+(node:755) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/ui/local.spec.ts:100:5 › remito Word no queda bloqueado por un filtro Excel inválido (7.2s)
+
+
+  1) tests/ui/local.spec.ts:5:5 › individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y offline 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Agregar responsable', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Agregar responsable', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Agregar responsable', exact: true })
+
+
+      38 |   await page.getByRole('button',{name:'Guardar carga',exact:true}).click();
+      39 |   await page.getByRole('button',{name:'Entregar',exact:true}).last().click();
+    > 40 |   await expect(page.getByRole('button',{name:'Agregar responsable',exact:true})).toBeVisible();
+         |                                                                                  ^
+      41 |   await page.getByRole('button',{name:'Agregar responsable',exact:true}).click();
+      42 |   await page.getByLabel('Nombre del responsable',{exact:true}).fill('Persona local');
+      43 |   await page.getByRole('button',{name:'Guardar responsable',exact:true}).click();
+        at /workspace/repartos-chema/tests/ui/local.spec.ts:40:82
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/local-individual-vacío-sto-eb768-o-JSON-documentos-y-offline/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/local-individual-vacío-sto-eb768-o-JSON-documentos-y-offline/error-context.md
+
+  2) tests/ui/local.spec.ts:100:5 › remito Word no queda bloqueado por un filtro Excel inválido ────
+
+    TimeoutError: page.waitForEvent: Timeout 5000ms exceeded while waiting for event "download"
+    =========================== logs ===========================
+    waiting for event "download"
+    ============================================================
+
+      108 |   await page.goto('/exportar');
+      109 |   await page.getByLabel('Entrega desde · AAAA-MM-DD',{exact:true}).fill('incorrecta');
+    > 110 |   const pending=page.waitForEvent('download',{timeout:5000});
+          |                      ^
+      111 |   await page.getByRole('button',{name:'Generar remito',exact:true}).click();
+      112 |   expect((await pending).suggestedFilename()).toBe('chema-remito.docx');
+      113 | });
+        at /workspace/repartos-chema/tests/ui/local.spec.ts:110:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/local-remito-Word-no-queda-81e99-or-un-filtro-Excel-inválido/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/local-remito-Word-no-queda-81e99-or-un-filtro-Excel-inválido/error-context.md
+
+  2 failed
+    tests/ui/local.spec.ts:5:5 › individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y offline 
+    tests/ui/local.spec.ts:100:5 › remito Word no queda bloqueado por un filtro Excel inválido ─────
