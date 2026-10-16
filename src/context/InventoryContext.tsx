@@ -7,6 +7,8 @@ import * as Crypto from 'expo-crypto';
 import type { Action, AppState, Envelope } from '../types';
 import { Repository } from '../data/repository';
 import { seed, emptyState } from '../data/seed';
+import { emptyLocalState } from '../data/localInitialState';
+import { LOCAL_ONLY } from '../services/localMode';
 import { DATA_MODE, cloudAdapter } from '../services/firebase';
 import { haptic } from '../hooks/useHaptics';
 import { useAuth } from './AuthContext';
@@ -23,6 +25,8 @@ interface Value {
   discard: () => Promise<void>;
   backup: () => Promise<void>;
   restore: (raw: string) => Promise<void>;
+  startEmpty: () => Promise<void>;
+  recoverPrevious: () => Promise<void>;
 }
 const Context = createContext<Value | null>(null);
 export function InventoryProvider({ children }: { children: React.ReactNode }) {
@@ -38,7 +42,7 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
         DATA_MODE === 'demo'
           ? 'chema:demo:v1'
           : `chema:cloud:${process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID}:${user?.uid}:v1`,
-        DATA_MODE === 'demo' ? seed : emptyState,
+        DATA_MODE === 'demo' ? (LOCAL_ONLY ? emptyLocalState : seed) : emptyState,
         DATA_MODE === 'firebase' ? cloudAdapter : undefined,
       ),
     [user?.uid],
@@ -140,6 +144,16 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
         throw new Error('Restauración disponible para administración en demo.');
       const { prepareRestore } = await import('../services/backupService');
       await repo.restoreDemo(await prepareRestore(raw), user);
+      setError('');
+    },
+    startEmpty: async () => {
+      if(!user || DATA_MODE!=='demo') throw new Error('Disponible solo en este dispositivo.');
+      await repo.startEmpty(user);
+      setError('');
+    },
+    recoverPrevious: async () => {
+      if(!user || DATA_MODE!=='demo') throw new Error('Disponible solo en este dispositivo.');
+      await repo.recoverPrevious(user);
       setError('');
     },
     discard: async () => {

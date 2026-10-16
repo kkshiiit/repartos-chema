@@ -1,0 +1,38 @@
+
+> repartos-chema@1.0.0 check
+> npm run typecheck && npm run lint && npm test && npm --prefix functions run build
+
+
+> repartos-chema@1.0.0 typecheck
+> tsc --noEmit
+
+
+> repartos-chema@1.0.0 lint
+> eslint app src tests functions/src
+
+
+/workspace/repartos-chema/tests/ui/accessibility.spec.ts
+  3:8  warning  Using exported name 'AxeBuilder' as identifier for default import  import/no-named-as-default
+
+✖ 1 problem (0 errors, 1 warning)
+
+
+> repartos-chema@1.0.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /workspace/repartos-chema
+
+
+ Test Files  8 passed (8)
+      Tests  93 passed (93)
+   Start at  03:36:59
+   Duration  2.31s (import 47%, tests 30%, transform 21%, worker 2%)
+
+    Isolate  8 workers spawned · ~100ms startup each (spawn + environment, per file)
+             at least ~699ms faster with isolate: false — reuses workers across files instead of one per file
+
+
+> repartos-chema-functions@1.0.0 build
+> tsc
+

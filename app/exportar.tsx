@@ -58,7 +58,7 @@ export default function Export() {
                 DATA_MODE === 'demo'
                   ? Platform.OS === 'web'
                     ? 'Demo web: Excel y Word se generan localmente con tus datos. No se envían a la nube.'
-                    : 'Demo móvil: usa la demo web para documentos locales o configura Cloud Functions.'
+                    : 'Excel y Word se generan en este celular y se comparten con las aplicaciones instaladas. No requieren servicios en la nube.'
                   : 'Generación privada en Cloud Functions. El archivo requiere autenticación y se elimina automáticamente.'
               }
             />

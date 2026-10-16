@@ -12,9 +12,10 @@ import {
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { getStorage } from 'firebase/storage';
 import { authPersistence } from './authPersistence';
+import { LOCAL_ONLY } from './localMode';
 import type { AppState, Operation } from '../types';
 import type { RemoteAdapter } from '../data/repository';
-export const DATA_MODE = process.env.EXPO_PUBLIC_DATA_MODE === 'firebase' ? 'firebase' : 'demo';
+export const DATA_MODE = !LOCAL_ONLY && process.env.EXPO_PUBLIC_DATA_MODE === 'firebase' ? 'firebase' : 'demo';
 const config = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,

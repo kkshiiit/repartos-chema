@@ -11,6 +11,7 @@ if (!process.env.ANDROID_HOME || !existsSync(process.env.ANDROID_HOME))
 const env = {
   ...process.env,
   EXPO_PUBLIC_DATA_MODE: 'demo',
+  EXPO_PUBLIC_LOCAL_ONLY: 'true',
   NODE_ENV: 'production',
   EXPO_NO_TELEMETRY: '1',
 };
