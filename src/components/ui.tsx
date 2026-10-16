@@ -31,6 +31,7 @@ import { router } from 'expo-router';
 import { useAuth } from '../context/AuthContext';
 import { useInventory } from '../context/InventoryContext';
 import { DATA_MODE } from '../services/firebase';
+import { LOCAL_ONLY } from '../services/localMode';
 import { useTheme } from '../context/ThemeContext';
 import { dark, light, Colors } from '../theme/tokens';
 import { pickBackup } from '../services/files';
@@ -439,7 +440,7 @@ export function Screen({
             />
             <Text style={{ color: C.muted, fontSize: 12 }}>
               {DATA_MODE === 'demo'
-                ? 'Demo · En este dispositivo'
+                ? LOCAL_ONLY ? 'Local · En este celular' : 'Demo · En este dispositivo'
                 : !inv.online
                   ? 'Sin conexión'
                   : inv.syncing

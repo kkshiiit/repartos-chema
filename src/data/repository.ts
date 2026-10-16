@@ -1,6 +1,7 @@
 import type { AppState, Envelope, Operation, UserProfile } from '../types';
 import { parseEnvelope } from './validation';
 import { applyOperation, clone } from '../domain/engine';
+import { emptyLocalState } from './localInitialState';
 export interface KeyValueStorage {
   getItem(key: string): Promise<string | null>;
   setItem(key: string, value: string): Promise<void>;
@@ -68,6 +69,32 @@ export class Repository {
         await this.storage.setItem(`${this.key}:before-restore:${Date.now()}`, original);
       return this.persist(restored);
     }, false);
+  }
+  startEmpty(actor: UserProfile) {
+    return this.serial(async()=>{
+      if(this.remote || actor.role!=='ADMIN') throw new Error('Acción local exclusiva de administración.');
+      if(!this.envelope) throw new Error('El almacenamiento no está listo.');
+      const original=await this.storage.getItem(this.key);
+      if(original===null) throw new Error('No se encontró el original. No se modificaron datos.');
+      const archive=`${this.key}:before-empty:${Date.now()}`;
+      await this.storage.setItem(archive,original);
+      await this.storage.setItem(`${this.key}:previous-empty`,archive);
+      const state=emptyLocalState();
+      return this.persist({schema:1,confirmed:state,state,queue:[]});
+    });
+  }
+  recoverPrevious(actor: UserProfile) {
+    return this.serial(async()=>{
+      if(this.remote || actor.role!=='ADMIN') throw new Error('Recuperación disponible solo en modo local.');
+      const archive=await this.storage.getItem(`${this.key}:previous-empty`);
+      const original=archive?await this.storage.getItem(archive):null;
+      if(!original) throw new Error('No hay una copia anterior a Empezar vacío. Puedes importar un JSON.');
+      const restored=parseEnvelope(original);
+      if(restored.queue.length) throw new Error('La copia contiene operaciones remotas. Se conserva sin modificar.');
+      const current=await this.storage.getItem(this.key);
+      if(current) await this.storage.setItem(`${this.key}:before-recover:${Date.now()}`,current);
+      return this.persist(restored);
+    });
   }
   load() {
     return this.serial(async () => {

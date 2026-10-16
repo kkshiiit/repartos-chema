@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { listTeam, createInvitation, removeMember } from '../services/teamService';
 import type { TeamMember } from '../domain/team';
 import { DATA_MODE } from '../services/firebase';
+import { LOCAL_ONLY } from '../services/localMode';
 import { userError } from '../services/errors';
 import { Button, ConfirmButton, Notice, Field, useUI } from './ui';
 export function TeamSettings() {
@@ -33,6 +34,12 @@ export function TeamSettings() {
       setBusy(false);
     }
   }
+  if(LOCAL_ONLY) return <View style={s.card}>
+    <Text style={s.h2}>Uso individual</Text>
+    <Text style={s.body}>{membership?.nombre}</Text>
+    <Notice text="El nombre identifica tus movimientos en este celular. No es una cuenta en la nube ni comparte datos con otras personas." />
+    <Button label="Cambiar nombre" variant="secondary" onPress={()=>void logout()} />
+  </View>;
   return (
     <View style={s.card}>
       <Text style={s.h2}>Equipo Chema</Text>

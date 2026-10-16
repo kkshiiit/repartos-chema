@@ -9,6 +9,7 @@ import { router } from 'expo-router';
 import { useAuth } from '../src/context/AuthContext';
 import { useInventory } from '../src/context/InventoryContext';
 import { DATA_MODE } from '../src/services/firebase';
+import { LOCAL_ONLY } from '../src/services/localMode';
 import { Button, Chip, ConfirmButton, Field, Notice, Screen, useUI } from '../src/components/ui';
 import { pickBackup } from '../src/services/files';
 import { enableNotifications } from '../src/services/notifications';
@@ -17,7 +18,7 @@ export default function Settings() {
   const theme = useTheme();
   const { openWelcome } = useWelcome();
   const { user } = useAuth(),
-    { state, dispatch, backup, restore } = useInventory();
+    { state, dispatch, backup, restore, startEmpty, recoverPrevious } = useInventory();
   const [names, setNames] = useState<string | null>(null),
     [restoreRaw, setRestoreRaw] = useState<string | null>(null),
     [busy, setBusy] = useState(false),
@@ -68,7 +69,9 @@ export default function Settings() {
         <Text style={s.h2}>Entorno de trabajo</Text>
         <Notice
           text={
-            DATA_MODE === 'demo'
+            LOCAL_ONLY
+              ? 'Uso individual sin conexión. Los datos se guardan en este celular; no se envían a Firebase ni a otros servicios. Conserva copias JSON fuera del dispositivo.'
+              : DATA_MODE === 'demo'
               ? 'Demostración local. Datos ficticios persistidos en este dispositivo. No hay sincronización cloud ni push enviados.'
               : 'Firebase configurado. Las operaciones se confirman con el servidor y los conflictos requieren revisión.'
           }
@@ -106,12 +109,12 @@ export default function Settings() {
               variant="secondary"
               onPress={() => router.push('/combos')}
             />
-            <Button
+            {!LOCAL_ONLY ? <Button
               loading={busy}
               label="Activar avisos"
               variant="secondary"
               onPress={() => void run(enableNotifications)}
-            />
+            /> : null}
           </>
         ) : null}
         {user?.role === 'ADMIN' ? (
@@ -135,8 +138,8 @@ export default function Settings() {
             {restoreRaw !== null ? (
               <ConfirmButton
                 label="Restaurar copia"
-                title="Reemplazar datos demo"
-                description="Se validará la copia y se conservará el inventario anterior en este dispositivo antes de reemplazarlo. Esta acción cambia todos los alquileres de la demo."
+                title="Restaurar datos locales"
+                description="Se validará la copia y se conservará el inventario anterior en este dispositivo antes de reemplazarlo. Esta acción cambia los alquileres activos."
                 onConfirm={async () => {
                   await restore(restoreRaw);
                   setRestoreRaw(null);
@@ -144,6 +147,20 @@ export default function Settings() {
                 }}
               />
             ) : null}
+            {LOCAL_ONLY ? <>
+              <ConfirmButton
+                label="Empezar vacío"
+                title="Nuevo inventario vacío"
+                description="Se exportará una copia JSON y se archivarán los datos actuales en este celular antes de empezar sin alquileres ni materiales. Podrás recuperar la copia anterior."
+                onConfirm={async()=>{await backup();await startEmpty();setNames(null);setSuccess('Inventario vacío. La copia anterior se conserva.');}}
+              />
+              <ConfirmButton
+                label="Recuperar anterior"
+                title="Recuperar inventario anterior"
+                description="Se recuperará la copia local anterior a Empezar vacío. Los datos activos también se archivarán antes del cambio."
+                onConfirm={async()=>{await recoverPrevious();setNames(null);setSuccess('Inventario anterior recuperado.');}}
+              />
+            </> : null}
           </View>
         ) : null}
         {error ? <Notice text={error} tone="error" /> : null}

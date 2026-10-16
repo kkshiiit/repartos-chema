@@ -14,6 +14,7 @@ import { useAuth } from '../../src/context/AuthContext';
 import { useWelcome } from '../../src/components/WelcomeProvider';
 import { Button, Field, Notice, useUI } from '../../src/components/ui';
 import { DATA_MODE } from '../../src/services/firebase';
+import { LOCAL_ONLY } from '../../src/services/localMode';
 import { userError } from '../../src/services/errors';
 import { useLocalSearchParams } from 'expo-router';
 export default function Login() {
@@ -109,7 +110,7 @@ export default function Login() {
                 loading={busy}
                 onPress={() => void enter()}
               />
-              {!showInvite ? (
+              {!showInvite && !LOCAL_ONLY ? (
                 <Button
                   label="Tengo una invitación"
                   icon={Link}
@@ -117,7 +118,7 @@ export default function Login() {
                   onPress={() => setShowInvite(true)}
                 />
               ) : null}
-              {DATA_MODE === 'demo' ? (
+              {LOCAL_ONLY ? <Text style={[s.muted,{fontSize:12}]}>Uso individual · Sin conexión ni servicios pagos. En una instalación nueva, el inventario comienza vacío.</Text> : DATA_MODE === 'demo' ? (
                 <Text style={[s.muted, { fontSize: 12 }]}>
                   Prueba local · Los datos se guardan en este celular. Compartir entre celulares
                   requiere conectar el equipo.
