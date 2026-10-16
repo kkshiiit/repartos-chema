@@ -1,16 +1,16 @@
 # Repartos Chema
 
-Aplicación interna de Grupo Chema Construcciones, construida con Expo 57, React Native 0.86, React 19 y TypeScript 6. Incluye una demo persistente sin credenciales y una integración Firebase separada. **No está desplegada ni conectada a un proyecto de producción.**
+Aplicación interna de Grupo Chema Construcciones, construida con Expo57, React Native0.86, React19 y TypeScript6. **La edición actual1.2 es individual y local/offline, sin servicios pagos ni dependencia de Firebase/Cloudflare.** La integración cloud histórica está separada y no desplegada.
 
 ## Descargar en Android
 
-**[Descargar APK Android — demo 1.1.0](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.1.0-demo.2/repartos-chema-demo-arm64.apk)** (49,5MB). Requiere iniciar sesión en GitHub con acceso al repositorio privado. Si el enlace directo no descarga, abrir [la ficha del APK](https://github.com/kkshiiit/repartos-chema/blob/descargas/android/v1.1.0-demo.2/repartos-chema-demo-arm64.apk) y tocar Download raw file / Descargar archivo sin procesar.
+**[Descargar APK Android1.2.0 — uso individual local](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.2.0-local.1/repartos-chema-local-1.2.0-arm64.apk)** (49,5MB). Requiere iniciar sesión en GitHub con acceso al repositorio privado. Si no descarga, abrir [la ficha del APK](https://github.com/kkshiiit/repartos-chema/blob/descargas/android/v1.2.0-local.1/repartos-chema-local-1.2.0-arm64.apk) y tocar Download raw file / Descargar archivo sin procesar.
 
-APK guardado en la rama independiente `descargas`; código e historial en `main`. Se recuperó el archivo desde GitHub mediante una clonación nueva y su SHA256/CRC coincidieron con el original. No hay Releases: su servicio de subida rechazó la autenticación. El ZIP completo sigue en la entrega del chat. No se activaron Railway, Firebase ni servicios de pago para esta descarga.
+APK en rama independiente `descargas`, commita52f581; código/historial en main. Versiones anteriores conservadas. No se activaron servicios pagos ni despliegue productivo. La evidencia de recuperación desde GitHub se registra en docs/CONTINUIDAD_LOCAL.md.
 
-El APK de demo es ARM64, Android 7 o superior, versión 1.1.0. Firma APKv2 e integridad verificadas, todavía sin prueba en dispositivo físico. El nombre identifica movimientos locales sin autenticar una cuenta; los datos se guardan en cada dispositivo; no se comparten mediante Firebase. Ver [guía Android](docs/ANDROID.md).
+ARM64, Android7+, versión1.2.0/code3. Firma v2/CRC e igualdad del certificado anterior verificados, todavía sin prueba física. Instalación nueva vacía; actualización conserva datos existentes. Guardar JSON y actualizar encima sin desinstalar. SHA256: `063019c53294fdb6d43e3916faad7d0d0f9b03312fdabed03d47de917f589962`. Ver [manual local Android](docs/USO_LOCAL_ANDROID.md) y [pruebas/límites](docs/ENTREGA_LOCAL_1_2.md).
 
-[Descargar código fuente y manifiesto](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/respaldos/v1.1/repartos-chema-89abc6c.zip) · [Descargar versión web reproducible](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/respaldos/v1.1/repartos-chema-web-1.1.zip). Copias recuperadas desde GitHub con SHA256/CRC coincidentes. El ZIP fuente se puede extraer en una carpeta de la PC; no contiene dependencias regenerables ni credenciales. Los datos de cada celular se respaldan por separado desde Ajustes.
+[Código fuente1.2 y manifiesto](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/respaldos/v1.2-local/repartos-chema-8008596.zip). ZIP con restauración SHA256/CRC comprobada, sin dependencias regenerables ni credenciales. Los datos de cada celular se respaldan por separado desde Ajustes.
 
 ## Novedades 1.1
 
@@ -18,7 +18,7 @@ Logo original, bienvenida de cuatro pasos, pantallas Alquileres/Depósito/Viaje/
 
 [Ver capturas y validación del rediseño](docs/ENTREGA_1_1.md). La versión 1.1.0 incrementa versionCode a 2 y usa el mismo certificado de la demo anterior: actualizar encima, con copiaJSON previa, sin desinstalar. La instalación física de esta actualización todavía debe comprobarse.
 
-## Ejecutar la demo
+## Ejecutar la versión local
 
 Requisitos: Node 22.13+ o Node 24.3+, npm. El entorno de trabajo usó Node 24.19. Para desplegar Functions se selecciona Node 22.
 
@@ -29,7 +29,7 @@ cp .env.example .env
 npm run web
 ```
 
-Abrir la URL que indique Expo. Ingresar tu nombre; identifica los movimientos de la demo, no autentica una cuenta real. Las fechas de la semilla se calculan al iniciar por primera vez. No se inventaron teléfonos, coordenadas ni credenciales.
+Abrir la URL de Expo e ingresar un nombre: identifica movimientos locales, no autentica una cuenta real. Con `.env.example`, LOCAL_ONLY=true inicia vacío solo si no existe una base. Para probar la antigua semilla demo, seleccionar explícitamente LOCAL_ONLY=false y DATA_MODE=demo en un perfil separado; no reemplazar datos existentes para hacerlo.
 
 Para móvil, instalar Expo Go compatible con SDK 57, ejecutar `npm start` y abrir el QR en la misma red. Si la tienda aún no ofrece esa versión de Expo Go, usar un development build compatible.
 

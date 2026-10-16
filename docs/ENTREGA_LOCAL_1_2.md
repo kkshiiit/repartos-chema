@@ -33,8 +33,10 @@ ADB no detecta dispositivos y no hay emulador Android operativo. **No se probó 
 
 Guardar JSON fuera de la aplicación. Desinstalar o borrar almacenamiento elimina datos y archivos internos, incluidos archivos previos al vaciado. Excel/Word no sustituyen el JSON.
 
-## Publicación pendiente de comprobar
+## Publicación comprobada
 
-Destino versionado: rama privada descargas, `android/v1.2.0-local.1/repartos-chema-local-1.2.0-arm64.apk`, con SHA256. Conservar1.0/1.1. Confirmar publicación y restauración desde GitHub en CONTINUIDAD_LOCAL después de ejecutarlas.
+Destino versionado publicado: rama privada descargas, commita52f581, `android/v1.2.0-local.1/repartos-chema-local-1.2.0-arm64.apk`, con SHA256. Versiones1.0/1.1 intactas. Se recuperó el APK desde GitHub usando un repositorio independiente: SHA256 y CRC idénticos,49.483.920bytes. También se recuperó el ZIPfuente8008596 y su SHA/CRC coincidieron. Esto verifica el almacenamiento remoto, no una descarga desde el navegador Android. Evidencia `artifacts/validacion/local-120-github.json`.
+
+[Descargar APK](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.2.0-local.1/repartos-chema-local-1.2.0-arm64.apk) · [Ficha alternativa](https://github.com/kkshiiit/repartos-chema/blob/descargas/android/v1.2.0-local.1/repartos-chema-local-1.2.0-arm64.apk) · [Código fuente con manifiesto](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/respaldos/v1.2-local/repartos-chema-8008596.zip). Iniciar sesión con kkshiiit o cuenta autorizada. No se creó una publicación pública.
 
 Nube gratuita incompleta conservada en `trabajo/gratuito-pausado-20261016`/`0f179f9`. No es dependencia de esta edición ni debe fusionarse para cerrar la entrega local. No hay servicios pagos ni automatización de continuidad activados.

@@ -1,4 +1,12 @@
-# Punto vigente — rediseño 1.1 y APK actualizado
+# Punto vigente — APK individual local 1.2.0 entregado
+
+## Cierre verificado de esta ejecución
+
+APK individual1.2.0/code3 ya en GitHub privado, rama `descargas`, commit `a52f581e875658dc97b91f818508cf8ca7023e60`. [Descargar APK](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.2.0-local.1/repartos-chema-local-1.2.0-arm64.apk). SHA256 `063019c53294fdb6d43e3916faad7d0d0f9b03312fdabed03d47de917f589962`,49.483.920bytes. Recuperado desde GitHub en repositorio independiente: SHA/CRC iguales; ZIPfuente8008596 también recuperado e íntegro. Evidencia local-120-github.json. No se probó descarga ni instalación en navegador Android físico.
+
+Último código funcional `a820afe`, manual `e140b51`, evidencias/build `8008596`, todos subidos a main. Los commits documentales posteriores cierran esta entrega; consultar `git log -1` y `git ls-remote origin main` para el HEAD actual. Compilación10m2s, firma v2 y mismo certificado1.1, ARM64/Android7+,94tests+2recorridosUIlocales aprobados. No nube, anuncios ni suscripción. Instalación nueva vacía; actualización conserva datos; JSON y recuperación comprobados. APKs anteriores intactos. BranchCloudflareWIP aparte0f179f9, sin desplegar.
+
+**Próximo paso exacto:** usuario guarda JSON y actualiza encima sin desinstalar; probar primera apertura, stock/entrega/retiro offline, Compartir JSON/Word/Excel, importación y permisos nativos. No hay dispositivo ADB conectado: no declarar esas pruebas aprobadas. No recompilar por rutina ni retomar nube sin una nueva instrucción; corregir solo fallos concretos reportados. [Manual](USO_LOCAL_ANDROID.md), [informe](ENTREGA_LOCAL_1_2.md). Mantener commits/push por bloques y antes de cualquier nueva compilación.
 
 ## PRIORIDAD ACTUAL: entrega local individual 1.2.0
 

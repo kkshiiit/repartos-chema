@@ -1,5 +1,11 @@
 # Prioridad vigente — APK individual local 1.2.0
 
+## Entrega cerrada y recuperable
+
+APK publicado en rama privada descargas/a52f581, ruta `android/v1.2.0-local.1/repartos-chema-local-1.2.0-arm64.apk`. Recuperado realmente desde GitHub en checkout independiente: SHA256063019c53294fdb6d43e3916faad7d0d0f9b03312fdabed03d47de917f589962 y CRC correctos,49.483.920bytes. FuenteZIP8008596 recuperado desde GitHub con SHA/CRC idénticos. El repositorio sigue privado. Evidencia `artifacts/validacion/local-120-github.json`.
+
+Main:22792ce inicio vacío/recuperación, a820afe pruebas/generador móvil, e140b51 manual,8008596 build/firma. Cierre documental posterior se consulta con git log. Próximo paso: probar instalación/actualización y funciones nativas en Android del usuario. Guardar JSON, instalar encima; no desinstalar. La misión de APK está entregada con validación lógica/web y de archivo; falta aceptación física. No retomar nube ni recompilar sin una necesidad concreta. Los apartados «siguiente acción» inferiores conservan el orden histórico y ya fueron completados.
+
 ## APK compilado y verificado
 
 Gradle código0 en10m2s. Código funcionala820afe y manuale140b51 en main. APK `/workspace/entregas/local-1.2.0/repartos-chema-local-1.2.0-arm64.apk`,49.483.920bytes, SHA256 `063019c53294fdb6d43e3916faad7d0d0f9b03312fdabed03d47de917f589962`. Versión1.2.0/code3, Android7+,ARM64; firma v2/CRC y certificado igual a1.1 verificados. Configuración Firebase ausente del bundle. No probado físicamente.
