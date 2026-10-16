@@ -21,13 +21,39 @@ export async function saveFile(name: string, bytes: Uint8Array, mime: string) {
   await Sharing.shareAsync(file.uri, { mimeType: mime, dialogTitle: 'Guardar copia' });
 }
 export async function pickBackup(): Promise<string | null> {
-  const result = await DocumentPicker.getDocumentAsync({
-    type: 'application/json',
-    copyToCacheDirectory: true,
-  });
+  let result: DocumentPicker.DocumentPickerResult;
+  try {
+    result = await DocumentPicker.getDocumentAsync({
+      // Algunos proveedores Android etiquetan JSON como texto o binario.
+      // La validación del contenido ocurre antes de ofrecer la importación.
+      type: '*/*',
+      multiple: false,
+      copyToCacheDirectory: true,
+    });
+  } catch {
+    throw new Error(
+      'No se pudo abrir el selector de archivos. Reintentá desde Ajustes. No se modificaron datos.',
+    );
+  }
   if (result.canceled) return null;
-  const asset = result.assets[0]!;
+  const asset = result.assets?.[0];
+  if (!asset?.uri) throw new Error('No se recibió un archivo. Elegí el JSON desde Descargas.');
   if ((asset.size || 0) > 50 * 1024 * 1024)
     throw new Error('La copia supera 50 MB. Solicita asistencia para restaurarla.');
-  return Platform.OS === 'web' ? await (await fetch(asset.uri)).text() : new File(asset.uri).text();
+  let raw: string;
+  try {
+    if (Platform.OS === 'web') {
+      const response = await fetch(asset.uri);
+      if (!response.ok) throw new Error('Archivo no disponible');
+      raw = await response.text();
+    } else raw = await new File(asset.uri).text();
+  } catch {
+    throw new Error(
+      'No se pudo leer el archivo. Guardalo primero en Descargas y elegilo otra vez. No se modificaron datos.',
+    );
+  }
+  if (!raw.trim()) throw new Error('El archivo está vacío. Elegí una copia JSON completa.');
+  if (raw.length > 50 * 1024 * 1024)
+    throw new Error('La copia supera 50 MB. No se modificaron datos.');
+  return raw;
 }

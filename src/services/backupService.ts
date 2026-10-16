@@ -34,9 +34,20 @@ export async function downloadBackup(raw: string | null) {
   });
   await saveFile('chema-copia.json', new TextEncoder().encode(text), 'application/json');
 }
-export async function prepareRestore(raw: string) {
-  if (raw.length > 50 * 1024 * 1024) throw new Error('Copia demasiado grande.');
-  const parsed = JSON.parse(raw) as {
+export function inspectBackup(raw: string) {
+  if (Buffer.byteLength(raw, 'utf8') > 50 * 1024 * 1024)
+    throw new Error('La copia supera 50 MB. No se modificaron datos.');
+  let value: unknown;
+  try {
+    value = JSON.parse(raw.replace(/^\uFEFF/, ''));
+  } catch {
+    throw new Error(
+      'El archivo JSON está incompleto o no es válido. Volvé a descargarlo y elegilo de nuevo. No se modificaron datos.',
+    );
+  }
+  if (!value || typeof value !== 'object' || Array.isArray(value))
+    throw new Error('Seleccioná una copia JSON de Repartos Chema. No se modificaron datos.');
+  const parsed = value as {
     format?: string;
     envelope?: Envelope;
     photos?: Record<string, string>;
@@ -46,6 +57,11 @@ export async function prepareRestore(raw: string) {
   const e = parseEnvelope(JSON.stringify(parsed.envelope));
   if (e.queue.length)
     throw new Error('Esta copia contiene envíos a la nube. Requiere revisión antes de restaurar.');
+  if (
+    parsed.photos !== undefined &&
+    (!parsed.photos || typeof parsed.photos !== 'object' || Array.isArray(parsed.photos))
+  )
+    throw new Error('Las fotos de la copia no son válidas. No se modificaron datos.');
   for (const [id, data] of Object.entries(parsed.photos || {})) {
     if (
       !/^[a-zA-Z0-9_-]{1,100}$/.test(id) ||
@@ -55,11 +71,19 @@ export async function prepareRestore(raw: string) {
     )
       throw new Error('Foto de respaldo inválida.');
   }
+  for (const o of e.state.obras)
+    for (const p of o.fotos || [])
+      if (!parsed.photos?.[p.id] && (p.uri.startsWith('chema-photo:') || p.uri.startsWith('file:')))
+        throw new Error('La copia no contiene todas las fotos. No se modificaron datos.');
+  return { envelope: e, photos: parsed.photos || {} };
+}
+export async function prepareRestore(raw: string) {
+  const { envelope: e, photos } = inspectBackup(raw);
   // Las fotos se escriben con IDs nuevos: un fallo nunca pisa imágenes del inventario anterior.
   const remapped = new Map<string, { id: string; uri: string }>();
   for (const o of e.state.obras)
     for (const p of o.fotos || []) {
-      const encoded = parsed.photos?.[p.id];
+      const encoded = photos[p.id];
       if (!encoded) {
         if (p.uri.startsWith('chema-photo:') || p.uri.startsWith('file:'))
           throw new Error('La copia no contiene todas las fotos.');
