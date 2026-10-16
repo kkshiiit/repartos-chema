@@ -65,34 +65,59 @@ export class Repository {
       const restored = parseEnvelope(raw);
       if (restored.queue.length) throw new Error('No se restaura una cola remota en la demo.');
       const original = await this.storage.getItem(this.key);
-      if (original !== null)
-        await this.storage.setItem(`${this.key}:before-restore:${Date.now()}`, original);
+      if (original !== null) {
+        const archive = `${this.key}:before-restore:${Date.now()}`;
+        await this.storage.setItem(archive, original);
+        await this.storage.setItem(`${this.key}:previous-restore`, archive);
+      }
+      return this.persist(restored);
+    }, false);
+  }
+  undoRestore(actor: UserProfile) {
+    return this.serial(async () => {
+      if (this.remote || actor.role !== 'ADMIN')
+        throw new Error('Recuperación disponible solo para administración local.');
+      const archive = await this.storage.getItem(`${this.key}:previous-restore`);
+      const original = archive ? await this.storage.getItem(archive) : null;
+      if (!original)
+        throw new Error('No hay una importación anterior para deshacer. No se modificaron datos.');
+      const restored = parseEnvelope(original);
+      if (restored.queue.length)
+        throw new Error('La copia anterior contiene envíos remotos. Se conserva sin modificar.');
+      const current = await this.storage.getItem(this.key);
+      if (current !== null)
+        await this.storage.setItem(`${this.key}:before-undo-restore:${Date.now()}`, current);
       return this.persist(restored);
     }, false);
   }
   startEmpty(actor: UserProfile) {
-    return this.serial(async()=>{
-      if(this.remote || actor.role!=='ADMIN') throw new Error('Acción local exclusiva de administración.');
-      if(!this.envelope) throw new Error('El almacenamiento no está listo.');
-      const original=await this.storage.getItem(this.key);
-      if(original===null) throw new Error('No se encontró el original. No se modificaron datos.');
-      const archive=`${this.key}:before-empty:${Date.now()}`;
-      await this.storage.setItem(archive,original);
-      await this.storage.setItem(`${this.key}:previous-empty`,archive);
-      const state=emptyLocalState();
-      return this.persist({schema:1,confirmed:state,state,queue:[]});
+    return this.serial(async () => {
+      if (this.remote || actor.role !== 'ADMIN')
+        throw new Error('Acción local exclusiva de administración.');
+      if (!this.envelope) throw new Error('El almacenamiento no está listo.');
+      const original = await this.storage.getItem(this.key);
+      if (original === null)
+        throw new Error('No se encontró el original. No se modificaron datos.');
+      const archive = `${this.key}:before-empty:${Date.now()}`;
+      await this.storage.setItem(archive, original);
+      await this.storage.setItem(`${this.key}:previous-empty`, archive);
+      const state = emptyLocalState();
+      return this.persist({ schema: 1, confirmed: state, state, queue: [] });
     });
   }
   recoverPrevious(actor: UserProfile) {
-    return this.serial(async()=>{
-      if(this.remote || actor.role!=='ADMIN') throw new Error('Recuperación disponible solo en modo local.');
-      const archive=await this.storage.getItem(`${this.key}:previous-empty`);
-      const original=archive?await this.storage.getItem(archive):null;
-      if(!original) throw new Error('No hay una copia anterior a Empezar vacío. Puedes importar un JSON.');
-      const restored=parseEnvelope(original);
-      if(restored.queue.length) throw new Error('La copia contiene operaciones remotas. Se conserva sin modificar.');
-      const current=await this.storage.getItem(this.key);
-      if(current) await this.storage.setItem(`${this.key}:before-recover:${Date.now()}`,current);
+    return this.serial(async () => {
+      if (this.remote || actor.role !== 'ADMIN')
+        throw new Error('Recuperación disponible solo en modo local.');
+      const archive = await this.storage.getItem(`${this.key}:previous-empty`);
+      const original = archive ? await this.storage.getItem(archive) : null;
+      if (!original)
+        throw new Error('No hay una copia anterior a Empezar vacío. Puedes importar un JSON.');
+      const restored = parseEnvelope(original);
+      if (restored.queue.length)
+        throw new Error('La copia contiene operaciones remotas. Se conserva sin modificar.');
+      const current = await this.storage.getItem(this.key);
+      if (current) await this.storage.setItem(`${this.key}:before-recover:${Date.now()}`, current);
       return this.persist(restored);
     });
   }
