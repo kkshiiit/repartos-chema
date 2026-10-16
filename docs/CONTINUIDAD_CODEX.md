@@ -1,8 +1,10 @@
 # Punto vigente — APK individual local 1.2.0 entregado
 
-## Trabajo posterior — pulido1.2.1 en preparación
+## Trabajo posterior — pulido1.2.2 en preparación
 
-Usuario pidió pulir la app local. Cambios acotados y probados: responsable se agrega/selecciona dentro de entrega sin ir a Ajustes; Word no queda bloqueado por filtro Excel; nombres de archivo nativos distintos con creación sin sobrescritura; mensaje de faltante local sin FCM.95pruebas y3recorridos web aprobados, pruebas rojas previas conservadas. Ver PULIDO_1_2_1.md. Versión1.2.1/code4 preparada, aún no se afirma APK nuevo. Próximo paso: commit/push main, compilar ARM64 y verificar/publicar/recuperar desde GitHub. APK1.2.0 disponible y preservado. Ninguna nube ni facturación.
+Integración necesaria: main remoto avanzó a31cd72d (importación JSON/APK1.2.1) y rechazó el push9174621. No se forzó. Cambios combinados: vista previa/cancelación/undo JSON preservados, más responsables inline y documentos/archivos. Versión nueva1.2.2/code5.108tests y4recorridosUI locales aprobados tras integrar; ver artifacts/validacion/pulido-122-*.txt. Próxima acción: cerrar commit de merge, push main y comprobar hashes antes de compilar. Solo entonces APK nuevo, firma/hash/descargas/restauración. Mantener todas las versiones. Fuente9174621 respaldada en ZIP y rama local respaldo/pulido-9174621.
+
+Usuario pidió pulir la app local. Cambios acotados y probados: responsable se agrega/selecciona dentro de entrega sin ir a Ajustes; Word no queda bloqueado por filtro Excel; nombres de archivo nativos distintos con creación sin sobrescritura; mensaje de faltante local sin FCM.95pruebas y3recorridos web aprobados, pruebas rojas previas conservadas. Ver PULIDO_1_2_2.md. Versión1.2.2/code5 preparada, aún no se afirma APK nuevo. Próximo paso: commit/push main, compilar ARM64 y verificar/publicar/recuperar desde GitHub. APK1.2.0 disponible y preservado. Ninguna nube ni facturación.
 
 ## Cierre verificado de esta ejecución
 

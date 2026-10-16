@@ -1,5 +1,6 @@
 import { DepotSettings } from '../src/components/DepotSettings';
 import { TeamSettings } from '../src/components/TeamSettings';
+import { BackupImport } from '../src/components/BackupImport';
 import { useWelcome } from '../src/components/WelcomeProvider';
 import { userError } from '../src/services/errors';
 import { useTheme } from '../src/context/ThemeContext';
@@ -11,16 +12,14 @@ import { useInventory } from '../src/context/InventoryContext';
 import { DATA_MODE } from '../src/services/firebase';
 import { LOCAL_ONLY } from '../src/services/localMode';
 import { Button, Chip, ConfirmButton, Field, Notice, Screen, useUI } from '../src/components/ui';
-import { pickBackup } from '../src/services/files';
 import { enableNotifications } from '../src/services/notifications';
 export default function Settings() {
   const { s } = useUI();
   const theme = useTheme();
   const { openWelcome } = useWelcome();
   const { user } = useAuth(),
-    { state, dispatch, backup, restore, startEmpty, recoverPrevious } = useInventory();
+    { state, dispatch, backup, startEmpty, recoverPrevious } = useInventory();
   const [names, setNames] = useState<string | null>(null),
-    [restoreRaw, setRestoreRaw] = useState<string | null>(null),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(''),
     [success, setSuccess] = useState('');
@@ -72,8 +71,8 @@ export default function Settings() {
             LOCAL_ONLY
               ? 'Uso individual sin conexión. Los datos se guardan en este celular; no se envían a Firebase ni a otros servicios. Conserva copias JSON fuera del dispositivo.'
               : DATA_MODE === 'demo'
-              ? 'Demostración local. Datos ficticios persistidos en este dispositivo. No hay sincronización cloud ni push enviados.'
-              : 'Firebase configurado. Las operaciones se confirman con el servidor y los conflictos requieren revisión.'
+                ? 'Demostración local. Datos ficticios persistidos en este dispositivo. No hay sincronización cloud ni push enviados.'
+                : 'Firebase configurado. Las operaciones se confirman con el servidor y los conflictos requieren revisión.'
           }
         />
         <Text style={s.muted}>
@@ -109,12 +108,14 @@ export default function Settings() {
               variant="secondary"
               onPress={() => router.push('/combos')}
             />
-            {!LOCAL_ONLY ? <Button
-              loading={busy}
-              label="Activar avisos"
-              variant="secondary"
-              onPress={() => void run(enableNotifications)}
-            /> : null}
+            {!LOCAL_ONLY ? (
+              <Button
+                loading={busy}
+                label="Activar avisos"
+                variant="secondary"
+                onPress={() => void run(enableNotifications)}
+              />
+            ) : null}
           </>
         ) : null}
         {user?.role === 'ADMIN' ? (
@@ -127,40 +128,32 @@ export default function Settings() {
               loading={busy}
               onPress={() => void run(backup)}
             />
-            {DATA_MODE === 'demo' ? (
-              <Button
-                label="Elegir copia"
-                variant="secondary"
-                loading={busy}
-                onPress={() => void run(async () => setRestoreRaw(await pickBackup()))}
-              />
+            {DATA_MODE === 'demo' ? <BackupImport /> : null}
+            {LOCAL_ONLY ? (
+              <>
+                <ConfirmButton
+                  label="Empezar vacío"
+                  title="Nuevo inventario vacío"
+                  description="Se exportará una copia JSON y se archivarán los datos actuales en este celular antes de empezar sin alquileres ni materiales. Podrás recuperar la copia anterior."
+                  onConfirm={async () => {
+                    await backup();
+                    await startEmpty();
+                    setNames(null);
+                    setSuccess('Inventario vacío. La copia anterior se conserva.');
+                  }}
+                />
+                <ConfirmButton
+                  label="Recuperar anterior"
+                  title="Recuperar inventario anterior"
+                  description="Se recuperará la copia local anterior a Empezar vacío. Los datos activos también se archivarán antes del cambio."
+                  onConfirm={async () => {
+                    await recoverPrevious();
+                    setNames(null);
+                    setSuccess('Inventario anterior recuperado.');
+                  }}
+                />
+              </>
             ) : null}
-            {restoreRaw !== null ? (
-              <ConfirmButton
-                label="Restaurar copia"
-                title="Restaurar datos locales"
-                description="Se validará la copia y se conservará el inventario anterior en este dispositivo antes de reemplazarlo. Esta acción cambia los alquileres activos."
-                onConfirm={async () => {
-                  await restore(restoreRaw);
-                  setRestoreRaw(null);
-                  setSuccess('Copia restaurada.');
-                }}
-              />
-            ) : null}
-            {LOCAL_ONLY ? <>
-              <ConfirmButton
-                label="Empezar vacío"
-                title="Nuevo inventario vacío"
-                description="Se exportará una copia JSON y se archivarán los datos actuales en este celular antes de empezar sin alquileres ni materiales. Podrás recuperar la copia anterior."
-                onConfirm={async()=>{await backup();await startEmpty();setNames(null);setSuccess('Inventario vacío. La copia anterior se conserva.');}}
-              />
-              <ConfirmButton
-                label="Recuperar anterior"
-                title="Recuperar inventario anterior"
-                description="Se recuperará la copia local anterior a Empezar vacío. Los datos activos también se archivarán antes del cambio."
-                onConfirm={async()=>{await recoverPrevious();setNames(null);setSuccess('Inventario anterior recuperado.');}}
-              />
-            </> : null}
           </View>
         ) : null}
         {error ? <Notice text={error} tone="error" /> : null}

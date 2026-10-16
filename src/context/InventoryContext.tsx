@@ -25,6 +25,7 @@ interface Value {
   discard: () => Promise<void>;
   backup: () => Promise<void>;
   restore: (raw: string) => Promise<void>;
+  undoRestore: () => Promise<void>;
   startEmpty: () => Promise<void>;
   recoverPrevious: () => Promise<void>;
 }
@@ -146,13 +147,18 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
       await repo.restoreDemo(await prepareRestore(raw), user);
       setError('');
     },
+    undoRestore: async () => {
+      if (!user || DATA_MODE !== 'demo') throw new Error('Disponible solo en este dispositivo.');
+      await repo.undoRestore(user);
+      setError('');
+    },
     startEmpty: async () => {
-      if(!user || DATA_MODE!=='demo') throw new Error('Disponible solo en este dispositivo.');
+      if (!user || DATA_MODE !== 'demo') throw new Error('Disponible solo en este dispositivo.');
       await repo.startEmpty(user);
       setError('');
     },
     recoverPrevious: async () => {
-      if(!user || DATA_MODE!=='demo') throw new Error('Disponible solo en este dispositivo.');
+      if (!user || DATA_MODE !== 'demo') throw new Error('Disponible solo en este dispositivo.');
       await repo.recoverPrevious(user);
       setError('');
     },
