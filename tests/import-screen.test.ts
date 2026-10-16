@@ -2,6 +2,7 @@ import React from 'react';
 import { readFileSync } from 'node:fs';
 import { beforeEach, expect, it, vi } from 'vitest';
 import { create, act } from 'react-test-renderer';
+import Settings from '../app/configuracion';
 const mocks = vi.hoisted(() => ({ pick: vi.fn(), restore: vi.fn(), undoRestore: vi.fn() }));
 vi.mock('react-native', () => ({ View: 'View', Text: 'Text' }));
 vi.mock('expo-router', () => ({ router: { push: vi.fn() } }));
@@ -37,7 +38,6 @@ vi.mock('../src/components/ui', () => ({
     visible ? children : null,
   useUI: () => ({ s: {} }),
 }));
-import Settings from '../app/configuracion';
 const raw = readFileSync(new URL('./fixtures/whatsapp-five.json', import.meta.url), 'utf8');
 beforeEach(() => {
   vi.clearAllMocks();
