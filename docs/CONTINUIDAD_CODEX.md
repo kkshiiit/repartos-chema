@@ -30,21 +30,20 @@ GitHub privado autorizado: kkshiiit/repartos-chema. Trabajar en main y hacer com
 - Se conservaron pruebas rojas de los defectos antes de corregir, pulido-121-*-red.txt. Evidencias actuales pulido-122-{check,lint-final,files-final,ui-final,web}.txt y captura pulido-122-responsable.png (revisada).
 - No inventar FPS/RAM ni afirmar todas las comprobacionesWCAG/hardware por Axe.
 
-## APK y compilación en curso
+## APK compilado y verificado
 
 - Configuración app.json: **1.2.2/versionCode5**, ARM64, mismo package `com.grupochema.repartos`.
 - Código funcionalbae300e subido y ZIP verificado **antes** de iniciar npm run build:android:demo. El script fuerza EXPO_PUBLIC_LOCAL_ONLY=true y DATA_MODE=demo, sin cargar `.env.firebase.local`.
-- Compilación actual en proceso; sesión de esta ejecución15288, log `artifacts/validacion/pulido-122-android.txt`. No afirmar APK1.2.2 listo hasta que termine y verificar versión/firma/CRC/SHA.
+- Compilación Gradle terminada correctamente en 9m38s, 658 tareas. APK local `/workspace/entregas/pulido-1.2.2/repartos-chema-local-1.2.2-arm64.apk`, 49.499.336bytes. Firma v2, certificado igual a1.2.1, versión/ABI/SDK24/CRC comprobados. SHA256 `43835da902859f6c5af77947d315fb8ec2922d9921cebe558948460b0f1ba8eb`. Evidencia pulido-122-apk.json y logs de firma/metadatos/build. Sin dispositivo ADB, no afirmar instalación probada.
 - APKs anteriores:1.2.0 completo en descargas/android/v1.2.0-local.1;1.2.1 dividido en partes en descargas/android/v1.2.1-local.1. Se reconstruyó 1.2.1 localmente y verificó SHA8135af0ed6193fd25d10b16d9dda2c13776d6b474b078106d810c9966d09f029. Certificado coincide con1.2.0. Archivo temporal /tmp/chema-121-cert-comparison.apk para comparar el nuevo instalador.
 - La nueva entrega debe ser **un APK completo**, no partes para reconstruir en el celular. Ruta prevista android/v1.2.2-local.1/repartos-chema-local-1.2.2-arm64.apk.
 
 ## Próxima acción exacta
 
-1. Revisar estado/log de compilación. Si terminó: `apksigner verify`, comparar certificado contra1.2.1, `aapt dump badging`: 1.2.2/code 5/Android 7+/ARM64, ZIP CRC y SHA256. No sobrescribir versiones previas.
-2. Guardar/push evidencia y docs actualizados. Generar ZIP fuente mediante scripts/package.py, que verifica restauración y excluye.env/secretos/dependencias.
-3. Fetch y ff-only de descargas en /workspace/entregas/apk-github-20261015, publicar APK completo+SHA+fuenteZIP con nombre versionado. Si main/descargas avanzaron otra vez, inspeccionar e integrar; nunca forzar.
-4. Recuperar APK desde GitHub en repositorio independiente (/tmp/chema-apk-restaurado-20261015 si existe), verificar SHA/CRC y guardar evidencia. Actualizar README/manual y este checkpoint con enlace/hashes/commits reales; push final.
-5. Entregar enlace APK al usuario. Copia JSON previa y actualización encima sin desinstalar. Probar Android físico con usuario antes de declararlo validado.
+1. Guardar/push evidencia y docs actualizados. Generar ZIP fuente mediante scripts/package.py, que verifica restauración y excluye.env/secretos/dependencias.
+2. Fetch y ff-only de descargas en /workspace/entregas/apk-github-20261015, publicar APK completo+SHA+fuenteZIP con nombre versionado. Si main/descargas avanzan, inspeccionar e integrar; nunca forzar.
+3. Recuperar APK desde GitHub en repositorio independiente, verificar SHA/CRC y guardar evidencia. Actualizar README/manual y este checkpoint con enlace/hashes/commits reales; push final.
+4. Entregar enlace APK al usuario. Copia JSON previa y actualización encima sin desinstalar. Probar Android físico con usuario antes de declararlo validado.
 
 ## Pendientes reales y herramientas
 
