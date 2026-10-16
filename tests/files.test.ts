@@ -1,4 +1,5 @@
 import { beforeEach, expect, it, vi } from 'vitest';
+import { pickBackup } from '../src/services/files';
 const native = vi.hoisted(() => ({
   picker: vi.fn(),
   read: vi.fn(),
@@ -19,7 +20,6 @@ vi.mock('expo-file-system', () => ({
     text = native.read;
   },
 }));
-import { pickBackup } from '../src/services/files';
 beforeEach(() => {
   vi.clearAllMocks();
   native.picker.mockResolvedValue({

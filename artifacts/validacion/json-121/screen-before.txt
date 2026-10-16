@@ -1,0 +1,70 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+ RUN  v5.0.3 /workspace/scratch/e18908837ef1/repartos-chema
+
+stderr | tests/import-screen.test.ts > al elegir copia abre revisión con cinco alquileres, sin anunciar guardado ni restaurar antes de confirmar
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+The current testing environment is not configured to support act(...)
+
+stderr | tests/import-screen.test.ts > al elegir copia abre revisión con cinco alquileres, sin anunciar guardado ni restaurar antes de confirmar
+The current testing environment is not configured to support act(...)
+
+stderr | tests/import-screen.test.ts > al elegir copia abre revisión con cinco alquileres, sin anunciar guardado ni restaurar antes de confirmar
+The current testing environment is not configured to support act(...)
+
+stderr | tests/import-screen.test.ts > al elegir copia abre revisión con cinco alquileres, sin anunciar guardado ni restaurar antes de confirmar
+The current testing environment is not configured to support act(...)
+The current testing environment is not configured to support act(...)
+The current testing environment is not configured to support act(...)
+
+stderr | tests/import-screen.test.ts > cancelar no restaura; una selección inválida posterior no permite importar la copia anterior
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+The current testing environment is not configured to support act(...)
+
+stderr | tests/import-screen.test.ts > cancelar no restaura; una selección inválida posterior no permite importar la copia anterior
+The current testing environment is not configured to support act(...)
+
+stderr | tests/import-screen.test.ts > cancelar no restaura; una selección inválida posterior no permite importar la copia anterior
+The current testing environment is not configured to support act(...)
+
+stderr | tests/import-screen.test.ts > cancelar no restaura; una selección inválida posterior no permite importar la copia anterior
+The current testing environment is not configured to support act(...)
+The current testing environment is not configured to support act(...)
+The current testing environment is not configured to support act(...)
+
+ ❯ tests/import-screen.test.ts (2 tests | 2 failed) 23ms
+   × al elegir copia abre revisión con cinco alquileres, sin anunciar guardado ni restaurar antes de confirmar 18ms
+   × cancelar no restaura; una selección inválida posterior no permite importar la copia anterior 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/import-screen.test.ts > al elegir copia abre revisión con cinco alquileres, sin anunciar guardado ni restaurar antes de confirmar
+AssertionError: expected [ …(3) ] to include 'Archivo validado: 5 alquileres y 10 m…'
+ ❯ tests/import-screen.test.ts:32:76
+     30|   const button=(name:string)=>view!.root.findAllByType('Button' as nev…
+     31|   await act(async()=>{await button('Elegir copia').props.onPress();});
+     32|   expect(view!.root.findAllByType('Notice' as never).map(n=>n.props.te…
+       |                                                                            ^
+     33|   expect(mocks.restore).not.toHaveBeenCalled();
+     34|   expect(button('Confirmar importación')).toBeDefined();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/import-screen.test.ts > cancelar no restaura; una selección inválida posterior no permite importar la copia anterior
+AssertionError: expected undefined to be defined
+ ❯ tests/import-screen.test.ts:45:42
+     43|   const button=(name:string)=>view!.root.findAllByType('Button' as nev…
+     44|   await act(async()=>{await button('Elegir copia')!.props.onPress();});
+     45|   expect(button('Cancelar importación')).toBeDefined();
+       |                                          ^
+     46|   await act(async()=>{await button('Cancelar importación')!.props.onPr…
+     47|   mocks.pick.mockResolvedValue('{"format":');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  18:51:13
+   Duration  246ms (transform 44%, import 32%, tests 20%, worker 4%)
+
