@@ -2,6 +2,7 @@ import { File, Paths } from 'expo-file-system';
 const photoFile = (id: string) => new File(Paths.document, `chema-${id}.jpg`);
 export async function storePhoto(id: string, bytes: Uint8Array) {
   const file = photoFile(id);
+  file.create({ overwrite: false });
   file.write(bytes);
   return file.uri;
 }

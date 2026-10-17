@@ -22,7 +22,7 @@ export function PhotoImage({ photo }: { photo: PhotoRef }) {
       }
       const source = bytes
         ? displayPhoto(bytes, photo.id)
-        : photo.uri.startsWith('chema-photo:')
+        : DATA_MODE === 'demo' || photo.uri.startsWith('chema-photo:')
           ? ''
           : photo.uri;
       if (!source) throw new Error('La foto no está disponible en este dispositivo.');
@@ -34,7 +34,11 @@ export function PhotoImage({ photo }: { photo: PhotoRef }) {
     })().catch(() => {
       if (active) {
         setUri('');
-        setError('Foto sin copia local. Reintenta al volver a abrir con conexión.');
+        setError(
+          DATA_MODE === 'demo'
+            ? 'Foto local no disponible. Recuperá una copia JSON completa.'
+            : 'Foto sin copia local. Reintenta con conexión.',
+        );
       }
     });
     return () => {

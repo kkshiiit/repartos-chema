@@ -1,20 +1,17 @@
 import type { Envelope } from '../types';
 import { parseEnvelope, validateImportEnvelope } from '../data/validation';
 import { photoBytes, storePhoto } from './photoCache';
-import { saveFile } from './files';
+import { saveFile, saveBackupToDestination } from './files';
 import { Buffer } from 'buffer';
-export async function downloadBackup(raw: string | null) {
+import { localId } from './localId';
+import { validJpeg } from './jpegValidation';
+export async function backupData(raw: string | null) {
   if (raw === null) throw new Error('Todavía no hay datos locales.');
   let envelope: Envelope;
   try {
     envelope = parseEnvelope(raw);
   } catch {
-    await saveFile(
-      'chema-datos-para-recuperar.json',
-      new TextEncoder().encode(raw),
-      'application/json',
-    );
-    return;
+    return { name: 'chema-datos-para-recuperar.json', bytes: new TextEncoder().encode(raw) };
   }
   const photos: Record<string, string> = {};
   for (const o of envelope.state.obras)
@@ -32,7 +29,15 @@ export async function downloadBackup(raw: string | null) {
     envelope,
     photos,
   });
-  await saveFile('chema-copia.json', new TextEncoder().encode(text), 'application/json');
+  return { name: 'chema-copia.json', bytes: new TextEncoder().encode(text) };
+}
+export async function downloadBackup(raw: string | null) {
+  const { name, bytes } = await backupData(raw);
+  await saveFile(name, bytes, 'application/json');
+}
+export async function saveVerifiedBackup(raw: string | null) {
+  const { name, bytes } = await backupData(raw);
+  return saveBackupToDestination(bytes, name);
 }
 export function inspectBackup(raw: string) {
   if (Buffer.byteLength(raw, 'utf8') > 50 * 1024 * 1024)
@@ -63,6 +68,16 @@ export function inspectBackup(raw: string) {
     (!parsed.photos || typeof parsed.photos !== 'object' || Array.isArray(parsed.photos))
   )
     throw new Error('Las fotos de la copia no son válidas. No se modificaron datos.');
+  parsed.photos ??= {};
+  for (const o of e.state.obras)
+    for (const p of o.fotos || []) {
+      if (!parsed.photos[p.id] && p.uri.startsWith('data:image/jpeg;base64,'))
+        parsed.photos[p.id] = p.uri.slice('data:image/jpeg;base64,'.length);
+      if (!parsed.photos[p.id])
+        throw new Error(
+          'La copia no contiene todas las fotos locales. Incluí los archivos originales; no se modificaron datos.',
+        );
+    }
   for (const [id, data] of Object.entries(parsed.photos || {})) {
     if (
       !/^[a-zA-Z0-9_-]{1,100}$/.test(id) ||
@@ -71,6 +86,11 @@ export function inspectBackup(raw: string) {
       !/^[A-Za-z0-9+/]*={0,2}$/.test(data)
     )
       throw new Error('Foto de respaldo inválida.');
+    const jpeg = Buffer.from(data, 'base64');
+    if (!validJpeg(jpeg))
+      throw new Error(
+        'Foto de respaldo inválida: se requiere un archivo JPEG completo de hasta2MB.',
+      );
   }
   for (const o of e.state.obras)
     for (const p of o.fotos || [])
@@ -92,7 +112,7 @@ export async function prepareRestore(raw: string) {
       }
       let mapped = remapped.get(p.id);
       if (!mapped) {
-        const id = `restore_${Date.now()}_${remapped.size}`;
+        const id = `restore_${localId()}`;
         const uri = await storePhoto(id, new Uint8Array(Buffer.from(encoded, 'base64')));
         mapped = { id, uri };
         remapped.set(p.id, mapped);

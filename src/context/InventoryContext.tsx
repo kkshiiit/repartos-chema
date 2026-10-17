@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 import { AppState as NativeState, Platform } from 'react-native';
 import * as Crypto from 'expo-crypto';
+import type { BackupDestination } from '../services/files';
 import type { Action, AppState, Envelope } from '../types';
 import { Repository } from '../data/repository';
 import { inventoryStorage } from '../data/localStorage';
@@ -25,6 +26,9 @@ interface Value {
   retry: () => Promise<void>;
   discard: () => Promise<void>;
   backup: () => Promise<void>;
+  backupToDestination: () => Promise<BackupDestination>;
+  archives: () => Promise<{ key: string; createdAt: string; reason: string }[]>;
+  recoverArchive: (key: string) => Promise<void>;
   restore: (raw: string) => Promise<void>;
   undoRestore: () => Promise<void>;
   startEmpty: () => Promise<void>;
@@ -140,6 +144,17 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
       if (user?.role !== 'ADMIN') throw new Error('Solo administración.');
       const { downloadBackup } = await import('../services/backupService');
       await downloadBackup(await repo.exportRaw());
+    },
+    backupToDestination: async () => {
+      if (user?.role !== 'ADMIN') throw new Error('Solo administración.');
+      const { saveVerifiedBackup } = await import('../services/backupService');
+      return saveVerifiedBackup(await repo.exportRaw());
+    },
+    archives: () => repo.listArchives(),
+    recoverArchive: async (key) => {
+      if (!user || DATA_MODE !== 'demo') throw new Error('Disponible solo en este dispositivo.');
+      await repo.recoverArchive(key, user);
+      setError('');
     },
     restore: async (raw) => {
       if (!user || user.role !== 'ADMIN' || DATA_MODE !== 'demo')

@@ -1,10 +1,14 @@
+import { readFileSync } from 'node:fs';
 import { beforeEach, expect, it, vi } from 'vitest';
 import { seed } from '../src/data/seed';
 import { parseEnvelope } from '../src/data/validation';
 import { downloadBackup, prepareRestore } from '../src/services/backupService';
 const mocks = vi.hoisted(() => ({
   storePhoto: vi.fn(async (id: string) => `chema-photo:${id}`),
-  photoBytes: vi.fn(async () => new Uint8Array([255, 216, 255, 217])),
+  photoBytes: vi.fn(
+    async () =>
+      new Uint8Array(readFileSync(new URL('./fixtures/foto-sintetica.jpg', import.meta.url))),
+  ),
   saveFile: vi.fn(async () => undefined),
 }));
 vi.mock('../src/services/photoCache', () => mocks);
