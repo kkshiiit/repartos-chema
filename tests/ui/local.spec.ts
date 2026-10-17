@@ -55,7 +55,7 @@ test('individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y o
   ).toBeVisible();
   await page.getByRole('button', { name: 'Agregar responsable', exact: true }).click();
   await page.getByLabel('Nombre del responsable', { exact: true }).fill('Persona local');
-  await page.screenshot({path:'artifacts/capturas/pulido-122-responsable.png',fullPage:true});
+  await page.screenshot({ path: 'artifacts/capturas/pulido-122-responsable.png', fullPage: true });
   await page.getByRole('button', { name: 'Guardar responsable', exact: true }).click();
   await expect.poll(async () => (await state()).responsables).toEqual(['Persona local']);
   await page.getByLabel('Recibió', { exact: true }).fill('Receptor de prueba');
@@ -101,8 +101,11 @@ test('individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y o
   expect(JSON.parse(raw.toString()).envelope.state.materiales[0]?.cantidadGalpon).toBe(20);
   const exportBeforeEmpty = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Empezar vacío', exact: true }).click();
-  await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Confirmar', exact: true })).toBeDisabled();
+  await page.getByRole('button', { name: 'Guardar copia', exact: true }).click();
   await exportBeforeEmpty;
+  await page.getByRole('button', { name: 'Guardé el JSON fuera', exact: true }).click();
+  await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
   await expect.poll(async () => (await state()).materiales.length).toBe(0);
   await page.reload();
   await page.getByRole('button', { name: 'Recuperar anterior', exact: true }).click();

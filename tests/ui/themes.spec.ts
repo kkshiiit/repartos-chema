@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { login } from './helpers';
+import { loginSynthetic as login } from './helpers';
 async function bg(page: import('@playwright/test').Page) {
   return page.evaluate(() => document.documentElement.style.colorScheme);
 }
@@ -44,7 +44,9 @@ for (const width of [320, 360, 390, 768, 1440])
       page.on('pageerror', (e) => errors.push(e.message));
       await page.setViewportSize({ width, height: width > 1000 ? 1000 : 844 });
       await page.emulateMedia({ colorScheme: theme, reducedMotion: 'reduce' });
-      await page.addInitScript(() => localStorage.setItem('chema:welcome:v2', 'done'));
+      const { seed } = await import('../../src/data/seed');
+      const fixture=seed();fixture.obras.forEach((o,i)=>{o.clienteNombre='Cliente sintético '+(i+1);o.clienteTelefono='';o.direccion='Dirección sintética '+(i+1);delete o.coordenadas;});
+      await page.addInitScript((state)=>{localStorage.setItem('chema:welcome:v2','done');if(!localStorage.getItem('chema:demo:v1'))localStorage.setItem('chema:demo:v1',JSON.stringify({schema:1,state,confirmed:state,queue:[]}));},fixture);
       await page.goto('/');
       await expect(page.getByLabel('Tu nombre', { exact: true })).toBeVisible();
       async function capture(name: string) {

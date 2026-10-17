@@ -18,18 +18,18 @@ class Storage implements KeyValueStorage {
     this.data.set(key, value);
   }
 }
-it('el JSON real contiene cinco alquileres válidos y persiste al reabrir', async () => {
+it('el JSON sintético contiene cinco alquileres válidos y persiste al reabrir', async () => {
   const storage = new Storage();
   const repo = new Repository(storage, 'inventory', seed);
   const original = await repo.load();
   await repo.restoreDemo(await prepareRestore(raw), demoProfile('ADMIN'));
   const reopened = new Repository(storage, 'inventory', seed);
   expect((await reopened.load()).state.obras.map((o) => o.clienteNombre)).toEqual([
-    'Igancio',
-    'Carina',
-    'Padre Ashkar (sin nombre de cliente)',
-    'Instituto Santa Ana',
-    'Carlos',
+    'Cliente sintético 1',
+    'Cliente sintético 2',
+    'Cliente sintético 3',
+    'Cliente sintético 4',
+    'Cliente sintético 5',
   ]);
   expect(
     [...storage.data.entries()].some(
