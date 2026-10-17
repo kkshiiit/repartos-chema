@@ -16,7 +16,7 @@ SHA256 del APK:
 5404659c3ce0dec2149508e81f85c817664be7dbe42294d344e9fb23a2c4cb8b
 ```
 
-[Manual Android](docs/USO_LOCAL_ANDROID.md) · [Informe, pruebas y capturas claras/oscuras](docs/ENTREGA_AURORA_1_3.md) · [Comprobaciones del APK](artifacts/validacion/aurora-apk.json) · [Fuente y manifiestos descargables](https://github.com/kkshiiit/repartos-chema/tree/descargas/respaldos/v1.3.0-local)
+[Manual Android](docs/USO_LOCAL_ANDROID.md) · [Informe, pruebas y capturas claras/oscuras](docs/ENTREGA_AURORA_1_3.md) · [Comprobaciones del APK](artifacts/validacion/aurora-apk.json) · [Fuente final ZIP](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/respaldos/v1.3.0-local/repartos-chema-1d37618.zip) · [Manifiestos y web](https://github.com/kkshiiit/repartos-chema/tree/descargas/respaldos/v1.3.0-local)
 
 ## Novedades y funcionamiento
 
