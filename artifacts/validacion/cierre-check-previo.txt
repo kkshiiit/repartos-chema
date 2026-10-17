@@ -1,0 +1,32 @@
+
+> repartos-chema@1.0.0 check
+> npm run typecheck && npm run lint && npm test && npm --prefix functions run build
+
+
+> repartos-chema@1.0.0 typecheck
+> tsc --noEmit
+
+
+> repartos-chema@1.0.0 lint
+> eslint app src tests functions/src
+
+
+> repartos-chema@1.0.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /workspace/repartos-chema
+
+
+ Test Files  18 passed (18)
+      Tests  166 passed (166)
+   Start at  03:00:52
+   Duration  4.75s (import 50%, tests 35%, transform 12%, worker 3%)
+
+    Isolate  18 workers spawned · ~98ms startup each (spawn + environment, per file)
+             at least ~1.66s faster with isolate: false — reuses workers across files instead of one per file
+
+
+> repartos-chema-functions@1.0.0 build
+> tsc
+

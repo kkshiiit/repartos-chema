@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { login } from './helpers';
+import { loginSynthetic as login } from './helpers';
 test('bienvenida breve completa una vez y puede abrirse desde Ajustes', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByText('Tus alquileres, en un lugar', { exact: true })).toBeVisible();

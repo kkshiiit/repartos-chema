@@ -1,4 +1,4 @@
-import { login } from './helpers';
+import { loginSynthetic as login } from './helpers';
 import { test, expect } from '@playwright/test';
 test('equipo crea, entrega, deshace y descarga documentos', async ({ page }) => {
   const errors: string[] = [];

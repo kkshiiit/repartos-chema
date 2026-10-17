@@ -1,0 +1,78 @@
+{
+  "exit": 1,
+  "counts": {
+    "info": 0,
+    "low": 0,
+    "moderate": 12,
+    "high": 18,
+    "critical": 0,
+    "total": 30
+  },
+  "raices": [
+    {
+      "name": "braces",
+      "severity": "high",
+      "via": [
+        {
+          "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+          "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+          "range": "<=3.0.3"
+        }
+      ],
+      "fix": {
+        "name": "expo",
+        "version": "44.0.6",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "name": "decode-uri-component",
+      "severity": "moderate",
+      "via": [
+        {
+          "title": "decode-uri-component: Denial of service via exponential decoding of malformed percent-encoded input",
+          "url": "https://github.com/advisories/GHSA-vcc3-ghjq-m6fr",
+          "range": "<=0.4.2"
+        }
+      ],
+      "fix": {
+        "name": "expo-router",
+        "version": "58.0.23",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "name": "node-forge",
+      "severity": "high",
+      "via": [
+        {
+          "title": "node-forge RSA PKCS#1 v1.5 signature verification accepts extra nested DigestAlgorithm elements",
+          "url": "https://github.com/advisories/GHSA-86w9-cpqp-85rv",
+          "range": "<=1.4.0"
+        }
+      ],
+      "fix": {
+        "name": "expo",
+        "version": "44.0.6",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "name": "uuid",
+      "severity": "moderate",
+      "via": [
+        {
+          "title": "uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided",
+          "url": "https://github.com/advisories/GHSA-w5hq-g745-h8pq",
+          "range": "<11.1.1"
+        }
+      ],
+      "fix": {
+        "name": "exceljs",
+        "version": "3.4.0",
+        "isSemVerMajor": true
+      }
+    }
+  ],
+  "nota": "No ejecutar audit fix --force: algunos arreglos propuestos son incompatibles con SDK57. Se revisa alcance runtime/build, no son todas explotables en APK."
+}

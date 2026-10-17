@@ -1,4 +1,4 @@
-import { login } from './helpers';
+import { loginSynthetic as login } from './helpers';
 import { test, expect } from '@playwright/test';
 test('retiro y reingreso conservan el total', async ({ page }) => {
   await login(page);

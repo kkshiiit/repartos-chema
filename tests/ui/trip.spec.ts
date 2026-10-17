@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { login } from './helpers';
+import { loginSynthetic as login } from './helpers';
 test('viaje vuelve al depósito fijo y recupera el cambio de Ajustes sin alterar inventario', async ({
   page,
 }) => {
