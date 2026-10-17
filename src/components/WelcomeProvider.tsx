@@ -85,15 +85,17 @@ export function WelcomeProvider({ children }: { children: React.ReactNode }) {
         <View style={{ gap: 22, paddingVertical: 12 }}>
           <View
             style={{
-              width: 64,
-              height: 64,
-              borderRadius: 20,
+              width: 76,
+              height: 76,
+              borderRadius: 26,
+              borderWidth: 1,
+              borderColor: C.hairline,
               backgroundColor: C.selection,
               alignItems: 'center',
               justifyContent: 'center',
             }}
           >
-            <current.icon size={30} color={C.blue} />
+            <current.icon size={32} color={C.accent} />
           </View>
           <Text accessibilityRole="header" style={[s.h2, { fontSize: 23, lineHeight: 30 }]}>
             {current.title}
@@ -107,7 +109,7 @@ export function WelcomeProvider({ children }: { children: React.ReactNode }) {
                   height: 5,
                   width: i === step ? 28 : 8,
                   borderRadius: 3,
-                  backgroundColor: i === step ? C.red : C.hairline,
+                  backgroundColor: i === step ? C.primary : C.hairline,
                 }}
               />
             ))}

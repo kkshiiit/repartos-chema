@@ -11,10 +11,12 @@ export function StatusChip({ obra }: { obra: ObraCard }) {
     <View
       style={{
         alignSelf: 'flex-start',
-        borderRadius: 7,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: `${color}55`,
         backgroundColor: `${color}16`,
         paddingHorizontal: 9,
-        paddingVertical: 5,
+        paddingVertical: 6,
         flexDirection: 'row',
         alignItems: 'center',
         gap: 6,

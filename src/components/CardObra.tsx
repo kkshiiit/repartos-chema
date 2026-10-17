@@ -18,6 +18,7 @@ import { Button, Notice, Pending, useUI } from './ui';
 import { StatusChip } from './StatusChip';
 import { mapsUrl, whatsappUrl } from '../utils/whatsapp';
 import { openLink } from '../services/links';
+import { MotionView } from './MotionView';
 export function CardObra({ obra: o }: { obra: ObraCard }) {
   const { C, s } = useUI();
   const [error, setError] = useState('');
@@ -37,17 +38,21 @@ export function CardObra({ obra: o }: { obra: ObraCard }) {
           .filter((m) => m.cantidad > 0)
       : o.materialesCargados;
   return (
-    <View
+    <MotionView
       style={[
         s.card,
-        { padding: 0, overflow: 'hidden', borderTopWidth: 3, borderTopColor: color, gap: 0 },
+        { padding: 0, overflow: 'hidden', borderTopWidth: 2, borderTopColor: color, gap: 0 },
       ]}
     >
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={`Abrir ${o.clienteNombre}`}
         onPress={() => router.push(`/obra/${o.id}`)}
-        style={{ padding: 15, gap: 10 }}
+        style={({ pressed }) => ({
+          padding: 17,
+          gap: 12,
+          backgroundColor: pressed ? C.selection : 'transparent',
+        })}
       >
         <View style={[s.row, { justifyContent: 'space-between' }]}>
           <StatusChip obra={o} />
@@ -68,7 +73,7 @@ export function CardObra({ obra: o }: { obra: ObraCard }) {
           </View>
           <Text style={{ color: C.muted, fontSize: 12, paddingLeft: 20 }}>{o.localidadBarrio}</Text>
         </View>
-        <View style={{ backgroundColor: C.bg, borderRadius: 10, padding: 12, gap: 8 }}>
+        <View style={{ backgroundColor: C.panel2, borderRadius: 14, padding: 12, gap: 8 }}>
           {loads.slice(0, 2).map((m) => (
             <View key={m.materialId} style={[s.row, { gap: 8 }]}>
               <Box size={13} color={C.subtle} />
@@ -164,6 +169,6 @@ export function CardObra({ obra: o }: { obra: ObraCard }) {
           <Notice text={error} tone="error" />
         </View>
       ) : null}
-    </View>
+    </MotionView>
   );
 }

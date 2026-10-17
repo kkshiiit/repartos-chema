@@ -17,6 +17,9 @@ import { DATA_MODE } from '../../src/services/firebase';
 import { LOCAL_ONLY } from '../../src/services/localMode';
 import { userError } from '../../src/services/errors';
 import { useLocalSearchParams } from 'expo-router';
+import { AuroraBackground } from '../../src/components/AuroraBackground';
+import { ThemeToggle } from '../../src/components/ThemeToggle';
+import { MotionView } from '../../src/components/MotionView';
 export default function Login() {
   const { C, s } = useUI(),
     { width } = useWindowDimensions(),
@@ -41,6 +44,10 @@ export default function Login() {
   }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: C.bg }}>
+      <AuroraBackground />
+      <View style={{ alignSelf: 'flex-end', marginRight: 20, marginTop: 12 }}>
+        <ThemeToggle />
+      </View>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -53,13 +60,13 @@ export default function Login() {
             padding: width < 400 ? 24 : 36,
           }}
         >
-          <View style={{ width: '100%', maxWidth: 460, alignSelf: 'center', gap: 30 }}>
+          <MotionView style={{ width: '100%', maxWidth: 460, alignSelf: 'center', gap: 28 }}>
             <View style={{ alignItems: 'center', gap: 18, paddingTop: 12 }}>
               <Image
                 source={require('../../assets/brand/grupo-chema.png')}
                 resizeMode="contain"
                 accessibilityLabel="Logo Grupo Chema Construcciones"
-                style={{ width: 230, height: 158, opacity: 0.9 }}
+                style={{ width: 210, height: 144 }}
               />
               <View style={{ gap: 6 }}>
                 <Text
@@ -80,7 +87,8 @@ export default function Login() {
                 </Text>
               </View>
             </View>
-            <View style={[s.card, { padding: 24, gap: 20 }]}>
+            <View style={[s.card, { padding: width < 400 ? 20 : 26, gap: 20 }]}>
+              <View style={{ width: 38, height: 4, borderRadius: 4, backgroundColor: C.accent }} />
               <Text style={s.h2}>Ingresar al equipo</Text>
               <Field
                 label="Tu nombre"
@@ -118,7 +126,12 @@ export default function Login() {
                   onPress={() => setShowInvite(true)}
                 />
               ) : null}
-              {LOCAL_ONLY ? <Text style={[s.muted,{fontSize:12}]}>Uso individual · Sin conexión ni servicios pagos. En una instalación nueva, el inventario comienza vacío.</Text> : DATA_MODE === 'demo' ? (
+              {LOCAL_ONLY ? (
+                <Text style={[s.muted, { fontSize: 12 }]}>
+                  Uso individual · Sin conexión ni servicios pagos. En una instalación nueva, el
+                  inventario comienza vacío.
+                </Text>
+              ) : DATA_MODE === 'demo' ? (
                 <Text style={[s.muted, { fontSize: 12 }]}>
                   Prueba local · Los datos se guardan en este celular. Compartir entre celulares
                   requiere conectar el equipo.
@@ -130,7 +143,7 @@ export default function Login() {
               )}
             </View>
             <Button label="Cómo se usa" icon={BookOpen} variant="ghost" onPress={openWelcome} />
-          </View>
+          </MotionView>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
