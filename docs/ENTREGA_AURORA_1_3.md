@@ -20,7 +20,7 @@ La base original, el candidato anterior y el código previo a Gradle se empaquet
 | `6c90f2e` | Compatibilidad y privacidad | Parches compatibles SDK57, versión 1.3.0/code6 y pruebas con datos sintéticos. |
 | `1c7bb72` | Revisión de integridad | Recuperación JSON explícita con SQLite bloqueada/ausente, activación fuera de la cuota AsyncStorage y copias realmente importables antes de vaciar. |
 | `62e04a4` | Seguridad de URI | Decoder upstream 0.5.0 adaptado a CommonJS, con regresión de entrada malformada que bloqueaba el decoder anterior. |
-| `4a82322` | QA y avisos | Amplía recorridos, documentación y elimina el error GPS duplicado dentro de ventanas. Último cambio de runtime del APK. |
+| `4a82322` | QA y avisos | Amplía recorridos, documentación y elimina el error GPS duplicado dentro de ventanas. Último cambio de UI; la resolución reproducible del decoder se corrigió después en d5da6a5. |
 | `cd6013a` | Evidencia previa al build | Capturas y pruebas guardadas en main antes de compilar. |
 
 La lista de archivos por bloque está en Git y [aurora-cambios.txt](../artifacts/validacion/aurora-cambios.txt). No se mezclaron cambios de reglas de stock con el rediseño. Los commits documentales posteriores no cambian el runtime de este APK.
@@ -131,3 +131,6 @@ Los ZIP y el respaldo de firma anteriores eran locales y se perdieron con el ent
 
 
 Reanudación10:58UTC: corrección del lock respaldada en **d5da6a5**. Keystore de plantilla regenerado y certificado comparado con1.2.2: coincide; prueba en aurora-firma-restaurada.json. Copia fuente d5da6a5 (371archivos) restaurada y publicada antes de Gradle en descargas **6059dcb**. El segundo intento parte del mismo package/certificado, sin cambios de reglas de stock ni datos comerciales.
+
+
+Tras la reparación se reexportó web y se ejecutaron3recorridos locales nuevos: **3/3 en28.5s**, incluidos Word/Excel y persistencia offline. No se repitió la auditoría ni los bloques visuales cerrados. El ZIP fuente d5da6a5 se recuperó de GitHub en checkout independiente: SHA256 `0a9764dd301bc23164e38c0d63c963c4c6265452b55383a7c51d25a125a48b11`,371archivos restaurados, todos coinciden; `aurora-fuente-github.json`. Segundo Gradle en ejecución, logs y publicación pendientes.
