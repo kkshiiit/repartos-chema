@@ -1,3 +1,15 @@
+## Reanudación verificada — 17/10/2026,10:58UTC
+
+Main **d5da6a5** ya subido: lock reparado, `npm ci` limpio1560paquetes/2min, consumidor decoder2/2 y check175/175 nuevos correctos. No se repitió la auditoría ni el desarrollo visual. No hay APK1.3 previo recuperable; el primer Gradle desapareció con el reinicio.
+
+El SDK36/build-tools36/NDK27.1/CMake3.22.1/JDK21 están restaurados. Keystore de plantilla regenerado y **certificado comparado contra1.2.2: coincide** (`aurora-firma-restaurada.json`), custodia local nueva `/workspace/respaldos/firma-interna/chema-restaurada-1.3.keystore`, fuera de Git. No se cambió el certificado.
+
+Fuente d5da6a5 ZIP **371archivos**,8.536.276bytes, CRC y todos los hashes restaurados correctos, ya subida en descargas **6059dcb**, ruta `respaldos/v1.3.0-local/repartos-chema-d5da6a5.zip`. No se depende solo del workspace para el respaldo. Se repusieron antes las muestras Word/Excel regeneradas por tests, dejando source igual al commit.
+
+Próximo paso inmediato: segundo Gradle completo1.3.0/code6 después de este push. Runtime/source a registrar: d5da6a5 (incluye resolución reproducible del decoder); el código de UI era4a82322. Log nuevo `artifacts/validacion/aurora-android.txt`. No hay dispositivo físico. Después: verificar APK/SHA/firma/SQLite nativo, subir APK único y fuente final en descargas preservando anteriores y restaurar desde GitHub para comprobarlo.
+
+---
+
 > **Interrupción 03:42–03:44 UTC:** el entorno perdió conectividad y se reinició sin `/workspace/repartos-chema`. Se recuperó main ce43195 desde GitHub. La compilación anterior quedó interrumpida, no hay APK1.3 verificado/publicado. Los ZIP locales y toolchains no sobrevivieron; runtime/pruebas/capturas sí están en GitHub. No se conoce la causa del reinicio (no afirmar OOM). Toolchain restaurado; `npm ci` limpio ya finalizó correctamente en2min. El override file relativo del decoder dejó un enlace inválido en el lock: dependencia local directa y override por referencia `$decode-uri-component` lo corrigen sin cambiar los bytes del decoder. Regresión2/2 y check175/175 nuevos correctos (aurora-npm-ci-{red,green}.txt, aurora-decoder-ci.txt, aurora-check-restaurado.txt). No cambiar reglas de negocio. La custodia local de firma también se perdió: comprobar primero si el keystore de plantilla coincide con el certificado1.2.2; no rotar certificado.
 
 # Continuidad Repartos Chema — 17/10/2026, Aurora 1.3.0
