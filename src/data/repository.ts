@@ -1,11 +1,13 @@
 import type { AppState, Envelope, Operation, UserProfile } from '../types';
-import { parseEnvelope } from './validation';
+import { parseEnvelope, validateImportEnvelope } from './validation';
 import { applyOperation, clone } from '../domain/engine';
 import { emptyLocalState } from './localInitialState';
 export interface KeyValueStorage {
   getItem(key: string): Promise<string | null>;
   setItem(key: string, value: string): Promise<void>;
   getAllKeys?(): Promise<readonly string[]>;
+  getRecoveryItem?(key: string): Promise<string | null>;
+  restoreMissingDatabase?(key: string, raw: string): Promise<void>;
   atomicSet?(entries: readonly (readonly [string, string])[]): Promise<void>;
 }
 export interface RemoteAdapter {
@@ -25,8 +27,8 @@ export class Repository {
   ) {}
   private serial<T>(f: () => Promise<T>, validateExisting = true): Promise<T> {
     const run = async () => {
-      const fresh = await this.storage.getItem(this.key);
       if (!validateExisting) return f();
+      const fresh = await this.storage.getItem(this.key);
       if (fresh !== null) {
         const parsed = parseEnvelope(fresh);
         this.envelope = parsed;
@@ -59,24 +61,42 @@ export class Repository {
       for (const [key, value] of extra) await this.storage.setItem(key, value);
       await this.storage.setItem(this.key, raw);
     }
+    return this.publish(e);
+  }
+  private publish(e: Envelope) {
     this.envelope = e;
     this.listeners.forEach((l) => l(clone(e)));
     return clone(e);
   }
   // Incluye incluso datos inválidos para que soporte pueda recuperarlos sin sobreescribir.
   async exportRaw() {
-    return this.storage.getItem(this.key);
+    return this.storage.getRecoveryItem
+      ? this.storage.getRecoveryItem(this.key)
+      : this.storage.getItem(this.key);
   }
   restoreDemo(raw: string, actor: UserProfile) {
     return this.serial(async () => {
       if (this.remote || actor.role !== 'ADMIN')
         throw new Error('Restauración local exclusiva de administración en demo.');
       const restored = parseEnvelope(raw);
+      validateImportEnvelope(restored);
       if (restored.queue.length) throw new Error('No se restaura una cola remota en la demo.');
-      return this.persist(
-        restored,
-        await this.archiveEntries('before-restore', 'previous-restore'),
-      );
+      try {
+        return await this.persist(
+          restored,
+          await this.archiveEntries('before-restore', 'previous-restore'),
+        );
+      } catch (error) {
+        if (
+          !['LOCAL_DATABASE_MISSING', 'LOCAL_MIGRATION_FAILED'].includes(
+            (error as { code?: string }).code || '',
+          ) ||
+          !this.storage.restoreMissingDatabase
+        )
+          throw error;
+        await this.storage.restoreMissingDatabase(this.key, JSON.stringify(restored));
+        return this.publish(restored);
+      }
     }, false);
   }
   undoRestore(actor: UserProfile) {

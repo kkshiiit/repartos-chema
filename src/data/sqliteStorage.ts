@@ -1,5 +1,6 @@
 import type { KeyValueStorage } from './repository';
 export interface SqlDatabase {
+  closeAsync?(): Promise<void>;
   execAsync(sql: string): Promise<void>;
   runAsync(sql: string, ...params: (string | number | null)[]): Promise<unknown>;
   getFirstAsync<T>(sql: string, ...params: (string | number | null)[]): Promise<T | null>;
@@ -18,6 +19,9 @@ export class SqliteStorage implements KeyValueStorage {
         this.initialized = undefined;
         throw e;
       }));
+  }
+  async close() {
+    await this.database.closeAsync?.();
   }
   async getItem(key: string) {
     await this.initialize();

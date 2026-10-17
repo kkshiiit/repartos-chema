@@ -1,0 +1,51 @@
+
+ RUN  v5.0.3 /workspace/repartos-chema
+
+ ❯ tests/native-storage.test.ts (3 tests | 2 failed) 22ms
+   × migra con el almacén legado lleno y no vuelve a escribirlo al reabrir 7ms
+   × un fallo de lectura legado bloquea el inicio pero permite recuperar un JSON verificado sin borrar el legado 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/native-storage.test.ts > migra con el almacén legado lleno y no vuelve a escribirlo al reabrir
+Error: AsyncStorage lleno
+ ❯ Object.setItem tests/native-storage.test.ts:21:13
+     19|     setItem: async () => {
+     20|       writes++;
+     21|       throw new Error('AsyncStorage lleno');
+       |             ^
+     22|     },
+     23|   };
+ ❯ migrateLocalInventory src/data/migrateLocalStorage.ts:44:16
+ ❯ src/data/nativeInventoryStorage.ts:15:9
+ ❯ Object.getItem src/data/nativeInventoryStorage.ts:28:15
+ ❯ tests/native-storage.test.ts:32:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/native-storage.test.ts > un fallo de lectura legado bloquea el inicio pero permite recuperar un JSON verificado sin borrar el legado
+AssertionError: promise rejected "Error: Lectura legado fallida" instead of resolving
+ ❯ tests/native-storage.test.ts:63:107
+     61|  const sql=new SqliteStorage(sqliteDb());const guard={activated:async(…
+     62|  const storage=createNativeInventoryStorage(legacy,async()=>sql,guard)…
+     63|  await expect(repo.load()).rejects.toThrow();await expect(repo.restore…
+       |                                                                                                           ^
+     64| });
+     65|
+
+Caused by: Error: Lectura legado fallida
+ ❯ Object.getItem tests/native-storage.test.ts:60:82
+ ❯ migrateLocalInventory src/data/migrateLocalStorage.ts:33:30
+ ❯ src/data/nativeInventoryStorage.ts:15:9
+ ❯ Object.getItem src/data/nativeInventoryStorage.ts:28:15
+ ❯ Repository.archiveEntries src/data/repository.ts:142:17
+ ❯ src/data/repository.ts:87:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  03:08:58
+   Duration  372ms (transform 53%, import 35%, tests 9%, worker 3%)
+

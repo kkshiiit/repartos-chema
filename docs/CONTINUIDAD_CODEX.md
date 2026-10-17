@@ -15,6 +15,16 @@ Respaldo externo y fotos implementados: selector de carpeta Android+readback, ca
 Próximo paso: exportar web y recorrer UI actualizada, corregir regresiones; luego coherencia local/capturas/pruebas generales y build completo. La versión publicada sigue siendo1.2.2. No afirmar pruebas físicas.
 
 
+## Revisión independiente y cierre de regresiones
+
+La revisión encontró3fallos importantes y se corrigieron: base SQLite ausente ahora admite recuperación JSON explícita/exportación asistida sin fallback viejo; activación nativa usa archivo verificado fuera del límite AsyncStorage; una copia verificada se valida como importable antes de permitir vaciado. Se añadió recuperación cuando falla la lectura legacy, sin borrar original. Marca de activación escrita en temporal+movimiento para evitar un marcador parcial. Evidencias cierre-revision-*.txt; factory nativa testeada con SQLite real de Node y guard simulado, no teléfono.
+
+Pruebas generales actuales175/175 (typecheck/lint/Functions correctos). Primera UI Aurora:11/12, el fallo fue selector de cliente viejo tras anonimizar fixture; se corrigió la prueba, no reglas de negocio. Fotos/reinicio/recuperación, stock, documentos, temas y Axe pasaron; se reruneará la suite completa sobre bundle final. Capturas Aurora nuevas con clientes sintéticos generadas y revisadas (login claro, listado oscuro, retiro claro). Sin ADB, métricas físicas pendientes.
+
+Se corrige además decode-uri-component0.2.2 mediante upstream0.5.0 MIT, adaptador CommonJS local que conserva la API usada por query-string7. Entrada malformada larga reproducida como bloqueo en worker acotado; regresión verde. No se migró router/SDK por seguridad ni se usó audit fix --force. Resto de avisos de herramientas/uuid requieren evaluación y quedan explícitos.
+
+Próximo paso exacto: push de estos bloques, exportar web final y correr UI actualizada; corregir regresiones; preparar código ZIP y build Gradle completo1.3.0/code6. Publicar solo después de verificar firma contra1.2.2/SHA/CRC/ABI y conservar previos. No declarar instalado físicamente.
+
 ## Auditoría y plan de cierre — 17/10/2026
 
 El último pedido fue **auditar y planificar cómo terminar sin gastar**. En esta ejecución no se modificó runtime, dependencias ni APK. Se añadieron solo este checkpoint, [auditoría nueva](AUDITORIA_LOCAL_2026_10_17.md) y [plan priorizado](superpowers/plans/2026-10-17-cierre-local-gratuito.md). Base inspeccionada main bfb8943, descargas bb0bfba; consultar git log para el commit documental posterior.

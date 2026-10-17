@@ -18,7 +18,9 @@ export async function backupData(raw: string | null) {
     for (const p of o.fotos || []) {
       const bytes = await photoBytes(p.id);
       if (bytes) photos[p.id] = Buffer.from(bytes).toString('base64');
-      else if (!p.storagePath && !p.uri.startsWith('data:'))
+      else if (p.uri.startsWith('data:image/jpeg;base64,'))
+        photos[p.id] = p.uri.slice('data:image/jpeg;base64,'.length);
+      else
         throw new Error(
           'Falta una foto local. Recupera el archivo antes de crear una copia completa.',
         );
@@ -37,6 +39,7 @@ export async function downloadBackup(raw: string | null) {
 }
 export async function saveVerifiedBackup(raw: string | null) {
   const { name, bytes } = await backupData(raw);
+  inspectBackup(new TextDecoder().decode(bytes));
   return saveBackupToDestination(bytes, name);
 }
 export function inspectBackup(raw: string) {
