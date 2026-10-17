@@ -6,7 +6,8 @@ Edición individual Android local/offline1.3.0/code6, ARM64, package `com.grupoc
 
 El usuario autorizó cierre local y Aurora/glass integral. UI lista en4a82322, resolución reproducible del decoder en **d5da6a599243b8433c4be2cdf41524ea27ad5ef2**. Docs/firma en **a9608a6**; consultar git log/remoto para commits documentales siguientes. Main para código; descargas para artefactos, siempre preservando anteriores. No force push.
 
-**Segundo Gradle completo terminado: BUILD SUCCESSFUL en14m46s,658tareas ejecutadas**, log `artifacts/validacion/aurora-android.txt`. Instantánea parcial subida en aurora-android-progreso.txt; no equivale a build terminado. El primer intento perdió el entorno03:42–03:44UTC; no sobrevivieron su log/ZIP/toolchain ni un APK1.3. Se recuperó el proyecto desde GitHub. No se conoce la causa del reinicio; no afirmar OOM o fallo del compilador. No lanzar otro Gradle sin revisar primero proceso/log/APK existentes.
+**APK1.3.0 publicado y recuperado desde GitHub**, descargas5ae0da1. Segundo Gradle completo: BUILD SUCCESSFUL14m46s,658tareas; log aurora-android.txt. El primer intento se perdió con el reinicio del entorno y no se cuenta como éxito. No recompilar por cambios documentales. Siguiente puerta: prueba física en Android del usuario.
+
 
 ## Bloques cerrados (no repetir auditoría/desarrollo)
 
@@ -39,20 +40,20 @@ Firma de plantilla regenerada y **comparada con1.2.2: coincide**, prueba `aurora
 
 APK1.2.2 recuperado de GitHub en `/workspace/entregas/pulido-1.2.2/repartos-chema-local-1.2.2-arm64.apk`, SHA `43835da902859f6c5af77947d315fb8ec2922d9921cebe558948460b0f1ba8eb`. Sigue siendo el último instalador publicado hasta verificar/subir1.3.0. No presentar el antiguo como nuevo.
 
-## APK local verificado — publicación pendiente
+## APK publicado y comprobado
 
-`/workspace/entregas/aurora-cierre/repartos-chema-local-1.3.0-arm64.apk`, 51514361bytes, SHA256 `5404659c3ce0dec2149508e81f85c817664be7dbe42294d344e9fb23a2c4cb8b`. Firma v2/certificado1.2.2, package/version/ARM64/SDK24, SQLite nativo y CRC correctos; no debuggable, anuncios ni configuración Firebase detectados. `aurora-apk.json`, firma y metadata guardados. No probado físicamente.
+[Descargar1.3.0](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.3.0-local.1/repartos-chema-local-1.3.0-arm64.apk). 51514361bytes, SHA256 `5404659c3ce0dec2149508e81f85c817664be7dbe42294d344e9fb23a2c4cb8b`. Android7+,ARM64,versionCode6,package com.grupochema.repartos. Firma v2/certificado1.2.2, SQLite nativo, CRC y no debuggable comprobados; no anuncios ni configuración Firebase detectados. **Sin prueba física.**
 
-Próximo paso inmediato: ejecutar publicación preparada /tmp/chema-publicar-130.py, commit/push descargas; recuperar APK desde GitHub y comparar SHA/CRC antes de informar enlace. Luego actualizar README/informe/checkpoint y respaldo fuente final. No recompilar por documentos.
+Descargas **5ae0da176f789b82b28a0bc0741578073df54bbc**; instalador único y web, versiones anteriores preservadas. APK y fuente d5da6a5 recuperados desde GitHub en checkout independiente; SHA/CRC/firma y371archivos fuente correctos. `aurora-github.json`. Ver README e informe para capturas/enlaces.
 
 ## Próxima acción exacta
 
-1. Leer git status/log/ls-remote y el final de `aurora-android.txt`. Revisar procesos/archivo antes de reiniciar Gradle. Si BUILD SUCCESSFUL, verificar APK existente.
-2. `python3 scripts/verify-android.py android/app/build/outputs/apk/release/app-release.apk /workspace/entregas/pulido-1.2.2/repartos-chema-local-1.2.2-arm64.apk /workspace/entregas/aurora-cierre d5da6a5`, con JDK21. Verifica versión/ABI/CRC/firma misma/SQLite nativo/config y no sobrescribe instaladores.
-3. Registrar resultado, actualizar informe/manual y push main; generar ZIP fuente final restaurado. Reponer únicamente las muestras Word/Excel regeneradas por tests desde HEAD antes de empaquetar. No descartar cambios de usuario.
-4. Publicar APK único+SHA+verificación y ZIP final/web en descargas: `android/v1.3.0-local.1/` y `respaldos/v1.3.0-local/`. Repo local `/workspace/entregas/apk-github-20261017` es clone parcial/sparse; preservar todo fuera del sparse checkout. Fetch/ff, nunca force.
-5. Recuperar APK/ZIP desde GitHub mediante `/workspace/recuperacion-github-130`, comprobar SHA/CRC/manifiesto, guardar evidencia. Actualizar README/checkpoint con enlaces y commits reales; push final.
-6. Puerta física: usuario guarda JSON fuera de la app, instala encima sin desinstalar, verifica datos/tema/fotos y migración, modo avión y carpeta/Compartir. No declarar esa puerta completada sin resultado físico.
+1. En esta ejecución: finalizar respaldo fuente documental en descargas y comprobarlo; actualizar este checkpoint con su nombre/hash. No recompilar APK, su runtime es d5da6a5.
+2. Si otra sesión continúa, leer git status/log/ls-remote antes de tocar nada. No rehacer lock, migración, auditoría ni Aurora. Verificar si el respaldo final ya fue subido.
+3. Usuario Android: guardar JSON externo desde la versión anterior, descargar APK e instalar encima sin desinstalar; verificar nombre/tema/alquileres/cantidades/fotos. Probar cierre/reapertura y modo avión con una operación pequeña.
+4. Probar Guardar copia en carpeta, cancelar sin efectos y abrir/compartir Word/Excel. Cámara/galería/GPS/Maps/WhatsApp por separado. No usar el único inventario real para ensayar restauración destructiva sin copia.
+5. Si falla la puerta física: conservar mensaje/modelo/Android/datos; reproducir y corregir con regresión, commit/push antes de nuevo build con nueva versión. No borrar almacenamiento ni rotar firma para solucionar un fallo.
+
 
 ## Entorno y comandos
 

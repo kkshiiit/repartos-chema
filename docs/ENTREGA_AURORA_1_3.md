@@ -73,7 +73,7 @@ Escritorio 1440px: [claro](../artifacts/capturas/aurora-1440-light-alquileres.pn
 
 ## Pruebas y errores encontrados
 
-Las pruebas de entrega y compilación se registran en `artifacts/validacion/aurora-*.txt`. Los resultados de navegador y análisis son nuevos, sobre la exportación final; Gradle continúa en ejecución.
+Las pruebas de entrega y compilación se registran en `artifacts/validacion/aurora-*.txt`. Los resultados de navegador y análisis son nuevos, sobre la exportación final; Gradle completo terminó correctamente y el APK publicado se recuperó desde GitHub para comprobarlo.
 
 | Verificación | Evidencia y estado |
 | --- | --- |
@@ -85,7 +85,7 @@ Las pruebas de entrega y compilación se registran en `artifacts/validacion/auro
 | Pruebas generales finales | `npm run check`: 175/175 en 21 archivos; tipos, lint y Functions build correctos. Tests: 27.22s bajo compilación concurrente. `aurora-check-entrega.txt`. |
 | Web final | `npm run build:web`: correcto, `aurora-web-entrega.txt`. Entry JS de 5.4MB sin comprimir. |
 | Recorridos UI finales | `CHEMA_TEST_LOCAL=true npm run test:ui -- --workers=2`: 31/31 en 5.6min. `aurora-ui-entrega.txt`. |
-| Gradle ARM64 completo | En ejecución; consultar `aurora-android.txt`. |
+| Gradle ARM64 completo | BUILD SUCCESSFUL en14m46s,658tareas ejecutadas; `aurora-android.txt`. |
 | Integración Firebase | No ejecutada en este bloque local. Functions compila, pero no se desplegó ni se considera prueba productiva. |
 | Hardware Android | No hay dispositivo ADB ni emulador operativo. Instalación, actualización, permisos y selectores físicos pendientes. |
 
@@ -107,7 +107,13 @@ La operación del APK no requiere cuentas ni infraestructura paga. Fotos, SQLite
 
 ## Entrega y puerta física
 
-El APK, SHA256, comprobaciones y ZIP se incorporarán aquí tras finalizar y verificar el build. Hasta ese momento la versión descargable anterior es 1.2.2; no se presenta el candidato en proceso como archivo listo.
+[**Descargar APK completo1.3.0 ARM64**](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.3.0-local.1/repartos-chema-local-1.3.0-arm64.apk) · [Ficha alternativa](https://github.com/kkshiiit/repartos-chema/blob/descargas/android/v1.3.0-local.1/repartos-chema-local-1.3.0-arm64.apk) · [Fuentes/manifiestos y web](https://github.com/kkshiiit/repartos-chema/tree/descargas/respaldos/v1.3.0-local).
+
+Publicado en descargas **5ae0da176f789b82b28a0bc0741578073df54bbc**. Android7+,1.3.0/code6, package com.grupochema.repartos, 51514361bytes. SHA256 `5404659c3ce0dec2149508e81f85c817664be7dbe42294d344e9fb23a2c4cb8b`. Firma v2, certificado igual a1.2.2, ABI ARM64, SQLite nativo incluido, CRC correcto y no debuggable. Sin publicidad ni claves de cliente Firebase/Google detectadas en el bundle. CertificadoSHA256 `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`. La firma continúa siendo interna de plantilla.
+
+El archivo se recuperó mediante un checkout independiente desde GitHub y se verificaron nuevamente SHA256/CRC/firma. La fuente d5da6a5 también se extrajo y verificó completa:371archivos. Evidencia [aurora-github.json](../artifacts/validacion/aurora-github.json). Se conservaron los APK anteriores. Repositorio privado: iniciar sesión con acceso; si raw no descarga, abrir la ficha y tocar Download raw file.
+
+El código funcional corresponde a **d5da6a5**; commits documentales posteriores no requieren otro build. El ZIP d5da6a5 conserva exactamente esa base funcional y un respaldo final adicional incluye documentación de entrega. La exportación web empaquetada requiere Node según LEEME; no es una URL pública accesible desde Android.
 
 Para validar desde Android, sin PC:
 
@@ -118,7 +124,7 @@ Para validar desde Android, sin PC:
 
 ## Estado de finalización
 
-Implementado y probado en código/web: integridad de copias, operaciones cubiertas, temas/Aurora, recuperación de fotos, formularios y documentos web. Implementado pendiente de validación física: migración ExpoSQLite, selector de carpeta/readback, cámara, compartir, actualización sin pérdida, accesibilidad y rendimiento Android. Build/publicación: en ejecución. No se considera cerrada la puerta Android hasta recibir una prueba física satisfactoria. Nube/multiusuario/PDF/Play Store están fuera del alcance individual vigente.
+Implementado y probado en código/web: integridad de copias, operaciones cubiertas, temas/Aurora, recuperación de fotos, formularios y documentos web. Implementado pendiente de validación física: migración ExpoSQLite, selector de carpeta/readback, cámara, compartir, actualización sin pérdida, accesibilidad y rendimiento Android. Build/publicación: completados y comprobados como archivos, con restauración desde GitHub. No se considera cerrada la puerta Android hasta recibir una prueba física satisfactoria. Nube/multiusuario/PDF/Play Store están fuera del alcance individual vigente.
 
 
 ## Recuperación después de la interrupción
@@ -133,4 +139,13 @@ Los ZIP y el respaldo de firma anteriores eran locales y se perdieron con el ent
 Reanudación10:58UTC: corrección del lock respaldada en **d5da6a5**. Keystore de plantilla regenerado y certificado comparado con1.2.2: coincide; prueba en aurora-firma-restaurada.json. Copia fuente d5da6a5 (371archivos) restaurada y publicada antes de Gradle en descargas **6059dcb**. El segundo intento parte del mismo package/certificado, sin cambios de reglas de stock ni datos comerciales.
 
 
-Tras la reparación se reexportó web y se ejecutaron3recorridos locales nuevos: **3/3 en28.5s**, incluidos Word/Excel y persistencia offline. No se repitió la auditoría ni los bloques visuales cerrados. El ZIP fuente d5da6a5 se recuperó de GitHub en checkout independiente: SHA256 `0a9764dd301bc23164e38c0d63c963c4c6265452b55383a7c51d25a125a48b11`,371archivos restaurados, todos coinciden; `aurora-fuente-github.json`. Segundo Gradle en ejecución, logs y publicación pendientes.
+Tras la reparación se reexportó web y se ejecutaron3recorridos locales nuevos: **3/3 en28.5s**, incluidos Word/Excel y persistencia offline. No se repitió la auditoría ni los bloques visuales cerrados. El ZIP fuente d5da6a5 se recuperó de GitHub en checkout independiente: SHA256 `0a9764dd301bc23164e38c0d63c963c4c6265452b55383a7c51d25a125a48b11`,371archivos restaurados, todos coinciden; `aurora-fuente-github.json`. El segundo Gradle terminó en14m46s y se publicó/verificó el APK en5ae0da1. El primero quedó interrumpido; no se cuenta como éxito.
+
+
+## Cierre del intento Android
+
+La advertencia de Metaspace indicó que Gradle cerraría su daemon al terminar. El build finalizó correctamente; no se desactivaron lint ni comprobaciones para lograrlo. Hubo además advertencias de APIs obsoletas de dependencias y compatibilidad futura de scripts con Gradle10. Se conserva Gradle9.3.1 compatible del proyecto; no se migró para ocultarlas. En este segundo intento los contadores del entorno no registraron OOM, dato del build, no medición de la app ni explicación del reinicio anterior.
+
+Commits de reanudación: d5da6a5(reparación npm ci),a9608a6(firma y respaldo),8c6ff9f(revalidación web/checkpoint),c3f2676(APK/Gradle/verificación). Descargas6059dcb(fuente antes del build),5ae0da1(APK completo y web). Últimos commits documentales y fuente final se consultan en Git/checkpoint; no alteran el instalador.
+
+**Única puerta de aceptación todavía no comprobada en esta entrega:** Android físico y uso prolongado real. El archivo está compilado, firmado y recuperado desde GitHub; eso no demuestra instalación/migración/cámara/Compartir en el teléfono. Seguir las4pruebas anteriores sin desinstalar ni borrar datos. Si falla, conservar el mensaje exacto, modelo y versión de Android para corregir sin perder información.

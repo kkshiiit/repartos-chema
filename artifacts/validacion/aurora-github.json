@@ -1,0 +1,16 @@
+{
+  "rama": "descargas",
+  "commit": "5ae0da176f789b82b28a0bc0741578073df54bbc",
+  "APK": "chema-130-desde-github.apk",
+  "APKsha256": "5404659c3ce0dec2149508e81f85c817664be7dbe42294d344e9fb23a2c4cb8b",
+  "APKbytes": 51514361,
+  "firmaV2": true,
+  "certificadoSHA256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+  "APKcrc": "correcto",
+  "fuente": "repartos-chema-d5da6a5.zip",
+  "fuenteSHA256": "0a9764dd301bc23164e38c0d63c963c4c6265452b55383a7c51d25a125a48b11",
+  "archivosFuenteRestaurados": 371,
+  "fuenteCRC": "correcto",
+  "fuenteRestauracionSHA256": "todos coinciden",
+  "pruebaFisica": false
+}
