@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { DatabaseSync } from 'node:sqlite';
+import { sqliteDb as db } from './helpers/sqlite';
 import type { KeyValueStorage } from '../src/data/repository';
-import { SqliteStorage, type SqlDatabase } from '../src/data/sqliteStorage';
+import { SqliteStorage } from '../src/data/sqliteStorage';
 import { migrateLocalInventory } from '../src/data/migrateLocalStorage';
 import { Repository } from '../src/data/repository';
 import { emptyLocalState } from '../src/data/localInitialState';
@@ -17,35 +17,6 @@ class Legacy implements KeyValueStorage {
   async getAllKeys() {
     return [...this.data.keys()];
   }
-}
-function db(control = { failRoot: false, failAt: 0, runs: 0 }): SqlDatabase {
-  const database = new DatabaseSync(':memory:');
-  const adapter: SqlDatabase = {
-    execAsync: async (sql: string) => {
-      database.exec(sql);
-    },
-    runAsync: async (sql: string, ...params: (string | number | null)[]) => {
-      control.runs++;
-      if ((control.failRoot && params[0] === 'chema:demo:v1') || control.failAt === control.runs)
-        throw new Error('Disco lleno');
-      return database.prepare(sql).run(...params);
-    },
-    getFirstAsync: async <T>(sql: string, ...params: (string | number | null)[]) =>
-      (database.prepare(sql).get(...params) as T | undefined) ?? null,
-    getAllAsync: async <T>(sql: string, ...params: (string | number | null)[]) =>
-      database.prepare(sql).all(...params) as T[],
-    withExclusiveTransactionAsync: async (f: (tx: typeof adapter) => Promise<void>) => {
-      database.exec('BEGIN IMMEDIATE');
-      try {
-        await f(adapter);
-        database.exec('COMMIT');
-      } catch (e) {
-        database.exec('ROLLBACK');
-        throw e;
-      }
-    },
-  };
-  return adapter;
 }
 async function setup() {
   return { target: new SqliteStorage(db()), migrate: migrateLocalInventory };
@@ -125,9 +96,16 @@ it('importación fallida conserva también el puntero de la recuperación anteri
   expect(await target.getItem('chema:demo:v1:previous-restore')).toBe('archivo-anterior');
   expect(JSON.parse((await target.getItem('chema:demo:v1'))!)).toEqual(before);
 });
-it('si desaparece una base SQLite migrada no vuelve silenciosamente a un original antiguo',async()=>{
-  const legacy=new Legacy();legacy.data.set('chema:demo:v1','legado anterior');
-  const first=new SqliteStorage(db());await migrateLocalInventory(legacy,first);await first.setItem('chema:demo:v1','datos nuevos');
-  const missing=new SqliteStorage(db());await expect(migrateLocalInventory(legacy,missing)).rejects.toThrow(/no.*encontr|desapareci|recuper/i);
-  expect(await missing.getItem('chema:demo:v1')).toBeNull();expect(legacy.data.get('chema:demo:v1')).toBe('legado anterior');
+it('si desaparece una base SQLite migrada no vuelve silenciosamente a un original antiguo', async () => {
+  const legacy = new Legacy();
+  legacy.data.set('chema:demo:v1', 'legado anterior');
+  const first = new SqliteStorage(db());
+  await migrateLocalInventory(legacy, first);
+  await first.setItem('chema:demo:v1', 'datos nuevos');
+  const missing = new SqliteStorage(db());
+  await expect(migrateLocalInventory(legacy, missing)).rejects.toThrow(
+    /no.*encontr|desapareci|recuper/i,
+  );
+  expect(await missing.getItem('chema:demo:v1')).toBeNull();
+  expect(legacy.data.get('chema:demo:v1')).toBe('legado anterior');
 });
