@@ -1,5 +1,5 @@
 import type { Envelope } from '../types';
-import { parseEnvelope } from '../data/validation';
+import { parseEnvelope, validateImportEnvelope } from '../data/validation';
 import { photoBytes, storePhoto } from './photoCache';
 import { saveFile } from './files';
 import { Buffer } from 'buffer';
@@ -55,6 +55,7 @@ export function inspectBackup(raw: string) {
   if (parsed.format !== 'chema-backup-v1')
     throw new Error('Selecciona una copia completa de Repartos Chema.');
   const e = parseEnvelope(JSON.stringify(parsed.envelope));
+  validateImportEnvelope(e);
   if (e.queue.length)
     throw new Error('Esta copia contiene envíos a la nube. Requiere revisión antes de restaurar.');
   if (
