@@ -6,6 +6,7 @@ import { AppState as NativeState, Platform } from 'react-native';
 import * as Crypto from 'expo-crypto';
 import type { Action, AppState, Envelope } from '../types';
 import { Repository } from '../data/repository';
+import { inventoryStorage } from '../data/localStorage';
 import { seed, emptyState } from '../data/seed';
 import { emptyLocalState } from '../data/localInitialState';
 import { LOCAL_ONLY } from '../services/localMode';
@@ -39,7 +40,7 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
   const repo = useMemo(
     () =>
       new Repository(
-        AsyncStorage,
+        LOCAL_ONLY ? inventoryStorage : AsyncStorage,
         DATA_MODE === 'demo'
           ? 'chema:demo:v1'
           : `chema:cloud:${process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID}:${user?.uid}:v1`,
