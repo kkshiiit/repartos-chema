@@ -1,3 +1,15 @@
+# Android individual — actualización1.3 Aurora
+
+App1.3.0/versionCode6, ARM64, package `com.grupochema.repartos`. Se conserva el certificado interno anterior; no rotarlo ni desinstalar una instalación con datos sin copia. Nativo incorpora SQLite compatible con Expo57, migración sin borrar AsyncStorage, fotos locales, selector de carpeta para JSON y documentos compartidos. No necesita servicios pagos.
+
+Fuente debe estar subida a main y ZIP restaurado antes de `npm run build:android:demo`. Requiere JDK21 completo, SDK36 y herramientas indicadas en la sección histórica siguiente. El script fuerza LOCAL_ONLY=true y DATA_MODE=demo; no usar EAS/Blaze/hosting como requisito. Ver manual vigente [USO_LOCAL_ANDROID.md](USO_LOCAL_ANDROID.md) y [CONTINUIDAD_CODEX.md](CONTINUIDAD_CODEX.md).
+
+Firma, SHA, ABI y generación del APK no demuestran instalación o funcionamiento físico. La ficha final de entrega registra el resultado real. La firma actual es interna de plantilla y requiere una política de custodia; no es una publicación de Play Store.
+
+---
+
+Las secciones inferiores son antecedentes de versiones anteriores; no usar instrucciones de selector ADMIN/OPERADOR o1.0/1.1 para la edición individual vigente.
+
 # Compilación Android interna
 
 ## Edición individual1.2.0 — prioridad actual

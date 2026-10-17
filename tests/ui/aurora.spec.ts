@@ -63,3 +63,30 @@ for (const mode of ['light', 'dark'] as const)
       fullPage: true,
     });
   });
+test('un error de GPS queda visible dentro de la ventana y conserva coordenadas manuales', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.addInitScript(() => {
+    navigator.geolocation.getCurrentPosition = (_ok, fail) => {
+      fail?.({
+        code: 1,
+        message: 'Permiso denegado',
+        PERMISSION_DENIED: 1,
+        POSITION_UNAVAILABLE: 2,
+        TIMEOUT: 3,
+      });
+    };
+  });
+  await loginSynthetic(page);
+  await page.goto('/obra/obra_1');
+  await page.getByRole('button', { name: 'Ubicación', exact: true }).click();
+  await page.getByLabel('Latitud', { exact: true }).fill('-34.5');
+  await page.getByRole('button', { name: 'Usar mi GPS', exact: true }).click();
+  const sheet = page.locator('[aria-modal="true"]').last();
+  await expect(
+    sheet.getByText('Sin permiso de ubicación. Ingresa coordenadas manualmente.', { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByLabel('Latitud', { exact: true })).toHaveValue('-34.5');
+  await page.screenshot({ path: 'artifacts/capturas/aurora-390-error-gps.png', fullPage: true });
+});

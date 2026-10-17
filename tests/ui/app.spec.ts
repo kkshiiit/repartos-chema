@@ -67,7 +67,7 @@ test('demo permite reabrir el tablero sin conexión después de guardar la cach�
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible();
   await expect(
-    page.getByRole('button', { name: 'Abrir Edificio Las Heras', exact: true }),
+    page.getByRole('button', { name: 'Abrir Cliente sintético 1', exact: true }),
   ).toBeVisible();
   await context.setOffline(false);
 });

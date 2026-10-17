@@ -16,38 +16,27 @@ test('bienvenida breve completa una vez y puede abrirse desde Ajustes', async ({
   await page.getByRole('button', { name: 'Ver bienvenida', exact: true }).click();
   await expect(page.getByText('Tus alquileres, en un lugar', { exact: true })).toBeVisible();
 });
-test('equipo compartido local conserva alquileres, autores y permite quitar un acceso', async ({
+test('cambiar nombre local conserva inventario y autores sin cuentas ni invitaciones', async ({
   page,
 }) => {
-  await login(page, 'Ana');
-  await page.goto('/configuracion');
-  await page.getByRole('button', { name: 'Crear invitación', exact: true }).click();
-  const invite = await page.getByLabel('Enlace de invitación', { exact: true }).inputValue();
-  expect(invite).toContain('repartoschema://equipo/unirse?token=');
-  await page.getByRole('button', { name: 'Salir del equipo', exact: true }).click();
-  await page.getByLabel('Tu nombre', { exact: true }).fill('Juan');
-  await page.getByRole('button', { name: 'Tengo una invitación', exact: true }).click();
-  await page.getByLabel('Enlace de invitación', { exact: true }).fill(invite);
-  await page.getByRole('button', { name: 'Entrar', exact: true }).click();
-  await page.goto('/obra/obra_5');
-  await page.getByRole('button', { name: 'Entregar', exact: true }).click();
-  await page.getByLabel('Recibió', { exact: true }).fill('Cliente de prueba');
-  await page.getByRole('button', { name: 'Fabián', exact: true }).click();
-  await page.getByRole('button', { name: 'Confirmar operación', exact: true }).click();
-  await expect(page.getByText('Cliente de prueba', { exact: true })).toBeVisible();
+  await login(page, 'Persona A');
+  const before = await page.evaluate(
+    () => JSON.parse(localStorage.getItem('chema:demo:v1')!).state.obras.length,
+  );
   await page.goto('/configuracion');
   await expect(page.getByRole('button', { name: 'Crear invitación', exact: true })).toHaveCount(0);
-  await page.getByRole('button', { name: 'Salir del equipo', exact: true }).click();
-  await page.getByLabel('Tu nombre', { exact: true }).fill('Ana');
+  await page.getByRole('button', { name: 'Cambiar nombre', exact: true }).click();
+  await page.getByLabel('Tu nombre', { exact: true }).fill('Persona B');
   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+  await page.goto('/obra/obra_5');
+  await page.getByRole('button', { name: 'Entregar', exact: true }).last().click();
+  await page.getByRole('button', { name: 'Fabián', exact: true }).click();
+  await page.getByRole('button', { name: 'Confirmar operación', exact: true }).click();
   await page.goto('/historial');
-  await expect(page.getByText(/^Juan ·/).first()).toBeVisible();
-  await page.goto('/configuracion');
-  await page.getByRole('button', { name: 'Quitar a Juan', exact: true }).click();
-  await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
-  await expect(page.getByRole('button', { name: 'Quitar a Juan', exact: true })).toHaveCount(0);
-  await page.getByRole('button', { name: 'Salir del equipo', exact: true }).click();
-  await page.getByLabel('Tu nombre', { exact: true }).fill('Juan');
-  await page.getByRole('button', { name: 'Entrar', exact: true }).click();
-  await expect(page.getByText(/Este nombre fue quitado/)).toBeVisible();
+  await expect(page.getByText(/^Persona B ·/).first()).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => JSON.parse(localStorage.getItem('chema:demo:v1')!).state.obras.length,
+    ),
+  ).toBe(before);
 });
