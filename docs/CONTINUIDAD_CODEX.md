@@ -6,7 +6,7 @@ Edición individual Android local/offline1.3.0/code6, ARM64, package `com.grupoc
 
 El usuario autorizó cierre local y Aurora/glass integral. UI lista en4a82322, resolución reproducible del decoder en **d5da6a599243b8433c4be2cdf41524ea27ad5ef2**. Docs/firma en **a9608a6**; consultar git log/remoto para commits documentales siguientes. Main para código; descargas para artefactos, siempre preservando anteriores. No force push.
 
-**Segundo Gradle completo en ejecución**, log `artifacts/validacion/aurora-android.txt`. Instantánea parcial subida en aurora-android-progreso.txt; no equivale a build terminado. El primer intento perdió el entorno03:42–03:44UTC; no sobrevivieron su log/ZIP/toolchain ni un APK1.3. Se recuperó el proyecto desde GitHub. No se conoce la causa del reinicio; no afirmar OOM o fallo del compilador. No lanzar otro Gradle sin revisar primero proceso/log/APK existentes.
+**Segundo Gradle completo terminado: BUILD SUCCESSFUL en14m46s,658tareas ejecutadas**, log `artifacts/validacion/aurora-android.txt`. Instantánea parcial subida en aurora-android-progreso.txt; no equivale a build terminado. El primer intento perdió el entorno03:42–03:44UTC; no sobrevivieron su log/ZIP/toolchain ni un APK1.3. Se recuperó el proyecto desde GitHub. No se conoce la causa del reinicio; no afirmar OOM o fallo del compilador. No lanzar otro Gradle sin revisar primero proceso/log/APK existentes.
 
 ## Bloques cerrados (no repetir auditoría/desarrollo)
 
@@ -38,6 +38,12 @@ GitHub privado autorizado `kkshiiit/repartos-chema`. Descargas **6059dcbd6e8c54a
 Firma de plantilla regenerada y **comparada con1.2.2: coincide**, prueba `aurora-firma-restaurada.json`. Copia fuera de Git en `/workspace/respaldos/firma-interna/chema-restaurada-1.3.keystore`, modo600. Es clave interna genérica de plantilla, no identidad productiva de la empresa. CertificadoSHA256 `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`.
 
 APK1.2.2 recuperado de GitHub en `/workspace/entregas/pulido-1.2.2/repartos-chema-local-1.2.2-arm64.apk`, SHA `43835da902859f6c5af77947d315fb8ec2922d9921cebe558948460b0f1ba8eb`. Sigue siendo el último instalador publicado hasta verificar/subir1.3.0. No presentar el antiguo como nuevo.
+
+## APK local verificado — publicación pendiente
+
+`/workspace/entregas/aurora-cierre/repartos-chema-local-1.3.0-arm64.apk`, 51514361bytes, SHA256 `5404659c3ce0dec2149508e81f85c817664be7dbe42294d344e9fb23a2c4cb8b`. Firma v2/certificado1.2.2, package/version/ARM64/SDK24, SQLite nativo y CRC correctos; no debuggable, anuncios ni configuración Firebase detectados. `aurora-apk.json`, firma y metadata guardados. No probado físicamente.
+
+Próximo paso inmediato: ejecutar publicación preparada /tmp/chema-publicar-130.py, commit/push descargas; recuperar APK desde GitHub y comparar SHA/CRC antes de informar enlace. Luego actualizar README/informe/checkpoint y respaldo fuente final. No recompilar por documentos.
 
 ## Próxima acción exacta
 
