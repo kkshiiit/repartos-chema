@@ -43,6 +43,7 @@ with zipfile.ZipFile(apk) as archive:
     assert archive.testzip() is None, 'CRC inválido'
     assert {name.split('/')[1] for name in archive.namelist()
             if name.startswith('lib/') and name.count('/') > 1} == {'arm64-v8a'}
+    assert 'lib/arm64-v8a/libexpo-sqlite.so' in archive.namelist(), 'Falta SQLite nativo'
     bundle = archive.read('assets/index.android.bundle')
     for env in root.glob('.env*'):
         if env.is_file():
@@ -65,6 +66,7 @@ report = {
     'certificadoSHA256': certificate, 'firmaV2': True, 'certificadoCoincideConAnterior': True,
     'apkAnterior': previous.name,
     'CRC': 'correcto', 'ABI': 'arm64-v8a', 'minSDK': 24, 'debuggable': False,
+    'sqliteNativoIncluido': True,
     'pruebaFisica': False, 'publicidadDetectada': False, 'configFirebaseEmbebida': False,
     'generadoUTC': datetime.datetime.now(datetime.timezone.utc).isoformat(),
 }
