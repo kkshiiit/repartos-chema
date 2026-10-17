@@ -45,6 +45,7 @@ with zipfile.ZipFile(apk) as archive:
             if name.startswith('lib/') and name.count('/') > 1} == {'arm64-v8a'}
     assert 'lib/arm64-v8a/libexpo-sqlite.so' in archive.namelist(), 'Falta SQLite nativo'
     bundle = archive.read('assets/index.android.bundle')
+    assert not re.search(rb'AIza[0-9A-Za-z_-]{35}', bundle), 'Clave pública Firebase/Google embebida'
     for env in root.glob('.env*'):
         if env.is_file():
             keys = re.findall(r'AIza[\w-]+', env.read_text())
