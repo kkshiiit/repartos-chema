@@ -1,5 +1,15 @@
 # Continuidad vigente — Repartos Chema local 1.2.2
 
+## Auditoría y plan de cierre — 17/10/2026
+
+El último pedido fue **auditar y planificar cómo terminar sin gastar**. En esta ejecución no se modificó runtime, dependencias ni APK. Se añadieron solo este checkpoint, [auditoría nueva](AUDITORIA_LOCAL_2026_10_17.md) y [plan priorizado](superpowers/plans/2026-10-17-cierre-local-gratuito.md). Base inspeccionada main bfb8943, descargas bb0bfba; consultar git log para el commit documental posterior.
+
+Verificaciones nuevas: typecheck/lint correctos,108/108 pruebas;6/6 recorridos locales/JSON/Axe en30,6s contra dist existente. SHA/firma APK1.2.2 siguen correctos. Expo check recomienda7parches SDK57. Npm audit --omit=dev informa30entradas afectadas(18altas/12moderadas,4avisos raíz), pendientes de clasificar/corregir sin audit fix --force. Ningún dispositivo ADB. Las muestras Word/Excel regeneradas por UI se repusieron desde HEAD; no se conservan cambios accidentales.
+
+Hallazgos nuevos: copias aceptan referencias/combos/fechas/recuperaciones inconsistentes(reproducido en memoria); AsyncStorage Android tiene6MB y las recuperaciones crecen; referencias a fotos archivadas pueden perder sus bytes al borrar; Compartir no garantiza respaldo externo; detalle conserva mensajes de nube; suite histórica de fotos/restauración usa flujo anterior. Ver informe para separar reproducción de riesgos por inspección.
+
+**Próximo paso si se solicita implementación:** tarea0 del plan (base/ZIP), después tarea1(validación de importación con pruebas rojas/verdes). No recompilar ni activar servicios solo por esta auditoría. No cambiar ni borrar datos existentes. La entrega1.2.2 inferior sigue siendo la versión publicada, con sus límites físicos pendientes.
+
 ## Objetivo y límites confirmados
 
 App interna de andamios para Grupo Chema Construcciones. Prioridad vigente: una persona, un celular, datos persistentes offline, sin Firebase/Cloudflare/servicios pagos para operar. Sin publicidad. No retomar nube ni ampliar alcance sin nueva instrucción. Usuario pidió pulir los flujos diarios y preservar todos los datos.
