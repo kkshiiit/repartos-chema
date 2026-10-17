@@ -62,7 +62,7 @@ describe('Migración de inventario local a SQLite', () => {
     expect(await target.getItem('chema:demo:v1')).toBe('original íntegro ñ');
     expect(await target.getItem('chema:demo:v1:before-empty:1')).toBe('copia anterior');
     expect(await target.getItem('chema:theme:v1')).toBeNull();
-    expect(legacy.data.size).toBe(4);
+    expect(legacy.data.size).toBe(5);
   });
   it('no importa el legado de nuevo después de una escritura SQLite confirmada', async () => {
     const { target, migrate } = await setup();
@@ -124,4 +124,10 @@ it('importación fallida conserva también el puntero de la recuperación anteri
   await expect(repo.restoreDemo(raw, demoProfile('ADMIN'))).rejects.toThrow('Disco lleno');
   expect(await target.getItem('chema:demo:v1:previous-restore')).toBe('archivo-anterior');
   expect(JSON.parse((await target.getItem('chema:demo:v1'))!)).toEqual(before);
+});
+it('si desaparece una base SQLite migrada no vuelve silenciosamente a un original antiguo',async()=>{
+  const legacy=new Legacy();legacy.data.set('chema:demo:v1','legado anterior');
+  const first=new SqliteStorage(db());await migrateLocalInventory(legacy,first);await first.setItem('chema:demo:v1','datos nuevos');
+  const missing=new SqliteStorage(db());await expect(migrateLocalInventory(legacy,missing)).rejects.toThrow(/no.*encontr|desapareci|recuper/i);
+  expect(await missing.getItem('chema:demo:v1')).toBeNull();expect(legacy.data.get('chema:demo:v1')).toBe('legado anterior');
 });
