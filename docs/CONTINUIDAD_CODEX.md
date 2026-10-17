@@ -1,4 +1,13 @@
-# Continuidad vigente — Repartos Chema local 1.2.2
+# Continuidad vigente — cierre local + Aurora (en ejecución)
+
+## Ejecución autorizada 17/10/2026
+
+Base fb5ec6e, respaldo restaurado en /workspace/entregas/aurora-cierre/repartos-chema-fb5ec6e.zip. Main/descargas verificados. Usuario autorizó ejecutar el plan e incorporar rediseño integral Aurora/glass; la prohibición histórica de rediseño queda reemplazada por ese pedido. Especificación en docs/superpowers/specs/2026-10-17-aurora-local.md.
+
+Primer bloque: importación semántica estricta solo para nuevas copias, con39casos (34defectos rechazados/5válidos). Rojo observado y verde guardados en artifacts/validacion/cierre-import-*.txt. No cambia carga de datos legacy ni reglas de movimientos. Runtime visual y SQLite en desarrollo paralelo, commits separados; no están acreditados como entrega Android.
+
+Próximo paso: terminar transacciones/migración SQLite, respaldo externo y fotos; luego coherencia local/capturas/pruebas generales y build completo. La versión publicada sigue siendo1.2.2. No afirmar pruebas físicas.
+
 
 ## Auditoría y plan de cierre — 17/10/2026
 

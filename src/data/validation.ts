@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type { Envelope } from '../types';
 import { actionSchema } from '../domain/schema';
 import { assertState } from '../domain/engine';
-import { validDate } from '../domain/rules';
+import { ensure, measureKey, validDate } from '../domain/rules';
 const id = z.string().regex(/^[a-zA-Z0-9_-]{1,100}$/);
 const count = z.number().int().min(0).max(100000);
 const timestamp = z.string().refine((s) => Number.isFinite(Date.parse(s)));
@@ -150,6 +150,81 @@ const envelope = z.object({
     }),
   ),
 });
+
+// Solo para copias nuevas ya analizadas por parseEnvelope. El arranque conserva
+// la tolerancia legacy para que el original siga disponible para recuperación.
+export function validateImportEnvelope(e: Envelope): void {
+  for (const s of [e.state, e.confirmed]) {
+    const materials = new Map(s.materiales.map((m) => [m.id, m]));
+    const comboIds = new Set<string>();
+    const incidentIds = new Set<string>();
+    const reservations = new Map<string, { taller: number; perdido: number }>();
+    for (const combo of s.combos) {
+      ensure(!comboIds.has(combo.id), 'La copia contiene combos con ID duplicado.');
+      comboIds.add(combo.id);
+      const components = new Set<string>();
+      for (const item of combo.items) {
+        ensure(materials.has(item.materialId), 'Un combo apunta a un material inexistente.');
+        ensure(!components.has(item.materialId), 'Un combo contiene un material duplicado.');
+        components.add(item.materialId);
+      }
+    }
+    for (const work of s.obras) {
+      const loadIds = new Set<string>();
+      for (const item of work.materialesCargados) {
+        const master = materials.get(item.materialId);
+        ensure(master, 'Una carga apunta a un material inexistente.');
+        ensure(!loadIds.has(item.materialId), 'Una carga contiene un material duplicado.');
+        loadIds.add(item.materialId);
+        ensure(
+          measureKey(item.medida) === measureKey(master.medida),
+          'La medida de una carga no coincide con el material maestro.',
+        );
+      }
+      ensure(
+        work.fechaRetiroEstimada >= work.fechaEntrega,
+        'El retiro previsto no puede ser anterior a la entrega planificada.',
+      );
+      if (work.fechaEntregaEfectiva)
+        ensure(
+          work.fechaRetiroEstimada >= work.fechaEntregaEfectiva,
+          'El retiro previsto no puede ser anterior a la entrega efectiva.',
+        );
+      if (work.fechaRetiroEfectiva)
+        ensure(
+          work.fechaRetiroEfectiva >= (work.fechaEntregaEfectiva || work.fechaEntrega),
+          'El retiro efectivo no puede ser anterior a la entrega.',
+        );
+      for (const incident of work.faltantesRegistrados || []) {
+        ensure(!incidentIds.has(incident.id), 'La copia contiene faltantes con ID duplicado.');
+        incidentIds.add(incident.id);
+        ensure(
+          incident.recuperado <= incident.cantidad,
+          'La cantidad recuperada de un faltante supera su cantidad registrada.',
+        );
+        // Los ítems libres son incidentes válidos sin relación con el stock.
+        if (!incident.materialId) continue;
+        ensure(materials.has(incident.materialId), 'Un faltante apunta a un material inexistente.');
+        const reserved = reservations.get(incident.materialId) || { taller: 0, perdido: 0 };
+        const bucket = incident.tipo === 'DANADO' ? 'taller' : 'perdido';
+        reserved[bucket] += incident.cantidad - incident.recuperado;
+        reservations.set(incident.materialId, reserved);
+      }
+    }
+    for (const [id, reserved] of reservations) {
+      const master = materials.get(id)!;
+      ensure(
+        reserved.taller <= master.cantidadEnTaller,
+        'Las reservas por faltantes superan el stock en taller.',
+      );
+      ensure(
+        reserved.perdido <= master.cantidadPerdido,
+        'Las reservas por faltantes superan el stock perdido.',
+      );
+    }
+  }
+}
+
 export function parseEnvelope(raw: string): Envelope {
   try {
     const data: unknown = JSON.parse(raw);

@@ -1,0 +1,16 @@
+Extracto registrado de la ejecución roja previa al hook de inspectBackup.
+Comando: npx vitest run tests/import-integrity.test.ts
+Inicio observado: 02:49:41 UTC, 2026-10-17.
+Exit code: 1.
+
+tests/import-integrity.test.ts (39 tests | 34 failed)
+Test Files  1 failed (1)
+Tests  34 failed | 5 passed (39)
+
+Los 17 defectos en state y los mismos 17 en confirmed fallaron por:
+AssertionError: promise resolved "{ schema: 1, state: { …(8) }, …(2) }" instead of rejecting
+
+Sin fallos de carga del test ni módulos ausentes. Las cinco pruebas de copias
+válidas/lectura legacy sí pasaron. La salida completa temporal de una segunda
+ejecución roja se sobrescribió al ejecutar de nuevo tras incorporarse el hook;
+este archivo conserva el extracto observado, no pretende ser stdout íntegro.
