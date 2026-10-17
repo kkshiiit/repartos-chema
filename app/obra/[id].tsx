@@ -477,7 +477,6 @@ export default function Detail() {
             />
           </>
         ) : null}
-        {error ? <Notice text={error} tone="error" /> : null}
       </Sheet>
     </Screen>
   );

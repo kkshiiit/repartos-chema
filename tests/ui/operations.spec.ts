@@ -42,7 +42,7 @@ test('triangulación, daño y recuperación conservan existencias y procedencia'
   await page.getByRole('button', { name: 'Triangular', exact: true }).click();
   await page.getByRole('button', { name: 'Fabián', exact: true }).click();
   await page.getByRole('button', { name: 'Alquiler destino', exact: true }).click();
-  await page.getByRole('button', { name: 'Casa Los Aromos', exact: true }).click();
+  await page.getByRole('button', { name: 'Cliente sintético 2', exact: true }).click();
   await page
     .getByLabel('Motivo de transferencia', { exact: true })
     .fill('Traslado directo de prueba');

@@ -1,3 +1,42 @@
+# Uso individual Android — edición Aurora1.3
+
+Esta edición no necesita Firebase, Cloudflare, suscripción ni una PC encendida. Los datos no se sincronizan con otros celulares. Las cuentas de nombre identifican movimientos locales, no autentican a una persona.
+
+## Actualizar sin perder datos
+
+1. En la app instalada, guardá un JSON fuera de la app y comprobá dónde quedó.
+2. Instalá el APK nuevo encima, con el mismo package/certificado. **No desinstales ni borres almacenamiento.**
+3. El primer inicio copia el inventario y las recuperaciones de AsyncStorage a SQLite. Conserva íntegro el original y no lo usa como fallback antiguo si SQLite falta. Una instalación nueva inicia vacía.
+4. Si hay error, conservá el mensaje y los archivos; no reinicies datos para arreglarlo. Desde el aviso se puede guardar un original de asistencia o recuperar un JSON reciente confirmado. El archivo de asistencia de migración puede ser anterior al último trabajo y no se presenta como copia actual.
+
+## Guardar y recuperar
+
+En Ajustes → Descargar copia, Android pide una carpeta. Recomendación: una carpeta propia en almacenamiento local, por ejemplo Descargas/RepartosChema. Se crea un JSON nuevo y se comparan sus bytes antes de confirmar. Cancelar no cambia inventario. Compartir un Word/Excel es otro flujo: no equivale a guardar un respaldo.
+
+En web se prepara una descarga; el navegador no certifica que quedó guardada. Para Empezar vacío, hay que descargarla y reconocer explícitamente que el JSON se guardó fuera de la aplicación. Android exige guardado verificado. Además se conserva recuperación interna; una copia interna no protege contra pérdida o desinstalación del teléfono.
+
+Elegir copia → revisar cantidades → Confirmar importación. Reemplaza el inventario, no lo mezcla. Rechaza copias incoherentes o fotos incompletas. Cancelar no cambia datos. Deshacer última importación, Recuperar anterior y Ver recuperaciones permiten volver a copias internas, archivando lo activo antes del cambio. No se elimina auditoría ni recuperaciones automáticamente.
+
+Las fotos se guardan comprimidas localmente. Al quitarlas de un alquiler, sus archivos se retienen para no romper recuperaciones anteriores. No se envían a un servidor. Las copias contienen bytes de fotos y datos comerciales: conservar en privado. Guardar una copia al final de cada jornada y antes de actualizar, importar o vaciar.
+
+## Aurora y temas
+
+Claro/Oscuro/Seguir sistema en Ajustes; sol/luna en cabeceras principales cambia inmediatamente sin perder formularios. Aurora suave/Estático se guarda aparte del inventario. Se respeta Reducir movimiento del sistema y se pausa el fondo en segundo plano. Para uso al sol, elegir Claro y ajustar el brillo manualmente según el dispositivo; no se modifica brillo automáticamente.
+
+## Comprobación breve después de instalar
+
+- Abrir alquileres, depósito e historial; verificar cantidades existentes y tema.
+- Cerrar completamente y reabrir sin conexión; confirmar los mismos datos.
+- Guardar un JSON; cancelar otra selección y comprobar que nada cambió.
+- Crear un alquiler de prueba, entregar y retirar con responsables; comprobar stock y deshacer seguro.
+- Elegir foto y abrir/compartir Word/Excel en un lector disponible. Mapas/WhatsApp se abren por intervención del usuario y pueden necesitar internet/mapas externos.
+
+La actualización y estas funciones nativas aún requieren confirmación en un Android físico. El informe de entrega distingue navegador, SQLite de Node, mocks y hardware.
+
+---
+
+## Antecedente de uso1.2 (histórico)
+
 # Repartos Chema 1.2 — uso individual en Android
 
 La versión1.2.2 conserva las funciones de1.2.0 y las mejoras de importación JSON de1.2.1. Además permite agregar al responsable desde una entrega/retiro, genera Word aunque el filtro Excel tenga un error y guarda documentos/copias nativas con rutas distintas. Consultar PULIDO_1_2_2.md para el estado real de compilación/publicación.
