@@ -6,7 +6,9 @@ Base fb5ec6e, respaldo restaurado en /workspace/entregas/aurora-cierre/repartos-
 
 Primer bloque: importación semántica estricta solo para nuevas copias, con39casos (34defectos rechazados/5válidos). Rojo observado y verde guardados en artifacts/validacion/cierre-import-*.txt. No cambia carga de datos legacy ni reglas de movimientos. Runtime visual y SQLite en desarrollo paralelo, commits separados; no están acreditados como entrega Android.
 
-Próximo paso: terminar transacciones/migración SQLite, respaldo externo y fotos; luego coherencia local/capturas/pruebas generales y build completo. La versión publicada sigue siendo1.2.2. No afirmar pruebas físicas.
+SQLite implementada: adaptador nativo gratuito, migración transaccional que conserva AsyncStorage y archivos íntegros; state+archivo+puntero se confirman juntos en SQLite. Pruebas con SQLite real de Node: migración idempotente,7MiB,fallos de lectura/escritura y rollback del puntero.27pruebas repositorio/migración/inicio verdes; suite actual160/160(incluye trabajo visual/backups todavía no entregado). No equivale a probar ExpoSQLite Android físico.
+
+Próximo paso: terminar respaldo externo y fotos; luego coherencia local/capturas/pruebas generales y build completo. La versión publicada sigue siendo1.2.2. No afirmar pruebas físicas.
 
 
 ## Auditoría y plan de cierre — 17/10/2026

@@ -5,11 +5,14 @@ import { emptyLocalState } from './localInitialState';
 export interface KeyValueStorage {
   getItem(key: string): Promise<string | null>;
   setItem(key: string, value: string): Promise<void>;
+  getAllKeys?(): Promise<readonly string[]>;
+  atomicSet?(entries: readonly (readonly [string, string])[]): Promise<void>;
 }
 export interface RemoteAdapter {
   fetch(): Promise<AppState>;
   commit(op: Operation): Promise<AppState>;
 }
+let archiveSequence = 0;
 export class Repository {
   private tail: Promise<unknown> = Promise.resolve();
   private envelope: Envelope | null = null;
@@ -48,8 +51,14 @@ export class Repository {
       this.listeners.delete(listener);
     };
   }
-  private async persist(e: Envelope) {
-    await this.storage.setItem(this.key, JSON.stringify(e));
+  private async persist(e: Envelope, extra: [string, string][] = []) {
+    const raw = JSON.stringify(e);
+    if (extra.length && this.storage.atomicSet)
+      await this.storage.atomicSet([...extra, [this.key, raw]]);
+    else {
+      for (const [key, value] of extra) await this.storage.setItem(key, value);
+      await this.storage.setItem(this.key, raw);
+    }
     this.envelope = e;
     this.listeners.forEach((l) => l(clone(e)));
     return clone(e);
@@ -64,13 +73,10 @@ export class Repository {
         throw new Error('Restauración local exclusiva de administración en demo.');
       const restored = parseEnvelope(raw);
       if (restored.queue.length) throw new Error('No se restaura una cola remota en la demo.');
-      const original = await this.storage.getItem(this.key);
-      if (original !== null) {
-        const archive = `${this.key}:before-restore:${Date.now()}`;
-        await this.storage.setItem(archive, original);
-        await this.storage.setItem(`${this.key}:previous-restore`, archive);
-      }
-      return this.persist(restored);
+      return this.persist(
+        restored,
+        await this.archiveEntries('before-restore', 'previous-restore'),
+      );
     }, false);
   }
   undoRestore(actor: UserProfile) {
@@ -84,10 +90,7 @@ export class Repository {
       const restored = parseEnvelope(original);
       if (restored.queue.length)
         throw new Error('La copia anterior contiene envíos remotos. Se conserva sin modificar.');
-      const current = await this.storage.getItem(this.key);
-      if (current !== null)
-        await this.storage.setItem(`${this.key}:before-undo-restore:${Date.now()}`, current);
-      return this.persist(restored);
+      return this.persist(restored, await this.archiveEntries('before-undo-restore'));
     }, false);
   }
   startEmpty(actor: UserProfile) {
@@ -98,11 +101,9 @@ export class Repository {
       const original = await this.storage.getItem(this.key);
       if (original === null)
         throw new Error('No se encontró el original. No se modificaron datos.');
-      const archive = `${this.key}:before-empty:${Date.now()}`;
-      await this.storage.setItem(archive, original);
-      await this.storage.setItem(`${this.key}:previous-empty`, archive);
+      const extra = await this.archiveEntries('before-empty', 'previous-empty');
       const state = emptyLocalState();
-      return this.persist({ schema: 1, confirmed: state, state, queue: [] });
+      return this.persist({ schema: 1, confirmed: state, state, queue: [] }, extra);
     });
   }
   recoverPrevious(actor: UserProfile) {
@@ -116,10 +117,47 @@ export class Repository {
       const restored = parseEnvelope(original);
       if (restored.queue.length)
         throw new Error('La copia contiene operaciones remotas. Se conserva sin modificar.');
-      const current = await this.storage.getItem(this.key);
-      if (current) await this.storage.setItem(`${this.key}:before-recover:${Date.now()}`, current);
-      return this.persist(restored);
+      return this.persist(restored, await this.archiveEntries('before-recover'));
     });
+  }
+  private async archiveEntries(reason: string, pointer?: string): Promise<[string, string][]> {
+    const raw = await this.storage.getItem(this.key);
+    if (raw === null) return [];
+    let archive: string;
+    do {
+      archive = `${this.key}:${reason}:${Date.now()}_${++archiveSequence}`;
+    } while ((await this.storage.getItem(archive)) !== null);
+    return [
+      [archive, raw],
+      ...(pointer ? [[`${this.key}:${pointer}`, archive] as [string, string]] : []),
+    ];
+  }
+  async listArchives() {
+    const keys = (await this.storage.getAllKeys?.()) || [];
+    return keys
+      .filter((k) => k.startsWith(`${this.key}:before-`))
+      .sort()
+      .reverse()
+      .map((key) => {
+        const stamp = /:(\d{10,})(?:_|$)/.exec(key)?.[1];
+        return {
+          key,
+          createdAt: stamp ? new Date(Number(stamp)).toISOString() : '',
+          reason: key.split(':')[3] || 'recuperación',
+        };
+      });
+  }
+  recoverArchive(key: string, actor: UserProfile) {
+    return this.serial(async () => {
+      if (this.remote || actor.role !== 'ADMIN' || !key.startsWith(`${this.key}:before-`))
+        throw new Error('Recuperación no autorizada.');
+      const raw = await this.storage.getItem(key);
+      if (!raw) throw new Error('No se encontró esa copia. No se modificaron datos.');
+      const restored = parseEnvelope(raw);
+      if (restored.queue.length)
+        throw new Error('La copia contiene envíos remotos; requiere revisión.');
+      return this.persist(restored, await this.archiveEntries('before-recover-archive'));
+    }, false);
   }
   load() {
     return this.serial(async () => {
