@@ -11,6 +11,7 @@ import { ActivityIndicator, Platform, View, useColorScheme } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SystemUI from 'expo-system-ui';
 import { StatusBar } from 'expo-status-bar';
+import { useMotionPreferences } from '../hooks/useMotionPreferences';
 import {
   dark,
   light,
@@ -20,7 +21,7 @@ import {
   THEME_KEY,
   ThemePreference,
 } from '../theme/tokens';
-interface Value {
+interface Value extends ReturnType<typeof useMotionPreferences> {
   preference: ThemePreference;
   mode: 'light' | 'dark';
   colors: typeof dark;
@@ -31,6 +32,7 @@ interface Value {
 const Context = createContext<Value | null>(null);
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const system = useColorScheme();
+  const motion = useMotionPreferences();
   const [preference, set] = useState<ThemePreference>('system'),
     [ready, setReady] = useState(false),
     [error, setError] = useState('');
@@ -91,6 +93,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, [mode, colors]);
   const value = useMemo(
     () => ({
+      ...motion,
       preference,
       mode,
       colors,
@@ -98,7 +101,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       setPreference,
       toggle: () => setPreference(oppositeTheme(mode)),
     }),
-    [preference, mode, colors, error, setPreference],
+    [preference, mode, colors, error, setPreference, motion],
   );
   return (
     <Context.Provider value={value}>

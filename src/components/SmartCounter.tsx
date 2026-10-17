@@ -35,7 +35,8 @@ export function SmartCounter({
             gap: 0,
             borderWidth: 1,
             borderColor: C.line,
-            borderRadius: 10,
+            borderRadius: 15,
+            backgroundColor: C.panel2,
             overflow: 'hidden',
             alignSelf: 'flex-start',
           },
@@ -44,6 +45,7 @@ export function SmartCounter({
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={`Reducir ${label}`}
+          accessibilityState={{ disabled: value === 0 }}
           disabled={value === 0}
           onPress={() => set(value - 1)}
           style={{ padding: 14, opacity: value === 0 ? 0.35 : 1 }}
@@ -63,7 +65,7 @@ export function SmartCounter({
             minHeight: 46,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: C.bg,
+            backgroundColor: C.panel,
           }}
         >
           <Text style={{ fontSize: 21, fontWeight: '800', color: C.text }}>{value}</Text>
@@ -71,6 +73,7 @@ export function SmartCounter({
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={`Aumentar ${label}`}
+          accessibilityState={{ disabled: value >= max }}
           disabled={value >= max}
           onPress={() => set(value + 1)}
           style={{ padding: 14, opacity: value >= max ? 0.35 : 1 }}

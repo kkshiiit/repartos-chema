@@ -1,5 +1,5 @@
 import { userError } from '../services/errors';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
+  Animated,
+  Easing,
   ViewStyle,
   TextInputProps,
   StyleProp,
@@ -36,28 +38,35 @@ import { useTheme } from '../context/ThemeContext';
 import { dark, light, Colors } from '../theme/tokens';
 import { pickBackup } from '../services/files';
 import { ThemeToggle } from './ThemeToggle';
+import { AuroraBackground } from './AuroraBackground';
 const makeStyles = (C: Colors) =>
   StyleSheet.create({
     row: { flexDirection: 'row', alignItems: 'center', gap: 10 },
     wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
     card: {
-      backgroundColor: C.panel,
+      backgroundColor: C.glass,
       borderWidth: 1,
       borderColor: C.hairline,
-      borderRadius: 16,
+      borderRadius: 22,
+      borderTopColor: C.reflection,
+      shadowColor: C.shadow,
+      shadowOpacity: 0.1,
+      shadowRadius: 18,
+      shadowOffset: { width: 0, height: 8 },
+      elevation: 2,
       padding: 18,
       gap: 14,
     },
-    title: { color: C.text, fontSize: 26, fontWeight: '800', letterSpacing: -0.5 },
+    title: { color: C.text, fontSize: 28, fontWeight: '800', letterSpacing: -0.8 },
     h2: { color: C.text, fontSize: 18, fontWeight: '700', lineHeight: 25 },
     body: { color: C.text, fontSize: 15, lineHeight: 23 },
     muted: { color: C.muted, fontSize: 13, lineHeight: 20 },
     label: { color: C.muted, fontSize: 12, fontWeight: '700', letterSpacing: 0.2 },
     input: {
-      backgroundColor: C.bg,
+      backgroundColor: C.panel,
       borderWidth: 1,
       borderColor: C.line,
-      borderRadius: 11,
+      borderRadius: 14,
       color: C.text,
       paddingHorizontal: 14,
       paddingVertical: 13,
@@ -92,58 +101,92 @@ export function Button({
   style?: StyleProp<ViewStyle>;
 }) {
   const { C } = useUI();
+  const { motionEnabled } = useTheme();
+  const [scale] = useState(() => new Animated.Value(1));
+  const layout = StyleSheet.flatten(style) || {};
+  const press = (value: number) => {
+    scale.stopAnimation();
+    if (!motionEnabled) {
+      scale.setValue(1);
+      return;
+    }
+    Animated.timing(scale, { toValue: value, duration: 110, useNativeDriver: true }).start();
+  };
+  useEffect(() => {
+    if (!motionEnabled) {
+      scale.stopAnimation();
+      scale.setValue(1);
+    }
+  }, [motionEnabled, scale]);
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={label}
-      accessibilityState={{ disabled: disabled || loading, busy: loading }}
-      disabled={disabled || loading}
-      onPress={onPress}
-      style={({ pressed }) => [
-        {
-          minHeight: 46,
-          borderRadius: 11,
-          paddingHorizontal: 16,
-          paddingVertical: 11,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: 8,
-          backgroundColor:
-            variant === 'primary'
-              ? C.red
-              : variant === 'danger'
-                ? C.dangerBg
-                : variant === 'secondary'
-                  ? C.panel2
-                  : 'transparent',
-          borderWidth: variant === 'secondary' ? 1 : 0,
-          borderColor: C.line,
-          opacity: disabled ? 0.4 : pressed ? 0.72 : 1,
-        },
-        style,
-      ]}
+    <Animated.View
+      style={{
+        flex: layout.flex,
+        flexGrow: layout.flexGrow,
+        flexShrink: layout.flexShrink,
+        width: layout.width,
+        minWidth: layout.minWidth,
+        maxWidth: layout.maxWidth,
+        alignSelf: layout.alignSelf,
+        transform: [{ scale }],
+      }}
     >
-      {loading ? (
-        <ActivityIndicator color={variant === 'primary' ? C.onPrimary : C.text} />
-      ) : Icon ? (
-        <Icon
-          size={18}
-          color={variant === 'primary' ? C.onPrimary : variant === 'danger' ? C.danger : C.text}
-        />
-      ) : null}
-      <Text
-        style={{
-          color: variant === 'primary' ? C.onPrimary : variant === 'danger' ? C.danger : C.text,
-          fontSize: 14,
-          fontWeight: '700',
-          flexShrink: 1,
-          textAlign: 'center',
-        }}
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={label}
+        accessibilityState={{ disabled: disabled || loading, busy: loading }}
+        disabled={disabled || loading}
+        onPress={onPress}
+        onPressIn={() => press(0.975)}
+        onPressOut={() => press(1)}
+        style={({ pressed }) => [
+          {
+            minHeight: 48,
+            borderRadius: 14,
+            paddingHorizontal: 16,
+            paddingVertical: 11,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 8,
+            backgroundColor:
+              variant === 'primary'
+                ? C.primary
+                : variant === 'danger'
+                  ? C.dangerBg
+                  : variant === 'secondary'
+                    ? C.panel2
+                    : 'transparent',
+            borderWidth: variant === 'ghost' ? 0 : 1,
+            borderColor:
+              variant === 'primary' ? '#A65DF0' : variant === 'danger' ? C.danger : C.line,
+            opacity: disabled ? 0.4 : pressed ? 0.92 : 1,
+          },
+          style,
+          { flex: undefined, flexGrow: undefined, flexShrink: undefined, width: undefined },
+        ]}
       >
-        {label}
-      </Text>
-    </Pressable>
+        {loading ? (
+          <ActivityIndicator color={variant === 'primary' ? C.onPrimary : C.text} />
+        ) : Icon ? (
+          <Icon
+            size={18}
+            color={variant === 'primary' ? C.onPrimary : variant === 'danger' ? C.danger : C.text}
+          />
+        ) : null}
+        <Text
+          style={{
+            color: variant === 'primary' ? C.onPrimary : variant === 'danger' ? C.danger : C.text,
+            fontSize: 14,
+            fontWeight: '700',
+            flexShrink: 1,
+            textAlign: 'center',
+          }}
+        >
+          {label}
+        </Text>
+      </Pressable>
+    </Animated.View>
   );
 }
 export function IconButton({
@@ -166,8 +209,10 @@ export function IconButton({
         minWidth: 44,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: pressed ? C.selection : C.panel,
-        borderRadius: 12,
+        backgroundColor: pressed ? C.selection : C.glass,
+        borderRadius: 14,
+        borderWidth: 1,
+        borderColor: C.hairline,
       })}
     >
       <Icon size={21} color={C.text} />
@@ -211,7 +256,7 @@ export function Chip({
         minHeight: onPress ? 44 : 28,
         paddingHorizontal: 13,
         paddingVertical: onPress ? 10 : 5,
-        borderRadius: 9,
+        borderRadius: 14,
         borderWidth: 1,
         borderColor: selected ? color : C.hairline,
         backgroundColor: selected ? `${color}16` : C.panel,
@@ -240,30 +285,74 @@ export function Sheet({
 }) {
   const { C, s } = useUI();
   const { width } = useWindowDimensions();
+  const { motionEnabled } = useTheme();
+  const [present, setPresent] = useState(visible);
+  const [transition] = useState(() => new Animated.Value(0));
+  if (visible && !present) setPresent(true);
+  if (!motionEnabled && !visible && present) setPresent(false);
+  useEffect(() => {
+    transition.stopAnimation();
+    if (!motionEnabled) {
+      transition.setValue(visible ? 1 : 0);
+      return;
+    }
+    const animation = Animated.timing(transition, {
+      toValue: visible ? 1 : 0,
+      duration: visible ? 230 : 160,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true,
+    });
+    animation.start(({ finished }) => {
+      if (finished && !visible) setPresent(false);
+    });
+    return () => animation.stop();
+  }, [visible, motionEnabled, transition]);
   return (
-    <Modal visible={visible} transparent animationType="none" onRequestClose={onClose}>
+    <Modal visible={present} transparent animationType="none" onRequestClose={onClose}>
       <KeyboardAvoidingView
+        pointerEvents={visible ? 'auto' : 'none'}
+        aria-hidden={!visible}
+        accessibilityElementsHidden={!visible}
+        importantForAccessibility={visible ? 'auto' : 'no-hide-descendants'}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={{
           flex: 1,
-          backgroundColor: C.overlay,
           justifyContent: width < 600 ? 'flex-end' : 'center',
           alignItems: 'center',
           padding: 16,
         }}
       >
-        <View
+        <Animated.View
+          pointerEvents="none"
+          style={[StyleSheet.absoluteFill, { backgroundColor: C.overlay, opacity: transition }]}
+        />
+        <Animated.View
           style={{
+            opacity: transition,
+            transform: [
+              { translateY: transition.interpolate({ inputRange: [0, 1], outputRange: [30, 0] }) },
+            ],
             width: '100%',
             maxWidth: 560,
             maxHeight: '90%',
             backgroundColor: C.panel,
-            borderRadius: 20,
+            borderRadius: 26,
+            borderTopColor: C.reflection,
             borderWidth: 1,
             borderColor: C.hairline,
           }}
-          accessibilityViewIsModal
+          accessibilityViewIsModal={visible}
         >
+          <View
+            style={{
+              alignSelf: 'center',
+              width: 34,
+              height: 4,
+              borderRadius: 4,
+              backgroundColor: C.line,
+              marginTop: 10,
+            }}
+          />
           <View style={[s.row, { padding: 16, borderBottomWidth: 1, borderColor: C.hairline }]}>
             <Text style={[s.h2, s.grow]}>{title}</Text>
             <IconButton label="Cerrar" icon={X} onPress={onClose} />
@@ -274,7 +363,7 @@ export function Sheet({
           >
             {children}
           </ScrollView>
-        </View>
+        </Animated.View>
       </KeyboardAvoidingView>
     </Modal>
   );
@@ -440,7 +529,9 @@ export function Screen({
             />
             <Text style={{ color: C.muted, fontSize: 12 }}>
               {DATA_MODE === 'demo'
-                ? LOCAL_ONLY ? 'Local · En este celular' : 'Demo · En este dispositivo'
+                ? LOCAL_ONLY
+                  ? 'Local · En este celular'
+                  : 'Demo · En este dispositivo'
                 : !inv.online
                   ? 'Sin conexión'
                   : inv.syncing
@@ -514,6 +605,7 @@ export function Screen({
       edges={back ? ['top', 'bottom', 'left', 'right'] : ['top', 'left', 'right']}
       style={{ flex: 1, backgroundColor: C.bg }}
     >
+      <AuroraBackground />
       {scroll ? (
         <ScrollView
           keyboardShouldPersistTaps="handled"
