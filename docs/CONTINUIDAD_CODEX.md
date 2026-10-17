@@ -15,6 +15,12 @@ Respaldo externo y fotos implementados: selector de carpeta Android+readback, ca
 Próximo paso: exportar web y recorrer UI actualizada, corregir regresiones; luego coherencia local/capturas/pruebas generales y build completo. La versión publicada sigue siendo1.2.2. No afirmar pruebas físicas.
 
 
+## Compilación candidata1.3.0/code6
+
+Runtime congelado en4a82322(solo se quitó aviso duplicado después de62e04a4). Todo respaldado en main. Capturas Aurora sintéticas móviles/escritorio claras/oscuras revisadas. UI amplia:29/30, falló avisoGPS duplicado; corregido. Regresiones finales Aurora/GPS/combos4/4 en21,9s; el fallo inicial de combos era leer antes de persistir, su prueba ahora espera confirmación. Último check175/175 y tipos/lint/Functions correctos. Npm audit baja de30 a27entradas(18altas/9moderadas,3avisos raíz), decoder corregido; no afirmar0vulnerabilidades.
+
+Próxima acción: ZIP restaurado antes de build Gradle ARM64 completo; correr UI total31escenarios sobre exportación final, registrar resultado, verificar APK/certificado/CRC/SHA y subir a descargas preservando todas las versiones. Si el build falla, conservar log y resolver causa. Sin ADB ni prueba física.
+
 ## Revisión independiente y cierre de regresiones
 
 La revisión encontró3fallos importantes y se corrigieron: base SQLite ausente ahora admite recuperación JSON explícita/exportación asistida sin fallback viejo; activación nativa usa archivo verificado fuera del límite AsyncStorage; una copia verificada se valida como importable antes de permitir vaciado. Se añadió recuperación cuando falla la lectura legacy, sin borrar original. Marca de activación escrita en temporal+movimiento para evitar un marcador parcial. Evidencias cierre-revision-*.txt; factory nativa testeada con SQLite real de Node y guard simulado, no teléfono.

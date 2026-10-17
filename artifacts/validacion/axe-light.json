@@ -6,6 +6,10 @@
       {
         "id": "aria-prohibited-attr",
         "nodes": 1
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 14
       }
     ]
   },
@@ -16,37 +20,71 @@
       {
         "id": "aria-prohibited-attr",
         "nodes": 1
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 12
       }
     ]
   },
   {
     "route": "/mapa",
     "violations": [],
-    "incomplete": []
+    "incomplete": [
+      {
+        "id": "color-contrast",
+        "nodes": 8
+      }
+    ]
   },
   {
     "route": "/historial",
     "violations": [],
-    "incomplete": []
+    "incomplete": [
+      {
+        "id": "color-contrast",
+        "nodes": 8
+      }
+    ]
   },
   {
     "route": "/obra/nueva",
     "violations": [],
-    "incomplete": []
+    "incomplete": [
+      {
+        "id": "color-contrast",
+        "nodes": 10
+      }
+    ]
   },
   {
     "route": "/obra/obra_1",
     "violations": [],
-    "incomplete": []
+    "incomplete": [
+      {
+        "id": "color-contrast",
+        "nodes": 3
+      }
+    ]
   },
   {
     "route": "/configuracion",
     "violations": [],
-    "incomplete": []
+    "incomplete": [
+      {
+        "id": "color-contrast",
+        "nodes": 9
+      }
+    ]
   },
   {
     "route": "/exportar",
     "violations": [],
-    "incomplete": []
+    "incomplete": [
+      {
+        "id": "color-contrast",
+        "nodes": 7
+      }
+    ]
   }
 ]
