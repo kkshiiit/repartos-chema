@@ -4,9 +4,9 @@
 
 Edición individual Android local/offline1.3.0/code6, ARM64, package `com.grupochema.repartos`. Instalación nueva vacía; actualización conserva datos. Sin publicidad ni Firebase/Cloudflare/backend obligatorio o servicios pagos. No retomar multiusuario/PDF/Play Store ni cambiar certificado. No borrar datos para corregir errores.
 
-El usuario autorizó cierre local y Aurora/glass integral. UI lista en4a82322, resolución reproducible del decoder en **d5da6a599243b8433c4be2cdf41524ea27ad5ef2**. Docs/firma en **a9608a6**; consultar git log/remoto para commits documentales siguientes. Main para código; descargas para artefactos, siempre preservando anteriores. No force push.
+El usuario autorizó cierre local y Aurora/glass integral. UI lista en4a82322, resolución reproducible del decoder en **d5da6a599243b8433c4be2cdf41524ea27ad5ef2**. Docs/firma en a9608a6, build/verificación en c3f2676, documentación de entrega y snapshot final en **1d37618**; este commit posterior registra la publicación/restauración. Consultar git log/remoto para el hash de cierre actual. Main para código; descargas para artefactos, siempre preservando anteriores. No force push.
 
-**APK1.3.0 publicado y recuperado desde GitHub**, descargas5ae0da1. Segundo Gradle completo: BUILD SUCCESSFUL14m46s,658tareas; log aurora-android.txt. El primer intento se perdió con el reinicio del entorno y no se cuenta como éxito. No recompilar por cambios documentales. Siguiente puerta: prueba física en Android del usuario.
+**APK1.3.0 publicado y recuperado desde GitHub**, APK en descargas5ae0da1 y respaldo final en53b4ad9. Segundo Gradle completo: BUILD SUCCESSFUL14m46s,658tareas; log aurora-android.txt. El primer intento se perdió con el reinicio del entorno y no se cuenta como éxito. No recompilar por cambios documentales. Siguiente puerta: prueba física en Android del usuario.
 
 
 ## Bloques cerrados (no repetir auditoría/desarrollo)
@@ -46,10 +46,14 @@ APK1.2.2 recuperado de GitHub en `/workspace/entregas/pulido-1.2.2/repartos-chem
 
 Descargas **5ae0da176f789b82b28a0bc0741578073df54bbc**; instalador único y web, versiones anteriores preservadas. APK y fuente d5da6a5 recuperados desde GitHub en checkout independiente; SHA/CRC/firma y371archivos fuente correctos. `aurora-github.json`. Ver README e informe para capturas/enlaces.
 
+## Respaldo final publicado y restaurado
+
+Descargas **53b4ad958df23ea675385dd8ca73aa0f4acf4530**. `respaldos/v1.3.0-local/repartos-chema-1d37618.zip`:381archivos,8.544.827bytes, SHA256 `f099475912c001b0bab40d15627e6919ce8dad2a427072be706575e61e3a5f3c`. Se recuperó desde GitHub, CRC y todos los hashes restaurados correctos. Snapshot incluye runtime d5da6a5, documentación, capturas y logs finales hasta1d37618. El APK conserva exactamente el blob verificado de5ae0da1. Archivo `aurora-github.json` registra ambas comprobaciones. Exportación web1.3 y fuentes previas conservadas.
+
 ## Próxima acción exacta
 
-1. En esta ejecución: finalizar respaldo fuente documental en descargas y comprobarlo; actualizar este checkpoint con su nombre/hash. No recompilar APK, su runtime es d5da6a5.
-2. Si otra sesión continúa, leer git status/log/ls-remote antes de tocar nada. No rehacer lock, migración, auditoría ni Aurora. Verificar si el respaldo final ya fue subido.
+1. Entrega y respaldo final completos. No recompilar APK por documentos; su runtime es d5da6a5. Siguiente puerta: actualización/migración en Android físico según pasos3–5.
+2. Si otra sesión continúa, leer git status/log/ls-remote antes de tocar nada. No rehacer lock, migración, auditoría ni Aurora. Comprobar hashes/enlaces existentes, no repetir publicación ni auditoría sin un fallo nuevo.
 3. Usuario Android: guardar JSON externo desde la versión anterior, descargar APK e instalar encima sin desinstalar; verificar nombre/tema/alquileres/cantidades/fotos. Probar cierre/reapertura y modo avión con una operación pequeña.
 4. Probar Guardar copia en carpeta, cancelar sin efectos y abrir/compartir Word/Excel. Cámara/galería/GPS/Maps/WhatsApp por separado. No usar el único inventario real para ensayar restauración destructiva sin copia.
 5. Si falla la puerta física: conservar mensaje/modelo/Android/datos; reproducir y corregir con regresión, commit/push antes de nuevo build con nueva versión. No borrar almacenamiento ni rotar firma para solucionar un fallo.

@@ -149,3 +149,10 @@ La advertencia de Metaspace indicó que Gradle cerraría su daemon al terminar. 
 Commits de reanudación: d5da6a5(reparación npm ci),a9608a6(firma y respaldo),8c6ff9f(revalidación web/checkpoint),c3f2676(APK/Gradle/verificación). Descargas6059dcb(fuente antes del build),5ae0da1(APK completo y web). Últimos commits documentales y fuente final se consultan en Git/checkpoint; no alteran el instalador.
 
 **Única puerta de aceptación todavía no comprobada en esta entrega:** Android físico y uso prolongado real. El archivo está compilado, firmado y recuperado desde GitHub; eso no demuestra instalación/migración/cámara/Compartir en el teléfono. Seguir las4pruebas anteriores sin desinstalar ni borrar datos. Si falla, conservar el mensaje exacto, modelo y versión de Android para corregir sin perder información.
+
+
+## Respaldo final y cierre documental
+
+[Descargar código y documentación final](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/respaldos/v1.3.0-local/repartos-chema-1d37618.zip), snapshot main1d37618,381archivos y8.544.827bytes. SHA256 `f099475912c001b0bab40d15627e6919ce8dad2a427072be706575e61e3a5f3c`. Publicado en descargas **53b4ad958df23ea675385dd8ca73aa0f4acf4530** y recuperado en checkout independiente: CRC y los381hashes restaurados coinciden. El APK mantiene el mismo blob y SHA verificados. Fuente anterior d5da6a5 y APKs anteriores preservados. Los commits posteriores a este snapshot solo registran esa publicación/verificación; no cambian runtime ni justifican recompilar.
+
+Cierre del entorno: no quedan cambios de producto sin guardar. La misión de entrega del archivo y respaldo está cumplida; la aceptación física y el uso prolongado siguen pendientes. Próxima acción concreta: copia JSON externa y actualización encima en el Android del usuario, con los pasos del manual.

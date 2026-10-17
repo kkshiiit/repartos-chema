@@ -163,6 +163,6 @@ El usuario autorizó explícitamente el rediseño integral después de este plan
 | 4 Coherencia | Completada en web | 31/31, error dentro del modal, datos sintéticos, Word/Excel,320–1440px. Accesibilidad/teclado nativos pendientes. |
 | 5 Compatibilidad | Parches y revisión completados | Expo check correcto; decoder corregido,27avisos transitivos restantes documentados. Sin benchmark físico ni métricas inventadas. |
 | Visual Aurora | Implementado y probado en web | 3506b9e; tokens compartidos, claro/oscuro/sistema, glass ligero, movimiento adaptable; capturas reales. |
-| 6 Entrega | En ejecución | 175pruebas/check,31UI y web correctos; Gradle1.3.0 completo en curso. APK/publicación y puerta física pendientes. |
+| 6 Entrega | APK y respaldos comprobados; puerta física pendiente | Gradle1.3.0 completo14m46s, firma/ABI/CRC y mismo certificado1.2.2. Descargas53b4ad9, APK y ZIP381archivos restaurados desde GitHub. Falta Android físico; no recompilar por documentación. |
 
 Informe vivo: [ENTREGA_AURORA_1_3.md](../../ENTREGA_AURORA_1_3.md). No se marca aceptada la puerta Android física sin dispositivo.
