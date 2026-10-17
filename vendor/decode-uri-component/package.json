@@ -1,0 +1,1 @@
+{"name":"decode-uri-component","version":"0.5.0","description":"Upstream0.5 con adaptador CommonJS compatible para query-string7","license":"MIT","main":"index.cjs","types":"index.d.ts","files":["index.cjs","decoder.cjs","upstream.mjs","index.d.ts","license","README.md"]}
