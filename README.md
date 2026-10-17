@@ -1,129 +1,87 @@
 # Repartos Chema
 
-Aplicación interna de Grupo Chema Construcciones, construida con Expo57, React Native0.86, React19 y TypeScript6. **La edición actual 1.2.2 es individual y local/offline, sin servicios pagos ni dependencia de Firebase/Cloudflare.** La integración cloud histórica está separada y no desplegada.
+Aplicación interna de Grupo Chema Construcciones para administrar alquileres de andamios, entregas, retiros e inventario. **Edición 1.3.0 individual, local/offline, sin publicidad ni backend o servicios pagos obligatorios.** No comparte datos entre celulares.
 
-## Descargar en Android
+## Instalar en Android
 
-**[Descargar APK completo Android 1.2.2 — uso individual local](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.2.2-local.1/repartos-chema-local-1.2.2-arm64.apk)** (49,5 MB). Iniciar sesión en GitHub con acceso al repositorio privado. Si no descarga, abrir [la ficha del APK](https://github.com/kkshiiit/repartos-chema/blob/descargas/android/v1.2.2-local.1/repartos-chema-local-1.2.2-arm64.apk) y tocar Download raw file / Descargar archivo sin procesar. Es un archivo completo, no hay que unir partes.
+[**Descargar APK completo 1.3.0 — Android ARM64**](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.3.0-local.1/repartos-chema-local-1.3.0-arm64.apk)
 
-Android 7+, ARM64, versión 1.2.2/code5. Firma v2/CRC y mismo certificado que 1.2.1 verificados. **Todavía sin instalación o pruebas físicas.** Guardar copia JSON fuera de la app y actualizar encima sin desinstalar. Instalación nueva vacía; la actualización conserva los datos. SHA256: `43835da902859f6c5af77947d315fb8ec2922d9921cebe558948460b0f1ba8eb`.
+Si no descarga, abrir [la ficha del APK](https://github.com/kkshiiit/repartos-chema/blob/descargas/android/v1.3.0-local.1/repartos-chema-local-1.3.0-arm64.apk) y tocar **Download raw file**. Repositorio privado: iniciar sesión con acceso. Es un solo archivo, sin partes.
 
-Incluye agregar responsable desde la operación, Word independiente de filtros Excel, rutas nativas de documentos/copias sin sobrescritura y revisión JSON antes de confirmar. Validación nueva: 108 pruebas, 6 recorridos web locales/accesibilidad, lint sin errores ni advertencias y compilación Gradle completa correcta. Consultar [pruebas y límites](docs/PULIDO_1_2_2.md) y [manual Android](docs/USO_LOCAL_ANDROID.md).
+Android 7+, ARM64, versión1.3.0/code6. 51.514.361 bytes. Compilación Gradle completa, firma v2, certificado igual a1.2.2, SQLite nativo, ABI y CRC comprobados. **No se probó en un Android físico.** Antes de actualizar guardar JSON fuera de la app; instalar encima sin desinstalar ni borrar almacenamiento. La instalación nueva empieza vacía; la migración conserva el original AsyncStorage y las recuperaciones.
 
-Instalador en rama `descargas`, commit `bb0bfba`; código e historial en main. Versiones anteriores conservadas. Sin servicios pagos, despliegue productivo ni sincronización entre teléfonos. Firma interna de plantilla.
+SHA256 del APK:
 
-[Descargar código fuente y manifiesto SHA256](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/respaldos/v1.2.2-local/repartos-chema-f77a2dc.zip). ZIP de 271 archivos con restauración SHA256/CRC comprobada, sin credenciales ni dependencias regenerables. Los datos de cada celular se respaldan por separado desde Ajustes. [Captura actual de entrega](artifacts/capturas/pulido-122-responsable.png).
+```text
+5404659c3ce0dec2149508e81f85c817664be7dbe42294d344e9fb23a2c4cb8b
+```
 
-La entrega histórica [1.2.1](docs/IMPORTACION_JSON_1_2_1.md) queda conservada; 1.2.2 incorpora esas correcciones JSON en un APK único.
+[Manual Android](docs/USO_LOCAL_ANDROID.md) · [Informe, pruebas y capturas claras/oscuras](docs/ENTREGA_AURORA_1_3.md) · [Comprobaciones del APK](artifacts/validacion/aurora-apk.json) · [Fuente y manifiestos descargables](https://github.com/kkshiiit/repartos-chema/tree/descargas/respaldos/v1.3.0-local)
 
-## Novedades 1.1
+## Novedades y funcionamiento
 
-Logo original, bienvenida de cuatro pasos, pantallas Alquileres/Depósito/Viaje/Historial, nombres de piezas sin comprimir y sin lemas extensos ni distintivo AD. Tema en la cabecera principal y Ajustes; no se repite en las ventanas. Viaje prioriza retiros y vuelve al depósito fijo de Formosa y Cuba, Villa Ballester. Se registra quién recibió la entrega.
+- Aurora rosa/violeta, vidrio ligero, claro/oscuro/sistema y cambio rápido sin perder formularios. Movimiento ambiental lento; opción estática, pausa en segundo plano y respeto por reducir movimiento.
+- Alquileres, Depósito, Viaje e Historial. Búsqueda, zona y estados con texto/iconos. Retirados agrupa retirado y reingresado; no hay filtro Cerradas separado.
+- Cargas, cantidades, medidas, apodos, combos, responsables configurables y recibido por. Entrega, retiro inspeccionado, reingreso, reactivación, triangulación, daños/pérdidas, recuperación, ajustes y deshacer seguro auditado.
+- Inventario Android en SQLite transaccional, migración no destructiva y recuperación explícita ante errores. No se reinicia silenciosamente por corrupción.
+- JSON con revisión antes de confirmar, validación de referencias/fechas/medidas, copias anteriores y catálogo de recuperación. Guardado Android en carpeta con lectura de comprobación; cancelar no cuenta como respaldo. Empezar vacío exige copia importable y confirmación.
+- Fotos locales JPEG hasta1024px, permisos y compresión. Quitar una foto activa conserva bytes necesarios para copias retenidas. No se suben a nube.
+- Viaje prioriza retiros, orden manual o ubicación real, Maps y regreso al depósito fijo. WhatsApp abre remito para que el usuario confirme su envío.
+- Word/Excel institucionales locales. Descarga web probada; cámara, selector de carpeta y Compartir nativos pendientes de validación física. No hay PDF automático.
+- Ingreso por nombre local: identifica movimientos, no autentica una cuenta ni crea usuarios remotos.
 
-[Ver capturas y validación del rediseño](docs/ENTREGA_1_1.md). La versión 1.1.0 incrementa versionCode a 2 y usa el mismo certificado de la demo anterior: actualizar encima, con copiaJSON previa, sin desinstalar. La instalación física de esta actualización todavía debe comprobarse.
+## Ejecutar desde el código
 
-## Ejecutar la versión local
+Expo57, React Native0.86, React19, TypeScript6, Expo Router, React Context, SQLite nativo/AsyncStorage web, Zod, FlashList, Lucide, ExcelJS/docx. No se cambió de framework.
 
-Requisitos: Node 22.13+ o Node 24.3+, npm. El entorno de trabajo usó Node 24.19. Para desplegar Functions se selecciona Node 22.
+Node22.13+ o24.3+ y npm; esta entrega se comprobó con Node24.19/npm11.9. No se necesitan credenciales:
 
 ```bash
-cd /workspace/repartos-chema
 npm ci
 cp .env.example .env
 npm run web
 ```
 
-Abrir la URL de Expo e ingresar un nombre: identifica movimientos locales, no autentica una cuenta real. Con `.env.example`, LOCAL_ONLY=true inicia vacío solo si no existe una base. Para probar la antigua semilla demo, seleccionar explícitamente LOCAL_ONLY=false y DATA_MODE=demo en un perfil separado; no reemplazar datos existentes para hacerlo.
+El ejemplo fija LOCAL_ONLY=true y DATA_MODE=demo: comienza vacío únicamente cuando no existen datos. Las variables Firebase quedan vacías; el código cloud histórico permanece inactivo. No configurar servicios para usar esta edición.
 
-Para móvil, instalar Expo Go compatible con SDK 57, ejecutar `npm start` y abrir el QR en la misma red. Si la tienda aún no ofrece esa versión de Expo Go, usar un development build compatible.
-
-```bash
-npm start
-# Con Android SDK o Xcode configurados:
-npx expo run:android
-npx expo run:ios
-```
-
-Para probar la versión web exportada, incluida la reapertura offline después de la primera carga:
+Exportación web reproducible:
 
 ```bash
 npm run build:web
 npm run preview
-# http://localhost:8081
+# http://localhost:8081 en ese mismo equipo
 ```
 
-El service worker almacena los archivos estáticos de la aplicación, nunca respuestas de Firebase, fotos remotas ni exportaciones privadas. En desarrollo (`npm run web`) no se instala ese worker.
+Localhost del entorno remoto no es una URL pública accesible desde el celular. Para Android usar el APK. No abrir index.html mediante file://. El worker web guarda estáticos, no respuestas Firebase ni documentos privados.
 
-## Funcionalidad
-
-- Obras con búsqueda, zona, prioridad de retiro y semáforo calculado con el calendario de Buenos Aires. **Retirados agrupa RETIRADO y REINGRESADO; no existe un filtro Cerradas separado.**
-- Alta/edición de obras, cargas con contadores, medidas personalizadas, apodos y combos con revisión.
-- Entregas, retiros inspeccionados, triangulación directa, daños, pérdidas y recuperaciones con auditoría.
-- Stock por galpón, obra, taller y perdido; ajustes administrativos con origen/destino y motivo.
-- Responsables configurables, ingreso por nombre y equipo por invitación. Demo local; producción preparada con identidades Firebase Auth e invitaciones de un uso, pendiente de configurar.
-- Fotos con permisos, JPEG a calidad 0.7 y lado máximo 1024 px, persistencia local y cola de subida.
-- Lista de viaje por zona, orden manual o distancia real desde GPS, enlaces a Google Maps y remito WhatsApp. El usuario confirma el envío en WhatsApp.
-- Historial con filtros, reversión segura de la última acción dentro de cinco minutos y correcciones compensatorias. Administración puede paginar auditoría remota.
-- Excel y Word institucionales: generación local en demo web, probada en Chromium; generador local móvil implementado, pendiente de ejecución en hardware. Backend privado separado para producción. Se incluyen muestras reales en `artifacts/`.
-
-## Apariencia y recuperación
-
-Al iniciar se sigue el tema del sistema. El botón de sol/luna cambia inmediatamente a una elección manual sin perder formularios. En Configuración están Claro, Oscuro y Seguir sistema. La preferencia se conserva separada del inventario.
-
-En Configuración, Administración puede **Descargar copia** con inventario e imágenes. **Elegir copia → Confirmar importación** muestra un resumen y valida el archivo; guarda preventivamente el estado anterior antes de reemplazar los datos locales. Cancelar no modifica datos y Deshacer última importación permite recuperar el estado previo. Protege estas copias como información interna. Un error de lectura no reinicia la aplicación con otra semilla ni borra silenciosamente el inventario.
-
-Manual: [MANUAL_USUARIO.md](docs/MANUAL_USUARIO.md). Estado para continuar: [CONTINUIDAD_CODEX.md](docs/CONTINUIDAD_CODEX.md). Resultados y límites: [INFORME_ENTREGA.md](docs/INFORME_ENTREGA.md).
-
-## Decisiones técnicas
-
-La lógica de dominio es compartida entre app y Functions. Cada comando valida esquema, permisos, transición y cantidades antes de producir un nuevo estado. Los movimientos nunca asignan stock negativo. La carga puede guardarse con stock insuficiente; entregar exige existencias o una procedencia de otra obra autorizada por ADMIN.
-
-La persistencia usa AsyncStorage con una escritura del estado completo y la cola en un único sobre. La UI solo confirma después de guardar. En web, Web Locks serializa pestañas cuando está disponible; evitar múltiples pestañas de edición en navegadores sin esa API. Firebase web usa `persistentLocalCache` y `persistentMultipleTabManager`; React Native usa caché Firestore en memoria más el repositorio durable propio. No se atribuye persistencia nativa al SDK JS de Firestore.
-
-Estilos centralizados con `StyleSheet`: no se añadió NativeWind para evitar otra capa de configuración. FlashList 2.0.2 está dentro de las versiones seleccionadas por Expo 57 y aislada en `DataList`. Iconos Lucide y háptica con fallback seguro.
-
-Más detalles: [ARQUITECTURA.md](docs/ARQUITECTURA.md), [FIREBASE.md](docs/FIREBASE.md), [VALIDACION.md](docs/VALIDACION.md).
-
-## Verificaciones
+## Pruebas y compilación
 
 ```bash
-npm ci
 npm --prefix functions ci
 npm run check
-npm run test:integration
 npm run build:web
-# Dejar npm run preview abierto en otra terminal:
-npm run test:ui
+# mantener npm run preview abierto:
+CHEMA_TEST_LOCAL=true npm run test:ui -- --workers=2
 ```
 
-Las pruebas de reglas usan Java 21 y Firebase Emulator Suite, con el proyecto local `demo-repartos-chema`. No usan credenciales de producción. Para Playwright, ajustar `CHROMIUM_PATH` al ejecutable de Chromium; en este entorno es `/usr/bin/chromium`. En un entorno sin Chromium, instalarlo o ejecutar `npx playwright install chromium` y ajustar la configuración.
+Resultados:175/175 pruebas, tipos/lint/Functions build correctos;31/31 recorridos web del sistema visual. Tras corregir el lockfile, npm ci limpio, consumidor decoder2/2,175/175 y3/3 recorridos locales nuevos correctos. Las integraciones Firebase no se ejecutaron en este cierre; compilar Functions no demuestra nube funcionando.
 
-Si Firebase CLI fuerza un proxy para peticiones entre emuladores, usar el adaptador **solo de loopback** incluido:
+APK con JDK21 completo, SDK36/build-tools36.0.0, NDK27.1.12297006 y CMake3.22.1:
 
 ```bash
-node -r ./scripts/emulator-local.cjs ./node_modules/firebase-tools/lib/bin/firebase.js emulators:exec --project demo-repartos-chema --only firestore,storage "npx vitest run --config vitest.integration.config.mts"
+npm run build:android:demo
 ```
 
-Para exportar bundles nativos (no equivale a compilar APK/IPA):
+Requiere JAVA_HOME/ANDROID_HOME válidos. Genera Android y ejecuta Gradle completo ARM64; no usa EAS ni un servicio de compilación pago. Preservar certificado; nunca sustituir la firma de una instalación con datos. Detalles y proxy del entorno en [ANDROID.md](docs/ANDROID.md).
 
-```bash
-npx expo export --platform android --platform ios --output-dir dist-native
-```
+## Límites y conservación
 
-## Variables y configuración
+La validación física sigue pendiente: actualizar encima, migrar datos/fotos, reiniciar, cámara/galería, GPS/Maps/WhatsApp, guardar carpeta y abrir/compartir documentos. No hay métricas físicas de FPS, RAM o batería. Las capturas son web real con contenido sintético, no Android físico.
 
-Copiar [.env.example](.env.example). `EXPO_PUBLIC_DATA_MODE=demo` es suficiente para la demo. Las variables `EXPO_PUBLIC_FIREBASE_*` son configuración pública de cliente, no claves privadas de cuenta de servicio. El backend obtiene credenciales mediante el entorno de Firebase/ADC; ninguna clave privada debe colocarse en la app.
+La firma es interna de plantilla. JSON y fotos no están cifrados por usar el sandbox; guardar copias externas y proteger el dispositivo. Las recuperaciones/fotos retenidas consumen espacio: no hay limpieza destructiva automática. AutoBackup del sistema no sustituye una copia comprobada.
 
-La configuración completa de Authentication, Firestore, Storage, Functions, FCM, CORS y roles está en [FIREBASE.md](docs/FIREBASE.md). No se configuró ningún mapa nativo: la lista de viaje es una alternativa funcional sin claves ni coordenadas inventadas.
+Quedan avisos transitivos de dependencias documentados en el informe. Se corrigió el decoder vulnerable sin degradar Expo/RN. No se declara cero vulnerabilidades ni se usó audit fix --force.
 
-## Límites actuales
+No se activó facturación, hosting ni producción. El APK opera sin infraestructura paga; las cuotas futuras de GitHub/cómputo de desarrollo o conexión móvil no se consideran ilimitadas.
 
-- Firebase, push y exportación cloud **implementados pero no desplegados ni verificados con una cuenta real**. FCM nativo requiere el puente adicional descrito en la guía.
-- Cámara, GPS, compartir, SecureStore y háptica requieren validación en iOS/Android físicos. Los bundles JS nativos no demuestran esas funciones del dispositivo.
-- La demo no convierte cambios a `SYNCED`: muestra guardado local y pendiente de nube. Configuración permite descargar una copia con fotos y restaurarla. Sin esa copia externa, borrar el almacenamiento pierde los datos locales.
-- Los documentos locales están probados en web; la ruta nativa JS + archivos/compartir requiere prueba en Android/iOS. No hay PDF automático.
-- El backend usa un agregado transaccional para una sola empresa: hasta 200 obras, 300 materiales y 750 KB serializados. Rechaza crecimiento excesivo; requiere particionar/archivar antes de escalar. No elimina evidencia remota para ganar espacio.
-- FCM acepta mensajes, no garantiza que el teléfono los muestre. Los reintentos pueden duplicar avisos; se incluye `eventId`/tag de colapso.
-
-El árbol de archivos está en [ARCHIVOS.md](docs/ARCHIVOS.md).
-
+[Checkpoint para continuar](docs/CONTINUIDAD_CODEX.md) · [Arquitectura](docs/ARQUITECTURA.md) · [Entrega anterior1.2.2 conservada](docs/PULIDO_1_2_2.md). Las guías cloud antiguas describen integraciones separadas, no requisitos de esta edición.
