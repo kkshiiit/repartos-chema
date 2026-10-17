@@ -37,6 +37,7 @@ import { OperationForm } from '../../src/components/OperationForm';
 import { mapsUrl, whatsappUrl } from '../../src/utils/whatsapp';
 import { openLink } from '../../src/services/links';
 import { selectPhoto } from '../../src/services/storageService';
+import { LOCAL_ONLY } from '../../src/services/localMode';
 import { DATA_MODE } from '../../src/services/firebase';
 export default function Detail() {
   const { C, s } = useUI();
@@ -268,16 +269,24 @@ export default function Detail() {
                 <View key={p.id} style={{ width: 150, gap: 8 }}>
                   <PhotoImage photo={p} />
                   <Text style={s.muted}>
-                    {p.status === 'PENDING' ? 'Subida pendiente' : 'Foto en nube'}
+                    {DATA_MODE === 'demo'
+                      ? 'Foto local'
+                      : p.status === 'PENDING'
+                        ? 'Subida pendiente'
+                        : 'Foto en nube'}
                   </Text>
                   {user?.role === 'ADMIN' || p.usuarioUid === user?.uid ? (
                     <ConfirmButton
                       label="Borrar foto"
                       title="Eliminar foto"
-                      description="Se quitará del registro. La limpieza del archivo remoto se procesa por el servidor."
+                      description={
+                        DATA_MODE === 'demo'
+                          ? 'Se quitará del alquiler. El archivo se conserva para recuperar copias anteriores.'
+                          : 'Se quitará del registro. La limpieza remota se procesa por el servidor.'
+                      }
                       onConfirm={async () => {
                         await dispatch({ type: 'DELETE_PHOTO', obraId: o.id, photoId: p.id });
-                        if (DATA_MODE === 'demo' || p.status === 'SYNCED')
+                        if (DATA_MODE === 'firebase' && p.status === 'SYNCED')
                           await deleteLocalPhoto(p.id);
                       }}
                     />
@@ -298,7 +307,7 @@ export default function Detail() {
           }}
         >
           <View style={s.card}>
-            <Text style={s.h2}>Datos de el alquiler</Text>
+            <Text style={s.h2}>Datos del alquiler</Text>
             <Info label="ENTREGA PREVISTA" value={o.fechaEntrega} />
             <Info
               label="ENTREGA EFECTIVA"
@@ -333,9 +342,11 @@ export default function Detail() {
             />
             <Notice
               text={
-                o.syncStatus === 'PENDING'
-                  ? '☁️⏳ Pendiente de nube. El cambio está guardado en este dispositivo.'
-                  : 'Confirmado por el servidor.'
+                LOCAL_ONLY || DATA_MODE === 'demo'
+                  ? 'Guardado en este celular. No hay sincronización en la nube.'
+                  : o.syncStatus === 'PENDING'
+                    ? '☁️⏳ Pendiente de nube. El cambio está guardado en este dispositivo.'
+                    : 'Confirmado por el servidor.'
               }
             />
           </View>
@@ -367,6 +378,7 @@ export default function Detail() {
         }
         onClose={() => setModal('')}
       >
+        {error ? <Notice text={error} tone="error" /> : null}
         {modal === 'carga' ? <LoadEditor obra={o} onDone={() => setModal('')} /> : null}
         {['entrega', 'retiro', 'faltante', 'transferencia'].includes(modal) ? (
           <OperationForm obra={o} mode={modal as 'entrega'} onDone={() => setModal('')} />

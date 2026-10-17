@@ -1,5 +1,6 @@
 import { DepotSettings } from '../src/components/DepotSettings';
 import { TeamSettings } from '../src/components/TeamSettings';
+import { LocalBackupActions } from '../src/components/LocalBackupActions';
 import { BackupImport } from '../src/components/BackupImport';
 import { useWelcome } from '../src/components/WelcomeProvider';
 import { userError } from '../src/services/errors';
@@ -18,7 +19,7 @@ export default function Settings() {
   const theme = useTheme();
   const { openWelcome } = useWelcome();
   const { user } = useAuth(),
-    { state, dispatch, backup, startEmpty, recoverPrevious } = useInventory();
+    { state, dispatch, backup, recoverPrevious } = useInventory();
   const [names, setNames] = useState<string | null>(null),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(''),
@@ -62,6 +63,23 @@ export default function Settings() {
           Tu elección se guarda en este dispositivo. También podés cambiarla desde la cabecera
           principal.
         </Text>
+        <Text style={s.h2}>Movimiento</Text>
+        <View style={s.wrap}>
+          <Chip
+            label="Aurora suave"
+            selected={theme.motionPreference === 'ambient'}
+            onPress={() => theme.setMotionPreference('ambient')}
+          />
+          <Chip
+            label="Estático"
+            selected={theme.motionPreference === 'static'}
+            onPress={() => theme.setMotionPreference('static')}
+          />
+        </View>
+        <Text style={s.muted}>
+          Se respeta reducir movimiento del sistema. El fondo se pausa al salir de la app.
+        </Text>
+        {theme.motionError ? <Notice text={theme.motionError} tone="error" /> : null}
         {theme.error ? <Notice text={theme.error} tone="error" /> : null}
       </View>
       <View style={[s.card, { maxWidth: 700 }]}>
@@ -122,26 +140,19 @@ export default function Settings() {
           <View style={s.section}>
             <Text style={s.h2}>Copia de datos</Text>
             <Notice text="Guarda la copia en un lugar privado. Contiene alquileres, historial y fotos locales; no incluye contraseñas. Los archivos Excel y Word no reemplazan esta copia." />
-            <Button
-              label="Descargar copia"
-              variant="secondary"
-              loading={busy}
-              onPress={() => void run(backup)}
-            />
+            {LOCAL_ONLY ? (
+              <LocalBackupActions />
+            ) : (
+              <Button
+                label="Descargar copia"
+                variant="secondary"
+                loading={busy}
+                onPress={() => void run(backup)}
+              />
+            )}
             {DATA_MODE === 'demo' ? <BackupImport /> : null}
             {LOCAL_ONLY ? (
               <>
-                <ConfirmButton
-                  label="Empezar vacío"
-                  title="Nuevo inventario vacío"
-                  description="Se exportará una copia JSON y se archivarán los datos actuales en este celular antes de empezar sin alquileres ni materiales. Podrás recuperar la copia anterior."
-                  onConfirm={async () => {
-                    await backup();
-                    await startEmpty();
-                    setNames(null);
-                    setSuccess('Inventario vacío. La copia anterior se conserva.');
-                  }}
-                />
                 <ConfirmButton
                   label="Recuperar anterior"
                   title="Recuperar inventario anterior"

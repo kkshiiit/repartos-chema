@@ -8,7 +8,11 @@ Primer bloque: importación semántica estricta solo para nuevas copias, con39ca
 
 SQLite implementada: adaptador nativo gratuito, migración transaccional que conserva AsyncStorage y archivos íntegros; state+archivo+puntero se confirman juntos en SQLite. Pruebas con SQLite real de Node: migración idempotente,7MiB,fallos de lectura/escritura y rollback del puntero.27pruebas repositorio/migración/inicio verdes; suite actual160/160(incluye trabajo visual/backups todavía no entregado). No equivale a probar ExpoSQLite Android físico.
 
-Próximo paso: terminar respaldo externo y fotos; luego coherencia local/capturas/pruebas generales y build completo. La versión publicada sigue siendo1.2.2. No afirmar pruebas físicas.
+Aurora/tokens/componentes quedó en3506b9e, independiente de migraciones. Base y controles con SVG/Animated existentes, preferencia estática persistida y pausa por AppState/reducir movimiento/ruta oculta.9pruebas contraste compuesto/movimiento/temas verdes; verificación visual pendiente.
+
+Respaldo externo y fotos implementados: selector de carpeta Android+readback, cancelación sin confirmar; flujo Empezar vacío exige copia verificada (en web, reconocimiento explícito del usuario). UUID/fotos no sobrescritas, JPEG estructural, sin cargar URI remotos en modo local; archivos de fotos se retienen para recuperaciones internas. Suite actual166/166 y check sin errores antes de capturas. No hay prueba Android física.
+
+Próximo paso: exportar web y recorrer UI actualizada, corregir regresiones; luego coherencia local/capturas/pruebas generales y build completo. La versión publicada sigue siendo1.2.2. No afirmar pruebas físicas.
 
 
 ## Auditoría y plan de cierre — 17/10/2026
