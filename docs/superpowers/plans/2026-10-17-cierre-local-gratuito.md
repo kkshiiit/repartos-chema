@@ -131,7 +131,7 @@
 **Archivos:** pruebas/evidencias, scripts de construcción/verificación, `docs/USO_LOCAL_ANDROID.md`, `docs/CONTINUIDAD_CODEX.md`, informe final y rama descargas.
 
 - [ ] Ejecutar `npm run check`, build:web y suite UI local actualizada. No contar integraciones Firebase omitidas como aprobadas ni bloquear el cierre individual por desplegarlas.
-- [ ] Push main y ZIP fuente restaurado antes de compilar. Seleccionar siguiente versión libre (previsiblemente1.2.3/code6; comprobar main/descargas primero). Compilación Gradle ARM64 completa con el script actual y mismo package/certificado.
+- [ ] Push main y ZIP fuente restaurado antes de compilar. Seleccionar siguiente versión libre (seleccionada1.3.0/code6 por el bloque Aurora; comprobar main/descargas primero). Compilación Gradle ARM64 completa con el script actual y mismo package/certificado.
 - [ ] Verificar firma, certificado contra1.2.2, versión, permisos, ABI, CRC/SHA y ausencia de publicidad/configuración cloud activa. Mantener versiones previas.
 - [ ] En teléfono real: copia JSON previa y actualización encima; conservar alquileres/stock/fotos/tema/nombre y probar migración. Si no hay dispositivo remoto conectado, el usuario solo instala y devuelve el resultado desde Android; no pedirle terminal ni PC.
 - [ ] Recorrido físico en modo avión: crear material/stock/alquiler, carga/combos, entregar/repetir toque, cerrar forzadamente/reabrir, retirar con daño/pérdida, recuperar, triangular, reingresar/reactivar, ajustar y deshacer con conteo consistente. Para GPS/Maps/WhatsApp probar permisos/apertura por separado y explicar que su contenido externo puede necesitar red.
@@ -148,3 +148,21 @@ No hay pago requerido para estas tareas de software: SQLite, Expo nativo, genera
 Quedan fuera del cierre individual: sincronización multiusuario, invitaciones remotas, FCM, exportación servidor, proveedor de mapas pago, PDF automático, publicación en Play Store y modificaciones de infraestructura productiva. No borrar el código histórico de esas integraciones como parte de una limpieza rutinaria; mantenerlo desacoplado/inactivo.
 
 La tarea0 preserva; las tareas1–3 protegen datos; la4 cierra los recorridos; la5 estabiliza; la6 valida y entrega. Si no hay teléfono para la última puerta, terminar todo lo independiente y dejar esa validación pendiente con instrucciones concretas, sin gastar para simular que se hizo.
+
+
+## Ejecución actualizada — cierre + Aurora 17/10/2026
+
+El usuario autorizó explícitamente el rediseño integral después de este plan. Sustituye la restricción de no rediseñar en tarea4. [Especificación visual](../specs/2026-10-17-aurora-local.md). Se conserva el plan para trazabilidad; las casillas anteriores son la lista original, y esta tabla registra el estado real.
+
+| Tarea | Estado comprobado | Evidencia/límite |
+| --- | --- | --- |
+| 0 Base | Completada | fb5ec6e, ZIP original/restaurado, firma preservada, main/descargas verificados. |
+| 1 Copias | Implementada y probada | d26a9ef + defensa en datos1c7bb72,39casos. |
+| 2 SQLite | Implementada y probada con SQLite Node | 636781e/deb23ce/1c7bb72; >7MiB, rollback, guard y recuperación; falta ExpoSQLite físico. |
+| 3 Respaldo/fotos | Implementada y probada código/web | e9d0770/1c7bb72; destino nativo mediante dobles de prueba; falta selector/readback físico. |
+| 4 Coherencia | Completada en web | 31/31, error dentro del modal, datos sintéticos, Word/Excel,320–1440px. Accesibilidad/teclado nativos pendientes. |
+| 5 Compatibilidad | Parches y revisión completados | Expo check correcto; decoder corregido,27avisos transitivos restantes documentados. Sin benchmark físico ni métricas inventadas. |
+| Visual Aurora | Implementado y probado en web | 3506b9e; tokens compartidos, claro/oscuro/sistema, glass ligero, movimiento adaptable; capturas reales. |
+| 6 Entrega | En ejecución | 175pruebas/check,31UI y web correctos; Gradle1.3.0 completo en curso. APK/publicación y puerta física pendientes. |
+
+Informe vivo: [ENTREGA_AURORA_1_3.md](../../ENTREGA_AURORA_1_3.md). No se marca aceptada la puerta Android física sin dispositivo.
