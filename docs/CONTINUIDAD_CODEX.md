@@ -1,3 +1,5 @@
+> **Interrupción 03:42–03:44 UTC:** el entorno perdió conectividad y se reinició sin `/workspace/repartos-chema`. Se recuperó main ce43195 desde GitHub. La compilación anterior quedó interrumpida, no hay APK1.3 verificado/publicado. Los ZIP locales y toolchains no sobrevivieron; runtime/pruebas/capturas sí están en GitHub. No se conoce la causa del reinicio (no afirmar OOM). Toolchain restaurado; `npm ci` limpio ya finalizó correctamente en2min. El override file relativo del decoder dejó un enlace inválido en el lock: dependencia local directa y override por referencia `$decode-uri-component` lo corrigen sin cambiar los bytes del decoder. Regresión2/2 y check175/175 nuevos correctos (aurora-npm-ci-{red,green}.txt, aurora-decoder-ci.txt, aurora-check-restaurado.txt). No cambiar reglas de negocio. La custodia local de firma también se perdió: comprobar primero si el keystore de plantilla coincide con el certificado1.2.2; no rotar certificado.
+
 # Continuidad Repartos Chema — 17/10/2026, Aurora 1.3.0
 
 ## Objetivo y autorización vigente
@@ -34,24 +36,24 @@ Detalle de archivos/decisiones: `docs/ENTREGA_AURORA_1_3.md`, `artifacts/validac
 
 Fallos anteriores visibles en logs: selector antiguo tras anonimizar (test corregido), GPS duplicado (runtime corregido), lectura prematura de combo (test espera persistencia). La suite final31/31 ya incluye esas correcciones.
 
-## Fase actual — Gradle completo en ejecución
+## Fase actual — preparación del segundo intento Gradle
 
-APK objetivo1.3.0/code6, ARM64, package `com.grupochema.repartos`, Android7+. Build iniciado después de push/ZIP restaurado. `artifacts/validacion/aurora-android.txt` se está escribiendo. No distribuir un APK antiguo como si fuera nuevo.
+APK objetivo1.3.0/code6, ARM64, package `com.grupochema.repartos`, Android7+. El intento anterior quedó interrumpido por reinicio del entorno; su log no sobrevivió. No existe APK1.3 en este workspace. Antes del nuevo intento: push de la reparación del lock, ZIP restaurado y comprobación del keystore de plantilla contra1.2.2. El nuevo log será artifacts/validacion/aurora-android.txt. No distribuir un APK antiguo como si fuera nuevo.
 
 Comando de build usa `npm run build:android:demo` con JDK21, SDK36, sin ANDROID_PREFS_ROOT, proxy/TLS configurados. Si otra sesión llega y el proceso terminó, leer el final del log y verificar el APK antes de recompilar.
 
 ## Respaldos y firma
 
-Base `fb5ec6e` y fuente prebuild `cd6013a` en `/workspace/entregas/aurora-cierre/`; ZIP cd6013a:361archivos,8.528.599bytes, CRC y extracción/SHA todos correctos. No sobrescribir.
+Los ZIP previos fb5ec6e/cd6013a se verificaron antes del reinicio, pero eran locales y no sobrevivieron. El código está íntegro en GitHub. Generar y subir nueva copia de este HEAD antes de Gradle; no presentar los ZIP desaparecidos como descargables.
 
-Firma preservada fuera del Git en `/workspace/respaldos/firma-interna/chema-antes-aurora.keystore`, modo600. Es la firma interna de plantilla existente, no identidad productiva. APK anterior `/workspace/entregas/pulido-1.2.2/repartos-chema-local-1.2.2-arm64.apk`; SHA `43835da902859f6c5af77947d315fb8ec2922d9921cebe558948460b0f1ba8eb`. CertificadoSHA256 `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`.
+La copia local del keystore también desapareció con el reinicio. La plantilla usaba el mismo certificado interno: regenerar y comparar primero; si no coincide, detener publicación sin rotar firma. Es la firma interna de plantilla existente, no identidad productiva. APK anterior `/workspace/entregas/pulido-1.2.2/repartos-chema-local-1.2.2-arm64.apk`; SHA `43835da902859f6c5af77947d315fb8ec2922d9921cebe558948460b0f1ba8eb`. CertificadoSHA256 `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`.
 
 ## Próxima acción exacta
 
 1. Leer git status/log/fetch y este checkpoint; no rehacer bloques. Revisar el proceso Gradle y `tail artifacts/validacion/aurora-android.txt`.
 2. Si BUILD SUCCESSFUL, ejecutar con JAVA_HOME/ANDROID_HOME el script `python3 scripts/verify-android.py android/app/build/outputs/apk/release/app-release.apk /workspace/entregas/pulido-1.2.2/repartos-chema-local-1.2.2-arm64.apk /workspace/entregas/aurora-cierre 4a82322`. Verifica firma/ABI/CRC/config/versión y no sobrescribe.
 3. Guardar resultados/logs, actualizar informe y push main. Empaquetar `python3 scripts/package.py /workspace/entregas/aurora-cierre` y web mediante package-web.py. Restauración incluida.
-4. Publicar APK único+SHA+JSON de verificación y ZIP fuente en descargas, rutas nuevas `android/v1.3.0-local.1/` y `respaldos/v1.3.0-local/`. Usar `/workspace/entregas/apk-github-20261015`, fetch/ff sin force. Mantener APKs anteriores.
+4. Publicar APK único+SHA+JSON de verificación y ZIP fuente en descargas, rutas nuevas `android/v1.3.0-local.1/` y `respaldos/v1.3.0-local/`. Usar `/workspace/entregas/apk-github-20261017` (clone parcial/sparse; no borrar versiones fuera del sparse checkout), fetch/ff sin force. Mantener APKs anteriores.
 5. Recuperar ambos artefactos desde GitHub en repositorio independiente, comparar SHA/CRC y todos los hashes del ZIP. Guardar evidencia.
 6. Actualizar README/informe/checkpoint con APK/hash/commits reales y push final. No cerrar puerta física: usuario guarda JSON anterior e instala encima sin desinstalar; instrucciones en manual.
 

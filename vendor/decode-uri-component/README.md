@@ -11,3 +11,5 @@ npx --no-install esbuild vendor/decode-uri-component/upstream.mjs --format=cjs -
 ```
 
 Prueba de regresión en tests/uri-decoder.test.ts, incluyendo entrada adversaria en worker con límite, caracteres españoles y API CommonJS. Conservar este paquete y el lock en el ZIP fuente. Revaluar/eliminar el override cuando ExpoRouter adopte una versión upstream compatible sin él.
+
+El paquete local se declara como dependencia directa `file:vendor/decode-uri-component` y el override referencia `$decode-uri-component`. Así npm resuelve el enlace desde la raíz. Un override file relativo únicamente transitivo produjo en el lock un destino inexistente dentro de query-string; una instalación incremental lo ocultaba y `npm ci` limpio fallaba. La instalación limpia y la prueba del consumidor CommonJS son obligatorias al modificar este bloque.

@@ -55,7 +55,8 @@
     "react-native-svg": "15.15.4",
     "react-native-web": "^0.21.2",
     "react-native-worklets": "0.10.1",
-    "zod": "^4.6.5"
+    "zod": "^4.6.5",
+    "decode-uri-component": "file:vendor/decode-uri-component"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
@@ -74,6 +75,6 @@
   },
   "overrides": {
     "@grpc/grpc-js": "1.14.6",
-    "decode-uri-component": "file:./vendor/decode-uri-component"
+    "decode-uri-component": "$decode-uri-component"
   }
 }

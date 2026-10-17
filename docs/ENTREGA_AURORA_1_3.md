@@ -119,3 +119,12 @@ Para validar desde Android, sin PC:
 ## Estado de finalización
 
 Implementado y probado en código/web: integridad de copias, operaciones cubiertas, temas/Aurora, recuperación de fotos, formularios y documentos web. Implementado pendiente de validación física: migración ExpoSQLite, selector de carpeta/readback, cámara, compartir, actualización sin pérdida, accesibilidad y rendimiento Android. Build/publicación: en ejecución. No se considera cerrada la puerta Android hasta recibir una prueba física satisfactoria. Nube/multiusuario/PDF/Play Store están fuera del alcance individual vigente.
+
+
+## Recuperación después de la interrupción
+
+El entorno se reinició entre03:42 y03:44UTC; se perdió el workspace previo y no quedó APK1.3 verificable ni log Gradle completo. Se clonó main ce43195 desde GitHub y se recuperaron pruebas/capturas/código sin rehacer el desarrollo. No se conoce la causa del reinicio. No se afirma OOM ni fallo del compilador.
+
+La instalación limpia descubrió un defecto del lock del decoder: un override file solo transitivo dejó un destino relativo dentro de query-string que no existía. Npm ci lo rechazó (EUSAGE); al reconciliar el lock roto también aparecía Invalid Version. Un repro mínimo confirmó la solución: dependencia local directa y override `$decode-uri-component`, con enlace raíz y metadatos reales del paquete local. El decoder y sus APIs no cambian. `npm ci` limpio instaló1560paquetes en2min; regresión consumidor2/2 y check175/175 nuevos correctos. Evidencias aurora-npm-ci-{red,green}.txt, aurora-decoder-ci.txt y aurora-check-restaurado.txt. La reparación se respalda antes de reintentar Gradle.
+
+Los ZIP y el respaldo de firma anteriores eran locales y se perdieron con el entorno; no se presentan como descargas disponibles. GitHub preserva el código y los APK anteriores. Se genera un nuevo ZIP verificado y se comprueba el certificado de la plantilla contra el APK1.2.2 recuperado antes de construir/publicar. JDK21 y SDK/NDK36/27.1 fueron restaurados desde sus distribuciones oficiales, sin servicios pagos.
