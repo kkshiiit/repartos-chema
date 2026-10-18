@@ -1,3 +1,13 @@
+# Continuidad activa — corrección estructural 1.5 — 18/10/2026
+
+El usuario reabrió el rediseño porque 1.4 conservaba composición anterior. Este bloque prevalece sobre el cierre histórico inferior. Base main332e56e sincronizada, árbol limpio antes de comenzar; ZIP base verificado descrito en CIERRE_ESTRUCTURAL_1_5.md.
+
+Fase actual: implementación estructural de las4pestañas, detalle/alta/carga, ajustes/combos/documentos. Sin cambios en dominio, SQLite, migración, fotos ni JSON. Footer compartido y paneles conservan funciones secundarias. Capturas baseline reales430×840 claro/oscuro y fixture fijo en artifacts/capturas/estructura-1.5. No APK nuevo todavía. Pendientes: check completo, adaptar recorridos a paneles, exportar web, comparar capturas con referencias y corregir estructura antes de compilar. Después commits/push, APK1.5.0/code8 con certificado existente, verificación y descargas sin borrar versiones anteriores. No validación física disponible.
+
+Próxima acción exacta: leer /tmp/chema-estructura-check.txt, corregir resultados y ejecutar web+UI sobre build nuevo. Consultar gitlog para commits posteriores.
+
+---
+
 # Cierre de edición individual cobalto 1.4.0 — 18/10/2026
 
 ## Estado guardado

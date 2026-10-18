@@ -1,6 +1,6 @@
 import { userError } from '../../src/services/errors';
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import {
   Plus,
   Package,
@@ -28,6 +28,7 @@ import {
 } from '../../src/components/ui';
 import { DataList } from '../../src/components/DataList';
 import { ScaffoldSelector } from '../../src/components/ScaffoldSelector';
+import { spacing } from '../../src/theme/tokens';
 export default function WarehousePage() {
   const { C, s } = useUI();
   const { state, dispatch } = useInventory(),
@@ -62,7 +63,6 @@ export default function WarehousePage() {
       label: 'Perdido',
       color: C.danger,
       icon: TriangleAlert,
-      MoreHorizontal,
     },
   ] as const;
   const data = state.materiales.filter(
@@ -85,9 +85,9 @@ export default function WarehousePage() {
     <Screen
       title="Depósito"
       scroll={false}
-      action={
+      footer={
         user?.role === 'ADMIN' ? (
-          <Button label="Agregar" icon={Plus} onPress={() => open(null, 'material')} />
+          <Button label="Agregar material" icon={Plus} onPress={() => open(null, 'material')} />
         ) : undefined
       }
     >
@@ -95,24 +95,22 @@ export default function WarehousePage() {
         data={data}
         keyExtractor={(m) => m.id}
         ListHeaderComponent={
-          <View style={{ gap: 20, paddingBottom: 20 }}>
-            <View style={[s.row, { flexWrap: 'wrap', gap: 16 }]}>
-              {metrics.map((m) => (
-                <View key={m.key} style={{ minWidth: 100, flex: 1, gap: 4 }}>
-                  <Text style={[s.h2, { fontVariant: ['tabular-nums'], color: m.color }]}>
-                    {state.materiales.reduce((n, i) => n + i[m.key], 0)}
-                  </Text>
-                  <Text style={s.muted}>{m.label}</Text>
-                </View>
-              ))}
-            </View>
+          <View style={{ gap: spacing.md, paddingBottom: spacing.lg }}>
+            <Text style={s.muted}>
+              {state.materiales.length} piezas ·{' '}
+              {state.materiales.filter((m) => m.cantidadGalpon > 0).length} con stock disponible
+            </Text>
             <Field
               label="Buscar pieza"
               value={query}
               onChangeText={setQuery}
               placeholder="Nombre o medida"
             />
-            <View style={s.wrap}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ gap: spacing.sm }}
+            >
               {['TODAS', ...categories].map((c) => (
                 <Chip
                   key={c}
@@ -121,55 +119,61 @@ export default function WarehousePage() {
                   onPress={() => setCategory(c)}
                 />
               ))}
-            </View>
+            </ScrollView>
           </View>
         }
         ListEmptyComponent={
           <Empty title="Sin piezas" detail="Cambia los filtros o agrega una pieza." />
         }
+        ItemSeparatorComponent={() => <View style={s.divider} />}
         renderItem={({ item: m }) => (
-          <View style={[s.card, { marginBottom: 12, gap: 12 }]}>
-            <View style={[s.row, { alignItems: 'flex-start' }]}>
-              <Package size={22} color={C.subtle} />
-              <View style={s.grow}>
-                <Text style={s.h2}>
-                  {m.nombre} {m.medida}
-                </Text>
-                <Text style={s.muted}>{labels[m.categoria]}</Text>
+          <View
+            style={{
+              backgroundColor: C.panel,
+              paddingHorizontal: spacing.md,
+              paddingVertical: spacing.lg,
+              gap: spacing.sm,
+            }}
+          >
+            <View style={[s.row, { alignItems: 'flex-start', flexWrap: 'wrap', gap: spacing.sm }]}>
+              <Package size={24} color={C.subtle} />
+              <View style={[s.grow, { gap: spacing.xs, minWidth: spacing.touch + spacing.xxl }]}>
+                <Text style={[s.body, { fontWeight: '700' }]}>{m.nombre}</Text>
+                {m.medida ? <Text style={s.body}>{m.medida}</Text> : null}
               </View>
+              <View style={{ alignItems: 'flex-end', gap: spacing.xs, flexShrink: 1 }}>
+                <Text style={[s.h2, { fontVariant: ['tabular-nums'] }]}>{m.cantidadGalpon}</Text>
+                <Text style={s.muted}>Disponibles</Text>
+              </View>
+              {user?.role === 'ADMIN' ? (
+                <IconButton
+                  label={`Opciones de ${m.nombre} ${m.medida || ''}`}
+                  icon={MoreHorizontal}
+                  onPress={() => open(m, 'opciones')}
+                />
+              ) : null}
             </View>
-            {user?.role === 'ADMIN' ? (
-              <IconButton
-                label={`Opciones de ${m.nombre} ${m.medida || ''}`}
-                icon={MoreHorizontal}
-                onPress={() => open(m, 'opciones')}
-              />
-            ) : null}
-            <View style={s.wrap}>
-              {metrics.map((metric) => (
-                <View key={metric.key} style={{ flex: 1, minWidth: 65, paddingVertical: 8 }}>
-                  <Text style={{ fontSize: 22, fontWeight: '700', color: metric.color }}>
-                    {m[metric.key]}
-                  </Text>
-                  <Text style={{ color: C.muted, fontSize: 14 }}>{metric.label}</Text>
-                </View>
-              ))}
-            </View>
+            <Text style={[s.muted, { fontVariant: ['tabular-nums'] }]}>
+              {m.cantidadEnObra} alquilados · {m.cantidadEnTaller} a reparar · {m.cantidadPerdido}{' '}
+              perdidos
+            </Text>
           </View>
         )}
       />
       <Sheet
         visible={!!modal}
         title={
-          modal === 'movimiento'
-            ? 'Mover existencias'
-            : modal === 'ajuste'
-              ? 'Ajuste de inventario'
-              : edit
-                ? 'Editar pieza'
-                : 'Agregar pieza'
+          modal === 'opciones'
+            ? 'Opciones de la pieza'
+            : modal === 'movimiento'
+              ? 'Mover existencias'
+              : modal === 'ajuste'
+                ? 'Ajuste de inventario'
+                : edit
+                  ? 'Editar pieza'
+                  : 'Agregar pieza'
         }
-        protectChanges
+        protectChanges={modal !== 'opciones'}
         onClose={() => setModal('')}
       >
         {modal === 'opciones' ? (

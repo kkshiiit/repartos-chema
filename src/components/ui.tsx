@@ -138,6 +138,11 @@ export function Button({
     }
   };
   const isBusy = loading || pending;
+  const { setBusy: setPanelBusy } = usePanelChanges();
+  useEffect(() => {
+    setPanelBusy(isBusy);
+    return () => setPanelBusy(false);
+  }, [isBusy, setPanelBusy]);
   const foreground = variant === 'primary' || variant === 'danger' ? C.onPrimary : C.text;
   const [scale] = useState(() => new Animated.Value(1));
   const layout = StyleSheet.flatten(style) || {};
@@ -348,9 +353,10 @@ const PanelChangesContext = createContext<PanelChanges>({
 export function usePanelChanges() {
   const panel = useContext(PanelChangesContext);
   const owner = useId();
+  const panelSetBusy = panel.setBusy;
   const setBusy = useCallback(
-    (value: boolean) => panel.setBusy(value, owner),
-    [panel.setBusy, owner],
+    (value: boolean) => panelSetBusy(value, owner),
+    [panelSetBusy, owner],
   );
   return { ...panel, setBusy };
 }
@@ -724,6 +730,7 @@ export function Screen({
   subtitle,
   children,
   action,
+  footer,
   back = false,
   scroll = true,
 }: {
@@ -731,6 +738,7 @@ export function Screen({
   subtitle?: string;
   children: React.ReactNode;
   action?: React.ReactNode;
+  footer?: React.ReactNode;
   back?: boolean;
   scroll?: boolean;
 }) {
@@ -743,15 +751,41 @@ export function Screen({
   const body = (
     <View
       style={{
-        padding: width > 800 ? 32 : 20,
-        gap: 24,
+        padding: width > 800 ? 24 : 16,
+        gap: 16,
         width: '100%',
-        maxWidth: 1500,
+        maxWidth: 1100,
         alignSelf: 'center',
         flex: scroll ? undefined : 1,
       }}
     >
-      <View style={{ gap: 8 }}>
+      <View style={{ gap: 4 }}>
+        {!back ? (
+          <View style={[s.row, { justifyContent: 'space-between' }]}>
+            <View style={s.grow}>
+              <Text style={[s.label, { fontSize: 12 }]}>Repartos Chema</Text>
+              <Text style={[s.muted, { fontSize: 12 }]}>
+                {DATA_MODE === 'demo'
+                  ? LOCAL_ONLY
+                    ? 'Local · En este celular'
+                    : 'Demo · En este dispositivo'
+                  : !inv.online
+                    ? 'Sin conexión'
+                    : inv.syncing
+                      ? 'Sincronizando…'
+                      : inv.queue.length
+                        ? `${inv.queue.length} pendientes`
+                        : 'Guardado en el equipo'}
+              </Text>
+            </View>
+            <ThemeToggle />
+            <IconButton
+              label="Abrir ajustes"
+              icon={Settings}
+              onPress={() => router.push('/configuracion')}
+            />
+          </View>
+        ) : null}
         <View style={[s.row, { justifyContent: 'space-between' }]}>
           {back ? (
             <IconButton
@@ -763,43 +797,8 @@ export function Screen({
           <Text accessibilityRole="header" style={[s.title, { flex: 1, minWidth: 0 }]}>
             {title}
           </Text>
-          {!back ? (
-            <View style={[s.row, { gap: 6 }]}>
-              <ThemeToggle />
-              <IconButton
-                label="Abrir ajustes"
-                icon={Settings}
-                onPress={() => router.push('/configuracion')}
-              />
-            </View>
-          ) : null}
         </View>
         {subtitle ? <Text style={s.muted}>{subtitle}</Text> : null}
-        {!back ? (
-          <View style={[s.row, { gap: 6 }]}>
-            <View
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: 3,
-                backgroundColor: inv.online ? C.green : C.yellow,
-              }}
-            />
-            <Text style={{ color: C.muted, fontSize: 12 }}>
-              {DATA_MODE === 'demo'
-                ? LOCAL_ONLY
-                  ? 'Local · En este celular'
-                  : 'Demo · En este dispositivo'
-                : !inv.online
-                  ? 'Sin conexión'
-                  : inv.syncing
-                    ? 'Sincronizando…'
-                    : inv.queue.length
-                      ? `${inv.queue.length} pendientes`
-                      : 'Guardado en el equipo'}
-            </Text>
-          </View>
-        ) : null}
       </View>
       {action ? <View style={{ alignSelf: 'stretch' }}>{action}</View> : null}
       {inv.error || inv.queue.some((q) => q.status === 'CONFLICT') ? (
@@ -874,6 +873,19 @@ export function Screen({
       ) : (
         body
       )}
+      {footer ? (
+        <View
+          style={{
+            backgroundColor: C.bg,
+            borderTopWidth: 1,
+            borderColor: C.hairline,
+            paddingHorizontal: width > 800 ? 24 : 16,
+            paddingVertical: 12,
+          }}
+        >
+          <View style={{ width: '100%', maxWidth: 1052, alignSelf: 'center' }}>{footer}</View>
+        </View>
+      ) : null}
     </SafeAreaView>
   );
 }

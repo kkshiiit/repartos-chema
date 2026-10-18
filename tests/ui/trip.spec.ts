@@ -14,19 +14,24 @@ test('viaje vuelve al depósito fijo y recupera el cambio de Ajustes sin alterar
       return null;
     };
   });
+  await page.getByRole('button', { name: 'Opciones del viaje', exact: true }).click();
   await page.getByRole('button', { name: 'Volver al depósito', exact: true }).click();
   const first = await page.evaluate(() =>
     (window as unknown as { chemaLinks: string[] }).chemaLinks.at(-1)!,
   );
   expect(new URL(first).searchParams.get('destination')).toBe('-34.5530245,-58.5685218');
+  await page.getByRole('button', { name: 'Cerrar', exact: true }).last().click();
   await page.getByRole('button', { name: 'Abrir ajustes', exact: true }).click();
+  await page.getByRole('button', { name: 'Depósito', exact: true }).click();
   const address = 'Depósito de prueba 123, Zona de prueba';
   await page.getByLabel('Dirección del depósito', { exact: true }).fill(address);
   await page.getByRole('button', { name: 'Guardar dirección', exact: true }).click();
   await expect(
     page.getByText('Dirección guardada en este dispositivo.', { exact: true }),
   ).toBeVisible();
+  await page.getByRole('button', { name: 'Cerrar', exact: true }).last().click();
   await page.getByRole('button', { name: 'Volver', exact: true }).click();
+  await page.getByRole('button', { name: 'Opciones del viaje', exact: true }).click();
   await expect(page.getByText(address, { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Volver al depósito', exact: true }).click();
   const changed = await page.evaluate(() =>
