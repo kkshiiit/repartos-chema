@@ -58,9 +58,9 @@
         "expo-notifications",
         {
           "sounds": [
-            "./assets/sounds/01_recordatorio_calido.wav",
-            "./assets/sounds/02_confirmacion_sutil.wav",
-            "./assets/sounds/03_atencion_suave.wav"
+            "./assets/sounds/chema_recordatorio_calido.wav",
+            "./assets/sounds/chema_confirmacion_sutil.wav",
+            "./assets/sounds/chema_atencion_suave.wav"
           ]
         }
       ]
