@@ -1,3 +1,4 @@
+M	README.md
 M	app.json
 M	app/(auth)/login.tsx
 M	app/(tabs)/_layout.tsx
@@ -281,7 +282,12 @@ A	artifacts/capturas/cobalto/superficies/390-light-selector-zona.png
 A	artifacts/capturas/cobalto/superficies/390-light-ubicacion-editor.png
 A	artifacts/capturas/cobalto/superficies/390-light-wizard-carga.png
 A	artifacts/capturas/cobalto/superficies/390-light-wizard-revisar.png
+A	artifacts/validacion/android-1.4.0-apk.json
+A	artifacts/validacion/android-1.4.0-firma.txt
+A	artifacts/validacion/android-1.4.0-metadata.txt
 A	artifacts/validacion/cobalto-android-intento1.txt
+A	artifacts/validacion/cobalto-android.txt
+A	artifacts/validacion/cobalto-archivos.txt
 A	artifacts/validacion/cobalto-check.txt
 A	artifacts/validacion/cobalto-contraste-320-dark.json
 A	artifacts/validacion/cobalto-contraste-320-light.json
@@ -292,6 +298,8 @@ A	artifacts/validacion/cobalto-contraste-390-light.json
 A	artifacts/validacion/cobalto-contraste-412-dark.json
 A	artifacts/validacion/cobalto-contraste-412-light.json
 A	artifacts/validacion/cobalto-npm-ci.txt
+A	artifacts/validacion/cobalto-recuperacion-github-apk.json
+A	artifacts/validacion/cobalto-recuperacion-github-fuentes.json
 A	artifacts/validacion/cobalto-resumen-visual.json
 A	artifacts/validacion/cobalto-superficies-dark.json
 A	artifacts/validacion/cobalto-superficies-light.json
@@ -305,12 +313,15 @@ A	artifacts/validacion/cobalto-web.txt
 A	assets/sounds/chema_atencion_suave.wav
 A	assets/sounds/chema_confirmacion_sutil.wav
 A	assets/sounds/chema_recordatorio_calido.wav
+M	docs/ANDROID.md
 A	docs/AVISOS_LOCALES.md
 M	docs/CONTINUIDAD_CODEX.md
 A	docs/ENTREGA_COBALTO_1_4.md
 A	docs/GALERIA_COBALTO.md
 A	docs/REDISENO_PAPEL_COBALTO.md
+M	docs/USO_LOCAL_ANDROID.md
 A	docs/diseno-papel-cobalto/ESPECIFICACION_UI.md
+A	docs/diseno-papel-cobalto/LEEME.md
 A	docs/diseno-papel-cobalto/MANIFIESTO_SHA256.json
 A	docs/diseno-papel-cobalto/PROMPT_PARA_CODEX.md
 A	docs/diseno-papel-cobalto/contraste-tokens.json
