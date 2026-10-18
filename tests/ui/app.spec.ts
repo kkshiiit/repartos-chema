@@ -6,7 +6,10 @@ test('equipo crea, entrega, deshace y descarga documentos', async ({ page }) => 
   await page.setViewportSize({ width: 1440, height: 1000 });
   await login(page);
   await expect(page.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible();
-  await page.screenshot({ path: 'artifacts/dashboard-desktop.png', fullPage: true });
+  await page.screenshot({
+    path: 'artifacts/capturas/estructura-1.5/dashboard-desktop.png',
+    fullPage: true,
+  });
   await page.getByRole('button', { name: 'Nuevo alquiler', exact: true }).click();
   await page.getByLabel('Nombre del cliente', { exact: true }).fill('Obra de prueba UI');
   await page.getByLabel('Dirección', { exact: true }).fill('Dirección de demostración 123');
@@ -33,8 +36,10 @@ test('equipo crea, entrega, deshace y descarga documentos', async ({ page }) => 
   ).toBeVisible();
   await page.goto('/historial');
   await expect(page.getByText('Confirmó la entrega', { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: /^Ver movimiento: Confirmó la entrega/ }).click();
   await page.getByRole('button', { name: 'Deshacer', exact: true }).click();
   await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
+  await page.getByRole('button', { name: 'Cerrar', exact: true }).last().click();
   await expect(page.getByText('Deshizo: Confirmó la entrega', { exact: true })).toBeVisible();
   await page.goto('/exportar');
   const excel = page.waitForEvent('download');
@@ -60,7 +65,10 @@ test('nombre identifica a la persona sin selector de roles; sesión persiste', a
   await page.getByRole('tab', { name: 'Depósito', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Depósito', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Agregar material', exact: true })).toBeVisible();
-  await page.screenshot({ path: 'artifacts/dashboard-mobile.png', fullPage: true });
+  await page.screenshot({
+    path: 'artifacts/capturas/estructura-1.5/dashboard-mobile.png',
+    fullPage: true,
+  });
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Depósito', exact: true })).toBeVisible();
   await page.goto('/configuracion');

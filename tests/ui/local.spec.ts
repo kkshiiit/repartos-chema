@@ -24,7 +24,7 @@ test('individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y o
   expect((await state()).materiales).toEqual([]);
   await expect(page.getByText('Local · En este celular', { exact: true })).toBeVisible();
   await page.goto('/galpon');
-  await page.getByRole('button', { name: 'Agregar', exact: true }).click();
+  await page.getByRole('button', { name: 'Agregar material', exact: true }).click();
   await page.getByLabel('Nombre del material', { exact: true }).fill('Cuerpo de andamio');
   await page.getByRole('button', { name: '1.30m', exact: true }).click();
   await page.getByRole('button', { name: 'Guardar cambios', exact: true }).click();
@@ -54,13 +54,16 @@ test('individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y o
   await page.getByRole('button', { name: 'Preparar carga', exact: true }).click();
   await page.getByRole('button', { name: 'Agregar material', exact: true }).last().click();
   await page.getByRole('button', { name: 'Guardar carga', exact: true }).click();
-  await page.getByRole('button', { name: 'Entregar', exact: true }).last().click();
+  await page.getByRole('button', { name: 'Registrar entrega', exact: true }).last().click();
   await expect(
     page.getByRole('button', { name: 'Agregar responsable', exact: true }),
   ).toBeVisible();
   await page.getByRole('button', { name: 'Agregar responsable', exact: true }).click();
   await page.getByLabel('Nombre del responsable', { exact: true }).fill('Persona local');
-  await page.screenshot({ path: 'artifacts/capturas/pulido-122-responsable.png', fullPage: true });
+  await page.screenshot({
+    path: 'artifacts/capturas/estructura-1.5/responsable.png',
+    fullPage: true,
+  });
   await page.getByRole('button', { name: 'Guardar responsable', exact: true }).click();
   await expect.poll(async () => (await state()).responsables).toEqual(['Persona local']);
   await page.getByLabel('Recibió', { exact: true }).fill('Receptor de prueba');
@@ -68,22 +71,29 @@ test('individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y o
     'aria-pressed',
     'true',
   );
-  await page.getByRole('button', { name: 'Confirmar operación', exact: true }).click();
+  await page.getByRole('button', { name: 'Confirmar entrega', exact: true }).click();
   await expect.poll(async () => (await state()).materiales[0]?.cantidadGalpon).toBe(19);
   expect((await state()).materiales[0].cantidadEnObra).toBe(1);
   await page.goto('/historial');
+  await page
+    .getByRole('button', {
+      name: 'Ver movimiento: Confirmó la entrega · Cliente local de prueba',
+      exact: true,
+    })
+    .click();
   await page.getByRole('button', { name: 'Deshacer', exact: true }).click();
   await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
   await expect.poll(async () => (await state()).materiales[0]?.cantidadGalpon).toBe(20);
   await page.goto(detail);
-  await page.getByRole('button', { name: 'Entregar', exact: true }).last().click();
+  await page.getByRole('button', { name: 'Registrar entrega', exact: true }).last().click();
   await page.getByRole('button', { name: 'Persona local', exact: true }).click();
-  await page.getByRole('button', { name: 'Confirmar operación', exact: true }).click();
-  await page.getByRole('button', { name: 'Retirar', exact: true }).last().click();
+  await page.getByRole('button', { name: 'Confirmar entrega', exact: true }).click();
+  await page.getByRole('button', { name: 'Registrar retiro', exact: true }).last().click();
   await page.getByRole('button', { name: 'Persona local', exact: true }).click();
-  await page.getByRole('button', { name: 'Confirmar operación', exact: true }).click();
+  await page.getByRole('button', { name: 'Confirmar retiro', exact: true }).click();
   await expect.poll(async () => (await state()).materiales[0]?.cantidadGalpon).toBe(20);
   expect((await state()).materiales[0].cantidadEnObra).toBe(0);
+  await page.getByRole('button', { name: 'Más acciones', exact: true }).click();
   await page.getByRole('button', { name: 'Reingresar', exact: true }).last().click();
   await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
   await page.goto('/exportar');

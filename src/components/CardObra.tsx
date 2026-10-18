@@ -7,7 +7,15 @@ import { useUI } from './ui';
 import { StatusChip } from './StatusChip';
 import { rentalSummary } from '../utils/listPresentation';
 /** A rental is a row. Secondary actions and complete information belong in its detail. */
-export function CardObra({ obra: o }: { obra: ObraCard }) {
+export function CardObra({
+  obra: o,
+  first = false,
+  last = false,
+}: {
+  obra: ObraCard;
+  first?: boolean;
+  last?: boolean;
+}) {
   const { C, s } = useUI();
   const { fontScale } = useWindowDimensions();
   return (
@@ -18,7 +26,11 @@ export function CardObra({ obra: o }: { obra: ObraCard }) {
       onPress={() => router.push(`/obra/${o.id}`)}
       style={({ pressed }) => ({
         backgroundColor: pressed ? C.selection : C.panel,
-        borderBottomWidth: 1,
+        borderBottomWidth: last ? 0 : 1,
+        borderTopLeftRadius: first ? 16 : 0,
+        borderTopRightRadius: first ? 16 : 0,
+        borderBottomLeftRadius: last ? 16 : 0,
+        borderBottomRightRadius: last ? 16 : 0,
         borderColor: C.hairline,
         paddingVertical: 14,
         paddingHorizontal: 12,

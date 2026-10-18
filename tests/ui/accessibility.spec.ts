@@ -31,7 +31,10 @@ for (const theme of ['light', 'dark'] as const) {
       });
     }
     await mkdir('artifacts/validacion', { recursive: true });
-    await writeFile(`artifacts/validacion/axe-${theme}.json`, JSON.stringify(reports, null, 2));
+    await writeFile(
+      `artifacts/validacion/estructura-axe-${theme}.json`,
+      JSON.stringify(reports, null, 2),
+    );
     expect(
       reports.flatMap((r) =>
         r.violations.map((v) => ({

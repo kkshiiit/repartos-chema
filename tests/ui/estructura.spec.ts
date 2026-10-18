@@ -5,7 +5,7 @@ import { login } from './helpers';
 
 const now = new Date('2026-10-18T15:00:00Z');
 const output = 'artifacts/capturas/estructura-1.5';
-async function fixture(page: Page, theme: string) {
+async function fixture(page: Page, theme: string, reference = false) {
   const state = seed(now);
   const clients = [
     'Obra San Martín',
@@ -41,6 +41,40 @@ async function fixture(page: Page, theme: string) {
       },
     ],
   }));
+  if (reference) {
+    state.materiales = state.materiales.filter((m) => ['marco130', 'tablon'].includes(m.id));
+    state.obras = [state.obras[1], state.obras[0], state.obras[3]];
+    const names = ['Obra Ballester', 'Obra San Martín', 'Obra Suárez'];
+    const zones = ['Villa Ballester', 'San Martín', 'Villa Ballester'];
+    state.obras.forEach((o, i) => {
+      const amount = [8, 6, 2][i];
+      o.clienteNombre = names[i];
+      o.localidadBarrio = zones[i];
+      o.fechaRetiroEstimada = ['2026-10-18', '2026-10-17', '2026-10-21'][i];
+      o.materialesCargados = o.materialesCargados
+        .filter((m) => ['marco130', 'tablon'].includes(m.materialId))
+        .map((m) => ({ ...m, cantidad: m.materialId === 'marco130' ? amount : amount / 2 }));
+      o.saldosEnObra = Object.fromEntries(
+        o.materialesCargados.map((m) => [m.materialId, m.cantidad]),
+      );
+    });
+    state.materiales.forEach((m) => {
+      m.cantidadGalpon = m.id === 'marco130' ? 24 : 16;
+      m.cantidadEnObra = m.id === 'marco130' ? 16 : 8;
+    });
+    state.combos.forEach((c) => {
+      c.items = c.items.filter((i) => ['marco130', 'tablon'].includes(i.materialId));
+    });
+    state.logs = state.logs.slice(0, 2);
+    state.logs[0].accion = 'Retiro registrado';
+    state.logs[0].obraNombre = 'Obra Centro';
+    state.logs[1].accion = 'Entrega registrada';
+    state.logs[1].obraNombre = 'Obra Norte';
+  }
+  await page.emulateMedia({
+    reducedMotion: 'reduce',
+    colorScheme: theme === 'dark' ? 'dark' : 'light',
+  });
   await page.clock.setFixedTime(now);
   await page.addInitScript(
     ({ state, theme }) => {
@@ -117,4 +151,29 @@ for (const theme of ['light', 'dark'])
         `artifacts/validacion/estructura-${theme}.json`,
         JSON.stringify(measurements, null, 2),
       );
+  });
+
+// Match each illustrated phone's crop dimensions without stretching either image.
+for (const theme of ['light', 'dark'])
+  test(`láminas de referencia ${theme}: mismas dimensiones y fixture`, async ({ page }) => {
+    await mkdir(output, { recursive: true });
+    await page.setViewportSize({ width: 444, height: 862 });
+    await fixture(page, theme, true);
+    const frames = [
+      ['/', 'alquileres', 444, 862],
+      ['/galpon', 'deposito', 446, 881],
+      ['/mapa', 'viaje', 445, 812],
+      ['/historial', 'historial', 446, 795],
+      ['/obra/obra_1', 'detalle', 413, 934],
+      ['/obra/nueva', 'nuevo', 424, 950],
+      ['/configuracion', 'ajustes', 419, 929],
+      ['/combos', 'combos', 420, 929],
+      ['/exportar', 'documentos', 419, 897],
+    ] as const;
+    for (const [route, name, width, height] of frames) {
+      await page.setViewportSize({ width, height });
+      await page.goto(route);
+      await expect(page.getByRole('heading').first()).toBeVisible();
+      await page.screenshot({ path: `${output}/referencia-app-${name}-${theme}.png` });
+    }
   });

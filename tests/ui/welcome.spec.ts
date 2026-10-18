@@ -3,7 +3,7 @@ import { loginSynthetic as login } from './helpers';
 test('bienvenida breve completa una vez y puede abrirse desde Ajustes', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByText('Tus alquileres, en un lugar', { exact: true })).toBeVisible();
-  await page.screenshot({ path: 'artifacts/capturas/bienvenida-1.png' });
+  await page.screenshot({ path: 'artifacts/capturas/estructura-1.5/bienvenida-1.png' });
   for (let i = 0; i < 3; i++)
     await page.getByRole('button', { name: 'Siguiente', exact: true }).click();
   await page.getByRole('button', { name: 'Empezar', exact: true }).click();

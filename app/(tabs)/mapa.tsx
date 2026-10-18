@@ -38,6 +38,7 @@ import { mapsUrl } from '../../src/utils/whatsapp';
 import { openLink } from '../../src/services/links';
 import { userError } from '../../src/services/errors';
 import { spacing, radius } from '../../src/theme/tokens';
+import { rentalSummary } from '../../src/utils/listPresentation';
 export default function Trip() {
   const { C, s } = useUI(),
     { state } = useInventory();
@@ -123,6 +124,15 @@ export default function Trip() {
   return (
     <Screen
       title="Viaje"
+      subtitle={new Date(`${today}T12:00:00Z`)
+        .toLocaleDateString('es-AR', {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          timeZone: 'UTC',
+        })
+        .replaceAll(' de ', ' ')}
       action={
         <IconButton
           label="Opciones del viaje"
@@ -165,6 +175,7 @@ export default function Trip() {
       </View>
       <Select
         label="Zona del viaje"
+        compact
         value={zone}
         options={[
           { label: 'Todas las zonas', value: 'TODAS' },
@@ -239,7 +250,7 @@ export default function Trip() {
                     flex: 1,
                     minWidth: 0,
                     minHeight: spacing.touch,
-                    paddingVertical: spacing.lg,
+                    paddingVertical: spacing.md,
                     borderBottomWidth: 1,
                     borderBottomColor: C.hairline,
                     backgroundColor: pressed ? C.selection : 'transparent',
@@ -250,16 +261,16 @@ export default function Trip() {
                 >
                   <View style={[s.grow, { gap: spacing.xs }]}>
                     <Text style={[s.body, { fontWeight: '700' }]}>{o.clienteNombre}</Text>
-                    <Text style={s.muted}>{o.direccion}</Text>
                     <Text style={s.muted}>
                       {o.localidadBarrio}
                       {origin && o.coordenadas
                         ? ` · ${distanceKm(origin, o.coordenadas).toFixed(1)} km`
                         : ''}
                     </Text>
-                    <View style={{ alignItems: 'flex-start' }}>
-                      <StatusChip obra={o} />
-                    </View>
+                    <Text style={s.muted}>{rentalSummary(o)}</Text>
+                  </View>
+                  <View style={{ flexShrink: 1, maxWidth: '40%' }}>
+                    <StatusChip obra={o} compact />
                   </View>
                   <ChevronRight size={20} color={C.subtle} />
                 </Pressable>
@@ -297,7 +308,7 @@ export default function Trip() {
               >
                 <View style={s.grow}>
                   <Text style={[s.body, { fontWeight: '700' }]}>Depósito</Text>
-                  <Text style={s.muted}>Regreso · {depot.direccion}</Text>
+                  <Text style={s.muted}>Regreso al depósito</Text>
                 </View>
                 <ChevronRight size={20} color={C.subtle} />
               </Pressable>

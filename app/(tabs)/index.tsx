@@ -84,11 +84,15 @@ export default function Home() {
             }
           />
         }
-        renderItem={({ item }) =>
+        renderItem={({ item, index }) =>
           item.kind === 'section' ? (
             <SectionHeading title={item.title} count={item.count} />
           ) : (
-            <CardObra obra={item.obra} />
+            <CardObra
+              obra={item.obra}
+              first={rows[index - 1]?.kind === 'section'}
+              last={!rows[index + 1] || rows[index + 1]?.kind === 'section'}
+            />
           )
         }
         contentContainerStyle={{ paddingBottom: 16 }}

@@ -323,7 +323,7 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
                     {field('retiro', 'Retiro · AAAA-MM-DD', retiro, setRetiro, { maxLength: 10 })}
                   </View>
                 </View>
-                <Disclosure title="Agregar observaciones" initiallyOpen={!!observaciones}>
+                <Disclosure title="Agregar observaciones" initiallyOpen={!!observaciones} compact>
                   <Field
                     label="Observaciones"
                     value={observaciones}

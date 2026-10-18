@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { View, Text, AppState, Platform, Pressable } from 'react-native';
 import { useFocusEffect } from 'expo-router';
-import { History, ArrowRight, ChevronRight } from 'lucide-react-native';
+import { History, ArrowRight, ChevronRight, ArrowDown, ArrowUp } from 'lucide-react-native';
 import { useInventory } from '../../src/context/InventoryContext';
 import { useAuth } from '../../src/context/AuthContext';
 import { undoReason } from '../../src/domain/engine';
@@ -127,6 +127,12 @@ export default function HistoryPage() {
         renderItem={({ item }) => {
           if (item.kind === 'section') return <SectionHeading title={item.title} />;
           const l = item.log;
+          const EntryIcon = /retir/i.test(l.accion)
+            ? ArrowUp
+            : /entreg/i.test(l.accion)
+              ? ArrowDown
+              : History;
+          const entryColor = /retir/i.test(l.accion) ? C.green : C.link;
           return (
             <Pressable
               accessibilityRole="button"
@@ -154,7 +160,7 @@ export default function HistoryPage() {
                     justifyContent: 'center',
                   }}
                 >
-                  <History size={17} color={C.link} />
+                  <EntryIcon size={17} color={entryColor} />
                 </View>
                 <View style={{ width: 1, flex: 1, marginTop: 6, backgroundColor: C.hairline }} />
               </View>

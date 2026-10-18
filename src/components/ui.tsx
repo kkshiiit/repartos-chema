@@ -555,7 +555,10 @@ export function Sheet({
                 },
               ]}
             >
-              <Text accessibilityRole="header" style={[s.h2, s.grow]}>
+              <Text
+                accessibilityRole="header"
+                style={[s.title, s.grow, { fontSize: 24, lineHeight: 30 }]}
+              >
                 {title}
               </Text>
               <Pressable
@@ -797,10 +800,10 @@ export function Screen({
           <Text accessibilityRole="header" style={[s.title, { flex: 1, minWidth: 0 }]}>
             {title}
           </Text>
+          {action ? <View style={{ flexShrink: 0 }}>{action}</View> : null}
         </View>
         {subtitle ? <Text style={s.muted}>{subtitle}</Text> : null}
       </View>
-      {action ? <View style={{ alignSelf: 'stretch' }}>{action}</View> : null}
       {inv.error || inv.queue.some((q) => q.status === 'CONFLICT') ? (
         <View style={{ gap: 8 }}>
           <Notice text={inv.error || 'Conflicto pendiente de revisión.'} tone="error" />

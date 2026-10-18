@@ -21,6 +21,7 @@ test('tema automático conserva formulario y no hay selectores repetidos en vent
   await page.getByLabel('Barrio / localidad', { exact: true }).fill('Zona del borrador');
   await page.getByRole('button', { name: 'Continuar a carga', exact: true }).click();
   await page.getByRole('button', { name: 'Agregar material', exact: true }).last().click();
+  await page.getByRole('button', { name: /^Detalles de / }).click();
   await page.getByLabel('Apodo de esta carga', { exact: true }).fill('Carga sin perder');
   await page.emulateMedia({ colorScheme: 'light' });
   await expect.poll(() => bg(page)).toBe('light');
@@ -32,6 +33,7 @@ test('tema automático conserva formulario y no hay selectores repetidos en vent
   await expect.poll(() => bg(page)).toBe('dark');
   await expect(page.getByText('Borrador sin perder', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Volver a carga', exact: true }).click();
+  await page.getByRole('button', { name: /^Detalles de / }).click();
   await expect(page.getByLabel('Apodo de esta carga', { exact: true })).toHaveValue(
     'Carga sin perder',
   );
@@ -47,11 +49,16 @@ test('tema automático conserva formulario y no hay selectores repetidos en vent
   await page.reload();
   await expect.poll(() => bg(page)).toBe('light');
   await page.goto('/configuracion');
+  await page.getByRole('button', { name: 'Apariencia', exact: true }).click();
   await page.getByRole('button', { name: 'Seguir sistema', exact: true }).click();
   await expect.poll(() => bg(page)).toBe('dark');
   await page.goto('/obra/obra_5');
   await page.getByRole('button', { name: 'Preparar carga', exact: true }).click();
   await expect(page.getByRole('button', { name: /Activar modo/ })).toHaveCount(0);
+  await page
+    .getByRole('button', { name: /^Detalles de / })
+    .first()
+    .click();
   await page.getByLabel('Apodo de esta carga', { exact: true }).first().fill('Borrador modal');
   await page.emulateMedia({ colorScheme: 'light' });
   await expect.poll(() => bg(page)).toBe('light');
@@ -92,7 +99,7 @@ for (const width of [320, 360, 390, 768, 1440])
         ).toBe(true);
         if (width === 390 || width === 1440)
           await page.screenshot({
-            path: `artifacts/capturas/cobalto-rutas-${width}-${theme}-${name}.png`,
+            path: `artifacts/capturas/estructura-1.5/rutas-${width}-${theme}-${name}.png`,
             fullPage: true,
           });
       }
@@ -116,29 +123,42 @@ for (const width of [320, 360, 390, 768, 1440])
         await expect(page.getByRole('button', { name: /Activar modo/ })).toHaveCount(
           ['galpon', 'mapa', 'historial'].includes(route) ? 1 : 0,
         );
-        if (route === 'obra/obra_5')
-          for (const name of ['Preparar carga', 'Documento', 'Ubicación']) {
+        if (route === 'obra/obra_5') {
+          for (const name of ['Preparar carga', 'Documento']) {
             const b = await page.getByRole('button', { name, exact: true }).boundingBox();
             expect(b).not.toBeNull();
             expect(b!.x).toBeGreaterThanOrEqual(0);
             expect(b!.x + b!.width).toBeLessThanOrEqual(width + 1);
           }
+          await page.getByRole('button', { name: 'Más acciones', exact: true }).click();
+          const location = await page
+            .getByRole('button', { name: 'Ubicación', exact: true })
+            .boundingBox();
+          expect(location).not.toBeNull();
+          expect(location!.x).toBeGreaterThanOrEqual(0);
+          expect(location!.x + location!.width).toBeLessThanOrEqual(width + 1);
+          await page.getByRole('button', { name: 'Cerrar', exact: true }).click();
+        }
         if (route === 'galpon') {
-          const box = await page.getByText('Marco de andamio 1.30m', { exact: true }).boundingBox();
+          const box = await page.getByText('Marco de andamio', { exact: true }).boundingBox();
           expect(box).not.toBeNull();
           expect(box!.width).toBeGreaterThan(140);
           expect(box!.height).toBeLessThan(90);
+          await expect(page.getByText('1.30m', { exact: true }).first()).toBeVisible();
         }
         await capture(route.replaceAll('/', '-'));
       }
       for (const [id, button, name] of [
-        ['obra_5', 'Entregar', 'entrega'],
-        ['obra_1', 'Retirar', 'retiro'],
+        ['obra_5', 'Registrar entrega', 'entrega'],
+        ['obra_1', 'Registrar retiro', 'retiro'],
       ]) {
         await page.goto('/obra/' + id);
         await page.getByRole('button', { name: button, exact: true }).last().click();
         await expect(
-          page.getByRole('button', { name: 'Confirmar operación', exact: true }),
+          page.getByRole('button', {
+            name: name === 'entrega' ? 'Confirmar entrega' : 'Confirmar retiro',
+            exact: true,
+          }),
         ).toBeVisible();
         await expect(page.getByRole('button', { name: /Activar modo/ })).toHaveCount(0);
         await capture(name!);

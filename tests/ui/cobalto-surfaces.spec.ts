@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { loginSynthetic } from './helpers';
 
-const directory = 'artifacts/capturas/cobalto/superficies';
+const directory = 'artifacts/capturas/estructura-1.5/superficies';
 
 for (const theme of ['light', 'dark'] as const) {
   test(`Cobalto superficies secundarias ${theme}: formularios, selectores y revisiones con fixture sintético`, async ({
@@ -37,8 +37,11 @@ for (const theme of ['light', 'dark'] as const) {
       await expect(page.getByRole('heading').first()).toBeVisible();
     }
     async function closeUnchangedPanel() {
+      const before = await page.getByRole('button', { name: 'Cerrar', exact: true }).count();
       await page.getByRole('button', { name: 'Cerrar', exact: true }).last().click();
-      await expect(page.getByRole('button', { name: 'Cerrar', exact: true })).toHaveCount(0);
+      await expect(page.getByRole('button', { name: 'Cerrar', exact: true })).toHaveCount(
+        before - 1,
+      );
     }
 
     await test.step('Edición y los pasos Cliente, Carga y Revisar sin persistir', async () => {
@@ -48,7 +51,7 @@ for (const theme of ['light', 'dark'] as const) {
       );
       await capture('editar-cliente');
       await page.getByRole('button', { name: 'Continuar a carga', exact: true }).click();
-      await expect(page.getByLabel('Apodo de esta carga', { exact: true }).first()).toBeVisible();
+      await expect(page.getByRole('button', { name: /^Detalles de / }).first()).toBeVisible();
       await capture('wizard-carga');
       await page
         .getByRole('button', { name: /^Editar .*: / })
@@ -111,6 +114,10 @@ for (const theme of ['light', 'dark'] as const) {
 
     await test.step('Editor de combo, materiales y contador', async () => {
       await visit('/combos');
+      await page
+        .getByRole('button', { name: /^Acciones de / })
+        .first()
+        .click();
       await page.getByRole('button', { name: 'Editar combo', exact: true }).first().click();
       await expect(page.getByLabel('Nombre del combo', { exact: true })).toBeVisible();
       await capture('combo-editor');
@@ -127,11 +134,13 @@ for (const theme of ['light', 'dark'] as const) {
       await page.getByRole('button', { name: 'Faltantes y recuperaciones', exact: true }).click();
       await expect(page.getByText('Sin faltantes registrados.', { exact: true })).toBeVisible();
       await capture('detalle-incidencias');
+      await page.getByRole('button', { name: 'Más acciones', exact: true }).click();
       await page.getByRole('button', { name: 'Con faltante', exact: true }).click();
       await page.getByRole('button', { name: 'Agregar faltante', exact: true }).click();
       await expect(page.getByRole('button', { name: 'Dañado', exact: true })).toBeVisible();
       await capture('incidencia-editor');
       await visit('/obra/obra_1');
+      await page.getByRole('button', { name: 'Más acciones', exact: true }).click();
       await page.getByRole('button', { name: 'Ubicación', exact: true }).click();
       await expect(page.getByLabel('Latitud', { exact: true })).toBeVisible();
       await expect(page.getByLabel('Longitud', { exact: true })).toBeVisible();
@@ -140,6 +149,7 @@ for (const theme of ['light', 'dark'] as const) {
 
     await test.step('Revisión JSON real validada y cancelación sin reemplazar datos', async () => {
       await visit('/configuracion');
+      await page.getByRole('button', { name: 'Copias y restauración', exact: true }).click();
       const raw = await readFile('tests/fixtures/whatsapp-five.json');
       const chooser = page.waitForEvent('filechooser');
       await page.getByRole('button', { name: 'Elegir copia', exact: true }).click();
@@ -165,6 +175,7 @@ for (const theme of ['light', 'dark'] as const) {
     });
 
     await test.step('Los cuatro pasos de bienvenida accesibles desde Ajustes', async () => {
+      await closeUnchangedPanel();
       await page.getByRole('button', { name: 'Ver bienvenida', exact: true }).click();
       for (const [index, heading] of [
         'Tus alquileres, en un lugar',
@@ -180,7 +191,7 @@ for (const theme of ['light', 'dark'] as const) {
       }
     });
     await writeFile(
-      `artifacts/validacion/cobalto-superficies-${theme}.json`,
+      `artifacts/validacion/estructura-superficies-${theme}.json`,
       JSON.stringify(
         {
           environment:
