@@ -13,7 +13,7 @@ export function FaltantesForm({
   value: IncidentInput[];
   onChange: (v: IncidentInput[]) => void;
 }) {
-  const { s } = useUI();
+  const { C, s } = useUI();
   const { markDirty } = usePanelChanges();
   const { state } = useInventory();
   const available = state.materiales.filter((m) => (obra.saldosEnObra[m.id] || 0) > 0);
@@ -27,10 +27,6 @@ export function FaltantesForm({
   };
   return (
     <View style={{ gap: 15 }}>
-      <Text style={s.muted}>
-        Solo el material que sigue alquilado puede pasar a taller o perdido. Lo ya registrado no se
-        descuenta otra vez.
-      </Text>
       <View style={s.wrap}>
         {['Tornillos/Tuercas', 'Pasadores', 'Abrazaderas', 'Manijas'].map((name) => {
           const m = available.find((m) => m.nombre === name);
@@ -56,8 +52,16 @@ export function FaltantesForm({
           onChange(value.map((v, n) => (n === index ? { ...v, ...change } : v)));
         };
         return (
-          <View key={index} style={s.card}>
-            <Text style={s.h2}>
+          <View
+            key={index}
+            style={{
+              gap: 12,
+              paddingVertical: 16,
+              borderBottomWidth: 1,
+              borderBottomColor: C.hairline,
+            }}
+          >
+            <Text style={s.label}>
               {state.materiales.find((m) => m.id === i.materialId)?.nombre ||
                 'Sin stock maestro · no mueve existencias'}
             </Text>

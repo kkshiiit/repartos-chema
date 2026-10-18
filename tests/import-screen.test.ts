@@ -5,8 +5,31 @@ import { create, act } from 'react-test-renderer';
 import Settings from '../app/configuracion';
 const mocks = vi.hoisted(() => ({ pick: vi.fn(), restore: vi.fn(), undoRestore: vi.fn() }));
 vi.mock('../src/components/FeedbackSettings', () => ({ FeedbackSettings: () => null }));
-vi.mock('../src/components/Editorial', () => ({ Disclosure: ({children}:{children:React.ReactNode}) => children }));
-vi.mock('react-native', () => ({ View: 'View', Text: 'Text' }));
+vi.mock('react-native', () => ({ View: 'View', Text: 'Text', Pressable: 'Pressable' }));
+vi.mock('lucide-react-native', () =>
+  Object.fromEntries(
+    [
+      'Bell',
+      'BookOpen',
+      'FileClock',
+      'FileText',
+      'Info',
+      'Layers',
+      'MapPin',
+      'Move',
+      'Sun',
+      'UserRound',
+      'UsersRound',
+      'ChevronRight',
+    ].map((name) => [name, 'Icon']),
+  ),
+);
+vi.mock('../src/services/depotSettings', () => ({
+  loadDepot: vi.fn(async () => ({
+    nombre: 'Depósito de prueba',
+    direccion: 'Dirección de prueba',
+  })),
+}));
 vi.mock('expo-router', () => ({ router: { push: vi.fn() } }));
 vi.mock('../src/components/DepotSettings', () => ({ DepotSettings: () => null }));
 vi.mock('../src/components/TeamSettings', () => ({ TeamSettings: () => null }));
@@ -38,7 +61,8 @@ vi.mock('../src/components/ui', () => ({
   Notice: 'Notice',
   Sheet: ({ visible, children }: { visible: boolean; children: React.ReactNode }) =>
     visible ? children : null,
-  useUI: () => ({ s: {} }),
+  useUI: () => ({ s: {}, C: { panel: '#fff', hairline: '#ddd', muted: '#555' } }),
+  usePanelChanges: () => ({ resetDirty: vi.fn() }),
 }));
 const raw = readFileSync(new URL('./fixtures/whatsapp-five.json', import.meta.url), 'utf8');
 beforeEach(() => {
@@ -53,6 +77,10 @@ it('al elegir copia abre revisión con cinco alquileres, sin anunciar guardado n
   });
   const button = (name: string) =>
     view!.root.findAllByType('Button' as never).find((b) => b.props.label === name)!;
+  expect(button('Elegir copia')).toBeUndefined();
+  await act(async () => {
+    view!.root.findByProps({ accessibilityLabel: 'Copias y restauración' }).props.onPress();
+  });
   await act(async () => {
     await button('Elegir copia').props.onPress();
   });
@@ -65,6 +93,7 @@ it('al elegir copia abre revisión con cinco alquileres, sin anunciar guardado n
     await button('Confirmar importación').props.onPress();
   });
   expect(mocks.restore).toHaveBeenCalledOnce();
+  expect(mocks.restore).toHaveBeenCalledWith(raw);
   expect(view!.root.findAllByType('Notice' as never).map((n) => n.props.text)).toContain(
     'Importación completada: 5 alquileres guardados en este celular.',
   );
@@ -77,6 +106,10 @@ it('cancelar no restaura; una selección inválida posterior no permite importar
   });
   const button = (name: string) =>
     view!.root.findAllByType('Button' as never).find((b) => b.props.label === name);
+  expect(button('Elegir copia')).toBeUndefined();
+  await act(async () => {
+    view!.root.findByProps({ accessibilityLabel: 'Copias y restauración' }).props.onPress();
+  });
   await act(async () => {
     await button('Elegir copia')!.props.onPress();
   });
@@ -84,6 +117,8 @@ it('cancelar no restaura; una selección inválida posterior no permite importar
   await act(async () => {
     await button('Cancelar importación')!.props.onPress();
   });
+  expect(button('Confirmar importación')).toBeUndefined();
+  expect(mocks.restore).not.toHaveBeenCalled();
   mocks.pick.mockResolvedValue('{"format":');
   await act(async () => {
     await button('Elegir copia')!.props.onPress();

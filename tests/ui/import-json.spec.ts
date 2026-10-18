@@ -7,6 +7,7 @@ test('seleccionar JSON abre revisión, cancelar conserva datos, confirmar persis
 }) => {
   await login(page, 'Importación local');
   await page.goto('/configuracion');
+  await page.getByRole('button', { name: 'Copias y restauración', exact: true }).click();
   const before = await page.evaluate(() => localStorage.getItem('chema:demo:v1'));
   const select = async (buffer: Buffer, name = 'pedidos.json') => {
     const chooser = page.waitForEvent('filechooser');
@@ -42,6 +43,7 @@ test('seleccionar JSON abre revisión, cancelar conserva datos, confirmar persis
       () => JSON.parse(localStorage.getItem('chema:demo:v1')!).state.obras.length,
     ),
   ).toBe(5);
+  await page.getByRole('button', { name: 'Copias y restauración', exact: true }).click();
   await page.getByRole('button', { name: 'Deshacer última importación', exact: true }).click();
   await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
   await expect(

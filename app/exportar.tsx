@@ -1,16 +1,16 @@
 import { userError } from '../src/services/errors';
 import React, { useState } from 'react';
-import { View, Text, Platform } from 'react-native';
+import { View, Text, Platform, Pressable } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Download, FileText } from 'lucide-react-native';
 import { useInventory } from '../src/context/InventoryContext';
 import { useAuth } from '../src/context/AuthContext';
-import { Button, Chip, Field, Notice, Screen, Select, useUI } from '../src/components/ui';
+import { Button, Field, Notice, Screen, Select, useUI } from '../src/components/ui';
 import { exportDocument } from '../src/services/exportService';
 import { DATA_MODE } from '../src/services/firebase';
 import { obraStatus, validDate } from '../src/domain/rules';
 export default function Export() {
-  const { s } = useUI();
+  const { C, s } = useUI();
   const { obraId } = useLocalSearchParams<{ obraId?: string }>(),
     { state } = useInventory(),
     { user } = useAuth();
@@ -50,88 +50,136 @@ export default function Export() {
     }
   };
   return (
-    <Screen title="Documentos" back>
-      <View style={[s.card, { maxWidth: 750 }]}>
-        {user?.role !== 'ADMIN' ? (
-          <Notice text="Solo administración puede exportar documentos." />
-        ) : (
-          <>
-            <Notice
-              text={
-                DATA_MODE === 'demo'
-                  ? Platform.OS === 'web'
-                    ? 'Excel y Word se generan en este dispositivo. No se envían a la nube.'
-                    : 'Excel y Word se generan en este celular y se comparten con las aplicaciones instaladas. No requieren servicios en la nube.'
-                  : 'Generación privada en Cloud Functions. El archivo requiere autenticación y se elimina automáticamente.'
-              }
-            />
-            <View style={s.wrap}>
-              <Chip
-                label="Excel"
-                selected={format === 'excel'}
-                onPress={() => setFormat('excel')}
+    <Screen
+      title="Documentos"
+      subtitle={
+        DATA_MODE === 'demo'
+          ? 'Generados en este dispositivo.'
+          : 'Generación privada de documentos.'
+      }
+      back
+      footer={
+        user?.role === 'ADMIN' ? (
+          <Button
+            label={format === 'excel' ? 'Exportar Excel' : 'Generar remito'}
+            icon={format === 'excel' ? Download : FileText}
+            loading={busy}
+            onPress={() => run(format)}
+          />
+        ) : undefined
+      }
+    >
+      {user?.role !== 'ADMIN' ? (
+        <Notice text="Solo administración puede exportar documentos." />
+      ) : (
+        <>
+          <View
+            accessibilityRole="tablist"
+            style={{
+              flexDirection: 'row',
+              padding: 4,
+              gap: 4,
+              backgroundColor: C.panel,
+              borderWidth: 1,
+              borderColor: C.line,
+              borderRadius: 12,
+            }}
+          >
+            {(['excel', 'word'] as const).map((kind) => (
+              <Pressable
+                key={kind}
+                accessibilityRole="tab"
+                accessibilityLabel={kind === 'excel' ? 'Excel' : 'Word'}
+                accessibilityState={{ selected: format === kind, disabled: busy }}
+                disabled={busy}
+                onPress={() => setFormat(kind)}
+                style={{
+                  flex: 1,
+                  minHeight: 48,
+                  padding: 12,
+                  borderRadius: 8,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: format === kind ? C.selection : 'transparent',
+                }}
+              >
+                <Text style={[s.label, { color: format === kind ? C.link : C.muted }]}>
+                  {kind === 'excel' ? 'Excel' : 'Word'}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+          {format === 'excel' ? (
+            <View style={s.section}>
+              <Text accessibilityRole="header" style={s.h2}>
+                Reporte logístico
+              </Text>
+              <Field
+                label="Entrega desde · AAAA-MM-DD"
+                value={from}
+                onChangeText={setFrom}
+                placeholder="Sin límite"
               />
-              <Chip label="Word" selected={format === 'word'} onPress={() => setFormat('word')} />
+              <Field
+                label="Entrega hasta · AAAA-MM-DD"
+                value={to}
+                onChangeText={setTo}
+                placeholder="Sin límite"
+              />
+              <Select
+                label="Estado"
+                value={status}
+                options={[
+                  { value: 'TODAS', label: 'Todos' },
+                  { value: 'ROJO', label: 'Vencido' },
+                  { value: 'AMARILLO', label: 'Retiro hoy' },
+                  { value: 'VERDE', label: 'Al día' },
+                  { value: 'PENDIENTE', label: 'Por entregar' },
+                  { value: 'RETIRADO', label: 'Retirado' },
+                  { value: 'REINGRESADO', label: 'Reingresado' },
+                ]}
+                onChange={setStatus}
+              />
             </View>
-            {format === 'excel' ? (
-              <View style={s.section}>
-                <Text style={s.h2}>Reporte logístico</Text>
-                <Field
-                  label="Entrega desde · AAAA-MM-DD"
-                  value={from}
-                  onChangeText={setFrom}
-                  placeholder="Sin límite"
-                />
-                <Field
-                  label="Entrega hasta · AAAA-MM-DD"
-                  value={to}
-                  onChangeText={setTo}
-                  placeholder="Sin límite"
-                />
-                <Select
-                  label="Estado"
-                  value={status}
-                  options={[
-                    { value: 'TODAS', label: 'Todos' },
-                    { value: 'ROJO', label: 'Vencido' },
-                    { value: 'AMARILLO', label: 'Retiro hoy' },
-                    { value: 'VERDE', label: 'Al día' },
-                    { value: 'PENDIENTE', label: 'Por entregar' },
-                    { value: 'RETIRADO', label: 'Retirado' },
-                    { value: 'REINGRESADO', label: 'Reingresado' },
-                  ]}
-                  onChange={setStatus}
-                />
-                <Button
-                  label="Exportar Excel"
-                  icon={Download}
-                  loading={busy}
-                  onPress={() => run('excel')}
-                />
-              </View>
-            ) : (
-              <View style={s.section}>
-                <Text style={s.h2}>Remito institucional</Text>
-                <Select
-                  label="Alquiler"
-                  value={selection}
-                  options={state.obras.map((o) => ({ value: o.id, label: o.clienteNombre }))}
-                  onChange={setSelected}
-                />
-                <Button
-                  label="Generar remito"
-                  icon={FileText}
-                  variant="secondary"
-                  loading={busy}
-                  onPress={() => run('word')}
-                />
-              </View>
-            )}
-            {error ? <Notice text={error} tone="error" /> : null}
-            {success ? <Notice text={success} tone="success" /> : null}
-          </>
-        )}
-      </View>
+          ) : (
+            <View style={s.section}>
+              <Text accessibilityRole="header" style={s.h2}>
+                Remito institucional
+              </Text>
+              <Select
+                label="Alquiler"
+                value={selection}
+                options={state.obras.map((o) => ({ value: o.id, label: o.clienteNombre }))}
+                onChange={setSelected}
+              />
+            </View>
+          )}
+          <Notice
+            text={
+              DATA_MODE === 'demo'
+                ? Platform.OS === 'web'
+                  ? 'Excel y Word se generan en este dispositivo. No se envían a la nube.'
+                  : 'Excel y Word se generan en este celular y se comparten con las aplicaciones instaladas. No requieren servicios en la nube.'
+                : 'Generación privada en Cloud Functions. El archivo requiere autenticación y se elimina automáticamente.'
+            }
+          />
+          {error ? <Notice text={error} tone="error" /> : null}
+          {success ? <Notice text={success} tone="success" /> : null}
+          <Text
+            style={[
+              s.muted,
+              {
+                borderTopWidth: 1,
+                borderTopColor: C.hairline,
+                paddingTop: 20,
+                textAlign: 'center',
+              },
+            ]}
+          >
+            El remito Word conserva el formato institucional.
+          </Text>
+        </>
+      )}
     </Screen>
   );
 }

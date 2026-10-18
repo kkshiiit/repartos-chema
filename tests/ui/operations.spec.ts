@@ -21,9 +21,10 @@ test('retiro y reingreso conservan el total', async ({ page }) => {
     });
   const before = await total();
   await page.goto('/obra/obra_1');
-  await page.getByRole('button', { name: 'Retirar', exact: true }).last().click();
+  await page.getByRole('button', { name: 'Registrar retiro', exact: true }).last().click();
   await page.getByRole('button', { name: 'Fabián', exact: true }).click();
-  await page.getByRole('button', { name: 'Confirmar operación', exact: true }).click();
+  await page.getByRole('button', { name: 'Confirmar retiro', exact: true }).click();
+  await page.getByRole('button', { name: 'Más acciones', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Reingresar', exact: true }).last()).toBeVisible();
   expect(await total()).toBe(before);
   await page.getByRole('button', { name: 'Reingresar', exact: true }).last().click();
@@ -39,6 +40,7 @@ test('triangulación, daño y recuperación conservan existencias y procedencia'
   await login(page);
   await page.goto('/obra/obra_1');
   const before = await state();
+  await page.getByRole('button', { name: 'Más acciones', exact: true }).click();
   await page.getByRole('button', { name: 'Triangular', exact: true }).click();
   await page.getByRole('button', { name: 'Fabián', exact: true }).click();
   await page.getByRole('button', { name: 'Alquiler destino', exact: true }).click();
@@ -46,7 +48,7 @@ test('triangulación, daño y recuperación conservan existencias y procedencia'
   await page
     .getByLabel('Motivo de transferencia', { exact: true })
     .fill('Traslado directo de prueba');
-  await page.getByRole('button', { name: 'Confirmar operación', exact: true }).click();
+  await page.getByRole('button', { name: 'Confirmar triangulación', exact: true }).click();
   await expect.poll(async () => (await state()).revision).toBe(before.revision + 1);
   const transferred = await state();
   expect(transferred.materiales).toEqual(before.materiales);
@@ -55,10 +57,11 @@ test('triangulación, daño y recuperación conservan existencias y procedencia'
     destino: 'obra:obra_2',
     cantidad: 1,
   });
+  await page.getByRole('button', { name: 'Más acciones', exact: true }).click();
   await page.getByRole('button', { name: 'Con faltante', exact: true }).click();
   await page.getByRole('button', { name: 'Agregar faltante', exact: true }).click();
   await page.getByRole('button', { name: 'Dañado', exact: true }).click();
-  await page.getByRole('button', { name: 'Confirmar operación', exact: true }).click();
+  await page.getByRole('button', { name: 'Confirmar faltante', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Recuperar material', exact: true })).toBeVisible();
   const damaged = await state();
   expect(damaged.materiales[0].cantidadEnTaller).toBe(1);
@@ -86,9 +89,11 @@ test('wizard prepara carga sin persistir al navegar y confirma un solo alquiler'
   await page.getByLabel('Nombre del cliente', { exact: true }).fill('Cliente wizard sintético');
   await page.getByLabel('Dirección', { exact: true }).fill('Calle sintética 321');
   await page.getByLabel('Barrio / localidad', { exact: true }).fill('Zona sintética');
+  await page.getByRole('button', { name: 'Agregar observaciones', exact: true }).click();
   await page.getByLabel('Observaciones', { exact: true }).fill('Conservar durante revisión');
   await page.getByRole('button', { name: 'Continuar a carga', exact: true }).click();
   await page.getByRole('button', { name: 'Agregar material', exact: true }).last().click();
+  await page.getByRole('button', { name: /^Detalles de / }).click();
   await page.getByLabel('Apodo de esta carga', { exact: true }).fill('Identificación sintética');
   await page.getByRole('button', { name: 'Revisar alquiler', exact: true }).click();
   expect(await state()).toEqual(before);

@@ -1,7 +1,7 @@
 import { Disclosure } from '../../src/components/Editorial';
 import { RentalReminderPanel } from '../../src/components/RentalReminderPanel';
 import { userError } from '../../src/services/errors';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, Text } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import {
@@ -15,6 +15,8 @@ import {
   Truck,
   ArrowRightLeft,
   Download,
+  CalendarDays,
+  MoreHorizontal,
 } from 'lucide-react-native';
 import * as Location from 'expo-location';
 import { useInventory, makeId } from '../../src/context/InventoryContext';
@@ -56,14 +58,19 @@ export default function Detail() {
     [reason, setReason] = useState(''),
     [lat, setLat] = useState(''),
     [lng, setLng] = useState('');
+  const running = useRef(false);
   const run = async (f: () => Promise<unknown>) => {
+    if (running.current) return;
+    running.current = true;
     setBusy(true);
     setError('');
     try {
       await f();
     } catch (e) {
       setError(userError(e));
+      setModal((current) => current || 'error');
     } finally {
+      running.current = false;
       setBusy(false);
     }
   };
@@ -74,317 +81,323 @@ export default function Detail() {
       </Screen>
     );
   const incident = o.faltantesRegistrados?.find((i) => i.id === recoverId);
+  const materialIds = [
+    ...new Set([
+      ...o.materialesCargados.map((m) => m.materialId),
+      ...Object.keys(o.saldosEnObra).filter((materialId) => (o.saldosEnObra[materialId] || 0) > 0),
+    ]),
+  ];
   return (
     <Screen
-      title={o.clienteNombre}
-      subtitle={`${o.direccion} · ${o.localidadBarrio}`}
+      title="Alquiler"
       back
-      action={<StatusChip obra={o} />}
+      footer={
+        o.estadoProceso === 'PENDIENTE_ENTREGA' ? (
+          <Button label="Registrar entrega" icon={Truck} onPress={() => setModal('entrega')} />
+        ) : o.estadoProceso === 'ENTREGADO' ? (
+          <Button label="Registrar retiro" icon={Truck} onPress={() => setModal('retiro')} />
+        ) : undefined
+      }
     >
-      <View style={[s.card, { flexDirection: 'row', flexWrap: 'wrap', gap: 20 }]}>
-        <View style={{ flex: 1, minWidth: 120, gap: 4 }}>
-          <Text style={s.muted}>Entrega prevista</Text>
-          <Text style={[s.h2, { fontVariant: ['tabular-nums'] }]}>
-            {o.fechaEntrega.split('-').reverse().join('/')}
+      <View style={{ maxWidth: 760, width: '100%', alignSelf: 'center', gap: 24 }}>
+        <View style={{ gap: 8 }}>
+          <Text accessibilityRole="header" style={s.title}>
+            {o.clienteNombre}
           </Text>
+          <View style={[s.row, { justifyContent: 'space-between', flexWrap: 'wrap' }]}>
+            <View style={[s.row, { flex: 1, minWidth: 140, gap: 8 }]}>
+              <MapPin size={18} color={C.muted} />
+              <Text style={[s.muted, s.grow]}>{o.localidadBarrio}</Text>
+            </View>
+            <StatusChip obra={o} />
+          </View>
+          <Text style={s.muted}>{o.direccion}</Text>
         </View>
-        <View style={{ flex: 1, minWidth: 120, gap: 4 }}>
-          <Text style={s.muted}>Retiro previsto</Text>
-          <Text style={[s.h2, { fontVariant: ['tabular-nums'] }]}>
-            {o.fechaRetiroEstimada.split('-').reverse().join('/')}
-          </Text>
-        </View>
-      </View>
-      <View style={[s.wrap, { gap: 16 }]}>
         <View
-          style={{
-            flexGrow: 2,
-            flexBasis: 500,
-            flexShrink: 1,
-            minWidth: 0,
-            maxWidth: '100%',
-            gap: 20,
-          }}
+          style={[
+            s.row,
+            { backgroundColor: C.panel, borderRadius: 16, padding: 16, flexWrap: 'wrap', gap: 16 },
+          ]}
         >
-          <View style={s.card}>
-            <Text style={s.h2}>Operación</Text>
-            <View style={s.wrap}>
-              {o.estadoProceso === 'PENDIENTE_ENTREGA' ? (
-                <Button label="Entregar" icon={Truck} onPress={() => setModal('entrega')} />
-              ) : o.estadoProceso === 'ENTREGADO' ? (
-                <>
-                  <Button label="Retirar" icon={Truck} onPress={() => setModal('retiro')} />
-                  <Button
-                    label="Con faltante"
-                    variant="secondary"
-                    onPress={() => setModal('faltante')}
-                  />
-                  <Button
-                    label="Triangular"
-                    icon={ArrowRightLeft}
-                    variant="secondary"
-                    onPress={() => setModal('transferencia')}
-                  />
-                </>
-              ) : (
-                <>
-                  {o.estadoProceso === 'RETIRADO' ? (
-                    <ConfirmButton
-                      label="Reingresar"
-                      title="Cerrar reingreso"
-                      description="El inventario ya se distribuyó al confirmar el retiro. Este paso cierra la revisión, sin volver a sumar material."
-                      variant="primary"
-                      onConfirm={() => dispatch({ type: 'REENTER', obraId: o.id })}
-                    />
-                  ) : null}
-                  {user?.role === 'ADMIN' ? (
-                    <ConfirmButton
-                      label="Reactivar"
-                      title="Preparar nueva entrega"
-                      description="El alquiler volverá a pendiente. Revisa fechas y carga antes de entregar de nuevo."
-                      variant="secondary"
-                      onConfirm={() => dispatch({ type: 'REACTIVATE', obraId: o.id })}
-                    />
-                  ) : null}
-                </>
-              )}
-            </View>
-            <View style={s.divider} />
-            <View style={s.wrap}>
-              <Button
-                label="GPS"
-                icon={Navigation}
-                variant="secondary"
-                onPress={() => run(() => openLink(mapsUrl(o)))}
-              />
-              <Button
-                label="Remito WhatsApp"
-                icon={MessageCircle}
-                variant="secondary"
-                onPress={() => run(() => openLink(whatsappUrl(o)))}
-              />
-              {user?.role === 'ADMIN' ? (
-                <Button
-                  label="Documento"
-                  icon={Download}
-                  variant="secondary"
-                  onPress={() => router.push(`/exportar?obraId=${o.id}`)}
-                />
-              ) : null}
-            </View>
-            {error ? <Notice text={error} tone="error" /> : null}
-          </View>
-          <View style={s.card}>
-            <View style={[s.row, { justifyContent: 'space-between', flexWrap: 'wrap' }]}>
-              <Text style={s.h2}>Materiales de la carga</Text>
-              {user?.role === 'ADMIN' && o.estadoProceso === 'PENDIENTE_ENTREGA' ? (
-                <Button
-                  label="Preparar carga"
-                  icon={Package}
-                  variant="secondary"
-                  onPress={() => setModal('carga')}
-                />
-              ) : null}
-            </View>
-            {o.materialesCargados.length ? (
-              o.materialesCargados.map((m) => (
-                <View key={m.materialId} style={{ gap: 9 }}>
-                  <View style={[s.row, { justifyContent: 'space-between' }]}>
-                    <View style={{ flex: 1 }}>
-                      <Text style={s.body}>
-                        {m.nombre} {m.medida}
-                      </Text>
-                      {m.apodo ? <Text style={s.muted}>{m.apodo}</Text> : null}
-                    </View>
-                    <Text style={{ color: C.text, fontSize: 21, fontWeight: '700' }}>
-                      ×{m.cantidad}
-                    </Text>
-                  </View>
-                  <Text style={s.muted}>
-                    {o.saldosEnObra[m.materialId] || 0} actualmente alquiladas
-                  </Text>
-                  <View style={s.divider} />
-                </View>
-              ))
-            ) : (
-              <Text style={s.muted}>Prepara una carga o recibe una triangulación.</Text>
-            )}
-          </View>
-          <Disclosure
-            key={o.faltantesRegistrados?.length || 0}
-            title="Faltantes y recuperaciones"
-            initiallyOpen={!!o.faltantesRegistrados?.some((i) => i.recuperado < i.cantidad)}
-          >
-            {o.faltantesRegistrados?.length ? (
-              o.faltantesRegistrados.map((i) => (
-                <View key={i.id} style={{ gap: 8 }}>
-                  <Text style={s.body}>
-                    {i.itemNombre} · {i.tipo === 'DANADO' ? 'Dañado' : 'Perdido'}
-                  </Text>
-                  <Text style={s.muted}>
-                    {i.cantidad} registrados · {i.recuperado} recuperados · {i.notas || 'Sin notas'}
-                  </Text>
-                  {i.recuperado < i.cantidad ? (
-                    <Button
-                      label="Recuperar material"
-                      variant="secondary"
-                      onPress={() => {
-                        setRecoverId(i.id);
-                        setN(1);
-                        setReason('');
-                        setModal('recuperar');
-                      }}
-                    />
-                  ) : null}
-                </View>
-              ))
-            ) : (
-              <Text style={s.muted}>Sin faltantes registrados.</Text>
-            )}
-            {state.notificaciones
-              .filter((n) => n.obraId === o.id)
-              .map((n) => (
-                <Notice
-                  key={n.id}
-                  text={`Aviso a administración: ${n.status === 'SENT' ? 'aceptado por FCM (entrega al dispositivo no garantizada)' : n.status === 'EXHAUSTED' ? 'reintentos agotados; solicita revisión administrativa' : n.status === 'FAILED' ? `fallido · ${n.error || 'reintento pendiente'}` : 'pendiente; no enviado'}`}
-                />
-              ))}
-          </Disclosure>
-          <Disclosure title="Fotos">
-            <Text style={s.muted}>
-              {DATA_MODE === 'demo'
-                ? 'Fotos locales; no se respaldan en nube. Al borrar datos de la app o del navegador se pierden.'
-                : 'Fotos en cola hasta completar subida y registro. Mantén la app abierta para sincronizar.'}
+          <CalendarDays size={24} color={C.muted} />
+          <View style={{ flex: 1, minWidth: 90, gap: 4 }}>
+            <Text style={s.muted}>Entrega prevista</Text>
+            <Text style={[s.label, { fontVariant: ['tabular-nums'] }]}>
+              {o.fechaEntrega.split('-').reverse().join('/')}
             </Text>
-            <View style={s.wrap}>
-              <Button
-                label="Tomar foto"
-                icon={Camera}
-                loading={busy}
-                variant="secondary"
-                onPress={() =>
-                  run(async () => {
-                    const photo = await selectPhoto(makeId(), user!.uid, true);
-                    if (photo) await dispatch({ type: 'PHOTO', obraId: o.id, photo });
-                  })
-                }
-              />
-              <Button
-                label="Elegir foto"
-                icon={ImagePlus}
-                disabled={busy}
-                variant="secondary"
-                onPress={() =>
-                  run(async () => {
-                    const photo = await selectPhoto(makeId(), user!.uid);
-                    if (photo) await dispatch({ type: 'PHOTO', obraId: o.id, photo });
-                  })
-                }
-              />
-            </View>
-            <View style={s.wrap}>
-              {o.fotos?.map((p) => (
-                <View key={p.id} style={{ width: 150, gap: 8 }}>
-                  <PhotoImage photo={p} />
-                  <Text style={s.muted}>
-                    {DATA_MODE === 'demo'
-                      ? 'Foto local'
-                      : p.status === 'PENDING'
-                        ? 'Subida pendiente'
-                        : 'Foto en nube'}
-                  </Text>
-                  {user?.role === 'ADMIN' || p.usuarioUid === user?.uid ? (
-                    <ConfirmButton
-                      label="Borrar foto"
-                      title="Eliminar foto"
-                      description={
-                        DATA_MODE === 'demo'
-                          ? 'Se quitará del alquiler. El archivo se conserva para recuperar copias anteriores.'
-                          : 'Se quitará del registro. La limpieza remota se procesa por el servidor.'
-                      }
-                      onConfirm={async () => {
-                        await dispatch({ type: 'DELETE_PHOTO', obraId: o.id, photoId: p.id });
-                        if (DATA_MODE === 'firebase' && p.status === 'SYNCED')
-                          await deleteLocalPhoto(p.id);
-                      }}
-                    />
-                  ) : null}
-                </View>
-              ))}
-            </View>
-          </Disclosure>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              minWidth: 100,
+              gap: 4,
+              borderLeftWidth: 1,
+              borderLeftColor: C.hairline,
+              paddingLeft: 16,
+            }}
+          >
+            <Text style={s.muted}>Retiro previsto</Text>
+            <Text style={[s.label, { fontVariant: ['tabular-nums'] }]}>
+              {o.fechaRetiroEstimada.split('-').reverse().join('/')}
+            </Text>
+          </View>
         </View>
-        <View
-          style={{
-            flexGrow: 1,
-            flexBasis: 270,
-            flexShrink: 1,
-            minWidth: 0,
-            maxWidth: '100%',
-            gap: 20,
-          }}
-        >
-          <Disclosure title="Datos del alquiler" initiallyOpen>
-            <Info label="ENTREGA PREVISTA" value={o.fechaEntrega} />
-            <Info
-              label="ENTREGA EFECTIVA"
-              value={o.fechaEntregaEfectiva || 'Sin registro efectivo separado'}
-            />
-            {o.observaciones ? <Info label="OBSERVACIONES" value={o.observaciones} /> : null}
-            <Info label="RETIRO ESTIMADO" value={o.fechaRetiroEstimada} />
-            {o.fechaRetiroEfectiva ? (
-              <Info label="RETIRO EFECTIVO" value={o.fechaRetiroEfectiva} />
-            ) : null}
-            <Info label="TELÉFONO" value={o.clienteTelefono || 'Sin teléfono'} />
-            <Info label="RECIBIÓ" value={o.recibidoPor || 'Sin registrar'} />
-            <Info label="ENTREGADO POR" value={o.entregadoPor?.join(', ') || 'Por asignar'} />
-            <Info label="RETIRADO POR" value={o.retiradoPor?.join(', ') || 'Por asignar'} />
-            {user?.role === 'ADMIN' ? (
-              <Button
-                label="Editar datos"
-                icon={Pencil}
-                variant="secondary"
-                onPress={() => router.push(`/obra/editar?id=${o.id}`)}
-              />
-            ) : null}
+        <View style={{ gap: 12 }}>
+          <Text accessibilityRole="header" style={s.h2}>
+            {o.estadoProceso === 'PENDIENTE_ENTREGA' ? 'Carga preparada' : 'Materiales en obra'}
+          </Text>
+          {materialIds.length ? (
+            materialIds.map((materialId) => {
+              const load = o.materialesCargados.find((m) => m.materialId === materialId);
+              const master = state.materiales.find((m) => m.id === materialId);
+              const pending = o.estadoProceso === 'PENDIENTE_ENTREGA';
+              return (
+                <View
+                  key={materialId}
+                  style={[
+                    s.row,
+                    {
+                      gap: 16,
+                      paddingVertical: 12,
+                      borderBottomWidth: 1,
+                      borderBottomColor: C.hairline,
+                    },
+                  ]}
+                >
+                  <Package size={24} color={C.muted} />
+                  <View style={[s.grow, { gap: 4 }]}>
+                    <Text style={s.label}>{load?.nombre || master?.nombre || materialId}</Text>
+                    <Text style={s.muted}>
+                      {load?.medida || master?.medida || 'Sin medida'}
+                      {load?.apodo ? ` · ${load.apodo}` : ''}
+                    </Text>
+                    {!pending && load ? (
+                      <Text style={s.muted}>{load.cantidad} en carga original</Text>
+                    ) : null}
+                  </View>
+                  <View style={{ alignItems: 'flex-end', gap: 2, maxWidth: '40%' }}>
+                    <Text style={[s.h2, { fontVariant: ['tabular-nums'] }]}>
+                      {pending ? load?.cantidad || 0 : o.saldosEnObra[materialId] || 0}
+                    </Text>
+                    <Text style={s.muted}>{pending ? 'Preparadas' : 'Alquiladas'}</Text>
+                  </View>
+                </View>
+              );
+            })
+          ) : (
+            <Text style={s.muted}>Prepara una carga o recibe una triangulación.</Text>
+          )}
+          {user?.role === 'ADMIN' && o.estadoProceso === 'PENDIENTE_ENTREGA' ? (
             <Button
-              label="Ubicación"
-              icon={MapPin}
+              label="Preparar carga"
+              icon={Package}
               variant="secondary"
-              onPress={() => {
-                setLat(String(o.coordenadas?.lat ?? ''));
-                setLng(String(o.coordenadas?.lng ?? ''));
-                setModal('ubicacion');
-              }}
-            />
-            <Notice
-              text={
-                LOCAL_ONLY || DATA_MODE === 'demo'
-                  ? 'Guardado en este celular. No hay sincronización en la nube.'
-                  : o.syncStatus === 'PENDING'
-                    ? '☁️⏳ Pendiente de nube. El cambio está guardado en este dispositivo.'
-                    : 'Confirmado por el servidor.'
-              }
-            />
-          </Disclosure>
-          <RentalReminderPanel obra={o} />
-          {user?.role === 'ADMIN' ? (
-            <ConfirmButton
-              label="Eliminar alquiler"
-              title="Eliminar este alquiler"
-              description="Solo se permite sin alquiler activo, fotos ni faltantes abiertos. Se conservará la evidencia en el historial."
-              onConfirm={async () => {
-                await dispatch({ type: 'DELETE_OBRA', obraId: o.id });
-                router.replace('/');
-              }}
+              onPress={() => setModal('carga')}
             />
           ) : null}
         </View>
+        <View style={{ gap: 12 }}>
+          <Text accessibilityRole="header" style={s.h2}>
+            Acciones
+          </Text>
+          <View style={[s.row, { alignItems: 'stretch', gap: 8, flexWrap: 'wrap' }]}>
+            <Button
+              label="GPS"
+              icon={Navigation}
+              variant="secondary"
+              disabled={busy}
+              style={{ flex: 1, minWidth: 80, flexDirection: 'column', minHeight: 80 }}
+              onPress={() => run(() => openLink(mapsUrl(o)))}
+            />
+            <Button
+              label="Remito WhatsApp"
+              icon={MessageCircle}
+              variant="secondary"
+              disabled={busy}
+              style={{ flex: 1, minWidth: 100, flexDirection: 'column', minHeight: 80 }}
+              onPress={() => run(() => openLink(whatsappUrl(o)))}
+            />
+            {user?.role === 'ADMIN' ? (
+              <Button
+                label="Documento"
+                icon={Download}
+                variant="secondary"
+                style={{ flex: 1, minWidth: 90, flexDirection: 'column', minHeight: 80 }}
+                onPress={() => router.push(`/exportar?obraId=${o.id}`)}
+              />
+            ) : null}
+          </View>
+          <Button
+            label="Más acciones"
+            icon={MoreHorizontal}
+            variant="secondary"
+            onPress={() => setModal('acciones')}
+          />
+          {user?.role === 'ADMIN' ? (
+            <Button
+              label="Editar alquiler"
+              icon={Pencil}
+              variant="ghost"
+              onPress={() => router.push(`/obra/editar?id=${o.id}`)}
+            />
+          ) : null}
+        </View>
+        <Disclosure
+          key={o.faltantesRegistrados?.length || 0}
+          title="Faltantes y recuperaciones"
+          initiallyOpen={!!o.faltantesRegistrados?.some((i) => i.recuperado < i.cantidad)}
+        >
+          {o.faltantesRegistrados?.length ? (
+            o.faltantesRegistrados.map((i) => (
+              <View key={i.id} style={{ gap: 8 }}>
+                <Text style={s.body}>
+                  {i.itemNombre} · {i.tipo === 'DANADO' ? 'Dañado' : 'Perdido'}
+                </Text>
+                <Text style={s.muted}>
+                  {i.cantidad} registrados · {i.recuperado} recuperados · {i.notas || 'Sin notas'}
+                </Text>
+                {i.recuperado < i.cantidad ? (
+                  <Button
+                    label="Recuperar material"
+                    variant="secondary"
+                    onPress={() => {
+                      setRecoverId(i.id);
+                      setN(1);
+                      setReason('');
+                      setModal('recuperar');
+                    }}
+                  />
+                ) : null}
+              </View>
+            ))
+          ) : (
+            <Text style={s.muted}>Sin faltantes registrados.</Text>
+          )}
+          {state.notificaciones
+            .filter((n) => n.obraId === o.id)
+            .map((n) => (
+              <Notice
+                key={n.id}
+                text={`Aviso a administración: ${n.status === 'SENT' ? 'aceptado por FCM (entrega al dispositivo no garantizada)' : n.status === 'EXHAUSTED' ? 'reintentos agotados; solicita revisión administrativa' : n.status === 'FAILED' ? `fallido · ${n.error || 'reintento pendiente'}` : 'pendiente; no enviado'}`}
+              />
+            ))}
+        </Disclosure>
+        <Disclosure title="Fotos">
+          <Text style={s.muted}>
+            {DATA_MODE === 'demo'
+              ? 'Fotos locales; no se respaldan en nube. Al borrar datos de la app o del navegador se pierden.'
+              : 'Fotos en cola hasta completar subida y registro. Mantén la app abierta para sincronizar.'}
+          </Text>
+          <View style={s.wrap}>
+            <Button
+              label="Tomar foto"
+              icon={Camera}
+              loading={busy}
+              variant="secondary"
+              onPress={() =>
+                run(async () => {
+                  const photo = await selectPhoto(makeId(), user!.uid, true);
+                  if (photo) await dispatch({ type: 'PHOTO', obraId: o.id, photo });
+                })
+              }
+            />
+            <Button
+              label="Elegir foto"
+              icon={ImagePlus}
+              disabled={busy}
+              variant="secondary"
+              onPress={() =>
+                run(async () => {
+                  const photo = await selectPhoto(makeId(), user!.uid);
+                  if (photo) await dispatch({ type: 'PHOTO', obraId: o.id, photo });
+                })
+              }
+            />
+          </View>
+          <View style={s.wrap}>
+            {o.fotos?.map((p) => (
+              <View key={p.id} style={{ width: 150, gap: 8 }}>
+                <PhotoImage photo={p} />
+                <Text style={s.muted}>
+                  {DATA_MODE === 'demo'
+                    ? 'Foto local'
+                    : p.status === 'PENDING'
+                      ? 'Subida pendiente'
+                      : 'Foto en nube'}
+                </Text>
+                {user?.role === 'ADMIN' || p.usuarioUid === user?.uid ? (
+                  <ConfirmButton
+                    label="Borrar foto"
+                    title="Eliminar foto"
+                    description={
+                      DATA_MODE === 'demo'
+                        ? 'Se quitará del alquiler. El archivo se conserva para recuperar copias anteriores.'
+                        : 'Se quitará del registro. La limpieza remota se procesa por el servidor.'
+                    }
+                    onConfirm={async () => {
+                      await dispatch({ type: 'DELETE_PHOTO', obraId: o.id, photoId: p.id });
+                      if (DATA_MODE === 'firebase' && p.status === 'SYNCED')
+                        await deleteLocalPhoto(p.id);
+                    }}
+                  />
+                ) : null}
+              </View>
+            ))}
+          </View>
+        </Disclosure>
+        <Disclosure title="Datos del alquiler">
+          <Info label="ENTREGA PREVISTA" value={o.fechaEntrega} />
+          <Info
+            label="ENTREGA EFECTIVA"
+            value={o.fechaEntregaEfectiva || 'Sin registro efectivo separado'}
+          />
+          {o.observaciones ? <Info label="OBSERVACIONES" value={o.observaciones} /> : null}
+          <Info label="RETIRO ESTIMADO" value={o.fechaRetiroEstimada} />
+          {o.fechaRetiroEfectiva ? (
+            <Info label="RETIRO EFECTIVO" value={o.fechaRetiroEfectiva} />
+          ) : null}
+          <Info label="TELÉFONO" value={o.clienteTelefono || 'Sin teléfono'} />
+          <Info label="RECIBIÓ" value={o.recibidoPor || 'Sin registrar'} />
+          <Info label="ENTREGADO POR" value={o.entregadoPor?.join(', ') || 'Por asignar'} />
+          <Info label="RETIRADO POR" value={o.retiradoPor?.join(', ') || 'Por asignar'} />
+          {user?.role === 'ADMIN' ? (
+            <Button
+              label="Editar datos"
+              icon={Pencil}
+              variant="secondary"
+              onPress={() => router.push(`/obra/editar?id=${o.id}`)}
+            />
+          ) : null}
+          <Button
+            label="Ubicación"
+            icon={MapPin}
+            variant="secondary"
+            onPress={() => {
+              setLat(String(o.coordenadas?.lat ?? ''));
+              setLng(String(o.coordenadas?.lng ?? ''));
+              setModal('ubicacion');
+            }}
+          />
+          <Notice
+            text={
+              LOCAL_ONLY || DATA_MODE === 'demo'
+                ? 'Guardado en este celular. No hay sincronización en la nube.'
+                : o.syncStatus === 'PENDING'
+                  ? '☁️⏳ Pendiente de nube. El cambio está guardado en este dispositivo.'
+                  : 'Confirmado por el servidor.'
+            }
+          />
+        </Disclosure>
+        <Disclosure title="Recordatorios">
+          <RentalReminderPanel obra={o} />
+        </Disclosure>
       </View>
       <Sheet
         visible={!!modal}
         title={
           {
+            acciones: 'Más acciones',
+            error: 'No se pudo completar la acción',
             carga: 'Preparar carga',
             entrega: 'Confirmar entrega',
             retiro: 'Inspección de retiro',
@@ -403,6 +416,73 @@ export default function Detail() {
         onClose={() => setModal('')}
       >
         {error ? <Notice text={error} tone="error" /> : null}
+        {modal === 'acciones' ? (
+          <>
+            <Text style={s.muted}>
+              Gestioná este alquiler sin alterar la carga hasta confirmar cada operación.
+            </Text>
+            {o.estadoProceso === 'ENTREGADO' ? (
+              <>
+                <Button
+                  label="Con faltante"
+                  variant="secondary"
+                  onPress={() => setModal('faltante')}
+                />
+                <Button
+                  label="Triangular"
+                  icon={ArrowRightLeft}
+                  variant="secondary"
+                  onPress={() => setModal('transferencia')}
+                />
+              </>
+            ) : null}
+            {o.estadoProceso === 'RETIRADO' ? (
+              <ConfirmButton
+                label="Reingresar"
+                title="Cerrar reingreso"
+                description="El inventario ya se distribuyó al confirmar el retiro. Este paso cierra la revisión, sin volver a sumar material."
+                variant="secondary"
+                onConfirm={async () => {
+                  await dispatch({ type: 'REENTER', obraId: o.id });
+                  setModal('');
+                }}
+              />
+            ) : null}
+            {user?.role === 'ADMIN' && ['RETIRADO', 'REINGRESADO'].includes(o.estadoProceso) ? (
+              <ConfirmButton
+                label="Reactivar"
+                title="Preparar nueva entrega"
+                description="El alquiler volverá a pendiente. Revisa fechas y carga antes de entregar de nuevo."
+                variant="secondary"
+                onConfirm={async () => {
+                  await dispatch({ type: 'REACTIVATE', obraId: o.id });
+                  setModal('');
+                }}
+              />
+            ) : null}
+            <Button
+              label="Ubicación"
+              icon={MapPin}
+              variant="secondary"
+              onPress={() => {
+                setLat(String(o.coordenadas?.lat ?? ''));
+                setLng(String(o.coordenadas?.lng ?? ''));
+                setModal('ubicacion');
+              }}
+            />
+            {user?.role === 'ADMIN' ? (
+              <ConfirmButton
+                label="Eliminar alquiler"
+                title="Eliminar este alquiler"
+                description="Solo se permite sin alquiler activo, fotos ni faltantes abiertos. Se conservará la evidencia en el historial."
+                onConfirm={async () => {
+                  await dispatch({ type: 'DELETE_OBRA', obraId: o.id });
+                  router.replace('/');
+                }}
+              />
+            ) : null}
+          </>
+        ) : null}
         {modal === 'carga' ? <LoadEditor obra={o} onDone={() => setModal('')} /> : null}
         {['entrega', 'retiro', 'faltante', 'transferencia'].includes(modal) ? (
           <OperationForm obra={o} mode={modal as 'entrega'} onDone={() => setModal('')} />

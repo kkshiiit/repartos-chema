@@ -14,7 +14,8 @@ test('combo se crea, edita, fusiona sin IDs duplicados y elimina conservando la 
   await expect.poll(async () => (await state()).combos.at(-1)?.nombreCombo).toBe('Combo sintético');
   expect((await state()).combos.at(-1).items).toHaveLength(1);
   expect((await state()).combos.at(-1).items[0].cantidad).toBe(2);
-  await page.getByRole('button', { name: 'Editar combo', exact: true }).last().click();
+  await page.getByRole('button', { name: 'Acciones de Combo sintético', exact: true }).click();
+  await page.getByRole('button', { name: 'Editar combo', exact: true }).click();
   await page.getByLabel('Nombre del combo', { exact: true }).fill('Combo sintético editado');
   await page.getByRole('button', { name: 'Guardar combo', exact: true }).click();
   await expect(page.getByText('Combo sintético editado', { exact: true })).toBeVisible();
@@ -46,7 +47,10 @@ test('combo se crea, edita, fusiona sin IDs duplicados y elimina conservando la 
     after.materialesCargados.find((m: { materialId: string }) => m.materialId === first).cantidad,
   ).toBe(prior + 2);
   await page.goto('/combos');
-  await page.getByRole('button', { name: 'Eliminar', exact: true }).last().click();
+  await page
+    .getByRole('button', { name: 'Acciones de Combo sintético editado', exact: true })
+    .click();
+  await page.getByRole('button', { name: 'Eliminar', exact: true }).click();
   await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
   await expect(page.getByText('Combo sintético editado', { exact: true })).toHaveCount(0);
   expect(
