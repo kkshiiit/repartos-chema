@@ -18,13 +18,19 @@ test('equipo crea, entrega, deshace y descarga documentos', async ({ page }) => 
   await page.getByRole('button', { name: 'Preparar carga', exact: true }).click();
   await page.getByRole('button', { name: 'Agregar material', exact: true }).last().click();
   await page.getByRole('button', { name: 'Guardar carga', exact: true }).click();
-  await expect(page.getByText('×1', { exact: true }).last()).toBeVisible();
-  await page.getByRole('button', { name: 'Entregar', exact: true }).last().click();
+  await expect(
+    page.getByText('Preparadas', { exact: true }).locator('..').getByText('1', { exact: true }),
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Registrar entrega', exact: true }).last().click();
   await page.getByRole('button', { name: 'Fabián', exact: true }).click();
-  await page.getByRole('button', { name: 'Confirmar operación', exact: true }).click();
-  await expect(page.getByRole('button', { name: 'Retirar', exact: true }).last()).toBeVisible();
+  await page.getByRole('button', { name: 'Confirmar entrega', exact: true }).click();
+  await expect(
+    page.getByRole('button', { name: 'Registrar retiro', exact: true }).last(),
+  ).toBeVisible();
   await page.reload();
-  await expect(page.getByRole('button', { name: 'Retirar', exact: true }).last()).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Registrar retiro', exact: true }).last(),
+  ).toBeVisible();
   await page.goto('/historial');
   await expect(page.getByText('Confirmó la entrega', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Deshacer', exact: true }).click();
@@ -34,7 +40,7 @@ test('equipo crea, entrega, deshace y descarga documentos', async ({ page }) => 
   const excel = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Exportar Excel', exact: true }).click();
   expect((await excel).suggestedFilename()).toBe('chema-reporte.xlsx');
-  await page.getByRole('button', { name: 'Word', exact: true }).click();
+  await page.getByRole('tab', { name: 'Word', exact: true }).click();
   const word = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Generar remito', exact: true }).click();
   expect((await word).suggestedFilename()).toBe('chema-remito.docx');
@@ -45,9 +51,15 @@ test('nombre identifica a la persona sin selector de roles; sesión persiste', a
   await login(page, 'Juan de prueba');
   await expect(page.getByRole('button', { name: 'Nuevo alquiler', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Cerradas', exact: true })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Filtros', exact: true }).click();
+  await page.getByRole('button', { name: 'Estado', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Cerradas', exact: true })).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Retirados', exact: true })).toHaveCount(1);
+  await page.getByRole('button', { name: 'Retirados', exact: true }).click();
+  await page.getByRole('button', { name: 'Ver resultados', exact: true }).click();
   await page.getByRole('tab', { name: 'Depósito', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Depósito', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Agregar material', exact: true })).toBeVisible();
   await page.screenshot({ path: 'artifacts/dashboard-mobile.png', fullPage: true });
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Depósito', exact: true })).toBeVisible();

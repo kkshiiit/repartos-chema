@@ -1,102 +1,56 @@
-import { userError } from '../services/errors';
-import React, { useState } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import React from 'react';
+import { View, Text, Pressable, useWindowDimensions } from 'react-native';
 import { router } from 'expo-router';
-import { ArrowUpRight, Navigation, MessageCircle } from 'lucide-react-native';
+import { Building2, ChevronRight } from 'lucide-react-native';
 import type { ObraCard } from '../types';
-import { Button, Notice, Pending, useUI } from './ui';
+import { useUI } from './ui';
 import { StatusChip } from './StatusChip';
-import { mapsUrl, whatsappUrl } from '../utils/whatsapp';
-import { openLink } from '../services/links';
-import { MotionView } from './MotionView';
+import { rentalSummary } from '../utils/listPresentation';
+/** A rental is a row. Secondary actions and complete information belong in its detail. */
 export function CardObra({ obra: o }: { obra: ObraCard }) {
   const { C, s } = useUI();
-  const [error, setError] = useState('');
-  const run = async (f: () => string) => {
-    try {
-      await openLink(f());
-      setError('');
-    } catch (e) {
-      setError(userError(e));
-    }
-  };
-  const loads =
-    o.estadoProceso === 'ENTREGADO'
-      ? o.materialesCargados
-          .map((m) => ({ ...m, cantidad: o.saldosEnObra[m.materialId] || 0 }))
-          .filter((m) => m.cantidad > 0)
-      : o.materialesCargados;
+  const { fontScale } = useWindowDimensions();
   return (
-    <MotionView style={[s.card, { gap: 12 }]}>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={`Abrir ${o.clienteNombre}`}
-        onPress={() => router.push(`/obra/${o.id}`)}
-        style={({ pressed }) => ({
-          gap: 8,
-          backgroundColor: pressed ? C.selection : 'transparent',
-          borderRadius: 12,
-          minHeight: 48,
-        })}
-      >
-        <View style={[s.row, { justifyContent: 'space-between' }]}>
-          <StatusChip obra={o} />
-          <ArrowUpRight size={20} color={C.muted} />
-        </View>
-        <Text style={s.h2}>{o.clienteNombre}</Text>
-        <Text style={s.body}>{o.direccion}</Text>
-        <Text style={s.muted}>{o.localidadBarrio}</Text>
-        <Text style={s.muted}>
-          {loads.length
-            ? loads
-                .map((m) => `${m.cantidad} ${m.nombre}${m.medida ? ` ${m.medida}` : ''}`)
-                .join(' · ')
-            : 'Carga por preparar'}
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`Abrir ${o.clienteNombre}`}
+      accessibilityHint={`${o.direccion}, ${o.localidadBarrio}. ${rentalSummary(o)}. Abrir detalle y operaciones.`}
+      onPress={() => router.push(`/obra/${o.id}`)}
+      style={({ pressed }) => ({
+        backgroundColor: pressed ? C.selection : C.panel,
+        borderBottomWidth: 1,
+        borderColor: C.hairline,
+        paddingVertical: 14,
+        paddingHorizontal: 12,
+        minHeight: 96,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+      })}
+    >
+      {fontScale <= 1.3 ? <Building2 size={22} color={C.muted} /> : null}
+      <View style={[s.grow, { gap: 2 }]}>
+        <Text style={[s.label, { fontSize: 16, lineHeight: 22, fontWeight: '700' }]}>
+          {o.clienteNombre}
         </Text>
-        <View style={[s.row, { flexWrap: 'wrap', justifyContent: 'space-between' }]}>
-          <Text style={[s.muted, { fontVariant: ['tabular-nums'] }]}>
-            Retiro {o.fechaRetiroEstimada.split('-').reverse().join('/')}
-          </Text>
-          <Pending />
-        </View>
-        <Text style={s.muted}>
-          {(o.estadoProceso === 'RETIRADO' || o.estadoProceso === 'REINGRESADO'
-            ? o.retiradoPor
-            : o.entregadoPor
-          )?.join(', ') || 'Responsable por asignar'}
+        <Text numberOfLines={1} style={[s.muted, { fontSize: 13, lineHeight: 19 }]}>
+          {o.localidadBarrio}
         </Text>
-      </Pressable>
-      <View style={s.divider} />
-      <View style={[s.wrap, { gap: 4 }]}>
-        <Button
-          label="GPS"
-          icon={Navigation}
-          variant="ghost"
-          onPress={() => run(() => mapsUrl(o))}
-        />
-        <Button
-          label="Remito"
-          icon={MessageCircle}
-          variant="ghost"
-          onPress={() => run(() => whatsappUrl(o))}
-        />
-        <Button
-          label={
-            o.estadoProceso === 'PENDIENTE_ENTREGA'
-              ? 'Entregar'
-              : o.estadoProceso === 'ENTREGADO'
-                ? 'Retirar'
-                : 'Ver alquiler'
-          }
-          variant="secondary"
-          onPress={() =>
-            router.push(
-              `/obra/${o.id}?accion=${o.estadoProceso === 'PENDIENTE_ENTREGA' ? 'entrega' : o.estadoProceso === 'ENTREGADO' ? 'retiro' : 'ver'}`,
-            )
-          }
-        />
+        <Text numberOfLines={1} style={[s.muted, { fontSize: 13, lineHeight: 19 }]}>
+          {rentalSummary(o)}
+        </Text>
       </View>
-      {error ? <Notice text={error} tone="error" /> : null}
-    </MotionView>
+      <View style={{ alignItems: 'flex-end', gap: 5, maxWidth: '39%' }}>
+        <StatusChip obra={o} compact />
+        <Text style={[s.muted, { fontSize: 12, lineHeight: 17, fontVariant: ['tabular-nums'] }]}>
+          {(o.estadoProceso === 'PENDIENTE_ENTREGA' ? o.fechaEntrega : o.fechaRetiroEstimada)
+            .slice(5)
+            .split('-')
+            .reverse()
+            .join('/')}
+        </Text>
+      </View>
+      <ChevronRight size={16} color={C.muted} />
+    </Pressable>
   );
 }
