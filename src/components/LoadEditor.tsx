@@ -57,7 +57,7 @@ export function LoadDraft({
         placeholder="Nombre o medida"
       />
       <Disclosure
-        key={search ? 'search' : 'catalogue'}
+        key={search ? 'search' : items.length ? 'selected' : 'empty'}
         title="Agregar materiales"
         compact
         initiallyOpen={!!search || !items.length}

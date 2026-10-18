@@ -18,10 +18,12 @@ frames = [
     ('viaje', '01-pantallas-principales.png', (15, 880, 460, 1692), 'light'),
     ('historial', '01-pantallas-principales.png', (474, 897, 920, 1692), 'light'),
     ('detalle', '02-formularios-y-operaciones.png', (0, 0, 413, 934), 'dark'),
-    ('nuevo', '02-formularios-y-operaciones.png', (427, 0, 851, 950), 'dark'),
-    ('ajustes', '03-ajustes-y-restauracion.png', (0, 0, 419, 929), 'light'),
-    ('combos', '03-ajustes-y-restauracion.png', (433, 0, 853, 929), 'light'),
-    ('documentos', '03-ajustes-y-restauracion.png', (0, 947, 419, 1844), 'light'),
+    ('nuevo', '02-formularios-y-operaciones.png', (427, 0, 851, 934), 'dark'),
+    ('carga', '02-formularios-y-operaciones.png', (0, 946, 413, 1848), 'dark'),
+    ('retiro', '02-formularios-y-operaciones.png', (427, 946, 851, 1848), 'dark'),
+    ('ajustes', '03-ajustes-y-restauracion.png', (0, 0, 419, 994), 'light'),
+    ('combos', '03-ajustes-y-restauracion.png', (433, 0, 853, 994), 'light'),
+    ('documentos', '03-ajustes-y-restauracion.png', (0, 1008, 419, 1844), 'light'),
 ]
 for name, source, bounds, theme in frames:
     reference = Image.open(references / source).crop(bounds).convert('RGB')
@@ -45,4 +47,4 @@ for theme in ['light', 'dark']:
         draw.text((454, 8), f'Después 1.5 · {theme}', font=font, fill='#18232D')
         board.paste(before, (8, 48)); board.paste(after, (454, 48))
         board.save(output / f'comparacion-antes-despues-{name}-{theme}.png')
-print('17 comparativas generadas; capturas originales intactas. Revisar visualmente antes del APK.')
+print('19 comparativas generadas; capturas originales intactas. Revisar visualmente antes del APK.')

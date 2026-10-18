@@ -1,4 +1,4 @@
-# Uso individual Android — edición cobalto1.4
+# Uso individual Android — edición estructural cobalto1.5
 
 Esta edición no necesita Firebase, Cloudflare, suscripción ni una PC encendida. Los datos no se sincronizan con otros celulares. El nombre identifica movimientos locales; no crea una cuenta ni autentica a una persona.
 
@@ -11,7 +11,7 @@ Esta edición no necesita Firebase, Cloudflare, suscripción ni una PC encendida
 
 ## Guardar y recuperar
 
-En Ajustes → Descargar copia, Android pide una carpeta. Recomendación: una carpeta propia en almacenamiento local, por ejemplo Descargas/RepartosChema. Se crea un JSON nuevo y se comparan sus bytes antes de confirmar. Cancelar no cambia inventario. Compartir un Word/Excel es otro flujo: no equivale a guardar un respaldo.
+En Ajustes → Copias y restauración → Descargar copia, Android pide una carpeta. Recomendación: una carpeta propia en almacenamiento local, por ejemplo Descargas/RepartosChema. Se crea un JSON nuevo y se comparan sus bytes antes de confirmar. Cancelar no cambia inventario. Compartir un Word/Excel es otro flujo: no equivale a guardar un respaldo.
 
 En web se prepara una descarga; el navegador no certifica que quedó guardada. Para Empezar vacío, hay que descargarla y reconocer explícitamente que el JSON se guardó fuera de la aplicación. Android exige guardado verificado. Además se conserva recuperación interna; una copia interna no protege contra pérdida o desinstalación del teléfono.
 
@@ -21,9 +21,9 @@ Las fotos se guardan comprimidas localmente. Al quitarlas de un alquiler, sus ar
 
 ## Temas y navegación
 
-Claro/Oscuro/Seguir sistema en Ajustes; sol/luna solo en las cabeceras principales. Cambia inmediatamente sin perder formularios. Papel cálido y cobalto en claro, tinta en oscuro. Transiciones suaves/Estático se guarda aparte del inventario; siempre se respeta Reducir movimiento y no hay fondo animado. Al sol elegir Claro y ajustar brillo manualmente: la visibilidad depende también del dispositivo.
+Claro/Oscuro/Seguir sistema en Ajustes → Apariencia; sol/luna solo en las cabeceras principales. Cambia inmediatamente sin perder formularios. Papel cálido y cobalto en claro, tinta en oscuro. Transiciones suaves/Estático se guarda aparte del inventario; siempre se respeta Reducir movimiento y no hay fondo animado. Al sol elegir Claro y ajustar brillo manualmente: la visibilidad depende también del dispositivo.
 
-Alquileres permite buscar, filtrar estado y desplegar Zona desde Filtros. Nuevo alquiler abre Cliente → Carga → Revisar; avanzar no guarda ni mueve stock. Confirmar guarda el borrador y recién Entregar mueve existencias. En Depósito usar los tres puntos de cada pieza para Editar, Mover stock o Ajustar. Faltantes/fotos se abren desde sus secciones del detalle. Los cambios de panel piden seguir editando o descartar; cerrar no confirma una operación. Documentos permite elegir Excel o Word antes de generar.
+Alquileres agrupa Vencidos, Retiros de hoy, Por entregar, Próximos retiros y Retirados. La búsqueda y Filtros están juntos: Filtros abre Zona y todos los estados. Tocar una fila abre su detalle. Nuevo alquiler abre Cliente → Carga → Revisar; avanzar no guarda ni mueve stock. Guardar alquiler conserva el borrador y recién Registrar entrega → Confirmar entrega mueve existencias. En Depósito usar los tres puntos de cada pieza para Editar, Mover stock o Ajustar. Faltantes/fotos se abren desde sus secciones del detalle. Los cambios de panel piden seguir editando o descartar; cerrar no confirma una operación. Documentos permite elegir Excel o Word antes de generar. Más acciones del alquiler conserva triangulación, ubicación, reactivación/reingreso y demás operaciones según estado. En Viaje, tocar una parada permite ordenar o abrir Cómo llegar; Opciones del viaje incluye Volver al depósito. Historial → tocar un movimiento → Deshacer ofrece la reversión segura durante cinco minutos, si corresponde. Para cambiar el nombre, Ajustes → fila de identidad → Cambiar nombre.
 
 Los avisos son locales y opcionales: en cada alquiler elegir fecha y hora explícitas. No tienen una hora automática ni se repiten solos. Los sonidos y vibración de confirmación están apagados inicialmente y se configuran en Ajustes. Web no programa notificaciones; Android puede retrasarlas por batería/silencio/No molestar. La guía [AVISOS_LOCALES.md](AVISOS_LOCALES.md) explica permisos y límites. No se envían push ni se requieren servicios pagos.
 
