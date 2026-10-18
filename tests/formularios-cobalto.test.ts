@@ -15,7 +15,7 @@ const mocks = vi.hoisted(() => ({
   state: {},
 }));
 vi.mock('../src/context/FeedbackContext', () => ({
-  useFeedback: () => ({ notifySuccess: mocks.notifySuccess }),
+  useFeedback: () => ({ notifyError: vi.fn(), notifySuccess: mocks.notifySuccess }),
 }));
 vi.mock('react-native', () => ({ View: 'View', Text: 'Text' }));
 vi.mock('expo-router', () => ({

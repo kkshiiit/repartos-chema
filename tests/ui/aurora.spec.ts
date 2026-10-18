@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { loginSynthetic } from './helpers';
 for (const mode of ['light', 'dark'] as const)
-  test(`Aurora ${mode}: pantallas y ventanas con datos sintéticos`, async ({ page }) => {
+  test(`Cobalto ${mode}: pantallas y ventanas con datos sintéticos`, async ({ page }) => {
     test.setTimeout(180000);
     await page.setViewportSize({ width: 390, height: 844 });
     await page.emulateMedia({ colorScheme: mode, reducedMotion: 'reduce' });
@@ -9,7 +9,7 @@ for (const mode of ['light', 'dark'] as const)
     await page.goto('/');
     await expect(page.getByLabel('Tu nombre', { exact: true })).toBeVisible();
     await page.screenshot({
-      path: `artifacts/capturas/aurora-390-${mode}-login.png`,
+      path: `artifacts/capturas/cobalto-rutas-390-${mode}-login.png`,
       fullPage: true,
     });
     await loginSynthetic(page);
@@ -30,7 +30,7 @@ for (const mode of ['light', 'dark'] as const)
         await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
       ).toBe(true);
       await page.screenshot({
-        path: `artifacts/capturas/aurora-390-${mode}-${name}.png`,
+        path: `artifacts/capturas/cobalto-rutas-390-${mode}-${name}.png`,
         fullPage: true,
       });
     }
@@ -45,7 +45,7 @@ for (const mode of ['light', 'dark'] as const)
       ).toBeVisible();
       await expect(page.getByRole('button', { name: /Activar modo/ })).toHaveCount(0);
       await page.screenshot({
-        path: `artifacts/capturas/aurora-390-${mode}-${name}.png`,
+        path: `artifacts/capturas/cobalto-rutas-390-${mode}-${name}.png`,
         fullPage: true,
       });
     }
@@ -59,7 +59,7 @@ for (const mode of ['light', 'dark'] as const)
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto('/');
     await page.screenshot({
-      path: `artifacts/capturas/aurora-1440-${mode}-alquileres.png`,
+      path: `artifacts/capturas/cobalto-rutas-1440-${mode}-alquileres.png`,
       fullPage: true,
     });
   });
@@ -88,5 +88,5 @@ test('un error de GPS queda visible dentro de la ventana y conserva coordenadas 
     sheet.getByText('Sin permiso de ubicación. Ingresa coordenadas manualmente.', { exact: true }),
   ).toBeVisible();
   await expect(page.getByLabel('Latitud', { exact: true })).toHaveValue('-34.5');
-  await page.screenshot({ path: 'artifacts/capturas/aurora-390-error-gps.png', fullPage: true });
+  await page.screenshot({ path: 'artifacts/capturas/cobalto-rutas-390-error-gps.png', fullPage: true });
 });

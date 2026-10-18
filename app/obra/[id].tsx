@@ -395,6 +395,10 @@ export default function Detail() {
           }[modal] || 'Operación'
         }
         protectChanges
+        hasChanges={
+          modal === 'ubicacion' &&
+          (lat !== String(o.coordenadas?.lat ?? '') || lng !== String(o.coordenadas?.lng ?? ''))
+        }
         busy={busy}
         onClose={() => setModal('')}
       >

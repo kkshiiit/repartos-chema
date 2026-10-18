@@ -189,8 +189,8 @@ export function LoadDraft({
 }
 
 export function LoadEditor({ obra, onDone }: { obra: ObraCard; onDone: () => void }) {
-  const { notifySuccess } = useFeedback();
-  const {setBusy:setPanelBusy}=usePanelChanges();
+  const { notifySuccess, notifyError } = useFeedback();
+  const { setBusy: setPanelBusy } = usePanelChanges();
   const { state, dispatch } = useInventory();
   const [items, setItems] = useState(obra.materialesCargados);
   const [baseVersion] = useState(obra.version || 0);
@@ -230,6 +230,7 @@ export function LoadEditor({ obra, onDone }: { obra: ObraCard; onDone: () => voi
             notifySuccess('Carga guardada. Las existencias se mueven al entregar.');
             onDone();
           } catch (e) {
+            notifyError(userError(e));
             setError(userError(e));
           } finally {
             saving.current = false;

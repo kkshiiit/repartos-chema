@@ -90,6 +90,12 @@ export default function Combos() {
       )}
       <Sheet
         protectChanges
+        hasChanges={
+          !!draft &&
+          (draft.nombreCombo !== (state.combos.find((c) => c.id === draft.id)?.nombreCombo || '') ||
+            JSON.stringify(draft.items) !==
+              JSON.stringify(state.combos.find((c) => c.id === draft.id)?.items || []))
+        }
         busy={busy}
         visible={!!draft}
         title="Preparar combo"

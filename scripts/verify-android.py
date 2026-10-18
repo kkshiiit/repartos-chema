@@ -44,6 +44,8 @@ with zipfile.ZipFile(apk) as archive:
     assert {name.split('/')[1] for name in archive.namelist()
             if name.startswith('lib/') and name.count('/') > 1} == {'arm64-v8a'}
     assert 'lib/arm64-v8a/libexpo-sqlite.so' in archive.namelist(), 'Falta SQLite nativo'
+    sounds = ['01_recordatorio_calido.wav', '02_confirmacion_sutil.wav', '03_atencion_suave.wav']
+    assert all(any(name.endswith('/' + sound) and name.startswith('res/raw/') for name in archive.namelist()) for sound in sounds), 'Faltan tonos nativos'
     bundle = archive.read('assets/index.android.bundle')
     assert not re.search(rb'AIza[0-9A-Za-z_-]{35}', bundle), 'Clave pública Firebase/Google embebida'
     for env in root.glob('.env*'):
@@ -67,11 +69,11 @@ report = {
     'certificadoSHA256': certificate, 'firmaV2': True, 'certificadoCoincideConAnterior': True,
     'apkAnterior': previous.name,
     'CRC': 'correcto', 'ABI': 'arm64-v8a', 'minSDK': 24, 'debuggable': False,
-    'sqliteNativoIncluido': True,
+    'sqliteNativoIncluido': True, 'tonosLocalesIncluidos': True,
     'pruebaFisica': False, 'publicidadDetectada': False, 'configFirebaseEmbebida': False,
     'generadoUTC': datetime.datetime.now(datetime.timezone.utc).isoformat(),
 }
-prefix = root / 'artifacts/validacion/aurora'
+prefix = root / f'artifacts/validacion/android-{version}'
 Path(str(prefix) + '-apk.json').write_text(json.dumps(report, indent=2) + '\n')
 Path(str(prefix) + '-firma.txt').write_text(signature)
 Path(str(prefix) + '-metadata.txt').write_text(metadata)

@@ -14,7 +14,7 @@ import { LoadDraft } from './LoadEditor';
 
 export function ObraForm({ obra }: { obra?: ObraCard }) {
   const { s } = useUI();
-  const { notifySuccess } = useFeedback();
+  const { notifySuccess, notifyError } = useFeedback();
   const { state, dispatch } = useInventory();
   const { user } = useAuth();
   const [id] = useState(() => obra?.id || makeId());
@@ -307,6 +307,7 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
                       completed.current = true;
                       router.replace(`/obra/${id}`);
                     } catch (e) {
+                      notifyError(userError(e));
                       setError(
                         `${persisted.current ? 'Los datos del alquiler están guardados; revisá y reintentá la carga. ' : ''}${userError(e)}`,
                       );
