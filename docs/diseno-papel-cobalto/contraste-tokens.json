@@ -1,0 +1,113 @@
+{
+  "scope": "Contraste matematico de pares planos; no es prueba de la UI renderizada",
+  "checks": [
+    {
+      "theme": "light",
+      "foreground": "text",
+      "background": "background",
+      "ratio": 14.24
+    },
+    {
+      "theme": "light",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 15.94
+    },
+    {
+      "theme": "light",
+      "foreground": "muted",
+      "background": "background",
+      "ratio": 4.51
+    },
+    {
+      "theme": "light",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 5.05
+    },
+    {
+      "theme": "light",
+      "foreground": "onPrimary",
+      "background": "primary",
+      "ratio": 5.1
+    },
+    {
+      "theme": "light",
+      "foreground": "infoText",
+      "background": "infoBackground",
+      "ratio": 7.11
+    },
+    {
+      "theme": "light",
+      "foreground": "danger",
+      "background": "dangerBackground",
+      "ratio": 5.17
+    },
+    {
+      "theme": "light",
+      "foreground": "success",
+      "background": "successBackground",
+      "ratio": 5.51
+    },
+    {
+      "theme": "light",
+      "foreground": "warning",
+      "background": "warningBackground",
+      "ratio": 5.68
+    },
+    {
+      "theme": "dark",
+      "foreground": "text",
+      "background": "background",
+      "ratio": 15.35
+    },
+    {
+      "theme": "dark",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 13.23
+    },
+    {
+      "theme": "dark",
+      "foreground": "muted",
+      "background": "background",
+      "ratio": 8.4
+    },
+    {
+      "theme": "dark",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 7.24
+    },
+    {
+      "theme": "dark",
+      "foreground": "onPrimary",
+      "background": "primary",
+      "ratio": 5.1
+    },
+    {
+      "theme": "dark",
+      "foreground": "infoText",
+      "background": "infoBackground",
+      "ratio": 8.73
+    },
+    {
+      "theme": "dark",
+      "foreground": "danger",
+      "background": "dangerBackground",
+      "ratio": 6.35
+    },
+    {
+      "theme": "dark",
+      "foreground": "success",
+      "background": "successBackground",
+      "ratio": 7.14
+    },
+    {
+      "theme": "dark",
+      "foreground": "warning",
+      "background": "warningBackground",
+      "ratio": 7.11
+    }
+  ]
+}

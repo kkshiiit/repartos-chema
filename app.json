@@ -44,7 +44,8 @@
       "expo-sharing",
       "expo-font",
       "expo-system-ui",
-      "expo-sqlite"
+      "expo-sqlite",
+      "expo-audio"
     ],
     "experiments": {
       "typedRoutes": false
