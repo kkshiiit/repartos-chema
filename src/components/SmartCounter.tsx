@@ -2,7 +2,7 @@ import { userError } from '../services/errors';
 import React, { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { Minus, Plus } from 'lucide-react-native';
-import { Button, Field, Notice, Sheet, useUI } from './ui';
+import { Button, Field, Notice, Sheet, useUI, usePanelChanges } from './ui';
 import { quantity, MAX_QUANTITY } from '../domain/rules';
 import { haptic } from '../hooks/useHaptics';
 export function SmartCounter({
@@ -17,11 +17,13 @@ export function SmartCounter({
   max?: number;
 }) {
   const { C, s } = useUI();
+  const { markDirty } = usePanelChanges();
   const [open, setOpen] = useState(false),
     [draft, setDraft] = useState(''),
     [error, setError] = useState('');
   const set = (n: number) => {
     if (n >= 0 && n <= max) {
+      if (n !== value) markDirty();
       onChange(n);
       haptic();
     }
@@ -35,7 +37,7 @@ export function SmartCounter({
             gap: 0,
             borderWidth: 1,
             borderColor: C.line,
-            borderRadius: 15,
+            borderRadius: 12,
             backgroundColor: C.panel2,
             overflow: 'hidden',
             alignSelf: 'flex-start',
@@ -48,7 +50,14 @@ export function SmartCounter({
           accessibilityState={{ disabled: value === 0 }}
           disabled={value === 0}
           onPress={() => set(value - 1)}
-          style={{ padding: 14, opacity: value === 0 ? 0.35 : 1 }}
+          style={{
+            minWidth: 48,
+            minHeight: 48,
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 14,
+            opacity: value === 0 ? 0.35 : 1,
+          }}
         >
           <Minus size={18} color={C.text} />
         </Pressable>
@@ -62,13 +71,22 @@ export function SmartCounter({
           }}
           style={{
             minWidth: 56,
-            minHeight: 46,
+            minHeight: 48,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: C.panel,
           }}
         >
-          <Text style={{ fontSize: 21, fontWeight: '800', color: C.text }}>{value}</Text>
+          <Text
+            style={{
+              fontSize: 20,
+              fontVariant: ['tabular-nums'],
+              fontWeight: '700',
+              color: C.text,
+            }}
+          >
+            {value}
+          </Text>
         </Pressable>
         <Pressable
           accessibilityRole="button"
@@ -76,7 +94,14 @@ export function SmartCounter({
           accessibilityState={{ disabled: value >= max }}
           disabled={value >= max}
           onPress={() => set(value + 1)}
-          style={{ padding: 14, opacity: value >= max ? 0.35 : 1 }}
+          style={{
+            minWidth: 48,
+            minHeight: 48,
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 14,
+            opacity: value >= max ? 0.35 : 1,
+          }}
         >
           <Plus size={18} color={C.text} />
         </Pressable>

@@ -35,7 +35,7 @@ beforeEach(() => {
   mocks.read.mockResolvedValue(null);
   mocks.write.mockResolvedValue(undefined);
 });
-it('pausa Aurora al salir, respeta movimiento reducido en vivo y limpia suscripciones', async () => {
+it('mantiene fondo estático, pausa transiciones y respeta movimiento reducido en vivo', async () => {
   let current: ReturnType<typeof useMotionPreferences>;
   function Probe() {
     current = useMotionPreferences();
@@ -45,11 +45,13 @@ it('pausa Aurora al salir, respeta movimiento reducido en vivo y limpia suscripc
   await act(async () => {
     view = create(React.createElement(Probe));
   });
-  expect(current!.ambientEnabled).toBe(true);
+  expect(current!.ambientEnabled).toBe(false);
+  expect(current!.motionEnabled).toBe(true);
   await act(async () => mocks.app!('background'));
   expect(current!.motionEnabled).toBe(false);
   await act(async () => mocks.app!('active'));
-  expect(current!.ambientEnabled).toBe(true);
+  expect(current!.ambientEnabled).toBe(false);
+  expect(current!.motionEnabled).toBe(true);
   await act(async () => mocks.reduce!(true));
   expect(current!.ambientEnabled).toBe(false);
   expect(current!.motionEnabled).toBe(false);
@@ -70,7 +72,8 @@ it('preferencia estática sobrevive recarga y solo guarda su propia clave', asyn
   });
   expect(current!.ambientEnabled).toBe(false);
   await act(async () => current!.setMotionPreference('ambient'));
-  expect(current!.ambientEnabled).toBe(true);
+  expect(current!.ambientEnabled).toBe(false);
+  expect(current!.motionEnabled).toBe(true);
   expect(mocks.write).toHaveBeenCalledWith(MOTION_KEY, 'ambient');
   await act(async () => view!.unmount());
 });
@@ -87,25 +90,9 @@ function ratio(a: string, b: string) {
     y = lum(b);
   return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
 }
-function over(fg: string, bg: string) {
-  const alpha = parseInt(fg.slice(7, 9), 16) / 255;
-  return (
-    '#' +
-    [1, 3, 5]
-      .map((i) =>
-        Math.round(
-          parseInt(fg.slice(i, i + 2), 16) * alpha + parseInt(bg.slice(i, i + 2), 16) * (1 - alpha),
-        )
-          .toString(16)
-          .padStart(2, '0'),
-      )
-      .join('')
-  );
-}
 for (const [name, c] of Object.entries({ dark, light }))
-  it(`${name}: vidrio compuesto y botón principal conservan contraste AA`, () => {
-    for (const behind of [c.bg, '#FF2BD6', '#FF304F', '#A100FF']) {
-      const surface = over(c.glass, behind);
+  it(`${name}: papel, estados y botón principal conservan contraste AA`, () => {
+    for (const surface of [c.bg, c.panel]) {
       for (const fg of [
         c.text,
         c.muted,
@@ -119,5 +106,13 @@ for (const [name, c] of Object.entries({ dark, light }))
       ])
         expect(ratio(fg, surface), `${fg} en ${surface}`).toBeGreaterThanOrEqual(4.5);
     }
+    for (const [fg, bg] of [
+      [c.infoText, c.infoBackground],
+      [c.danger, c.dangerBackground],
+      [c.green, c.successBackground],
+      [c.warning, c.warningBackground],
+      [c.selectionText, c.selection],
+    ])
+      expect(ratio(fg!, bg!)).toBeGreaterThanOrEqual(4.5);
     expect(ratio(c.onPrimary, c.primary)).toBeGreaterThanOrEqual(4.5);
   });

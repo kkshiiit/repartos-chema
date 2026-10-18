@@ -1,5 +1,14 @@
 import { userError } from '../services/errors';
-import React, { useEffect, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useId,
+  useRef,
+  useState,
+} from 'react';
 import {
   View,
   Text,
@@ -13,12 +22,13 @@ import {
   ActivityIndicator,
   Animated,
   Easing,
+  PanResponder,
   ViewStyle,
   TextInputProps,
   StyleProp,
   useWindowDimensions,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   ArrowLeft,
   Check,
@@ -35,42 +45,39 @@ import { useInventory } from '../context/InventoryContext';
 import { DATA_MODE } from '../services/firebase';
 import { LOCAL_ONLY } from '../services/localMode';
 import { useTheme } from '../context/ThemeContext';
-import { dark, light, Colors } from '../theme/tokens';
+import { dark, light, Colors, radius, typography, motionMs, spacing } from '../theme/tokens';
 import { pickBackup } from '../services/files';
 import { ThemeToggle } from './ThemeToggle';
 import { AuroraBackground } from './AuroraBackground';
 const makeStyles = (C: Colors) =>
   StyleSheet.create({
-    row: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+    row: { flexDirection: 'row', alignItems: 'center', gap: 12 },
     wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
     card: {
-      backgroundColor: C.glass,
-      borderWidth: 1,
-      borderColor: C.hairline,
-      borderRadius: 22,
-      borderTopColor: C.reflection,
-      shadowColor: C.shadow,
-      shadowOpacity: 0.1,
-      shadowRadius: 18,
-      shadowOffset: { width: 0, height: 8 },
-      elevation: 2,
-      padding: 18,
-      gap: 14,
+      backgroundColor: C.panel,
+      borderRadius: radius.object,
+      padding: spacing.lg,
+      gap: spacing.md,
     },
-    title: { color: C.text, fontSize: 28, fontWeight: '800', letterSpacing: -0.8 },
-    h2: { color: C.text, fontSize: 18, fontWeight: '700', lineHeight: 25 },
-    body: { color: C.text, fontSize: 15, lineHeight: 23 },
-    muted: { color: C.muted, fontSize: 13, lineHeight: 20 },
-    label: { color: C.muted, fontSize: 12, fontWeight: '700', letterSpacing: 0.2 },
+    title: {
+      color: C.text,
+      ...typography.title,
+      fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
+      fontWeight: '700',
+    },
+    h2: { color: C.text, ...typography.section, fontWeight: '700' },
+    body: { color: C.text, ...typography.body },
+    muted: { color: C.muted, ...typography.secondary },
+    label: { color: C.text, ...typography.secondary, fontWeight: '600' },
     input: {
       backgroundColor: C.panel,
       borderWidth: 1,
       borderColor: C.line,
-      borderRadius: 14,
+      borderRadius: radius.input,
       color: C.text,
       paddingHorizontal: 14,
       paddingVertical: 13,
-      fontSize: 15,
+      fontSize: typography.body.fontSize,
       minHeight: 48,
     },
     divider: { height: 1, backgroundColor: C.hairline },
@@ -93,7 +100,7 @@ export function Button({
   style,
 }: {
   label: string;
-  onPress: () => void;
+  onPress: () => void | Promise<void>;
   icon?: React.ComponentType<{ size: number; color: string }>;
   variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
   disabled?: boolean;
@@ -102,6 +109,35 @@ export function Button({
 }) {
   const { C } = useUI();
   const { motionEnabled } = useTheme();
+  const [pending, setPending] = useState(false);
+  const locked = useRef(false);
+  const mounted = useRef(true);
+  const [pressError, setPressError] = useState('');
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+  const invoke = async () => {
+    if (locked.current || disabled || loading) return;
+    locked.current = true;
+    setPressError('');
+    try {
+      const result = onPress();
+      if (result && typeof result.then === 'function') {
+        setPending(true);
+        await result;
+      }
+    } catch (error) {
+      if (mounted.current) setPressError(userError(error));
+    } finally {
+      locked.current = false;
+      if (mounted.current) setPending(false);
+    }
+  };
+  const isBusy = loading || pending;
+  const foreground = variant === 'primary' || variant === 'danger' ? C.onPrimary : C.text;
   const [scale] = useState(() => new Animated.Value(1));
   const layout = StyleSheet.flatten(style) || {};
   const press = (value: number) => {
@@ -110,7 +146,11 @@ export function Button({
       scale.setValue(1);
       return;
     }
-    Animated.timing(scale, { toValue: value, duration: 110, useNativeDriver: true }).start();
+    Animated.timing(scale, {
+      toValue: value,
+      duration: value === 1 ? motionMs.release : motionMs.press,
+      useNativeDriver: true,
+    }).start();
   };
   useEffect(() => {
     if (!motionEnabled) {
@@ -134,15 +174,15 @@ export function Button({
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={label}
-        accessibilityState={{ disabled: disabled || loading, busy: loading }}
-        disabled={disabled || loading}
-        onPress={onPress}
-        onPressIn={() => press(0.975)}
+        accessibilityState={{ disabled: disabled || isBusy, busy: isBusy }}
+        disabled={disabled || isBusy}
+        onPress={() => void invoke()}
+        onPressIn={() => press(0.98)}
         onPressOut={() => press(1)}
         style={({ pressed }) => [
           {
             minHeight: 48,
-            borderRadius: 14,
+            borderRadius: radius.input,
             paddingHorizontal: 16,
             paddingVertical: 11,
             flexDirection: 'row',
@@ -153,31 +193,28 @@ export function Button({
               variant === 'primary'
                 ? C.primary
                 : variant === 'danger'
-                  ? C.dangerBg
+                  ? C.red
                   : variant === 'secondary'
                     ? C.panel2
                     : 'transparent',
-            borderWidth: variant === 'ghost' ? 0 : 1,
-            borderColor:
-              variant === 'primary' ? '#A65DF0' : variant === 'danger' ? C.danger : C.line,
+            borderWidth: 0,
+            borderColor: variant === 'primary' ? C.primary : C.line,
             opacity: disabled ? 0.4 : pressed ? 0.92 : 1,
           },
           style,
           { flex: undefined, flexGrow: undefined, flexShrink: undefined, width: undefined },
         ]}
       >
-        {loading ? (
-          <ActivityIndicator color={variant === 'primary' ? C.onPrimary : C.text} />
+        {isBusy ? (
+          <ActivityIndicator color={foreground} />
         ) : Icon ? (
-          <Icon
-            size={18}
-            color={variant === 'primary' ? C.onPrimary : variant === 'danger' ? C.danger : C.text}
-          />
+          <Icon size={18} color={foreground} />
         ) : null}
         <Text
           style={{
-            color: variant === 'primary' ? C.onPrimary : variant === 'danger' ? C.danger : C.text,
-            fontSize: 14,
+            color: foreground,
+            fontSize: 16,
+            lineHeight: 23,
             fontWeight: '700',
             flexShrink: 1,
             textAlign: 'center',
@@ -186,6 +223,7 @@ export function Button({
           {label}
         </Text>
       </Pressable>
+      {pressError ? <Notice text={pressError} tone="error" /> : null}
     </Animated.View>
   );
 }
@@ -205,13 +243,13 @@ export function IconButton({
       accessibilityLabel={label}
       onPress={onPress}
       style={({ pressed }) => ({
-        minHeight: 44,
-        minWidth: 44,
+        minHeight: 48,
+        minWidth: 48,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: pressed ? C.selection : C.glass,
-        borderRadius: 14,
-        borderWidth: 1,
+        borderRadius: radius.input,
+        borderWidth: 0,
         borderColor: C.hairline,
       })}
     >
@@ -221,13 +259,18 @@ export function IconButton({
 }
 export function Field({ label, ...props }: TextInputProps & { label: string }) {
   const { C, s } = useUI();
+  const { markDirty } = usePanelChanges();
   return (
-    <View style={{ gap: 7 }}>
+    <View style={{ gap: 8 }}>
       <Text style={s.label}>{label}</Text>
       <TextInput
         accessibilityLabel={label}
         placeholderTextColor={C.subtle}
         {...props}
+        onChangeText={(value) => {
+          if (value !== props.value) markDirty();
+          props.onChangeText?.(value);
+        }}
         style={[s.input, props.style]}
       />
     </View>
@@ -253,10 +296,10 @@ export function Chip({
       aria-pressed={onPress ? selected : undefined}
       onPress={onPress}
       style={{
-        minHeight: onPress ? 44 : 28,
+        minHeight: onPress ? 48 : 28,
         paddingHorizontal: 13,
         paddingVertical: onPress ? 10 : 5,
-        borderRadius: 14,
+        borderRadius: radius.input,
         borderWidth: 1,
         borderColor: selected ? color : C.hairline,
         backgroundColor: selected ? `${color}16` : C.panel,
@@ -266,106 +309,283 @@ export function Chip({
       }}
     >
       {selected && onPress ? <Check size={13} color={color} /> : null}
-      <Text style={{ color: selected ? color : C.muted, fontSize: 12, fontWeight: '600' }}>
+      <Text
+        style={{
+          color: selected ? color : C.muted,
+          fontSize: 14,
+          lineHeight: 20,
+          fontWeight: '600',
+        }}
+      >
         {label}
       </Text>
     </Pressable>
   );
 }
+type PanelChanges = {
+  dirty: boolean;
+  markDirty: () => void;
+  resetDirty: () => void;
+  requestClose: () => void;
+};
+const noop = () => {};
+const visiblePanels: string[] = [];
+const PanelChangesContext = createContext<PanelChanges>({
+  dirty: false,
+  markDirty: noop,
+  resetDirty: noop,
+  requestClose: noop,
+});
+/** Optional outside a panel; composite inputs may mark their enclosing form dirty. */
+export function usePanelChanges() {
+  return useContext(PanelChangesContext);
+}
+
 export function Sheet({
   visible,
   title,
   onClose,
   children,
+  protectChanges = false,
+  busy = false,
 }: {
   visible: boolean;
   title: string;
   onClose: () => void;
   children: React.ReactNode;
+  protectChanges?: boolean;
+  busy?: boolean;
 }) {
   const { C, s } = useUI();
-  const { width } = useWindowDimensions();
+  const { width, fontScale } = useWindowDimensions();
+  const panelId = useId();
+  const insets = useSafeAreaInsets();
   const { motionEnabled } = useTheme();
-  const [present, setPresent] = useState(visible);
-  const [transition] = useState(() => new Animated.Value(0));
-  if (visible && !present) setPresent(true);
-  if (!motionEnabled && !visible && present) setPresent(false);
-  useEffect(() => {
-    transition.stopAnimation();
-    if (!motionEnabled) {
-      transition.setValue(visible ? 1 : 0);
+  const [dirty, setDirty] = useState(false);
+  const dirtyRef = useRef(false);
+  const [confirmDiscard, setConfirmDiscard] = useState(false);
+  const [transition] = useState(() => new Animated.Value(1));
+  const trigger = useRef<HTMLElement | null>(null);
+  const opened = useRef(false);
+  const closed = useRef(false);
+  const markDirty = useCallback(() => {
+    dirtyRef.current = true;
+    setDirty(true);
+  }, []);
+  const resetDirty = useCallback(() => {
+    dirtyRef.current = false;
+    setDirty(false);
+  }, []);
+  const requestClose = useCallback(() => {
+    if (busy || closed.current || !visible) return;
+    if (confirmDiscard) {
+      setConfirmDiscard(false);
       return;
     }
+    if (protectChanges && dirtyRef.current) {
+      setConfirmDiscard(true);
+      return;
+    }
+    closed.current = true;
+    onClose();
+  }, [busy, confirmDiscard, onClose, protectChanges, visible]);
+  const pan = useMemo(
+    () =>
+      // PanResponder stores event callbacks; it does not invoke requestClose during render.
+      // eslint-disable-next-line react-hooks/refs
+      PanResponder.create({
+        onMoveShouldSetPanResponder: (_, gesture) =>
+          gesture.dy > 12 && Math.abs(gesture.dy) > Math.abs(gesture.dx),
+        onPanResponderRelease: (_, gesture) => {
+          if (gesture.dy > 64) requestClose();
+        },
+      }),
+    [requestClose],
+  );
+  useEffect(() => {
+    if (visible) {
+      closed.current = false;
+      opened.current = true;
+      if (Platform.OS === 'web' && typeof document !== 'undefined')
+        trigger.current = document.activeElement as HTMLElement | null;
+    } else if (opened.current) {
+      opened.current = false;
+      resetDirty();
+      setConfirmDiscard(false);
+      if (trigger.current?.isConnected) trigger.current.focus();
+    }
+  }, [visible, resetDirty]);
+  useEffect(() => {
+    if (!visible) return;
+    visiblePanels.push(panelId);
+    return () => {
+      const index = visiblePanels.indexOf(panelId);
+      if (index >= 0) visiblePanels.splice(index, 1);
+    };
+  }, [visible, panelId]);
+  useEffect(() => {
+    if (Platform.OS !== 'web' || !visible) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && visiblePanels[visiblePanels.length - 1] === panelId) {
+        event.preventDefault();
+        event.stopPropagation();
+        requestClose();
+      }
+    };
+    document.addEventListener('keydown', onKey, true);
+    return () => document.removeEventListener('keydown', onKey, true);
+  }, [visible, requestClose, panelId]);
+  useEffect(() => {
+    transition.stopAnimation();
+    transition.setValue(visible && motionEnabled ? 0 : 1);
+    if (!visible || !motionEnabled) return;
     const animation = Animated.timing(transition, {
-      toValue: visible ? 1 : 0,
-      duration: visible ? 230 : 160,
+      toValue: 1,
+      duration: motionMs.sheetEnter,
       easing: Easing.out(Easing.cubic),
       useNativeDriver: true,
     });
-    animation.start(({ finished }) => {
-      if (finished && !visible) setPresent(false);
-    });
+    animation.start();
     return () => animation.stop();
   }, [visible, motionEnabled, transition]);
+  const panel = useMemo(
+    () => ({ dirty, markDirty, resetDirty, requestClose }),
+    [dirty, markDirty, resetDirty, requestClose],
+  );
+  // Remove the native modal immediately on dismissal: even a transparent native
+  // Modal intercepts the underlying screen while an exit animation is running.
+  const fullHeight = fontScale >= 1.5;
   return (
-    <Modal visible={present} transparent animationType="none" onRequestClose={onClose}>
-      <KeyboardAvoidingView
-        pointerEvents={visible ? 'auto' : 'none'}
-        aria-hidden={!visible}
-        accessibilityElementsHidden={!visible}
-        importantForAccessibility={visible ? 'auto' : 'no-hide-descendants'}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={{
-          flex: 1,
-          justifyContent: width < 600 ? 'flex-end' : 'center',
-          alignItems: 'center',
-          padding: 16,
-        }}
-      >
-        <Animated.View
-          pointerEvents="none"
-          style={[StyleSheet.absoluteFill, { backgroundColor: C.overlay, opacity: transition }]}
-        />
-        <Animated.View
+    <PanelChangesContext.Provider value={panel}>
+      <Modal visible={visible} transparent animationType="none" onRequestClose={requestClose}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{
-            opacity: transition,
-            transform: [
-              { translateY: transition.interpolate({ inputRange: [0, 1], outputRange: [30, 0] }) },
-            ],
-            width: '100%',
-            maxWidth: 560,
-            maxHeight: '90%',
-            backgroundColor: C.panel,
-            borderRadius: 26,
-            borderTopColor: C.reflection,
-            borderWidth: 1,
-            borderColor: C.hairline,
+            flex: 1,
+            justifyContent: fullHeight ? 'center' : 'flex-end',
+            alignItems: 'center',
+            paddingTop: insets.top + 12,
+            paddingBottom: insets.bottom,
+            paddingHorizontal: width >= 600 ? 24 : 0,
           }}
-          accessibilityViewIsModal={visible}
         >
-          <View
-            style={{
-              alignSelf: 'center',
-              width: 34,
-              height: 4,
-              borderRadius: 4,
-              backgroundColor: C.line,
-              marginTop: 10,
-            }}
+          <Pressable
+            testID="panel-backdrop"
+            accessibilityRole="button"
+            accessibilityLabel="Cerrar panel"
+            disabled={busy}
+            onPress={requestClose}
+            style={[StyleSheet.absoluteFill, { backgroundColor: C.overlay }]}
           />
-          <View style={[s.row, { padding: 16, borderBottomWidth: 1, borderColor: C.hairline }]}>
-            <Text style={[s.h2, s.grow]}>{title}</Text>
-            <IconButton label="Cerrar" icon={X} onPress={onClose} />
-          </View>
-          <ScrollView
-            keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{ padding: 16, gap: 16 }}
+          <Animated.View
+            accessibilityViewIsModal
+            accessibilityLabel={title}
+            style={{
+              width: '100%',
+              maxWidth: 640,
+              maxHeight: '100%',
+              flex: fullHeight ? 1 : undefined,
+              backgroundColor: C.panel,
+              borderTopLeftRadius: radius.sheet,
+              borderTopRightRadius: radius.sheet,
+              opacity: transition,
+              transform: motionEnabled
+                ? [
+                    {
+                      translateY: transition.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [24, 0],
+                      }),
+                    },
+                  ]
+                : [],
+            }}
           >
-            {children}
-          </ScrollView>
-        </Animated.View>
-      </KeyboardAvoidingView>
-    </Modal>
+            <View
+              {...pan.panHandlers}
+              testID="panel-drag-handle"
+              style={{ minHeight: 24, justifyContent: 'center', alignItems: 'center' }}
+            >
+              <View style={{ width: 36, height: 4, borderRadius: 4, backgroundColor: C.line }} />
+            </View>
+            <View
+              style={[
+                s.row,
+                {
+                  paddingHorizontal: 20,
+                  paddingBottom: 12,
+                  borderBottomWidth: 1,
+                  borderColor: C.hairline,
+                },
+              ]}
+            >
+              <Text accessibilityRole="header" style={[s.h2, s.grow]}>
+                {title}
+              </Text>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Cerrar"
+                accessibilityState={{ disabled: busy }}
+                disabled={busy}
+                onPress={requestClose}
+                style={{
+                  minWidth: 48,
+                  minHeight: 48,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <X size={22} color={C.text} />
+              </Pressable>
+            </View>
+            <ScrollView
+              keyboardShouldPersistTaps="handled"
+              contentInsetAdjustmentBehavior="automatic"
+              contentContainerStyle={{ padding: 20, gap: 16, paddingBottom: 24 }}
+            >
+              {children}
+            </ScrollView>
+            {confirmDiscard ? (
+              <View
+                style={[
+                  StyleSheet.absoluteFill,
+                  { backgroundColor: C.overlay, justifyContent: 'center', padding: 20 },
+                ]}
+              >
+                <View
+                  accessibilityViewIsModal
+                  accessibilityRole="alert"
+                  style={{
+                    backgroundColor: C.panel,
+                    borderRadius: radius.object,
+                    padding: 20,
+                    gap: 16,
+                  }}
+                >
+                  <Text accessibilityRole="header" style={s.h2}>
+                    ¿Descartar los cambios?
+                  </Text>
+                  <Text style={s.body}>Los cambios de este panel todavía no se guardaron.</Text>
+                  <Button label="Seguir editando" onPress={() => setConfirmDiscard(false)} />
+                  <Button
+                    label="Descartar cambios"
+                    variant="danger"
+                    disabled={busy}
+                    onPress={() => {
+                      if (busy || closed.current) return;
+                      closed.current = true;
+                      resetDirty();
+                      setConfirmDiscard(false);
+                      onClose();
+                    }}
+                  />
+                </View>
+              </View>
+            ) : null}
+          </Animated.View>
+        </KeyboardAvoidingView>
+      </Modal>
+    </PanelChangesContext.Provider>
   );
 }
 export function Select({
@@ -383,6 +603,7 @@ export function Select({
 }) {
   const { C, s } = useUI();
   const [open, setOpen] = useState(false);
+  const { markDirty } = usePanelChanges();
   return (
     <View style={{ gap: 7 }}>
       {!compact ? <Text style={s.label}>{label}</Text> : null}
@@ -406,6 +627,7 @@ export function Select({
             accessibilityState={{ selected: o.value === value }}
             aria-pressed={o.value === value}
             onPress={() => {
+              if (o.value !== value) markDirty();
               onChange(o.value);
               setOpen(false);
             }}
@@ -435,16 +657,22 @@ export function Notice({
   tone?: 'info' | 'error' | 'success';
 }) {
   const { C, s } = useUI();
-  const color = tone === 'error' ? C.danger : tone === 'success' ? C.green : C.muted;
+  const color = tone === 'error' ? C.danger : tone === 'success' ? C.green : C.infoText;
+  const background =
+    tone === 'error'
+      ? C.dangerBackground
+      : tone === 'success'
+        ? C.successBackground
+        : C.infoBackground;
   return (
     <View
       accessibilityRole="alert"
       style={{
-        backgroundColor: `${color}0D`,
+        backgroundColor: background,
         borderColor: `${color}44`,
-        borderWidth: 1,
+        borderWidth: 0,
         borderRadius: 12,
-        padding: 13,
+        padding: 16,
       }}
     >
       <Text style={[s.muted, { color }]}>{text}</Text>
@@ -485,8 +713,8 @@ export function Screen({
   const body = (
     <View
       style={{
-        padding: width > 800 ? 28 : 16,
-        gap: width > 800 ? 24 : 18,
+        padding: width > 800 ? 32 : 20,
+        gap: 24,
         width: '100%',
         maxWidth: 1500,
         alignSelf: 'center',
@@ -639,7 +867,7 @@ export function ConfirmButton({
   return (
     <>
       <Button label={label} variant={variant} onPress={() => setOpen(true)} />
-      <Sheet visible={open} title={title} onClose={() => !busy && setOpen(false)}>
+      <Sheet visible={open} title={title} busy={busy} onClose={() => !busy && setOpen(false)}>
         <Text style={s.body}>{description}</Text>
         {error ? <Notice text={error} tone="error" /> : null}
         <Button
