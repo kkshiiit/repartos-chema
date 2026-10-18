@@ -1,0 +1,9 @@
+
+Running 2 tests using 1 worker
+
+(node:41196) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/ui/estructura.spec.ts:174:7 › láminas de referencia light: mismas dimensiones y fixture (5.6s)
+  ✓  2 tests/ui/estructura.spec.ts:174:7 › láminas de referencia dark: mismas dimensiones y fixture (5.5s)
+
+  2 passed (11.8s)

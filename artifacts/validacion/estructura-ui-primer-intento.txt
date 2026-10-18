@@ -1,0 +1,265 @@
+
+Running 48 tests using 2 workers
+
+(node:27918) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:27917) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/ui/accessibility.spec.ts:6:7 › accesibilidad automatizada WCAG AA light (9.8s)
+  ✓   3 tests/ui/accessibility.spec.ts:6:7 › accesibilidad automatizada WCAG AA dark (6.8s)
+  ✓   4 tests/ui/aurora.spec.ts:4:7 › Cobalto light: pantallas y ventanas con datos sintéticos (6.3s)
+  ✓   5 tests/ui/aurora.spec.ts:4:7 › Cobalto dark: pantallas y ventanas con datos sintéticos (6.5s)
+  ✓   6 tests/ui/aurora.spec.ts:71:5 › un error de GPS queda visible dentro de la ventana y conserva coordenadas manuales (2.4s)
+  ✓   7 tests/ui/cobalto-surfaces.spec.ts:8:7 › Cobalto superficies secundarias light: formularios, selectores y revisiones con fixture sintético (6.8s)
+  ✓   8 tests/ui/cobalto-surfaces.spec.ts:8:7 › Cobalto superficies secundarias dark: formularios, selectores y revisiones con fixture sintético (6.5s)
+  ✓   9 tests/ui/cobalto.spec.ts:107:5 › Cobalto: el asistente conserva cliente, carga y observaciones al volver y cambiar tema (1.9s)
+  ✓  10 tests/ui/cobalto.spec.ts:162:5 › Cobalto: X, Escape y fondo protegen la carga; descartar devuelve foco y no escribe inventario (2.3s)
+  ✓  11 tests/ui/cobalto.spec.ts:204:9 › Cobalto 320dp light: contraste renderizado, bordes y texto 200% (8.6s)
+  ✘   2 tests/ui/app.spec.ts:3:5 › equipo crea, entrega, deshace y descarga documentos (1.0m)
+(node:28860) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  13 tests/ui/app.spec.ts:49:5 › nombre identifica a la persona sin selector de roles; sesión persiste (4.1s)
+  ✓  14 tests/ui/app.spec.ts:70:5 › demo permite reabrir el tablero sin conexión después de guardar la caché (3.6s)
+  ✓  12 tests/ui/cobalto.spec.ts:204:9 › Cobalto 320dp dark: contraste renderizado, bordes y texto 200% (16.9s)
+  ✓  15 tests/ui/combos-local.spec.ts:3:5 › combo se crea, edita, fusiona sin IDs duplicados y elimina conservando la carga (8.8s)
+  ✓  17 tests/ui/deposito-viaje-estructura.spec.ts:4:5 › depósito: filas y menú conservan las operaciones y el inventario al cancelar (3.5s)
+  ✓  18 tests/ui/deposito-viaje-estructura.spec.ts:26:5 › viaje: secuencia, orden manual, tramos y regreso siguen accesibles desde los detalles (4.1s)
+  ✓  16 tests/ui/cobalto.spec.ts:204:9 › Cobalto 360dp light: contraste renderizado, bordes y texto 200% (16.7s)
+  ✓  19 tests/ui/estructura.spec.ts:60:7 › comparación estructural light (7.2s)
+  ✓  21 tests/ui/estructura.spec.ts:60:7 › comparación estructural dark (8.2s)
+  ✓  22 tests/ui/import-json.spec.ts:5:5 › seleccionar JSON abre revisión, cancelar conserva datos, confirmar persiste los cinco pedidos (7.9s)
+  ✓  20 tests/ui/cobalto.spec.ts:204:9 › Cobalto 360dp dark: contraste renderizado, bordes y texto 200% (21.9s)
+  ✓  24 tests/ui/cobalto.spec.ts:204:9 › Cobalto 390dp light: contraste renderizado, bordes y texto 200% (10.4s)
+  ✓  25 tests/ui/cobalto.spec.ts:204:9 › Cobalto 390dp dark: contraste renderizado, bordes y texto 200% (8.9s)
+  ✓  26 tests/ui/cobalto.spec.ts:204:9 › Cobalto 412dp light: contraste renderizado, bordes y texto 200% (9.0s)
+  ✓  27 tests/ui/cobalto.spec.ts:204:9 › Cobalto 412dp dark: contraste renderizado, bordes y texto 200% (8.4s)
+  ✓  28 tests/ui/operations.spec.ts:3:5 › retiro y reingreso conservan el total (3.5s)
+  ✓  29 tests/ui/operations.spec.ts:38:5 › triangulación, daño y recuperación conservan existencias y procedencia (3.9s)
+  ✓  30 tests/ui/operations.spec.ts:82:5 › wizard prepara carga sin persistir al navegar y confirma un solo alquiler (2.3s)
+  ✓  31 tests/ui/recovery.spec.ts:4:5 › foto local, copia descargada y restauración sobreviven al reinicio (4.1s)
+  ✓  32 tests/ui/recovery.spec.ts:47:5 › borrar foto activa no rompe una recuperación interna retenida (5.7s)
+  ✓  33 tests/ui/themes.spec.ts:6:5 › tema automático conserva formulario y no hay selectores repetidos en ventanas (4.7s)
+  ✘  34 tests/ui/themes.spec.ts:71:9 › pantallas 320px light sin recortes (1.8s)
+(node:30673) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  35 tests/ui/themes.spec.ts:71:9 › pantallas 320px dark sin recortes (1.9s)
+(node:30803) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  36 tests/ui/themes.spec.ts:71:9 › pantallas 360px light sin recortes (2.1s)
+(node:30930) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  37 tests/ui/themes.spec.ts:71:9 › pantallas 360px dark sin recortes (1.9s)
+(node:31061) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  38 tests/ui/themes.spec.ts:71:9 › pantallas 390px light sin recortes (4.9s)
+  ✓  39 tests/ui/themes.spec.ts:71:9 › pantallas 390px dark sin recortes (4.8s)
+  ✓  40 tests/ui/themes.spec.ts:71:9 › pantallas 768px light sin recortes (4.5s)
+  ✓  41 tests/ui/themes.spec.ts:71:9 › pantallas 768px dark sin recortes (4.7s)
+  ✓  42 tests/ui/themes.spec.ts:71:9 › pantallas 1440px light sin recortes (5.7s)
+  ✓  43 tests/ui/themes.spec.ts:71:9 › pantallas 1440px dark sin recortes (5.4s)
+  ✘  44 tests/ui/trip.spec.ts:3:5 › viaje vuelve al depósito fijo y recupera el cambio de Ajustes sin alterar inventario (1.0m)
+(node:31568) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  45 tests/ui/welcome.spec.ts:3:5 › bienvenida breve completa una vez y puede abrirse desde Ajustes (2.3s)
+  ✘  23 tests/ui/local.spec.ts:8:5 › individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y offline (3.0m)
+(node:31752) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  47 tests/ui/local.spec.ts:146:5 › remito Word no queda bloqueado por un filtro Excel inválido (2.8s)
+  ✓  48 tests/ui/local.spec.ts:165:5 › temas locales persisten y conservan el formulario (3.6s)
+  ✘  46 tests/ui/welcome.spec.ts:19:5 › cambiar nombre local conserva inventario y autores sin cuentas ni invitaciones (1.0m)
+
+
+  1) tests/ui/app.spec.ts:3:5 › equipo crea, entrega, deshace y descarga documentos ────────────────
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.click: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Deshacer', exact: true })
+
+
+      34 |   await page.goto('/historial');
+      35 |   await expect(page.getByText('Confirmó la entrega', { exact: true })).toBeVisible();
+    > 36 |   await page.getByRole('button', { name: 'Deshacer', exact: true }).click();
+         |                                                                     ^
+      37 |   await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
+      38 |   await expect(page.getByText('Deshizo: Confirmó la entrega', { exact: true })).toBeVisible();
+      39 |   await page.goto('/exportar');
+        at /workspace/repartos-chema/tests/ui/app.spec.ts:36:69
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/app-equipo-crea-entrega-deshace-y-descarga-documentos/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/app-equipo-crea-entrega-deshace-y-descarga-documentos/error-context.md
+
+  2) tests/ui/local.spec.ts:8:5 › individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y offline 
+
+    Test timeout of 180000ms exceeded.
+
+    Error: locator.click: Test timeout of 180000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Agregar', exact: true })
+
+
+      25 |   await expect(page.getByText('Local · En este celular', { exact: true })).toBeVisible();
+      26 |   await page.goto('/galpon');
+    > 27 |   await page.getByRole('button', { name: 'Agregar', exact: true }).click();
+         |                                                                    ^
+      28 |   await page.getByLabel('Nombre del material', { exact: true }).fill('Cuerpo de andamio');
+      29 |   await page.getByRole('button', { name: '1.30m', exact: true }).click();
+      30 |   await page.getByRole('button', { name: 'Guardar cambios', exact: true }).click();
+        at /workspace/repartos-chema/tests/ui/local.spec.ts:27:68
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/local-individual-vacío-sto-eb768-o-JSON-documentos-y-offline/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/local-individual-vacío-sto-eb768-o-JSON-documentos-y-offline/error-context.md
+
+  3) tests/ui/themes.spec.ts:71:9 › pantallas 320px light sin recortes ─────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 140
+    Received:   95.625
+
+      143 |           const box = await page.getByText('Marco de andamio', { exact: true }).boundingBox();
+      144 |           expect(box).not.toBeNull();
+    > 145 |           expect(box!.width).toBeGreaterThan(140);
+          |                              ^
+      146 |           expect(box!.height).toBeLessThan(90);
+      147 |           await expect(page.getByText('1.30m', { exact: true }).first()).toBeVisible();
+      148 |         }
+        at /workspace/repartos-chema/tests/ui/themes.spec.ts:145:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/themes-pantallas-320px-light-sin-recortes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/themes-pantallas-320px-light-sin-recortes/error-context.md
+
+  4) tests/ui/themes.spec.ts:71:9 › pantallas 320px dark sin recortes ──────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 140
+    Received:   95.625
+
+      143 |           const box = await page.getByText('Marco de andamio', { exact: true }).boundingBox();
+      144 |           expect(box).not.toBeNull();
+    > 145 |           expect(box!.width).toBeGreaterThan(140);
+          |                              ^
+      146 |           expect(box!.height).toBeLessThan(90);
+      147 |           await expect(page.getByText('1.30m', { exact: true }).first()).toBeVisible();
+      148 |         }
+        at /workspace/repartos-chema/tests/ui/themes.spec.ts:145:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/themes-pantallas-320px-dark-sin-recortes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/themes-pantallas-320px-dark-sin-recortes/error-context.md
+
+  5) tests/ui/themes.spec.ts:71:9 › pantallas 360px light sin recortes ─────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 140
+    Received:   135.625
+
+      143 |           const box = await page.getByText('Marco de andamio', { exact: true }).boundingBox();
+      144 |           expect(box).not.toBeNull();
+    > 145 |           expect(box!.width).toBeGreaterThan(140);
+          |                              ^
+      146 |           expect(box!.height).toBeLessThan(90);
+      147 |           await expect(page.getByText('1.30m', { exact: true }).first()).toBeVisible();
+      148 |         }
+        at /workspace/repartos-chema/tests/ui/themes.spec.ts:145:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/themes-pantallas-360px-light-sin-recortes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/themes-pantallas-360px-light-sin-recortes/error-context.md
+
+  6) tests/ui/themes.spec.ts:71:9 › pantallas 360px dark sin recortes ──────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 140
+    Received:   135.625
+
+      143 |           const box = await page.getByText('Marco de andamio', { exact: true }).boundingBox();
+      144 |           expect(box).not.toBeNull();
+    > 145 |           expect(box!.width).toBeGreaterThan(140);
+          |                              ^
+      146 |           expect(box!.height).toBeLessThan(90);
+      147 |           await expect(page.getByText('1.30m', { exact: true }).first()).toBeVisible();
+      148 |         }
+        at /workspace/repartos-chema/tests/ui/themes.spec.ts:145:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/themes-pantallas-360px-dark-sin-recortes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/themes-pantallas-360px-dark-sin-recortes/error-context.md
+
+  7) tests/ui/trip.spec.ts:3:5 › viaje vuelve al depósito fijo y recupera el cambio de Ajustes sin alterar inventario 
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.click: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Depósito', exact: true })
+
+
+      23 |   await page.getByRole('button', { name: 'Cerrar', exact: true }).last().click();
+      24 |   await page.getByRole('button', { name: 'Abrir ajustes', exact: true }).click();
+    > 25 |   await page.getByRole('button', { name: 'Depósito', exact: true }).click();
+         |                                                                     ^
+      26 |   const address = 'Depósito de prueba 123, Zona de prueba';
+      27 |   await page.getByLabel('Dirección del depósito', { exact: true }).fill(address);
+      28 |   await page.getByRole('button', { name: 'Guardar dirección', exact: true }).click();
+        at /workspace/repartos-chema/tests/ui/trip.spec.ts:25:69
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/trip-viaje-vuelve-al-depós-c747e-stes-sin-alterar-inventario/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/trip-viaje-vuelve-al-depós-c747e-stes-sin-alterar-inventario/error-context.md
+
+  8) tests/ui/welcome.spec.ts:19:5 › cambiar nombre local conserva inventario y autores sin cuentas ni invitaciones 
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.click: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Cambiar nombre', exact: true })
+
+
+      26 |   await page.goto('/configuracion');
+      27 |   await expect(page.getByRole('button', { name: 'Crear invitación', exact: true })).toHaveCount(0);
+    > 28 |   await page.getByRole('button', { name: 'Cambiar nombre', exact: true }).click();
+         |                                                                           ^
+      29 |   await page.getByLabel('Tu nombre', { exact: true }).fill('Persona B');
+      30 |   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+      31 |   await page.goto('/obra/obra_5');
+        at /workspace/repartos-chema/tests/ui/welcome.spec.ts:28:75
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/welcome-cambiar-nombre-loc-daaa9-sin-cuentas-ni-invitaciones/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/welcome-cambiar-nombre-loc-daaa9-sin-cuentas-ni-invitaciones/error-context.md
+
+  8 failed
+    tests/ui/app.spec.ts:3:5 › equipo crea, entrega, deshace y descarga documentos ─────────────────
+    tests/ui/local.spec.ts:8:5 › individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y offline 
+    tests/ui/themes.spec.ts:71:9 › pantallas 320px light sin recortes ──────────────────────────────
+    tests/ui/themes.spec.ts:71:9 › pantallas 320px dark sin recortes ───────────────────────────────
+    tests/ui/themes.spec.ts:71:9 › pantallas 360px light sin recortes ──────────────────────────────
+    tests/ui/themes.spec.ts:71:9 › pantallas 360px dark sin recortes ───────────────────────────────
+    tests/ui/trip.spec.ts:3:5 › viaje vuelve al depósito fijo y recupera el cambio de Ajustes sin alterar inventario 
+    tests/ui/welcome.spec.ts:19:5 › cambiar nombre local conserva inventario y autores sin cuentas ni invitaciones 
+  40 passed (5.7m)

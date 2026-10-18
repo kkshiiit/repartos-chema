@@ -1,3 +1,15 @@
+# Puerta visual superada — 1.5.0/code8 — 18/10/2026 20:48 UTC
+
+**Estado activo:** estructura implementada y comparada manualmente ANTES del APK.19comparativas (11contra recortes de referencias al mismo tamaño/tema y8antes/después),346capturas actuales en artifacts/capturas/estructura-1.5. Ver COMPARACION_VISUAL_1_5.md para datos sintéticos y diferencias intencionales.
+
+Check final222/222 en28archivos, tsc/lint/Functions pasan.80superficies de contraste0violaciones/0incompletas. Última captura de referencias2/2 pasa, incluido catálogo plegado tras combo y aria-expanded explícito en web. Revisiones previas encontraron selectores antiguos en tests y conteo mal rotulado; corregidos. Los intentos fallidos se conservan en artifacts/validacion/estructura-*. No presentar sus fallos como éxitos. **Falta repetir suiteUI completa final sobre este punto**, y APK/instalación física siguen pendientes.
+
+Commits publicados f978056,b4e8f4c,e65025c,5eaa298,e9a1e5c; el siguiente registra aria/evidencias. Sin cambios en dominio,SQLite,migración,JSON,fotos o dependencias (sólo versión raíz1.5.0/code8). Clave privada existente fueraGit /workspace/respaldos/firma-interna/chema-restaurada-1.3.keystore; mismo paquete com.grupochema.repartos. No servicios pagos/cloud.
+
+**Próxima acción exacta:** comprobar gitstatus limpio y main respaldado, empaquetar fuente verificando restauración; ejecutar Gradle completo con la clave existente y log artifacts/validacion/estructura-android.txt. Puede correrse la UI final en paralelo porque código UI queda congelado. Verificar APK contra1.4, SHA/CRC/ABI/certificado. Después publicar APK1.5 en carpeta nueva de descargas sin tocar anteriores, recuperar desde clon independiente, documentación y ZIP final. No afirmar pruebas físicas: adb no tiene dispositivos conectados.
+
+---
+
 # Continuidad activa — corrección estructural 1.5 — 18/10/2026
 
 El usuario reabrió el rediseño porque 1.4 conservaba composición anterior. Este bloque prevalece sobre el cierre histórico inferior. Base main332e56e sincronizada, árbol limpio antes de comenzar; ZIP base verificado descrito en CIERRE_ESTRUCTURAL_1_5.md.

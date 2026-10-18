@@ -1,0 +1,37 @@
+[
+  {
+    "screen": "alquileres",
+    "boxes": [
+      {
+        "top": 314,
+        "height": 96,
+        "width": 398
+      },
+      {
+        "top": 454,
+        "height": 96,
+        "width": 398
+      },
+      {
+        "top": 550,
+        "height": 96,
+        "width": 398
+      },
+      {
+        "top": 690,
+        "height": 96,
+        "width": 398
+      },
+      {
+        "top": 830,
+        "height": 96,
+        "width": 398
+      },
+      {
+        "top": 926,
+        "height": 96,
+        "width": 398
+      }
+    ]
+  }
+]

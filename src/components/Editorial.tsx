@@ -23,6 +23,7 @@ export function Disclosure({
         accessibilityRole="button"
         accessibilityLabel={title}
         accessibilityState={{ expanded: open }}
+        aria-expanded={open}
         onPress={() => setOpen(!open)}
         style={[s.row, { minHeight: 48, justifyContent: 'space-between' }]}
       >
