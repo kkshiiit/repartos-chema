@@ -23,4 +23,4 @@ Respaldo inmutable antes de editar: `/workspace/respaldos/estructura-1.5/base-33
 
 ## Estado de ejecución
 
-Implementación estructural en revisión; aún no acredita cierre visual ni APK nuevo. Historial 1.4 preservado. Próximo: suite y build web, comparación real y correcciones; después respaldo y compilación nativa completa.
+Puerta visual superada antes de Gradle: ver COMPARACION_VISUAL_1_5.md. Check222/222 y referencias2/2 pasan;80superficies de contraste sin violaciones ni incompletas. Próximo: repetir suite UI final, respaldo y compilación nativa completa. No hay APK1.5 publicado todavía. Historial1.4 preservado.

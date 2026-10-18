@@ -149,7 +149,10 @@ test('individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y o
   await expect(page.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible();
   expect((await state()).materiales[0]?.cantidadGalpon).toBe(20);
   await context.setOffline(false);
-  await page.screenshot({ path: 'artifacts/capturas/local-120-alquileres.png', fullPage: true });
+  await page.screenshot({
+    path: 'artifacts/capturas/estructura-1.5/local-alquileres.png',
+    fullPage: true,
+  });
   expect(errors).toEqual([]);
   expect(cloudRequests).toEqual([]);
 });
@@ -191,7 +194,10 @@ test('temas locales persisten y conservan el formulario', async ({ page }) => {
   await expect
     .poll(() => page.evaluate(() => document.documentElement.style.colorScheme))
     .toBe('light');
-  await page.screenshot({ path: 'artifacts/capturas/local-120-ajustes-claro.png', fullPage: true });
+  await page.screenshot({
+    path: 'artifacts/capturas/estructura-1.5/local-ajustes-claro.png',
+    fullPage: true,
+  });
   await page.getByRole('button', { name: 'Apariencia', exact: true }).click();
   await page.getByRole('button', { name: 'Oscuro', exact: true }).click();
   await expect

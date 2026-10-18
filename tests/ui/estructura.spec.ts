@@ -204,6 +204,9 @@ for (const theme of ['light', 'dark'])
         await page.getByRole('button', { name: 'Cargar combo', exact: true }).click();
         await page.getByRole('button', { name: 'Combo Torre 1.30m', exact: true }).click();
         await page.getByRole('button', { name: 'Revisar combo', exact: true }).click();
+        await expect(
+          page.getByRole('button', { name: 'Agregar materiales', exact: true }),
+        ).toHaveAttribute('aria-expanded', 'false');
         const decrease = page.getByRole('button', { name: /^Reducir / });
         await decrease.nth(0).click();
         await decrease.nth(0).click();
