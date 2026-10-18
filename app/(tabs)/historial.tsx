@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { View, Text, AppState, Platform } from 'react-native';
 import { useFocusEffect } from 'expo-router';
-import { History, ArrowRight } from 'lucide-react-native';
+import { History, ArrowRight, SlidersHorizontal } from 'lucide-react-native';
 import { useInventory } from '../../src/context/InventoryContext';
 import { useAuth } from '../../src/context/AuthContext';
 import { undoReason } from '../../src/domain/engine';
@@ -24,6 +24,7 @@ export default function HistoryPage() {
   const { C, s } = useUI();
   const { state, dispatch } = useInventory(),
     { user } = useAuth();
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [query, setQuery] = useState(''),
     [obra, setObra] = useState('TODAS'),
     [actor, setActor] = useState('TODOS'),
@@ -76,39 +77,47 @@ export default function HistoryPage() {
               onChangeText={setQuery}
               placeholder="Acción, alquiler o responsable"
             />
-            <View style={s.wrap}>
-              <View style={{ flex: 1, minWidth: 180 }}>
-                <Select
-                  label="Alquiler"
-                  value={obra}
-                  options={[
-                    { value: 'TODAS', label: 'Todos los alquileres' },
-                    ...[...works].map(([value, label]) => ({ value, label })),
-                  ]}
-                  onChange={setObra}
-                />
+            <Button
+              label="Filtrar historial"
+              icon={SlidersHorizontal}
+              variant="ghost"
+              onPress={() => setFiltersOpen(!filtersOpen)}
+            />
+            {filtersOpen ? (
+              <View style={s.wrap}>
+                <View style={{ flex: 1, minWidth: 180 }}>
+                  <Select
+                    label="Alquiler"
+                    value={obra}
+                    options={[
+                      { value: 'TODAS', label: 'Todos los alquileres' },
+                      ...[...works].map(([value, label]) => ({ value, label })),
+                    ]}
+                    onChange={setObra}
+                  />
+                </View>
+                <View style={{ flex: 1, minWidth: 180 }}>
+                  <Select
+                    label="Usuario"
+                    value={actor}
+                    options={[
+                      { value: 'TODOS', label: 'Todos los usuarios' },
+                      ...users.map(([value, label]) => ({ value, label })),
+                    ]}
+                    onChange={setActor}
+                  />
+                </View>
+                <View style={{ flex: 1, minWidth: 180 }}>
+                  <Field
+                    label="Fecha · AAAA-MM-DD"
+                    value={date}
+                    onChangeText={setDate}
+                    placeholder="Todas las fechas"
+                    maxLength={10}
+                  />
+                </View>
               </View>
-              <View style={{ flex: 1, minWidth: 180 }}>
-                <Select
-                  label="Usuario"
-                  value={actor}
-                  options={[
-                    { value: 'TODOS', label: 'Todos los usuarios' },
-                    ...users.map(([value, label]) => ({ value, label })),
-                  ]}
-                  onChange={setActor}
-                />
-              </View>
-              <View style={{ flex: 1, minWidth: 180 }}>
-                <Field
-                  label="Fecha · AAAA-MM-DD"
-                  value={date}
-                  onChangeText={setDate}
-                  placeholder="Todas las fechas"
-                  maxLength={10}
-                />
-              </View>
-            </View>
+            ) : null}
           </View>
         }
         ListFooterComponent={

@@ -82,12 +82,12 @@ export function WelcomeProvider({ children }: { children: React.ReactNode }) {
           void AsyncStorage.setItem(KEY, 'done').catch(() => {});
         }}
       >
-        <View style={{ gap: 22, paddingVertical: 12 }}>
+        <View style={{ gap: 24, paddingVertical: 12 }}>
           <View
             style={{
-              width: 76,
-              height: 76,
-              borderRadius: 26,
+              width: 64,
+              height: 64,
+              borderRadius: 16,
               borderWidth: 1,
               borderColor: C.hairline,
               backgroundColor: C.selection,
@@ -97,7 +97,7 @@ export function WelcomeProvider({ children }: { children: React.ReactNode }) {
           >
             <current.icon size={32} color={C.accent} />
           </View>
-          <Text accessibilityRole="header" style={[s.h2, { fontSize: 23, lineHeight: 30 }]}>
+          <Text accessibilityRole="header" style={s.title}>
             {current.title}
           </Text>
           <Text style={[s.body, { color: C.muted }]}>{current.text}</Text>

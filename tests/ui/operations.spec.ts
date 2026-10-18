@@ -75,3 +75,52 @@ test('triangulación, daño y recuperación conservan existencias y procedencia'
   expect(recovered.materiales[0].cantidadGalpon).toBe(before.materiales[0].cantidadGalpon + 1);
   expect(recovered.materiales[0].cantidadEnObra).toBe(before.materiales[0].cantidadEnObra - 1);
 });
+
+test('wizard prepara carga sin persistir al navegar y confirma un solo alquiler', async ({
+  page,
+}) => {
+  await login(page);
+  const state = () => page.evaluate(() => JSON.parse(localStorage.getItem('chema:demo:v1')!).state);
+  const before = await state();
+  await page.getByRole('button', { name: 'Nuevo alquiler', exact: true }).click();
+  await page.getByLabel('Nombre del cliente', { exact: true }).fill('Cliente wizard sintético');
+  await page.getByLabel('Dirección', { exact: true }).fill('Calle sintética 321');
+  await page.getByLabel('Barrio / localidad', { exact: true }).fill('Zona sintética');
+  await page.getByLabel('Observaciones', { exact: true }).fill('Conservar durante revisión');
+  await page.getByRole('button', { name: 'Continuar a carga', exact: true }).click();
+  await page.getByRole('button', { name: 'Agregar material', exact: true }).last().click();
+  await page.getByLabel('Apodo de esta carga', { exact: true }).fill('Identificación sintética');
+  await page.getByRole('button', { name: 'Revisar alquiler', exact: true }).click();
+  expect(await state()).toEqual(before);
+  await page.getByRole('button', { name: 'Volver a carga', exact: true }).click();
+  await expect(page.getByLabel('Apodo de esta carga', { exact: true })).toHaveValue(
+    'Identificación sintética',
+  );
+  await page.getByRole('button', { name: 'Volver a cliente', exact: true }).click();
+  await expect(page.getByLabel('Observaciones', { exact: true })).toHaveValue(
+    'Conservar durante revisión',
+  );
+  expect(await state()).toEqual(before);
+  await page.getByRole('button', { name: 'Continuar a carga', exact: true }).click();
+  await page.getByRole('button', { name: 'Revisar alquiler', exact: true }).click();
+  await page
+    .getByRole('button', { name: 'Guardar alquiler', exact: true })
+    .click({ clickCount: 2 });
+  await expect(
+    page.getByRole('heading', { name: 'Cliente wizard sintético', exact: true }),
+  ).toBeVisible();
+  const after = await state();
+  expect(
+    after.obras.filter(
+      (o: { clienteNombre: string }) => o.clienteNombre === 'Cliente wizard sintético',
+    ),
+  ).toHaveLength(1);
+  const created = after.obras.find(
+    (o: { clienteNombre: string }) => o.clienteNombre === 'Cliente wizard sintético',
+  );
+  expect(created.materialesCargados).toHaveLength(1);
+  expect(created.materialesCargados[0].apodo).toBe('Identificación sintética');
+  expect(created.observaciones).toBe('Conservar durante revisión');
+  expect(after.materiales).toEqual(before.materiales);
+  expect(after.revision).toBe(before.revision + 2);
+});

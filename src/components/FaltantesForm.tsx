@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import type { IncidentInput, ObraCard } from '../types';
 import { useInventory } from '../context/InventoryContext';
-import { Button, Chip, Field, Select, useUI } from './ui';
+import { Button, Chip, Field, Select, Notice, useUI, usePanelChanges } from './ui';
 import { SmartCounter } from './SmartCounter';
 export function FaltantesForm({
   obra,
@@ -14,10 +14,12 @@ export function FaltantesForm({
   onChange: (v: IncidentInput[]) => void;
 }) {
   const { s } = useUI();
+  const { markDirty } = usePanelChanges();
   const { state } = useInventory();
   const available = state.materiales.filter((m) => (obra.saldosEnObra[m.id] || 0) > 0);
   const [selected, setSelected] = useState(available[0]?.id || '');
   const add = (id: string) => {
+    markDirty();
     onChange([
       ...value,
       { ...(id ? { materialId: id } : {}), cantidad: 1, tipo: 'PERDIDO', notas: '' },
@@ -26,7 +28,7 @@ export function FaltantesForm({
   return (
     <View style={{ gap: 15 }}>
       <Text style={s.muted}>
-        Solo el material que sigue alquiladas puede pasar a taller o perdido. Lo ya registrado no se
+        Solo el material que sigue alquilado puede pasar a taller o perdido. Lo ya registrado no se
         descuenta otra vez.
       </Text>
       <View style={s.wrap}>
@@ -41,7 +43,7 @@ export function FaltantesForm({
         options={[
           { label: 'Ítem fuera del inventario', value: '' },
           ...available.map((m) => ({
-            label: `${m.nombre} · ${obra.saldosEnObra[m.id]} alquiladas`,
+            label: `${m.nombre} · ${obra.materialesCargados.find((i) => i.materialId === m.id)?.medida || m.medida || 'Sin medida'} · ${obra.saldosEnObra[m.id]} alquiladas`,
             value: m.id,
           })),
         ]}
@@ -49,8 +51,10 @@ export function FaltantesForm({
       />
       <Button label="Agregar faltante" variant="secondary" onPress={() => add(selected)} />
       {value.map((i, index) => {
-        const set = (change: Partial<IncidentInput>) =>
+        const set = (change: Partial<IncidentInput>) => {
+          markDirty();
           onChange(value.map((v, n) => (n === index ? { ...v, ...change } : v)));
+        };
         return (
           <View key={index} style={s.card}>
             <Text style={s.h2}>
@@ -62,6 +66,15 @@ export function FaltantesForm({
               label={`Faltante ${index + 1}`}
               onChange={(cantidad) => set({ cantidad })}
             />
+            {i.materialId &&
+            value
+              .filter((v) => v.materialId === i.materialId)
+              .reduce((sum, v) => sum + v.cantidad, 0) > (obra.saldosEnObra[i.materialId] || 0) ? (
+              <Notice
+                text="Las cantidades registradas superan el saldo alquilado de este material."
+                tone="error"
+              />
+            ) : null}
             <View style={s.wrap}>
               <Chip
                 label="Perdido"
@@ -84,6 +97,9 @@ export function FaltantesForm({
               }
               onChangeText={(itemNombre) => set({ itemNombre })}
             />
+            {!i.materialId && !i.itemNombre?.trim() ? (
+              <Notice text="Indicá el nombre del ítem fuera del inventario." tone="error" />
+            ) : null}
             <Field
               label="Notas"
               value={i.notas || ''}
@@ -93,7 +109,10 @@ export function FaltantesForm({
             <Button
               label="Quitar"
               variant="ghost"
-              onPress={() => onChange(value.filter((_, n) => n !== index))}
+              onPress={() => {
+                markDirty();
+                onChange(value.filter((_, n) => n !== index));
+              }}
             />
           </View>
         );

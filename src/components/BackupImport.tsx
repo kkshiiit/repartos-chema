@@ -8,7 +8,7 @@ import { Button, ConfirmButton, Notice, Sheet, useUI } from './ui';
 
 export function BackupImport() {
   const { s } = useUI();
-  const { state, restore, undoRestore } = useInventory();
+  const { state, restore, undoRestore, backup } = useInventory();
   const [selection, setSelection] = useState<{
     raw: string;
     obras: number;
@@ -70,6 +70,7 @@ export function BackupImport() {
       <Sheet
         visible={selection !== null}
         title="Revisar importación JSON"
+        busy={busy}
         onClose={() => !busy && setSelection(null)}
       >
         {selection ? (
@@ -84,7 +85,25 @@ export function BackupImport() {
               importación».
             </Text>
             {error ? <Notice text={error} tone="error" /> : null}
-            <Button label="Confirmar importación" loading={busy} onPress={() => void confirm()} />
+            <Button
+              label="Guardar copia actual"
+              variant="secondary"
+              loading={busy}
+              onPress={async () => {
+                try {
+                  await backup();
+                  setError('');
+                } catch (e) {
+                  setError(userError(e));
+                }
+              }}
+            />
+            <Button
+              label="Confirmar importación"
+              variant="danger"
+              loading={busy}
+              onPress={confirm}
+            />
             <Button
               label="Cancelar importación"
               variant="secondary"

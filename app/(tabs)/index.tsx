@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { View, Text, useWindowDimensions, TextInput, ScrollView } from 'react-native';
-import { Plus, Search, ArrowDownToLine, Truck, Clock, Layers, Download } from 'lucide-react-native';
+import { Plus, Search, Layers, Download, SlidersHorizontal } from 'lucide-react-native';
 import { router } from 'expo-router';
 import { useInventory } from '../../src/context/InventoryContext';
 import { useAuth } from '../../src/context/AuthContext';
@@ -16,7 +16,7 @@ export default function Home() {
   const [query, setQuery] = useState(''),
     [status, setStatus] = useState('TODAS'),
     [zone, setZone] = useState('TODAS');
-  const columns = width >= 1400 ? 3 : width >= 760 ? 2 : 1;
+  const columns = width >= 1100 ? 2 : 1;
   const zones = [...new Set(state.obras.map((o) => o.localidadBarrio))].sort();
   const today = businessDate();
   const filtered = useMemo(
@@ -44,58 +44,24 @@ export default function Home() {
         }),
     [state.obras, zone, status, query, today],
   );
-  const counts = (key: string) => state.obras.filter((o) => obraStatus(o).key === key).length;
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const due = state.obras.filter((o) =>
+    ['ROJO', 'AMARILLO'].includes(obraStatus(o, today).key),
+  ).length;
   const header = (
-    <View style={{ gap: width < 600 ? 12 : 24, paddingBottom: 12 }}>
-      <ScrollView
-        tabIndex={0}
-        accessibilityLabel="Resumen de alquileres, desplazable"
-        horizontal={width < 600}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ flexDirection: 'row', gap: 12, flex: width < 600 ? undefined : 1 }}
-      >
-        {[
-          {
-            label: 'Alquilados',
-            n: state.obras.filter((o) => o.estadoProceso === 'ENTREGADO').length,
-            icon: Layers,
-            color: C.blue,
-          },
-          { label: 'Retiros hoy', n: counts('AMARILLO'), icon: ArrowDownToLine, color: C.yellow },
-          { label: 'Retiros vencidos', n: counts('ROJO'), icon: Clock, color: C.danger },
-          { label: 'Por entregar', n: counts('PENDIENTE'), icon: Truck, color: C.purple },
-        ].map((metric) => (
-          <View
-            key={metric.label}
-            style={[
-              s.card,
-              {
-                flexGrow: 1,
-                flexBasis: width < 600 ? 125 : '20%',
-                minWidth: width < 600 ? 125 : undefined,
-                padding: width < 600 ? 10 : 17,
-                gap: width < 600 ? 3 : 14,
-              },
-            ]}
-          >
-            <View style={[s.row, { justifyContent: 'space-between' }]}>
-              <Text style={{ color: C.muted, fontSize: 12 }}>{metric.label}</Text>
-              <metric.icon size={17} color={metric.color} />
-            </View>
-            <Text
-              style={{
-                fontSize: width < 600 ? 22 : 30,
-                fontWeight: '800',
-                color: C.text,
-                letterSpacing: -1,
-              }}
-            >
-              {String(metric.n).padStart(2, '0')}
-              <Text style={{ fontSize: 12, color: C.subtle, fontWeight: '400' }}></Text>
-            </Text>
-          </View>
-        ))}
-      </ScrollView>
+    <View style={{ gap: 16, paddingBottom: 20 }}>
+      <View style={[s.row, { justifyContent: 'space-between', flexWrap: 'wrap' }]}>
+        <Text style={s.muted}>
+          {state.obras.filter((o) => o.estadoProceso === 'ENTREGADO').length} alquileres activos ·{' '}
+          {due} retiros pendientes
+        </Text>
+        <Button
+          label="Filtros"
+          icon={SlidersHorizontal}
+          variant="ghost"
+          onPress={() => setFiltersOpen(!filtersOpen)}
+        />
+      </View>
       <View style={[s.row, { flexWrap: 'wrap' }]}>
         <View style={[s.input, s.row, { flexGrow: 1, flexBasis: width < 600 ? 155 : 230 }]}>
           <Search size={18} color={C.subtle} />
@@ -105,23 +71,25 @@ export default function Home() {
             onChangeText={setQuery}
             placeholder="Buscar cliente o dirección…"
             placeholderTextColor={C.subtle}
-            style={{ color: C.text, flex: 1, fontSize: 14 } as never}
+            style={{ color: C.text, flex: 1, fontSize: 16 } as never}
           />
         </View>
-        <View
-          style={{ minWidth: width < 600 ? 130 : 180, maxWidth: width < 600 ? 135 : undefined }}
-        >
-          <Select
-            label="Zona"
-            compact={width < 600}
-            value={zone}
-            options={[
-              { value: 'TODAS', label: 'Zona' },
-              ...zones.map((z) => ({ value: z, label: z })),
-            ]}
-            onChange={setZone}
-          />
-        </View>
+        {filtersOpen ? (
+          <View
+            style={{ minWidth: width < 600 ? 130 : 180, maxWidth: width < 600 ? 135 : undefined }}
+          >
+            <Select
+              label="Zona"
+              compact={width < 600}
+              value={zone}
+              options={[
+                { value: 'TODAS', label: 'Zona' },
+                ...zones.map((z) => ({ value: z, label: z })),
+              ]}
+              onChange={setZone}
+            />
+          </View>
+        ) : null}
       </View>
       <ScrollView
         horizontal
@@ -145,7 +113,7 @@ export default function Home() {
           />
         ))}
       </ScrollView>
-      <View style={[s.row, { justifyContent: 'space-between' }]}>
+      <View style={[s.row, { justifyContent: 'space-between', flexWrap: 'wrap' }]}>
         <Text style={s.h2}>
           Resultados{' '}
           <Text style={{ color: C.subtle, fontSize: 14, fontWeight: '400' }}>
@@ -153,17 +121,18 @@ export default function Home() {
             / {filtered.length}
           </Text>
         </Text>
-        <Text style={{ color: C.subtle, fontSize: 11 }}>Prioridad de retiro</Text>
+        <Text style={{ color: C.subtle, fontSize: 14 }}>Prioridad de retiro</Text>
       </View>
     </View>
   );
   return (
     <Screen
       title="Alquileres"
+      subtitle="Entregas, retiros y cada pieza en su lugar."
       scroll={false}
       action={
         user?.role === 'ADMIN' ? (
-          <View style={s.row}>
+          <View style={s.wrap}>
             <Button
               label="Exportar"
               icon={Download}

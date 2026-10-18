@@ -5,7 +5,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { Download, FileText } from 'lucide-react-native';
 import { useInventory } from '../src/context/InventoryContext';
 import { useAuth } from '../src/context/AuthContext';
-import { Button, Field, Notice, Screen, Select, useUI } from '../src/components/ui';
+import { Button, Chip, Field, Notice, Screen, Select, useUI } from '../src/components/ui';
 import { exportDocument } from '../src/services/exportService';
 import { DATA_MODE } from '../src/services/firebase';
 import { obraStatus, validDate } from '../src/domain/rules';
@@ -14,6 +14,7 @@ export default function Export() {
   const { obraId } = useLocalSearchParams<{ obraId?: string }>(),
     { state } = useInventory(),
     { user } = useAuth();
+  const [format, setFormat] = useState<'excel' | 'word'>('excel');
   const [from, setFrom] = useState(''),
     [to, setTo] = useState(''),
     [status, setStatus] = useState('TODAS'),
@@ -64,54 +65,68 @@ export default function Export() {
                   : 'Generación privada en Cloud Functions. El archivo requiere autenticación y se elimina automáticamente.'
               }
             />
-            <Text style={s.h2}>Reporte logístico · Excel</Text>
-            <Field
-              label="Entrega desde · AAAA-MM-DD"
-              value={from}
-              onChangeText={setFrom}
-              placeholder="Sin límite"
-            />
-            <Field
-              label="Entrega hasta · AAAA-MM-DD"
-              value={to}
-              onChangeText={setTo}
-              placeholder="Sin límite"
-            />
-            <Select
-              label="Estado"
-              value={status}
-              options={[
-                { value: 'TODAS', label: 'Todos' },
-                { value: 'ROJO', label: 'Vencido' },
-                { value: 'AMARILLO', label: 'Retiro hoy' },
-                { value: 'VERDE', label: 'Al día' },
-                { value: 'PENDIENTE', label: 'Por entregar' },
-                { value: 'RETIRADO', label: 'Retirado' },
-                { value: 'REINGRESADO', label: 'Reingresado' },
-              ]}
-              onChange={setStatus}
-            />
-            <Button
-              label="Exportar Excel"
-              icon={Download}
-              loading={busy}
-              onPress={() => void run('excel')}
-            />
-            <View style={s.divider} />
-            <Text style={s.h2}>Remito institucional · Word</Text>
-            <Select
-              label="Alquiler"
-              value={selection}
-              options={state.obras.map((o) => ({ value: o.id, label: o.clienteNombre }))}
-              onChange={setSelected}
-            />
-            <Button
-              label="Generar remito"
-              icon={FileText}
-              variant="secondary"
-              loading={busy}
-              onPress={() => void run('word')}
-            />
+            <View style={s.wrap}>
+              <Chip
+                label="Excel"
+                selected={format === 'excel'}
+                onPress={() => setFormat('excel')}
+              />
+              <Chip label="Word" selected={format === 'word'} onPress={() => setFormat('word')} />
+            </View>
+            {format === 'excel' ? (
+              <View style={s.section}>
+                <Text style={s.h2}>Reporte logístico</Text>
+                <Field
+                  label="Entrega desde · AAAA-MM-DD"
+                  value={from}
+                  onChangeText={setFrom}
+                  placeholder="Sin límite"
+                />
+                <Field
+                  label="Entrega hasta · AAAA-MM-DD"
+                  value={to}
+                  onChangeText={setTo}
+                  placeholder="Sin límite"
+                />
+                <Select
+                  label="Estado"
+                  value={status}
+                  options={[
+                    { value: 'TODAS', label: 'Todos' },
+                    { value: 'ROJO', label: 'Vencido' },
+                    { value: 'AMARILLO', label: 'Retiro hoy' },
+                    { value: 'VERDE', label: 'Al día' },
+                    { value: 'PENDIENTE', label: 'Por entregar' },
+                    { value: 'RETIRADO', label: 'Retirado' },
+                    { value: 'REINGRESADO', label: 'Reingresado' },
+                  ]}
+                  onChange={setStatus}
+                />
+                <Button
+                  label="Exportar Excel"
+                  icon={Download}
+                  loading={busy}
+                  onPress={() => run('excel')}
+                />
+              </View>
+            ) : (
+              <View style={s.section}>
+                <Text style={s.h2}>Remito institucional</Text>
+                <Select
+                  label="Alquiler"
+                  value={selection}
+                  options={state.obras.map((o) => ({ value: o.id, label: o.clienteNombre }))}
+                  onChange={setSelected}
+                />
+                <Button
+                  label="Generar remito"
+                  icon={FileText}
+                  variant="secondary"
+                  loading={busy}
+                  onPress={() => run('word')}
+                />
+              </View>
+            )}
             {error ? <Notice text={error} tone="error" /> : null}
             {success ? <Notice text={success} tone="success" /> : null}
           </>

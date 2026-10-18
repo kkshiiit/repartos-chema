@@ -1,3 +1,5 @@
+import { Disclosure } from '../../src/components/Editorial';
+import { RentalReminderPanel } from '../../src/components/RentalReminderPanel';
 import { userError } from '../../src/services/errors';
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
@@ -67,8 +69,8 @@ export default function Detail() {
   };
   if (!o)
     return (
-      <Screen title="Detalle de obra" back>
-        <Empty title="Obra no encontrada" detail="Vuelve al listado de obras." />
+      <Screen title="Detalle del alquiler" back>
+        <Empty title="Alquiler no encontrado" detail="Volvé a Alquileres." />
       </Screen>
     );
   const incident = o.faltantesRegistrados?.find((i) => i.id === recoverId);
@@ -79,6 +81,20 @@ export default function Detail() {
       back
       action={<StatusChip obra={o} />}
     >
+      <View style={[s.card, { flexDirection: 'row', flexWrap: 'wrap', gap: 20 }]}>
+        <View style={{ flex: 1, minWidth: 120, gap: 4 }}>
+          <Text style={s.muted}>Entrega prevista</Text>
+          <Text style={[s.h2, { fontVariant: ['tabular-nums'] }]}>
+            {o.fechaEntrega.split('-').reverse().join('/')}
+          </Text>
+        </View>
+        <View style={{ flex: 1, minWidth: 120, gap: 4 }}>
+          <Text style={s.muted}>Retiro previsto</Text>
+          <Text style={[s.h2, { fontVariant: ['tabular-nums'] }]}>
+            {o.fechaRetiroEstimada.split('-').reverse().join('/')}
+          </Text>
+        </View>
+      </View>
       <View style={[s.wrap, { gap: 16 }]}>
         <View
           style={{
@@ -139,13 +155,13 @@ export default function Detail() {
                 label="GPS"
                 icon={Navigation}
                 variant="secondary"
-                onPress={() => void run(() => openLink(mapsUrl(o)))}
+                onPress={() => run(() => openLink(mapsUrl(o)))}
               />
               <Button
                 label="Remito WhatsApp"
                 icon={MessageCircle}
                 variant="secondary"
-                onPress={() => void run(() => openLink(whatsappUrl(o)))}
+                onPress={() => run(() => openLink(whatsappUrl(o)))}
               />
               {user?.role === 'ADMIN' ? (
                 <Button
@@ -194,8 +210,11 @@ export default function Detail() {
               <Text style={s.muted}>Prepara una carga o recibe una triangulación.</Text>
             )}
           </View>
-          <View style={s.card}>
-            <Text style={s.h2}>Faltantes y recuperaciones</Text>
+          <Disclosure
+            key={o.faltantesRegistrados?.length || 0}
+            title="Faltantes y recuperaciones"
+            initiallyOpen={!!o.faltantesRegistrados?.some((i) => i.recuperado < i.cantidad)}
+          >
             {o.faltantesRegistrados?.length ? (
               o.faltantesRegistrados.map((i) => (
                 <View key={i.id} style={{ gap: 8 }}>
@@ -230,9 +249,8 @@ export default function Detail() {
                   text={`Aviso a administración: ${n.status === 'SENT' ? 'aceptado por FCM (entrega al dispositivo no garantizada)' : n.status === 'EXHAUSTED' ? 'reintentos agotados; solicita revisión administrativa' : n.status === 'FAILED' ? `fallido · ${n.error || 'reintento pendiente'}` : 'pendiente; no enviado'}`}
                 />
               ))}
-          </View>
-          <View style={s.card}>
-            <Text style={s.h2}>Registro fotográfico</Text>
+          </Disclosure>
+          <Disclosure title="Fotos">
             <Text style={s.muted}>
               {DATA_MODE === 'demo'
                 ? 'Fotos locales; no se respaldan en nube. Al borrar datos de la app o del navegador se pierden.'
@@ -245,7 +263,7 @@ export default function Detail() {
                 loading={busy}
                 variant="secondary"
                 onPress={() =>
-                  void run(async () => {
+                  run(async () => {
                     const photo = await selectPhoto(makeId(), user!.uid, true);
                     if (photo) await dispatch({ type: 'PHOTO', obraId: o.id, photo });
                   })
@@ -257,7 +275,7 @@ export default function Detail() {
                 disabled={busy}
                 variant="secondary"
                 onPress={() =>
-                  void run(async () => {
+                  run(async () => {
                     const photo = await selectPhoto(makeId(), user!.uid);
                     if (photo) await dispatch({ type: 'PHOTO', obraId: o.id, photo });
                   })
@@ -294,7 +312,7 @@ export default function Detail() {
                 </View>
               ))}
             </View>
-          </View>
+          </Disclosure>
         </View>
         <View
           style={{
@@ -306,8 +324,7 @@ export default function Detail() {
             gap: 20,
           }}
         >
-          <View style={s.card}>
-            <Text style={s.h2}>Datos del alquiler</Text>
+          <Disclosure title="Datos del alquiler" initiallyOpen>
             <Info label="ENTREGA PREVISTA" value={o.fechaEntrega} />
             <Info
               label="ENTREGA EFECTIVA"
@@ -349,7 +366,8 @@ export default function Detail() {
                     : 'Confirmado por el servidor.'
               }
             />
-          </View>
+          </Disclosure>
+          <RentalReminderPanel obra={o} />
           {user?.role === 'ADMIN' ? (
             <ConfirmButton
               label="Eliminar alquiler"
@@ -373,9 +391,11 @@ export default function Detail() {
             faltante: 'Registrar faltante',
             transferencia: 'Triangulación directa',
             recuperar: 'Devolver al depósito',
-            ubicacion: 'Ubicación de obra',
+            ubicacion: 'Ubicación del alquiler',
           }[modal] || 'Operación'
         }
+        protectChanges
+        busy={busy}
         onClose={() => setModal('')}
       >
         {error ? <Notice text={error} tone="error" /> : null}
@@ -409,7 +429,7 @@ export default function Detail() {
               label="Confirmar devolución"
               loading={busy}
               onPress={() =>
-                void run(async () => {
+                run(async () => {
                   await dispatch({
                     ...(recoveryDestination === 'galpon'
                       ? { type: 'RECOVER' as const }
@@ -435,7 +455,7 @@ export default function Detail() {
               loading={busy}
               variant="secondary"
               onPress={() =>
-                void run(async () => {
+                run(async () => {
                   const permission = await Location.requestForegroundPermissionsAsync();
                   if (!permission.granted)
                     throw new Error('Sin permiso de ubicación. Ingresa coordenadas manualmente.');
@@ -464,7 +484,7 @@ export default function Detail() {
               label="Guardar ubicación"
               loading={busy}
               onPress={() =>
-                void run(async () => {
+                run(async () => {
                   if (!lat.trim() || !lng.trim()) throw new Error('Completa ambas coordenadas.');
                   await dispatch({
                     type: 'LOCATION',

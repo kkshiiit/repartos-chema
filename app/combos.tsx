@@ -48,8 +48,14 @@ export default function Combos() {
         <>
           <View style={s.wrap}>
             {state.combos.map((c) => (
-              <View key={c.id} style={[s.card, { flexGrow: 1, flexBasis: 300, maxWidth: 500 }]}>
-                <Layers size={26} color={C.danger} />
+              <View
+                key={c.id}
+                style={[
+                  s.card,
+                  { width: '100%', maxWidth: 800, borderBottomWidth: 1, borderColor: C.hairline },
+                ]}
+              >
+                <Layers size={26} color={C.link} />
                 <Text style={s.h2}>{c.nombreCombo}</Text>
                 {c.items.map((i) => (
                   <Text key={i.materialId} style={s.body}>
@@ -82,7 +88,13 @@ export default function Combos() {
           ) : null}
         </>
       )}
-      <Sheet visible={!!draft} title="Preparar combo" onClose={() => setDraft(null)}>
+      <Sheet
+        protectChanges
+        busy={busy}
+        visible={!!draft}
+        title="Preparar combo"
+        onClose={() => setDraft(null)}
+      >
         {draft ? (
           <>
             <Field
@@ -117,7 +129,13 @@ export default function Combos() {
               }}
             />
             {draft.items.map((i) => (
-              <View key={i.materialId} style={s.card}>
+              <View
+                key={i.materialId}
+                style={[
+                  s.section,
+                  { borderBottomWidth: 1, borderColor: C.hairline, paddingBottom: 16 },
+                ]}
+              >
                 <Text style={s.body}>
                   {state.materiales.find((m) => m.id === i.materialId)?.nombre}
                 </Text>

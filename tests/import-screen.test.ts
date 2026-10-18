@@ -4,6 +4,8 @@ import { beforeEach, expect, it, vi } from 'vitest';
 import { create, act } from 'react-test-renderer';
 import Settings from '../app/configuracion';
 const mocks = vi.hoisted(() => ({ pick: vi.fn(), restore: vi.fn(), undoRestore: vi.fn() }));
+vi.mock('../src/components/FeedbackSettings', () => ({ FeedbackSettings: () => null }));
+vi.mock('../src/components/Editorial', () => ({ Disclosure: ({children}:{children:React.ReactNode}) => children }));
 vi.mock('react-native', () => ({ View: 'View', Text: 'Text' }));
 vi.mock('expo-router', () => ({ router: { push: vi.fn() } }));
 vi.mock('../src/components/DepotSettings', () => ({ DepotSettings: () => null }));

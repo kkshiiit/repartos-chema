@@ -1,3 +1,4 @@
+import { displayDate, serializeDateInput } from '../utils/dateInput';
 import { userError } from '../services/errors';
 import React, {
   createContext,
@@ -260,16 +261,18 @@ export function IconButton({
 export function Field({ label, ...props }: TextInputProps & { label: string }) {
   const { C, s } = useUI();
   const { markDirty } = usePanelChanges();
+  const date = label.includes('AAAA-MM-DD');
   return (
     <View style={{ gap: 8 }}>
-      <Text style={s.label}>{label}</Text>
+      <Text style={s.label}>{date ? label.replace('AAAA-MM-DD', 'DD/MM/AAAA') : label}</Text>
       <TextInput
         accessibilityLabel={label}
         placeholderTextColor={C.subtle}
         {...props}
+        value={date && props.value ? displayDate(props.value) : props.value}
         onChangeText={(value) => {
           if (value !== props.value) markDirty();
-          props.onChangeText?.(value);
+          props.onChangeText?.(date ? serializeDateInput(value) : value);
         }}
         style={[s.input, props.style]}
       />
@@ -327,6 +330,7 @@ type PanelChanges = {
   markDirty: () => void;
   resetDirty: () => void;
   requestClose: () => void;
+  setBusy: (busy: boolean) => void;
 };
 const noop = () => {};
 const visiblePanels: string[] = [];
@@ -335,6 +339,7 @@ const PanelChangesContext = createContext<PanelChanges>({
   markDirty: noop,
   resetDirty: noop,
   requestClose: noop,
+  setBusy: noop,
 });
 /** Optional outside a panel; composite inputs may mark their enclosing form dirty. */
 export function usePanelChanges() {
@@ -347,7 +352,7 @@ export function Sheet({
   onClose,
   children,
   protectChanges = false,
-  busy = false,
+  busy: externalBusy = false,
 }: {
   visible: boolean;
   title: string;
@@ -361,6 +366,8 @@ export function Sheet({
   const panelId = useId();
   const insets = useSafeAreaInsets();
   const { motionEnabled } = useTheme();
+  const [childBusy, setChildBusy] = useState(false);
+  const busy = externalBusy || childBusy;
   const [dirty, setDirty] = useState(false);
   const dirtyRef = useRef(false);
   const [confirmDiscard, setConfirmDiscard] = useState(false);
@@ -449,7 +456,7 @@ export function Sheet({
     return () => animation.stop();
   }, [visible, motionEnabled, transition]);
   const panel = useMemo(
-    () => ({ dirty, markDirty, resetDirty, requestClose }),
+    () => ({ dirty, markDirty, resetDirty, requestClose, setBusy: setChildBusy }),
     [dirty, markDirty, resetDirty, requestClose],
   );
   // Remove the native modal immediately on dismissal: even a transparent native
@@ -457,7 +464,13 @@ export function Sheet({
   const fullHeight = fontScale >= 1.5;
   return (
     <PanelChangesContext.Provider value={panel}>
-      <Modal visible={visible} transparent animationType="none" onRequestClose={requestClose}>
+      {/* RNWeb emits onRequestClose on keyup; our topmost-panel keydown already handled Escape. */}
+      <Modal
+        visible={visible}
+        transparent
+        animationType="none"
+        onRequestClose={Platform.OS === 'web' ? noop : requestClose}
+      >
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{

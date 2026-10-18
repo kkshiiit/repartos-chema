@@ -30,6 +30,9 @@ test('individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y o
   await page.getByRole('button', { name: 'Guardar cambios', exact: true }).click();
   await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
   await expect.poll(async () => (await state()).materiales.length).toBe(1);
+  await page
+    .getByRole('button', { name: 'Opciones de Cuerpo de andamio 1.30m', exact: true })
+    .click();
   await page.getByRole('button', { name: 'Ajustar', exact: true }).click();
   await page.getByLabel('Diferencia entera (+ o −)', { exact: true }).fill('20');
   await page.getByLabel('Procedencia / destino', { exact: true }).fill('Inventario inicial');
@@ -41,6 +44,8 @@ test('individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y o
   await page.getByLabel('Nombre del cliente', { exact: true }).fill('Cliente local de prueba');
   await page.getByLabel('Dirección', { exact: true }).fill('Dirección de prueba 123');
   await page.getByLabel('Barrio / localidad', { exact: true }).fill('Zona de prueba');
+  await page.getByRole('button', { name: 'Continuar a carga', exact: true }).click();
+  await page.getByRole('button', { name: 'Revisar alquiler', exact: true }).click();
   await page.getByRole('button', { name: 'Guardar alquiler', exact: true }).click();
   await expect(
     page.getByRole('heading', { name: 'Cliente local de prueba', exact: true }),
@@ -86,6 +91,8 @@ test('individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y o
     ['Exportar Excel', 'chema-reporte.xlsx'],
     ['Generar remito', 'chema-remito.docx'],
   ]) {
+    if (button === 'Generar remito')
+      await page.getByRole('button', { name: 'Word', exact: true }).click();
     const pending = page.waitForEvent('download');
     await page.getByRole('button', { name: button!, exact: true }).click();
     const download = await pending;
@@ -140,6 +147,8 @@ test('remito Word no queda bloqueado por un filtro Excel inválido', async ({ pa
   await page.getByLabel('Nombre del cliente', { exact: true }).fill('Cliente para remito');
   await page.getByLabel('Dirección', { exact: true }).fill('Dirección de prueba 123');
   await page.getByLabel('Barrio / localidad', { exact: true }).fill('Zona de prueba');
+  await page.getByRole('button', { name: 'Continuar a carga', exact: true }).click();
+  await page.getByRole('button', { name: 'Revisar alquiler', exact: true }).click();
   await page.getByRole('button', { name: 'Guardar alquiler', exact: true }).click();
   await expect(
     page.getByRole('heading', { name: 'Cliente para remito', exact: true }),
@@ -147,6 +156,7 @@ test('remito Word no queda bloqueado por un filtro Excel inválido', async ({ pa
   await page.goto('/exportar');
   await page.getByLabel('Entrega desde · AAAA-MM-DD', { exact: true }).fill('incorrecta');
   const pending = page.waitForEvent('download', { timeout: 5000 });
+  await page.getByRole('button', { name: 'Word', exact: true }).click();
   await page.getByRole('button', { name: 'Generar remito', exact: true }).click();
   expect((await pending).suggestedFilename()).toBe('chema-remito.docx');
 });

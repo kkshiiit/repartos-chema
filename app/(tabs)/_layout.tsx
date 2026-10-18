@@ -39,6 +39,7 @@ function TabItem({ link, active, wide }: { link: Link; active: boolean; wide: bo
         padding: wide ? 13 : 7,
         borderRadius: 16,
         minHeight: 52,
+        minWidth: 0,
         backgroundColor: pressed ? C.selection : 'transparent',
         overflow: 'hidden',
       })}
@@ -61,12 +62,14 @@ function TabItem({ link, active, wide }: { link: Link; active: boolean; wide: bo
           ],
         }}
       />
-      <link.icon size={wide ? 19 : 21} color={active ? C.accent : C.subtle} />
+      <link.icon size={wide ? 19 : 21} color={active ? C.link : C.muted} />
       <Text
         style={{
-          color: active ? C.accent : C.muted,
+          color: active ? C.link : C.muted,
           fontWeight: active ? '700' : '500',
-          fontSize: wide ? 14 : 10,
+          fontSize: 12,
+          flexShrink: 1,
+          textAlign: wide ? 'left' : 'center',
         }}
       >
         {link.label}
@@ -106,7 +109,7 @@ export default function Tabs() {
     <View
       style={{
         width: wide ? 228 : undefined,
-        backgroundColor: C.glass,
+        backgroundColor: C.panel,
         borderRightWidth: wide ? 1 : 0,
         borderTopWidth: wide ? 0 : 1,
         borderColor: C.hairline,

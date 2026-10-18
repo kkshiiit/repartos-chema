@@ -1,12 +1,21 @@
 import { userError } from '../../src/services/errors';
 import React, { useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import { Plus, Package, Warehouse, HardHat, Wrench, TriangleAlert } from 'lucide-react-native';
+import { View, Text } from 'react-native';
+import {
+  Plus,
+  Package,
+  Warehouse,
+  HardHat,
+  Wrench,
+  TriangleAlert,
+  MoreHorizontal,
+} from 'lucide-react-native';
 import type { MaterialItem, StockBucket, CategoriaMaterial } from '../../src/types';
 import { useInventory, makeId } from '../../src/context/InventoryContext';
 import { useAuth } from '../../src/context/AuthContext';
 import {
   Button,
+  IconButton,
   ConfirmButton,
   Chip,
   Empty,
@@ -48,7 +57,13 @@ export default function WarehousePage() {
     { key: 'cantidadGalpon', label: 'Disponibles', color: C.green, icon: Warehouse },
     { key: 'cantidadEnObra', label: 'Alquilados', color: C.blue, icon: HardHat },
     { key: 'cantidadEnTaller', label: 'A reparar', color: C.orange, icon: Wrench },
-    { key: 'cantidadPerdido', label: 'Perdido', color: C.danger, icon: TriangleAlert },
+    {
+      key: 'cantidadPerdido',
+      label: 'Perdido',
+      color: C.danger,
+      icon: TriangleAlert,
+      MoreHorizontal,
+    },
   ] as const;
   const data = state.materiales.filter(
     (m) =>
@@ -81,23 +96,16 @@ export default function WarehousePage() {
         keyExtractor={(m) => m.id}
         ListHeaderComponent={
           <View style={{ gap: 20, paddingBottom: 20 }}>
-            <ScrollView
-              tabIndex={0}
-              accessibilityLabel="Resumen de existencias, desplazable"
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ gap: 10 }}
-            >
+            <View style={[s.row, { flexWrap: 'wrap', gap: 16 }]}>
               {metrics.map((m) => (
-                <View key={m.key} style={[s.card, { minWidth: 106, padding: 12, gap: 6 }]}>
-                  <m.icon size={21} color={m.color} />
-                  <Text style={{ color: C.text, fontSize: 28, fontWeight: '800' }}>
+                <View key={m.key} style={{ minWidth: 100, flex: 1, gap: 4 }}>
+                  <Text style={[s.h2, { fontVariant: ['tabular-nums'], color: m.color }]}>
                     {state.materiales.reduce((n, i) => n + i[m.key], 0)}
                   </Text>
                   <Text style={s.muted}>{m.label}</Text>
                 </View>
               ))}
-            </ScrollView>
+            </View>
             <Field
               label="Buscar pieza"
               value={query}
@@ -120,7 +128,7 @@ export default function WarehousePage() {
           <Empty title="Sin piezas" detail="Cambia los filtros o agrega una pieza." />
         }
         renderItem={({ item: m }) => (
-          <View style={[s.card, { marginBottom: 12 }]}>
+          <View style={[s.card, { marginBottom: 12, gap: 12 }]}>
             <View style={[s.row, { alignItems: 'flex-start' }]}>
               <Package size={22} color={C.subtle} />
               <View style={s.grow}>
@@ -131,15 +139,11 @@ export default function WarehousePage() {
               </View>
             </View>
             {user?.role === 'ADMIN' ? (
-              <View style={[s.wrap, { gap: 6 }]}>
-                <Button label="Editar" variant="ghost" onPress={() => open(m, 'material')} />
-                <Button
-                  label="Mover stock"
-                  variant="secondary"
-                  onPress={() => open(m, 'movimiento')}
-                />
-                <Button label="Ajustar" variant="secondary" onPress={() => open(m, 'ajuste')} />
-              </View>
+              <IconButton
+                label={`Opciones de ${m.nombre} ${m.medida || ''}`}
+                icon={MoreHorizontal}
+                onPress={() => open(m, 'opciones')}
+              />
             ) : null}
             <View style={s.wrap}>
               {metrics.map((metric) => (
@@ -147,7 +151,7 @@ export default function WarehousePage() {
                   <Text style={{ fontSize: 22, fontWeight: '700', color: metric.color }}>
                     {m[metric.key]}
                   </Text>
-                  <Text style={{ color: C.muted, fontSize: 11 }}>{metric.label}</Text>
+                  <Text style={{ color: C.muted, fontSize: 14 }}>{metric.label}</Text>
                 </View>
               ))}
             </View>
@@ -165,9 +169,23 @@ export default function WarehousePage() {
                 ? 'Editar pieza'
                 : 'Agregar pieza'
         }
+        protectChanges
         onClose={() => setModal('')}
       >
-        {modal === 'material' ? (
+        {modal === 'opciones' ? (
+          <View style={s.section}>
+            <Text style={s.h2}>
+              {edit?.nombre} {edit?.medida}
+            </Text>
+            <Button label="Editar" variant="secondary" onPress={() => setModal('material')} />
+            <Button
+              label="Mover stock"
+              variant="secondary"
+              onPress={() => setModal('movimiento')}
+            />
+            <Button label="Ajustar" variant="secondary" onPress={() => setModal('ajuste')} />
+          </View>
+        ) : modal === 'material' ? (
           <>
             <Field label="Nombre del material" value={nombre} onChangeText={setNombre} />
             <Select
@@ -220,56 +238,58 @@ export default function WarehousePage() {
           </>
         )}
         {error ? <Notice text={error} tone="error" /> : null}
-        <ConfirmButton
-          label="Guardar cambios"
-          title="Confirmar inventario"
-          description={
-            modal === 'material'
-              ? `Guardar ${nombre} ${medida}. Las cantidades no cambian.`
-              : `${edit?.nombre}: ${delta} unidades. Origen ${bucket}; destino ${modal === 'movimiento' ? destination : source}. Motivo: ${reason}.`
-          }
-          variant="primary"
-          onConfirm={async () => {
-            try {
-              if (modal === 'material')
-                await dispatch({
-                  type: 'SAVE_MATERIAL',
-                  expectedVersion: edit?.version || 0,
-                  material: {
-                    id: edit?.id || makeId(),
-                    nombre: nombre.trim(),
-                    categoria: cat,
-                    medida: medida.trim(),
-                  },
-                });
-              else {
-                if (!/^[+-]?\d+$/.test(delta)) throw new Error('Usa una diferencia entera.');
-                if (modal === 'movimiento')
-                  await dispatch({
-                    type: 'MOVE_STOCK',
-                    materialId: edit!.id,
-                    origen: bucket,
-                    destino: destination,
-                    cantidad: Number(delta),
-                    motivo: reason,
-                  });
-                else
-                  await dispatch({
-                    type: 'ADJUST',
-                    materialId: edit!.id,
-                    bucket,
-                    delta: Number(delta),
-                    motivo: reason,
-                    procedencia: source,
-                  });
-              }
-              setModal('');
-            } catch (e) {
-              setError(userError(e));
-              throw e;
+        {modal !== 'opciones' ? (
+          <ConfirmButton
+            label="Guardar cambios"
+            title="Confirmar inventario"
+            description={
+              modal === 'material'
+                ? `Guardar ${nombre} ${medida}. Las cantidades no cambian.`
+                : `${edit?.nombre}: ${delta} unidades. Origen ${bucket}; destino ${modal === 'movimiento' ? destination : source}. Motivo: ${reason}.`
             }
-          }}
-        />
+            variant="primary"
+            onConfirm={async () => {
+              try {
+                if (modal === 'material')
+                  await dispatch({
+                    type: 'SAVE_MATERIAL',
+                    expectedVersion: edit?.version || 0,
+                    material: {
+                      id: edit?.id || makeId(),
+                      nombre: nombre.trim(),
+                      categoria: cat,
+                      medida: medida.trim(),
+                    },
+                  });
+                else {
+                  if (!/^[+-]?\d+$/.test(delta)) throw new Error('Usa una diferencia entera.');
+                  if (modal === 'movimiento')
+                    await dispatch({
+                      type: 'MOVE_STOCK',
+                      materialId: edit!.id,
+                      origen: bucket,
+                      destino: destination,
+                      cantidad: Number(delta),
+                      motivo: reason,
+                    });
+                  else
+                    await dispatch({
+                      type: 'ADJUST',
+                      materialId: edit!.id,
+                      bucket,
+                      delta: Number(delta),
+                      motivo: reason,
+                      procedencia: source,
+                    });
+                }
+                setModal('');
+              } catch (e) {
+                setError(userError(e));
+                throw e;
+              }
+            }}
+          />
+        ) : null}
       </Sheet>
     </Screen>
   );

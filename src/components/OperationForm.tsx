@@ -1,24 +1,32 @@
+import { displayDate } from '../utils/dateInput';
 import { userError } from '../services/errors';
-import React, { useState } from 'react';
+import { useFeedback } from '../context/FeedbackContext';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text } from 'react-native';
 import type { IncidentInput, ObraCard } from '../types';
 import { useInventory } from '../context/InventoryContext';
 import { useAuth } from '../context/AuthContext';
-import { Button, Chip, Field, Notice, Select, useUI } from './ui';
+import { Button, Chip, Field, Notice, Select, useUI, usePanelChanges } from './ui';
 import { SmartCounter } from './SmartCounter';
 import { FaltantesForm } from './FaltantesForm';
 import { LOCAL_ONLY } from '../services/localMode';
 import { required } from '../domain/rules';
 export function Drivers({ value, onChange }: { value: string[]; onChange: (v: string[]) => void }) {
   const { s } = useUI();
+  const { markDirty, setBusy: setPanelBusy } = usePanelChanges();
   const { state, dispatch } = useInventory();
   const { user } = useAuth();
   const [adding, setAdding] = useState(false),
     [draft, setDraft] = useState(''),
     [busy, setBusy] = useState(false),
     [error, setError] = useState('');
+  useEffect(() => {
+    setPanelBusy?.(busy);
+    return () => setPanelBusy?.(false);
+  }, [busy, setPanelBusy]);
+  const saving = useRef(false);
   return (
-    <View style={{ gap: 9 }}>
+    <View style={{ gap: 12 }}>
       <Text style={s.label}>RESPONSABLES / FLETE</Text>
       {!state.responsables.length ? (
         <Notice text="Agregá el nombre de quien realiza la entrega o el retiro." />
@@ -29,9 +37,10 @@ export function Drivers({ value, onChange }: { value: string[]; onChange: (v: st
             key={n}
             label={n}
             selected={value.includes(n)}
-            onPress={() =>
-              onChange(value.includes(n) ? value.filter((x) => x !== n) : [...value, n])
-            }
+            onPress={() => {
+              markDirty();
+              onChange(value.includes(n) ? value.filter((x) => x !== n) : [...value, n]);
+            }}
           />
         ))}
       </View>
@@ -51,6 +60,8 @@ export function Drivers({ value, onChange }: { value: string[]; onChange: (v: st
               label="Guardar responsable"
               loading={busy}
               onPress={async () => {
+                if (saving.current) return;
+                saving.current = true;
                 setBusy(true);
                 try {
                   const name = required(draft.trim().replace(/\s+/g, ' '), 'Responsable', 80);
@@ -62,6 +73,7 @@ export function Drivers({ value, onChange }: { value: string[]; onChange: (v: st
                       type: 'RESPONSABLES',
                       nombres: [...state.responsables, name],
                     });
+                  markDirty();
                   onChange([...new Set([...value, existing || name])]);
                   setAdding(false);
                   setDraft('');
@@ -69,6 +81,7 @@ export function Drivers({ value, onChange }: { value: string[]; onChange: (v: st
                 } catch (e) {
                   setError(userError(e));
                 } finally {
+                  saving.current = false;
                   setBusy(false);
                 }
               }}
@@ -101,6 +114,8 @@ export function OperationForm({
   onDone: () => void;
 }) {
   const { s } = useUI();
+  const { notifySuccess } = useFeedback();
+  const { markDirty, setBusy: setPanelBusy } = usePanelChanges();
   const { state, dispatch } = useInventory(),
     { user } = useAuth();
   const [drivers, setDrivers] = useState<string[]>([]),
@@ -116,12 +131,30 @@ export function OperationForm({
       Object.keys(obra.saldosEnObra).find((id) => obra.saldosEnObra[id]! > 0) || '',
     ),
     [cantidad, setCantidad] = useState(1);
+  useEffect(() => {
+    setPanelBusy?.(busy);
+    return () => setPanelBusy?.(false);
+  }, [busy, setPanelBusy]);
+  const saving = useRef(false);
+  const [driverError, setDriverError] = useState('');
   const shortages = obra.materialesCargados.filter(
     (i) => i.cantidad > (state.materiales.find((m) => m.id === i.materialId)?.cantidadGalpon || 0),
   );
   return (
     <>
-      {mode !== 'faltante' ? <Drivers value={drivers} onChange={setDrivers} /> : null}
+      {mode !== 'faltante' ? (
+        <>
+          <Drivers
+            value={drivers}
+            onChange={(v) => {
+              markDirty();
+              setDrivers(v);
+              setDriverError('');
+            }}
+          />
+          {driverError ? <Notice text={driverError} tone="error" /> : null}
+        </>
+      ) : null}
       {mode === 'entrega' ? (
         <>
           <Notice text="Confirmá las piezas y el flete antes de entregar." />
@@ -144,7 +177,7 @@ export function OperationForm({
             </Text>
           ))}
           {shortages.map((i) => {
-            const stock = state.materiales.find((m) => m.id === i.materialId)!.cantidadGalpon,
+            const stock = state.materiales.find((m) => m.id === i.materialId)?.cantidadGalpon || 0,
               missing = i.cantidad - stock;
             return (
               <View key={i.materialId} style={{ gap: 10 }}>
@@ -166,7 +199,10 @@ export function OperationForm({
                         label: `${o.clienteNombre} · saldo ${o.saldosEnObra[i.materialId]}`,
                         value: o.id,
                       }))}
-                    onChange={(id) => setOrigins({ ...origins, [i.materialId]: id })}
+                    onChange={(id) => {
+                      markDirty();
+                      setOrigins({ ...origins, [i.materialId]: id });
+                    }}
                   />
                 ) : (
                   <Notice text="Solicita autorización de administración para la procedencia alternativa." />
@@ -211,7 +247,10 @@ export function OperationForm({
                     (o.estadoProceso === 'PENDIENTE_ENTREGA' && !o.materialesCargados.length)),
               )
               .map((o) => ({ value: o.id, label: o.clienteNombre }))}
-            onChange={setTarget}
+            onChange={(id) => {
+              markDirty();
+              setTarget(id);
+            }}
           />
           <Select
             label="Material"
@@ -220,21 +259,107 @@ export function OperationForm({
               .filter((m) => (obra.saldosEnObra[m.id] || 0) > 0)
               .map((m) => ({
                 value: m.id,
-                label: `${m.nombre} · ${obra.saldosEnObra[m.id]} disponibles`,
+                label: `${m.nombre} · ${obra.materialesCargados.find((i) => i.materialId === m.id)?.medida || m.medida || 'Sin medida'} · ${obra.saldosEnObra[m.id]} disponibles`,
               }))}
-            onChange={setMaterial}
+            onChange={(id) => {
+              markDirty();
+              setMaterial(id);
+            }}
           />
           <SmartCounter value={cantidad} onChange={setCantidad} />
           <Field label="Motivo de transferencia" value={motivo} onChangeText={setMotivo} />
           <Notice text="Traslado directo entre obras. No suma disponibilidad al depósito." />
         </>
       ) : null}
+      <View style={{ gap: 12, paddingVertical: 16 }}>
+        <View style={s.divider} />
+        <Text accessibilityRole="header" style={s.h2}>
+          Revisar operación
+        </Text>
+        <Text style={s.body}>{obra.clienteNombre}</Text>
+        {mode !== 'faltante' ? (
+          <Text style={s.body}>Responsables: {drivers.join(', ') || 'Sin seleccionar'}</Text>
+        ) : null}
+        {mode === 'entrega' ? (
+          <>
+            <Text style={s.body}>
+              Recibió: {received || 'Sin indicar'} · Retiro: {displayDate(retiro)}
+            </Text>
+            <Text style={s.muted}>
+              La carga pasa a saldo alquilado. Se descuenta el depósito disponible y, si
+              corresponde, el saldo del origen autorizado.
+            </Text>
+          </>
+        ) : mode === 'transferencia' ? (
+          <>
+            <Text style={s.body}>
+              Destino:{' '}
+              {state.obras.find((o) => o.id === target)?.clienteNombre || 'Sin seleccionar'}
+            </Text>
+            <Text style={s.body}>
+              {cantidad} ×{' '}
+              {state.materiales.find((m) => m.id === material)?.nombre || 'Sin material'} ·{' '}
+              {obra.materialesCargados.find((i) => i.materialId === material)?.medida ||
+                'Sin medida'}
+            </Text>
+            <Text style={s.muted}>
+              El saldo pasa directamente al destino. No aumenta el depósito. Si el destino está
+              pendiente, queda entregado.
+            </Text>
+          </>
+        ) : (
+          <>
+            {Object.entries(obra.saldosEnObra)
+              .filter(([, n]) => n > 0)
+              .map(([id, n]) => {
+                const affected = incidents
+                  .filter((i) => i.materialId === id)
+                  .reduce((sum, i) => sum + i.cantidad, 0);
+                const m = state.materiales.find((m) => m.id === id);
+                return (
+                  <Text key={id} style={s.body}>
+                    {m?.nombre || id} ·{' '}
+                    {obra.materialesCargados.find((i) => i.materialId === id)?.medida ||
+                      m?.medida ||
+                      'Sin medida'}
+                    :{' '}
+                    {mode === 'retiro'
+                      ? `${Math.max(0, n - affected)} sanas vuelven a depósito`
+                      : `${Math.max(0, n - affected)} siguen alquiladas`}
+                  </Text>
+                );
+              })}
+            {incidents.map((i, index) => (
+              <Text key={index} style={s.body}>
+                {i.cantidad} ×{' '}
+                {i.itemNombre ||
+                  state.materiales.find((m) => m.id === i.materialId)?.nombre ||
+                  'Ítem fuera del inventario'}{' '}
+                →{' '}
+                {i.materialId
+                  ? i.tipo === 'DANADO'
+                    ? 'Taller'
+                    : 'Perdido'
+                  : 'Registro sin movimiento de stock'}
+              </Text>
+            ))}
+            <Text style={s.muted}>Lo ya registrado no se descuenta otra vez.</Text>
+          </>
+        )}
+      </View>
       {error ? <Notice text={error} tone="error" /> : null}
       <Button
         label="Confirmar operación"
         loading={busy}
         onPress={async () => {
+          if (saving.current) return;
+          if (mode !== 'faltante' && !drivers.length) {
+            setDriverError('Selecciona responsables.');
+            return;
+          }
+          saving.current = true;
           setBusy(true);
+          setError('');
           try {
             if (mode === 'entrega')
               await dispatch({
@@ -250,7 +375,8 @@ export function OperationForm({
                         obraId: origins[i.materialId] || '',
                         cantidad:
                           i.cantidad -
-                          state.materiales.find((m) => m.id === i.materialId)!.cantidadGalpon,
+                          (state.materiales.find((m) => m.id === i.materialId)?.cantidadGalpon ||
+                            0),
                       })),
                       motivo,
                     }
@@ -270,10 +396,19 @@ export function OperationForm({
                 motivo,
                 responsables: drivers,
               });
+            notifySuccess(
+              {
+                entrega: 'Entrega confirmada.',
+                retiro: 'Retiro registrado.',
+                faltante: 'Daños y faltantes registrados.',
+                transferencia: 'Transferencia confirmada.',
+              }[mode],
+            );
             onDone();
           } catch (e) {
             setError(userError(e));
           } finally {
+            saving.current = false;
             setBusy(false);
           }
         }}
