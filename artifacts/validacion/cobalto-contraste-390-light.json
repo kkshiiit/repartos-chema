@@ -1,0 +1,96 @@
+{
+  "note": "Navegador con fixture sintético. Texto 200% simulado; no es prueba de fontScale, TalkBack o teclado Android. Incomplete de Axe requiere revisión visual.",
+  "errors": [],
+  "reports": [
+    {
+      "route": "/",
+      "label": "alquileres",
+      "width": 390,
+      "theme": "light",
+      "textPercent": 100,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "route": "/galpon",
+      "label": "deposito",
+      "width": 390,
+      "theme": "light",
+      "textPercent": 100,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "route": "/mapa",
+      "label": "viaje",
+      "width": 390,
+      "theme": "light",
+      "textPercent": 100,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "route": "/historial",
+      "label": "historial",
+      "width": 390,
+      "theme": "light",
+      "textPercent": 100,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "route": "/obra/nueva",
+      "label": "nuevo",
+      "width": 390,
+      "theme": "light",
+      "textPercent": 100,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "route": "/obra/obra_5",
+      "label": "detalle",
+      "width": 390,
+      "theme": "light",
+      "textPercent": 100,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "route": "/combos",
+      "label": "combos",
+      "width": 390,
+      "theme": "light",
+      "textPercent": 100,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "route": "/configuracion",
+      "label": "ajustes",
+      "width": 390,
+      "theme": "light",
+      "textPercent": 100,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "route": "/exportar",
+      "label": "documentos",
+      "width": 390,
+      "theme": "light",
+      "textPercent": 100,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "route": "/obra/obra_5#carga",
+      "label": "panel-carga",
+      "width": 390,
+      "theme": "light",
+      "textPercent": 100,
+      "violations": [],
+      "incomplete": []
+    }
+  ]
+}

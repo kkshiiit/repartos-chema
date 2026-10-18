@@ -1,0 +1,37 @@
+
+> repartos-chema@1.4.0 check
+> npm run typecheck && npm run lint && npm test && npm --prefix functions run build
+
+
+> repartos-chema@1.4.0 typecheck
+> tsc --noEmit
+
+
+> repartos-chema@1.4.0 lint
+> eslint app src tests functions/src
+
+
+/workspace/repartos-chema/src/components/ui.tsx
+  353:5  warning  React Hook useCallback has a missing dependency: 'panel'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+✖ 1 problem (0 errors, 1 warning)
+
+
+> repartos-chema@1.4.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /workspace/repartos-chema
+
+
+ Test Files  27 passed (27)
+      Tests  218 passed (218)
+   Start at  15:14:45
+   Duration  6.63s (import 44%, tests 37%, transform 16%, worker 3%)
+
+    Isolate  27 workers spawned · ~99ms startup each (spawn + environment, per file)
+             at least ~2.57s faster with isolate: false — reuses workers across files instead of one per file
+
+
+> repartos-chema-functions@1.0.0 build
+> tsc
