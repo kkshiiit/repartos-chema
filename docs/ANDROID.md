@@ -1,3 +1,17 @@
+# Compilación individual 1.4.0
+
+Antes de compilar: respaldar main y conservar la clave privada existente fuera de Git. Desde un clon sin android/, definir `CHEMA_ANDROID_KEYSTORE` con la ruta a esa copia. El script ahora la exige antes de prebuild y restaura los mismos bytes después de regenerar android/. No cambia el certificado para resolver un error ni sube la clave al repositorio.
+
+```bash
+CHEMA_ANDROID_KEYSTORE=/ruta/privada/firma-existente.keystore npm run build:android:demo
+```
+
+Usar JDK21 completo, SDK36/build-tools36.0.0, NDK27.1.12297006 y CMake3.22.1. JAVA_HOME/ANDROID_HOME deben estar configurados. La compilación completa es local ARM64, sin EAS ni facturación. Verificar con `scripts/verify-android.py` contra el APK instalado/anterior antes de distribuir. Generar bundle no equivale a obtener ni probar un APK. Los recursos de avisos usan prefijos chema_ válidos, sin micrófono ni reproducción permanente de fondo.
+
+Las instrucciones históricas siguientes se conservan como contexto; la versión y los resultados vigentes son los de `ENTREGA_COBALTO_1_4.md` y `CONTINUIDAD_CODEX.md`.
+
+---
+
 # Android individual — actualización1.3 Aurora
 
 App1.3.0/versionCode6, ARM64, package `com.grupochema.repartos`. Se conserva el certificado interno anterior; no rotarlo ni desinstalar una instalación con datos sin copia. Nativo incorpora SQLite compatible con Expo57, migración sin borrar AsyncStorage, fotos locales, selector de carpeta para JSON y documentos compartidos. No necesita servicios pagos.

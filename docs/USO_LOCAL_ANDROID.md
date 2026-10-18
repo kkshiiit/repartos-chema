@@ -1,12 +1,12 @@
-# Uso individual Android — edición Aurora1.3
+# Uso individual Android — edición cobalto1.4
 
-Esta edición no necesita Firebase, Cloudflare, suscripción ni una PC encendida. Los datos no se sincronizan con otros celulares. Las cuentas de nombre identifican movimientos locales, no autentican a una persona.
+Esta edición no necesita Firebase, Cloudflare, suscripción ni una PC encendida. Los datos no se sincronizan con otros celulares. El nombre identifica movimientos locales; no crea una cuenta ni autentica a una persona.
 
 ## Actualizar sin perder datos
 
 1. En la app instalada, guardá un JSON fuera de la app y comprobá dónde quedó.
 2. Instalá el APK nuevo encima, con el mismo package/certificado. **No desinstales ni borres almacenamiento.**
-3. El primer inicio copia el inventario y las recuperaciones de AsyncStorage a SQLite. Conserva íntegro el original y no lo usa como fallback antiguo si SQLite falta. Una instalación nueva inicia vacía.
+3. Si todavía no se realizó la migración anterior, el primer inicio copia el inventario y las recuperaciones de AsyncStorage a SQLite. Una base SQLite existente conserva sus datos. Conserva íntegro el original y no lo usa como fallback antiguo si SQLite falta. Una instalación nueva inicia vacía.
 4. Si hay error, conservá el mensaje y los archivos; no reinicies datos para arreglarlo. Desde el aviso se puede guardar un original de asistencia o recuperar un JSON reciente confirmado. El archivo de asistencia de migración puede ser anterior al último trabajo y no se presenta como copia actual.
 
 ## Guardar y recuperar
@@ -19,9 +19,13 @@ Elegir copia → revisar cantidades → Confirmar importación. Reemplaza el inv
 
 Las fotos se guardan comprimidas localmente. Al quitarlas de un alquiler, sus archivos se retienen para no romper recuperaciones anteriores. No se envían a un servidor. Las copias contienen bytes de fotos y datos comerciales: conservar en privado. Guardar una copia al final de cada jornada y antes de actualizar, importar o vaciar.
 
-## Aurora y temas
+## Temas y navegación
 
-Claro/Oscuro/Seguir sistema en Ajustes; sol/luna en cabeceras principales cambia inmediatamente sin perder formularios. Aurora suave/Estático se guarda aparte del inventario. Se respeta Reducir movimiento del sistema y se pausa el fondo en segundo plano. Para uso al sol, elegir Claro y ajustar el brillo manualmente según el dispositivo; no se modifica brillo automáticamente.
+Claro/Oscuro/Seguir sistema en Ajustes; sol/luna solo en las cabeceras principales. Cambia inmediatamente sin perder formularios. Papel cálido y cobalto en claro, tinta en oscuro. Transiciones suaves/Estático se guarda aparte del inventario; siempre se respeta Reducir movimiento y no hay fondo animado. Al sol elegir Claro y ajustar brillo manualmente: la visibilidad depende también del dispositivo.
+
+Alquileres permite buscar, filtrar estado y desplegar Zona desde Filtros. Nuevo alquiler abre Cliente → Carga → Revisar; avanzar no guarda ni mueve stock. Confirmar guarda el borrador y recién Entregar mueve existencias. En Depósito usar los tres puntos de cada pieza para Editar, Mover stock o Ajustar. Faltantes/fotos se abren desde sus secciones del detalle. Los cambios de panel piden seguir editando o descartar; cerrar no confirma una operación. Documentos permite elegir Excel o Word antes de generar.
+
+Los avisos son locales y opcionales: en cada alquiler elegir fecha y hora explícitas. No tienen una hora automática ni se repiten solos. Los sonidos y vibración de confirmación están apagados inicialmente y se configuran en Ajustes. Web no programa notificaciones; Android puede retrasarlas por batería/silencio/No molestar. La guía [AVISOS_LOCALES.md](AVISOS_LOCALES.md) explica permisos y límites. No se envían push ni se requieren servicios pagos.
 
 ## Comprobación breve después de instalar
 

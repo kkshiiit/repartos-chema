@@ -1,6 +1,6 @@
 # Repartos Chema 1.4 — papel, tinta y cobalto
 
-**En validación de entrega. No acredita todavía un APK publicado.**
+**APK1.4.0/code7 compilado, publicado en descargas y recuperado desdeGitHub con hash coincidente. Prueba física Android pendiente.**
 
 ## Alcance implementado
 
@@ -47,7 +47,11 @@ Intentos fallidos documentados en artifacts/validacion/cobalto-ui-intento*.txt. 
 
 ## Android y entrega
 
-Versión prevista 1.4.0/code7, paquete com.grupochema.repartos. Gradle completo local en curso; certificado original fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c preservado. Primer intento se detuvo en prebuild por nombres WAV; no se presentó como APK.
+Versión1.4.0/code7, paquete com.grupochema.repartos. Gradle completo correcto en10m36s,658tareas(630ejecutadas/28al día). APK56.039.655bytes, firma v2 y certificado original fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c. CRC, ARM64 único, minSDK24, no debuggable, SQLite nativo, tres tonos por tabla Android y SHA correctos. AAPT compacta rutas (res/52.wav,etc.); el verificador resuelve cada recurso y compara sus bytes con el original, sin asumir nombres de archivo dentro del APK.
+
+[Descargar APK](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.4.0-local.1/repartos-chema-local-1.4.0-arm64.apk). Publicado en descargas7c9a282 y recuperado desde un clon independiente. SHA256 **79ad05905267460596270333316403796465e5bc9e874d478b04ca8710ca6bb1**, coincide con el compilado local. Informe en artifacts/validacion/android-1.4.0-apk.json y cobalto-recuperacion-github-apk.json. Primera compilación detenida antes de Gradle por nombres WAV, corregida sin cambiar sonidos. Las versiones previas permanecen en descargas.
+
+[FuenteZIP, manifiestos y web reproducible](https://github.com/kkshiiit/repartos-chema/tree/descargas/respaldos/v1.4.0-local). No incluyen firma privada ni credenciales. Verificación de fuente publicada se registra en el checkpoint al cerrar la entrega.
 
 Sin dispositivo/emulador ADB conectado. Pendiente prueba física de actualización, SQLite/migración real, cámara/galería, teclado, carpeta/compartir, permisos y notificaciones. No hay métricas físicas FPS/RAM/batería. La firma sigue siendo interna de plantilla, no identidad de publicación comercial.
 
@@ -63,3 +67,36 @@ Sin dispositivo/emulador ADB conectado. Pendiente prueba física de actualizaci�
 8. Si querés avisos: elegir explícitamente una fecha/hora cercana en un alquiler de prueba, autorizar, verificar silencio/No molestar y cancelar/modificar el alquiler para comprobar que el aviso obsoleto se retira. No confiar en puntualidad exacta con restricciones de batería.
 
 No hay sincronización entre celulares ni continuidad garantizada de código en una sesión cerrada. El uso comercial permanece individual y local. Conservar copias privadas fuera del dispositivo.
+
+## Archivos y commits
+
+[Listado exacto de archivos de esta edición](../artifacts/validacion/cobalto-archivos.txt) comparado con1e5dcc9; las capturas y referencias son archivos de evidencia, no pantallas adicionales.
+
+| Capa | Archivos principales | Motivo |
+|---|---|---|
+| Sistema visual | src/theme/tokens.ts, components/ui.tsx, MotionView, StatusChip, SmartCounter, ThemeToggle, AuroraBackground, useMotionPreferences | Paleta/escala únicas, botones y paneles seguros, fondo sin bucles; nombres antiguos conservados por compatibilidad interna |
+| Navegación y pantallas | app/(tabs)/*, app/(auth)/login.tsx, app/obra/[id].tsx, configuracion, combos, exportar | Estructura, jerarquía, acciones y filtros |
+| Formularios | ObraForm, LoadEditor, OperationForm, FaltantesForm, ScaffoldSelector | Wizard, borradores, revisiones y protección contra duplicados |
+| Herramientas | Editorial, BackupImport, LocalBackupActions, WelcomeProvider | Secciones, revisión JSON y guía; servicios de inventario intactos |
+| Avisos | FeedbackContext, FeedbackSettings, RentalReminderPanel, services/feedback/* | Preferencias independientes y recordatorios locales |
+| Entrada de fecha | utils/dateInput.ts | Presentación humana sin modificar serialización/domain |
+| Empaquetado | app.json, package/lock, build-web-local.mjs, build-workers.mjs, build-android-demo.mjs, verify-android.py | Versión1.4.0/code7, depscompatibles, modoindividual, firma y comprobaciones |
+| Pruebas | formularios-cobalto, panels, local-reminders/notifications/feedback, date-input, tests/ui/* | Regresiones reales y evidencia renovada |
+
+Commits publicados por bloques:1542ce4 (insumos/deps),80d4649 (primitivas),d35a01c (avisos),d7e9187 (rutas/wizard),72e6971 (cierres/texto200/buildlocal),679807b (recursosAndroid/firma),8cc746a (44recorridos/capturas). El APK entregado usa código funcional679807b; commits posteriores de documentación/evidencias no alteran el runtime.
+
+## Rendimiento y límites
+
+No hay animaciones de fondo, desenfoque por fila ni fuentes de red. Listas de alquileres/depósito/historial conservan FlashList; generadores pesados siguen separados en chunks web. La exportación registra entry web5.5MB sin comprimir, ExcelJS944KB y Word501KB como chunks separados (valores de Metro, no tiempo de inicio ni RAM física). No se inventa una mejora porcentual. Los reportes80/44 corresponden a navegador/fixtures, no rendimiento ni permisos de un Android real. No se prometen cuotas externas ilimitadas; el funcionamiento principal no requiere servicios pagos.
+
+## Estado por módulo
+
+| Apartado | Estado |
+|---|---|
+| UI en navegador, temas, wizard, paneles, documentos web y copia JSON | Completado y comprobado en pruebas descritas |
+| Integridad comercial existente y migración | Pruebas de dominio/repositorio/adaptadores aprobadas; migración real de la instalación del usuario pendiente |
+| Avisos, audio, cámara/galería, SQLite y compartir nativos | Implementados, adaptadores/pruebas simuladas; validación física pendiente |
+| APK release y descarga GitHub | Completado y comprobado estructuralmente/firma/hash/recuperación; instalación física pendiente |
+| Backend/multiusuario/publicación comercial | Fuera del alcance individual; no activados |
+
+Las integraciones *.integration.test.ts están excluidas explícitamente de la suite local y no se ejecutaron; no se presentan como aprobadas. No hubo despliegues ni facturación. GitHub aceptó el APK(53.44MiB) con aviso de tamaño recomendado50MiB; no se activó LFS ni servicio pago.

@@ -45,7 +45,17 @@ with zipfile.ZipFile(apk) as archive:
             if name.startswith('lib/') and name.count('/') > 1} == {'arm64-v8a'}
     assert 'lib/arm64-v8a/libexpo-sqlite.so' in archive.namelist(), 'Falta SQLite nativo'
     sounds = ['chema_recordatorio_calido.wav', 'chema_confirmacion_sutil.wav', 'chema_atencion_suave.wav']
-    assert all(any(name.endswith('/' + sound) and name.startswith('res/raw/') for name in archive.namelist()) for sound in sounds), 'Faltan tonos nativos'
+    # AAPT compacts APK filenames (e.g. res/52.wav). Resolve the actual resource
+    # table and compare bytes, rather than assuming source paths survive release.
+    resource_table = run(build_tools / 'aapt', 'dump', '--values', 'resources', apk)
+    verified_sounds = {}
+    for sound in sounds:
+        match = re.search(r'resource [^\n]*:raw/' + re.escape(Path(sound).stem) + r':[^\n]*\n\s*\(string8\) "([^\"]+)"', resource_table)
+        assert match, f'Falta recurso nativo {sound}'
+        packed_hash = hashlib.sha256(archive.read(match.group(1))).hexdigest()
+        original_hash = hashlib.sha256((root / 'assets/sounds' / sound).read_bytes()).hexdigest()
+        assert packed_hash == original_hash, f'Cambió el tono {sound}'
+        verified_sounds[sound] = {'recursoAPK': match.group(1), 'sha256': packed_hash}
     bundle = archive.read('assets/index.android.bundle')
     assert not re.search(rb'AIza[0-9A-Za-z_-]{35}', bundle), 'Clave pública Firebase/Google embebida'
     for env in root.glob('.env*'):
@@ -69,7 +79,7 @@ report = {
     'certificadoSHA256': certificate, 'firmaV2': True, 'certificadoCoincideConAnterior': True,
     'apkAnterior': previous.name,
     'CRC': 'correcto', 'ABI': 'arm64-v8a', 'minSDK': 24, 'debuggable': False,
-    'sqliteNativoIncluido': True, 'tonosLocalesIncluidos': True,
+    'sqliteNativoIncluido': True, 'tonosLocalesIncluidos': True, 'tonosVerificados': verified_sounds,
     'pruebaFisica': False, 'publicidadDetectada': False, 'configFirebaseEmbebida': False,
     'generadoUTC': datetime.datetime.now(datetime.timezone.utc).isoformat(),
 }
