@@ -1,3 +1,4 @@
+import { FeedbackProvider } from '../src/context/FeedbackContext';
 import { WelcomeProvider } from '../src/components/WelcomeProvider';
 import { Stack, router, useSegments } from 'expo-router';
 import { ThemeProvider } from '../src/context/ThemeContext';
@@ -27,7 +28,9 @@ function Navigation() {
     );
   return (
     <InventoryProvider key={user?.uid || 'anonymous'}>
-      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: C.bg } }} />
+      <FeedbackProvider>
+        <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: C.bg } }} />
+      </FeedbackProvider>
     </InventoryProvider>
   );
 }

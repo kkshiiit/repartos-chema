@@ -1,3 +1,5 @@
+import { FeedbackSettings } from '../src/components/FeedbackSettings';
+import { Disclosure } from '../src/components/Editorial';
 import { DepotSettings } from '../src/components/DepotSettings';
 import { TeamSettings } from '../src/components/TeamSettings';
 import { LocalBackupActions } from '../src/components/LocalBackupActions';
@@ -39,10 +41,8 @@ export default function Settings() {
   return (
     <Screen title="Ajustes" back>
       <Button label="Ver bienvenida" variant="secondary" onPress={openWelcome} />
-      <TeamSettings />
-      <DepotSettings />
-      <View style={[s.card, { maxWidth: 700 }]}>
-        <Text style={s.h2}>Apariencia</Text>
+
+      <Disclosure title="Apariencia" initiallyOpen>
         <View style={s.wrap}>
           {(
             [
@@ -66,7 +66,7 @@ export default function Settings() {
         <Text style={s.h2}>Movimiento</Text>
         <View style={s.wrap}>
           <Chip
-            label="Aurora suave"
+            label="Transiciones suaves"
             selected={theme.motionPreference === 'ambient'}
             onPress={() => theme.setMotionPreference('ambient')}
           />
@@ -77,11 +77,14 @@ export default function Settings() {
           />
         </View>
         <Text style={s.muted}>
-          Se respeta reducir movimiento del sistema. El fondo se pausa al salir de la app.
+          Se respeta reducir movimiento del sistema. El fondo es estático en ambos modos.
         </Text>
         {theme.motionError ? <Notice text={theme.motionError} tone="error" /> : null}
         {theme.error ? <Notice text={theme.error} tone="error" /> : null}
-      </View>
+      </Disclosure>
+      <FeedbackSettings />
+      <TeamSettings />
+      <DepotSettings />
       <View style={[s.card, { maxWidth: 700 }]}>
         <Text style={s.h2}>Entorno de trabajo</Text>
         <Notice
@@ -110,7 +113,7 @@ export default function Settings() {
               loading={busy}
               label="Guardar responsables"
               onPress={() =>
-                void run(() =>
+                run(() =>
                   dispatch({
                     type: 'RESPONSABLES',
                     nombres: (names ?? state.responsables.join('\n'))
@@ -131,7 +134,7 @@ export default function Settings() {
                 loading={busy}
                 label="Activar avisos"
                 variant="secondary"
-                onPress={() => void run(enableNotifications)}
+                onPress={() => run(enableNotifications)}
               />
             ) : null}
           </>
@@ -147,7 +150,7 @@ export default function Settings() {
                 label="Descargar copia"
                 variant="secondary"
                 loading={busy}
-                onPress={() => void run(backup)}
+                onPress={() => run(backup)}
               />
             )}
             {DATA_MODE === 'demo' ? <BackupImport /> : null}

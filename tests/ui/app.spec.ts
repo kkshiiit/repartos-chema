@@ -11,6 +11,8 @@ test('equipo crea, entrega, deshace y descarga documentos', async ({ page }) => 
   await page.getByLabel('Nombre del cliente', { exact: true }).fill('Obra de prueba UI');
   await page.getByLabel('Dirección', { exact: true }).fill('Dirección de demostración 123');
   await page.getByLabel('Barrio / localidad', { exact: true }).fill('Zona de prueba');
+  await page.getByRole('button', { name: 'Continuar a carga', exact: true }).click();
+  await page.getByRole('button', { name: 'Revisar alquiler', exact: true }).click();
   await page.getByRole('button', { name: 'Guardar alquiler', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Obra de prueba UI', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Preparar carga', exact: true }).click();
@@ -32,6 +34,7 @@ test('equipo crea, entrega, deshace y descarga documentos', async ({ page }) => 
   const excel = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Exportar Excel', exact: true }).click();
   expect((await excel).suggestedFilename()).toBe('chema-reporte.xlsx');
+  await page.getByRole('button', { name: 'Word', exact: true }).click();
   const word = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Generar remito', exact: true }).click();
   expect((await word).suggestedFilename()).toBe('chema-remito.docx');

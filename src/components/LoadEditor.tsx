@@ -1,92 +1,160 @@
 import { userError } from '../services/errors';
-import React, { useState } from 'react';
+import { useFeedback } from '../context/FeedbackContext';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text } from 'react-native';
 import type { MaterialCargado, ObraCard } from '../types';
 import { useInventory } from '../context/InventoryContext';
 import { mergeLoads } from '../domain/engine';
-import { Button, Chip, Field, Notice, Select, useUI } from './ui';
+import { Button, Chip, Field, Notice, Select, useUI, usePanelChanges } from './ui';
 import { SmartCounter } from './SmartCounter';
 
-export function LoadEditor({ obra, onDone }: { obra: ObraCard; onDone: () => void }) {
+/** Shared draft only: selecting materials never persists or moves stock. */
+export function LoadDraft({
+  items,
+  onChange,
+}: {
+  items: MaterialCargado[];
+  onChange: (items: MaterialCargado[]) => void;
+}) {
   const { s } = useUI();
-  const { state, dispatch } = useInventory();
-  const [items, setItems] = useState<MaterialCargado[]>(obra.materialesCargados),
-    [baseVersion] = useState(obra.version || 0),
-    [selected, setSelected] = useState(state.materiales[0]?.id || ''),
-    [error, setError] = useState(''),
-    [busy, setBusy] = useState(false),
-    [combo, setCombo] = useState('');
-  const update = (id: string, change: Partial<MaterialCargado>) =>
-    setItems(items.map((i) => (i.materialId === id ? { ...i, ...change } : i)));
+  const { markDirty } = usePanelChanges();
+  const { state } = useInventory();
+  const [search, setSearch] = useState('');
+  const [selected, setSelected] = useState(state.materiales[0]?.id || '');
+  const [error, setError] = useState('');
+  const [showCombos, setShowCombos] = useState(false);
+  const [combo, setCombo] = useState('');
+  const change = (next: MaterialCargado[]) => {
+    markDirty();
+    onChange(next);
+  };
+  const update = (id: string, patch: Partial<MaterialCargado>) =>
+    change(items.map((i) => (i.materialId === id ? { ...i, ...patch } : i)));
+  const materials = state.materiales.filter((m) =>
+    `${m.nombre} ${m.medida || ''}`
+      .toLocaleLowerCase('es')
+      .includes(search.toLocaleLowerCase('es')),
+  );
   return (
-    <>
+    <View style={{ gap: 16 }}>
       <Notice text="La carga es una reserva informativa. Las existencias se mueven al confirmar la entrega." />
-      <Select
-        label="Agregar material"
-        value={selected}
-        options={state.materiales.map((m) => ({
-          label: `${m.nombre} ${m.medida || ''} · ${m.cantidadGalpon} en depósito`,
-          value: m.id,
-        }))}
-        onChange={setSelected}
+      <Field
+        label="Buscar material"
+        value={search}
+        onChangeText={setSearch}
+        placeholder="Nombre o medida"
       />
+      {!materials.length ? (
+        <Text style={s.muted}>No hay materiales que coincidan con la búsqueda.</Text>
+      ) : (
+        <>
+          <Select
+            label="Agregar material"
+            value={selected}
+            options={materials.map((m) => ({
+              label: `${m.nombre} · ${m.medida || 'Sin medida'} · ${m.cantidadGalpon} en depósito`,
+              value: m.id,
+            }))}
+            onChange={setSelected}
+          />
+          <Button
+            label="Agregar material"
+            variant="secondary"
+            onPress={() => {
+              try {
+                const m = materials.find((m) => m.id === selected);
+                if (!m) throw new Error('Seleccioná un material de la lista.');
+                change(
+                  mergeLoads(items, [
+                    { materialId: m.id, nombre: m.nombre, medida: m.medida, cantidad: 1 },
+                  ]),
+                );
+                setError('');
+              } catch (e) {
+                setError(userError(e));
+              }
+            }}
+          />
+        </>
+      )}
       <Button
-        label="Agregar material"
+        label={showCombos ? 'Ocultar combos' : 'Usar combo'}
         variant="secondary"
-        onPress={() => {
-          try {
-            const m = state.materiales.find((m) => m.id === selected);
-            if (m)
-              setItems(
-                mergeLoads(items, [
-                  { materialId: m.id, nombre: m.nombre, medida: m.medida, cantidad: 1 },
-                ]),
-              );
-            setError('');
-          } catch (e) {
-            setError(userError(e));
-          }
-        }}
+        onPress={() => setShowCombos(!showCombos)}
       />
-      <Select
-        label="Cargar combo"
-        value={combo}
-        options={state.combos.map((c) => ({ label: c.nombreCombo, value: c.id }))}
-        onChange={setCombo}
-      />
-      <Button
-        label="Revisar combo"
-        variant="secondary"
-        onPress={() => {
-          try {
-            const c = state.combos.find((c) => c.id === combo);
-            if (!c) throw new Error('Selecciona un combo.');
-            const loads = c.items.map((i) => {
-              const m = state.materiales.find((m) => m.id === i.materialId);
-              if (!m) throw new Error('El combo contiene un material inexistente.');
-              return { materialId: m.id, nombre: m.nombre, medida: m.medida, cantidad: i.cantidad };
-            });
-            setItems(mergeLoads(items, loads));
-            setError('');
-          } catch (e) {
-            setError(userError(e));
-          }
-        }}
-      />
-      <Text style={s.h2}>Revisar carga</Text>
+      {showCombos ? (
+        <View style={{ gap: 12 }}>
+          {!state.combos.length ? (
+            <Text style={s.muted}>Todavía no hay combos guardados.</Text>
+          ) : (
+            <>
+              <Select
+                label="Cargar combo"
+                value={combo}
+                options={state.combos.map((c) => ({ label: c.nombreCombo, value: c.id }))}
+                onChange={setCombo}
+              />
+              <Button
+                label="Revisar combo"
+                variant="secondary"
+                onPress={() => {
+                  try {
+                    const c = state.combos.find((c) => c.id === combo);
+                    if (!c) throw new Error('Selecciona un combo.');
+                    const loads = c.items.map((i) => {
+                      const m = state.materiales.find((m) => m.id === i.materialId);
+                      if (!m) throw new Error('El combo contiene un material inexistente.');
+                      return {
+                        materialId: m.id,
+                        nombre: m.nombre,
+                        medida: m.medida,
+                        cantidad: i.cantidad,
+                      };
+                    });
+                    change(mergeLoads(items, loads));
+                    setError('');
+                  } catch (e) {
+                    setError(userError(e));
+                  }
+                }}
+              />
+            </>
+          )}
+        </View>
+      ) : null}
+      {error ? <Notice text={error} tone="error" /> : null}
+      <Text accessibilityRole="header" style={s.h2}>
+        Carga · {items.reduce((sum, i) => sum + i.cantidad, 0)} piezas
+      </Text>
+      {!items.length ? (
+        <Text style={s.muted}>
+          Agregá materiales o un combo. Podés guardar el alquiler sin carga y prepararla después.
+        </Text>
+      ) : null}
       {items.map((i) => {
         const m = state.materiales.find((m) => m.id === i.materialId);
         return (
-          <View key={i.materialId} style={s.card}>
+          <View
+            key={i.materialId}
+            style={{
+              gap: 12,
+              paddingVertical: 16,
+              borderBottomWidth: 1,
+              borderBottomColor: s.divider.backgroundColor,
+            }}
+          >
             <Text style={s.h2}>{i.nombre}</Text>
+            <Text style={s.muted}>
+              {i.medida || 'Sin medida'} · {m?.cantidadGalpon ?? 0} en depósito
+            </Text>
             <SmartCounter
-              label={i.nombre}
+              label={`${i.nombre} ${i.medida || ''}`}
               value={i.cantidad}
-              onChange={(n) => update(i.materialId, { cantidad: n })}
+              onChange={(cantidad) => update(i.materialId, { cantidad })}
             />
             {m && i.cantidad > m.cantidadGalpon ? (
               <Notice
-                text={`⚠️ Stock bajo: Pedidos ${i.cantidad} | En Depósito ${m.cantidadGalpon}. Puedes guardar la carga. La entrega requiere procedencia autorizada.`}
+                text={`Stock bajo: Pedidos ${i.cantidad} | En Depósito ${m.cantidadGalpon}. Puedes guardar la carga. La entrega requiere procedencia autorizada.`}
               />
             ) : null}
             <Text style={s.muted}>
@@ -111,11 +179,31 @@ export function LoadEditor({ obra, onDone }: { obra: ObraCard; onDone: () => voi
             <Button
               label="Quitar material"
               variant="ghost"
-              onPress={() => setItems(items.filter((x) => x.materialId !== i.materialId))}
+              onPress={() => change(items.filter((x) => x.materialId !== i.materialId))}
             />
           </View>
         );
       })}
+    </View>
+  );
+}
+
+export function LoadEditor({ obra, onDone }: { obra: ObraCard; onDone: () => void }) {
+  const { notifySuccess } = useFeedback();
+  const {setBusy:setPanelBusy}=usePanelChanges();
+  const { state, dispatch } = useInventory();
+  const [items, setItems] = useState(obra.materialesCargados);
+  const [baseVersion] = useState(obra.version || 0);
+  const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
+  useEffect(() => {
+    setPanelBusy?.(busy);
+    return () => setPanelBusy?.(false);
+  }, [busy, setPanelBusy]);
+  const saving = useRef(false);
+  return (
+    <>
+      <LoadDraft items={items} onChange={setItems} />
       {error ? <Notice text={error} tone="error" /> : null}
       <Button
         label={
@@ -129,6 +217,8 @@ export function LoadEditor({ obra, onDone }: { obra: ObraCard; onDone: () => voi
         }
         loading={busy}
         onPress={async () => {
+          if (saving.current) return;
+          saving.current = true;
           setBusy(true);
           try {
             await dispatch({
@@ -137,10 +227,12 @@ export function LoadEditor({ obra, onDone }: { obra: ObraCard; onDone: () => voi
               obraId: obra.id,
               items: items.filter((i) => i.cantidad > 0),
             });
+            notifySuccess('Carga guardada. Las existencias se mueven al entregar.');
             onDone();
           } catch (e) {
             setError(userError(e));
           } finally {
+            saving.current = false;
             setBusy(false);
           }
         }}

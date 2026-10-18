@@ -61,7 +61,12 @@ export function LocalBackupActions() {
           setOpen(true);
         }}
       />
-      <Sheet visible={open} title="Nuevo inventario vacío" onClose={() => !busy && setOpen(false)}>
+      <Sheet
+        busy={busy}
+        visible={open}
+        title="Nuevo inventario vacío"
+        onClose={() => !busy && setOpen(false)}
+      >
         <Text style={s.body}>
           Guardá una copia fuera de la aplicación antes de continuar. También se conservará una
           recuperación interna. No se combinarán inventarios.
@@ -79,6 +84,7 @@ export function LocalBackupActions() {
         {error ? <Notice text={error} tone="error" /> : null}
         <Button
           label="Confirmar"
+          variant="danger"
           loading={busy}
           disabled={!allowed}
           onPress={async () => {
@@ -109,7 +115,7 @@ export function LocalBackupActions() {
         }}
       />
       {copies.map((c) => (
-        <View key={c.key} style={s.card}>
+        <View key={c.key} style={[s.section, { borderTopWidth: 1, paddingTop: 16 }]}>
           <Text style={s.body}>
             {c.createdAt ? new Date(c.createdAt).toLocaleString('es-AR') : 'Copia anterior'}
           </Text>

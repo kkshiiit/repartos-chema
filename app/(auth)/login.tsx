@@ -57,10 +57,10 @@ export default function Login() {
           contentContainerStyle={{
             flexGrow: 1,
             justifyContent: 'center',
-            padding: width < 400 ? 24 : 36,
+            padding: 20,
           }}
         >
-          <MotionView style={{ width: '100%', maxWidth: 460, alignSelf: 'center', gap: 28 }}>
+          <MotionView style={{ width: '100%', maxWidth: 460, alignSelf: 'center', gap: 24 }}>
             <View style={{ alignItems: 'center', gap: 18, paddingTop: 12 }}>
               <Image
                 source={require('../../assets/brand/grupo-chema.png')}
@@ -72,9 +72,7 @@ export default function Login() {
                 <Text
                   accessibilityRole="header"
                   style={{
-                    color: C.text,
-                    fontSize: 32,
-                    lineHeight: 38,
+                    ...s.title,
                     fontWeight: '800',
                     textAlign: 'center',
                     letterSpacing: -1,
@@ -89,7 +87,7 @@ export default function Login() {
             </View>
             <View style={[s.card, { padding: width < 400 ? 20 : 26, gap: 20 }]}>
               <View style={{ width: 38, height: 4, borderRadius: 4, backgroundColor: C.accent }} />
-              <Text style={s.h2}>Ingresar al equipo</Text>
+              <Text style={s.h2}>Ingresar</Text>
               <Field
                 label="Tu nombre"
                 placeholder="¿Cómo te llamás?"
@@ -127,12 +125,12 @@ export default function Login() {
                 />
               ) : null}
               {LOCAL_ONLY ? (
-                <Text style={[s.muted, { fontSize: 12 }]}>
+                <Text style={[s.muted, { fontSize: 14 }]}>
                   Uso individual · Sin conexión ni servicios pagos. En una instalación nueva, el
                   inventario comienza vacío.
                 </Text>
               ) : DATA_MODE === 'demo' ? (
-                <Text style={[s.muted, { fontSize: 12 }]}>
+                <Text style={[s.muted, { fontSize: 14 }]}>
                   Prueba local · Los datos se guardan en este celular. Compartir entre celulares
                   requiere conectar el equipo.
                 </Text>

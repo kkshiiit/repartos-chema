@@ -25,6 +25,7 @@ test('combo se crea, edita, fusiona sin IDs duplicados y elimina conservando la 
       ?.cantidad || 0;
   await page.goto('/obra/obra_5');
   await page.getByRole('button', { name: 'Preparar carga', exact: true }).click();
+  await page.getByRole('button', { name: 'Usar combo', exact: true }).click();
   await page.getByRole('button', { name: 'Cargar combo', exact: true }).click();
   await page.getByRole('button', { name: 'Combo sintético editado', exact: true }).click();
   await page.getByRole('button', { name: 'Revisar combo', exact: true }).click();

@@ -1,6 +1,10 @@
-# Punto activo — rediseño papel/cobalto (18/10/2026)
+# Punto activo — papel/cobalto 1.4.0 en validación (18/10/2026)
 
-Encargo completo autorizado mediante ZIP adjunto. Base main 1e5dcc9. Extracción y manifiesto verificados; respaldo base inmutable fuera del proyecto. Ver docs/REDISENO_PAPEL_COBALTO.md para matriz de cobertura y procedencia. Bloques en curso: primitivas, formularios, avisos locales y rutas. Cambios visuales separados del dominio/SQLite, que permanecen intactos. Dependencias Expo audio/notificaciones compatibles instaladas para nuevo bloque local opcional; todavía sin build/validación final. Próximo paso: completar rutas, integrar preferencias/avisos, ejecutar check y recorridos nuevos; respaldar antes de Gradle y publicar versión superior a 1.3/code6 con el mismo certificado. No declarar APK nuevo ni pruebas físicas hasta verificarlos.
+Base 1e5dcc9; paquete autorizado completo y manifiesto verificado. Bloques publicados:1542ce4 insumos/deps,80d4649 primitivas,d35a01c avisos opt-in. Implementación de rutas y wizard lista, check actual217/217 (27 archivos), typecheck/lint/functionsbuild correctos. Build web local individual correcto: script garantiza LOCAL_ONLY=true/DATA_MODE=demo. Firma Android existente coincide con1.3 fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c. No dispositivo ADB.
+
+Primer recorrido web:25 pasan,17 fallan (log artifacts/validacion/cobalto-ui-intento1.txt): detectó desbordamiento320, doble Escape web, selectores viejos tras reorganización y build iniciado sin flagindividual. Corregidos en código; segundo recorrido en marcha con captura/contraste/texto200. No es validación final todavía.
+
+Próximo paso exacto: leer /tmp/chema-ui-cobalto2.txt; corregir fallos reales y repetir afectados, inspeccionar capturas; verificar npmci limpio. Respaldar cambios por bloques antes Gradle completo. Versión prevista1.4.0/code7, mismo package/cert. Todavía NO hay APK nuevo. No se modificaron dominio, SQLite, migración ni validación JSON. Falta respaldar y publicar nueva carpeta descargas, recuperar APK desdeGitHub y compararhash. Ver docs/REDISENO_PAPEL_COBALTO.md para cobertura y docs/AVISOS_LOCALES.md para límites.
 
 ---
 

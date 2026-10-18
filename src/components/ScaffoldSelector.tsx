@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Chip, Field, useUI } from './ui';
+import { Chip, Field, useUI, usePanelChanges } from './ui';
 export function ScaffoldSelector({
   value,
   onChange,
@@ -9,6 +9,7 @@ export function ScaffoldSelector({
   onChange: (v: string) => void;
 }) {
   const { s } = useUI();
+  const { markDirty } = usePanelChanges();
   const [custom, setCustom] = useState(
     !['70cm', '80cm', '90cm', '1.30m', '1.50m', '2.00m', ''].includes(value),
   );
@@ -21,6 +22,7 @@ export function ScaffoldSelector({
             label={m}
             selected={value === m}
             onPress={() => {
+              markDirty();
               onChange(m);
               setCustom(false);
             }}

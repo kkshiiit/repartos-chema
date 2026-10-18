@@ -17,6 +17,29 @@ test('tema automático conserva formulario y no hay selectores repetidos en vent
   await expect(page.getByLabel('Nombre del cliente', { exact: true })).toHaveValue(
     'Borrador sin perder',
   );
+  await page.getByLabel('Dirección', { exact: true }).fill('Dirección del borrador');
+  await page.getByLabel('Barrio / localidad', { exact: true }).fill('Zona del borrador');
+  await page.getByRole('button', { name: 'Continuar a carga', exact: true }).click();
+  await page.getByRole('button', { name: 'Agregar material', exact: true }).last().click();
+  await page.getByLabel('Apodo de esta carga', { exact: true }).fill('Carga sin perder');
+  await page.emulateMedia({ colorScheme: 'light' });
+  await expect.poll(() => bg(page)).toBe('light');
+  await expect(page.getByLabel('Apodo de esta carga', { exact: true })).toHaveValue(
+    'Carga sin perder',
+  );
+  await page.getByRole('button', { name: 'Revisar alquiler', exact: true }).click();
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await expect.poll(() => bg(page)).toBe('dark');
+  await expect(page.getByText('Borrador sin perder', { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Volver a carga', exact: true }).click();
+  await expect(page.getByLabel('Apodo de esta carga', { exact: true })).toHaveValue(
+    'Carga sin perder',
+  );
+  await page.getByRole('button', { name: 'Volver a cliente', exact: true }).click();
+  await expect(page.getByLabel('Dirección', { exact: true })).toHaveValue('Dirección del borrador');
+  await expect(page.getByLabel('Nombre del cliente', { exact: true })).toHaveValue(
+    'Borrador sin perder',
+  );
   await page.goto('/');
   await page.getByRole('button', { name: 'Activar modo claro', exact: true }).click();
   await page.emulateMedia({ colorScheme: 'dark' });
@@ -45,8 +68,21 @@ for (const width of [320, 360, 390, 768, 1440])
       await page.setViewportSize({ width, height: width > 1000 ? 1000 : 844 });
       await page.emulateMedia({ colorScheme: theme, reducedMotion: 'reduce' });
       const { seed } = await import('../../src/data/seed');
-      const fixture=seed();fixture.obras.forEach((o,i)=>{o.clienteNombre='Cliente sintético '+(i+1);o.clienteTelefono='';o.direccion='Dirección sintética '+(i+1);delete o.coordenadas;});
-      await page.addInitScript((state)=>{localStorage.setItem('chema:welcome:v2','done');if(!localStorage.getItem('chema:demo:v1'))localStorage.setItem('chema:demo:v1',JSON.stringify({schema:1,state,confirmed:state,queue:[]}));},fixture);
+      const fixture = seed();
+      fixture.obras.forEach((o, i) => {
+        o.clienteNombre = 'Cliente sintético ' + (i + 1);
+        o.clienteTelefono = '';
+        o.direccion = 'Dirección sintética ' + (i + 1);
+        delete o.coordenadas;
+      });
+      await page.addInitScript((state) => {
+        localStorage.setItem('chema:welcome:v2', 'done');
+        if (!localStorage.getItem('chema:demo:v1'))
+          localStorage.setItem(
+            'chema:demo:v1',
+            JSON.stringify({ schema: 1, state, confirmed: state, queue: [] }),
+          );
+      }, fixture);
       await page.goto('/');
       await expect(page.getByLabel('Tu nombre', { exact: true })).toBeVisible();
       async function capture(name: string) {

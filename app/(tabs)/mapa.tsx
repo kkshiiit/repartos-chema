@@ -87,7 +87,7 @@ export default function Trip() {
   }
   return (
     <Screen title="Viaje">
-      <View style={[s.card, { gap: 18 }]}>
+      <View style={[s.card, { gap: 12 }]}>
         <View style={s.row}>
           <View style={{ backgroundColor: C.selection, padding: 10, borderRadius: 14 }}>
             <Route size={25} color={C.blue} />
@@ -107,9 +107,9 @@ export default function Trip() {
           label="Volver al depósito"
           icon={CornerDownLeft}
           variant="secondary"
-          onPress={() => void run(() => openLink(depotDirectionsUrl(depot)))}
+          onPress={() => run(() => openLink(depotDirectionsUrl(depot)))}
         />
-        <Text style={[s.muted, { fontSize: 12 }]}>{depot.direccion}</Text>
+        <Text style={[s.muted, { fontSize: 14 }]}>{depot.direccion}</Text>
       </View>
       <Select
         label="Zona del viaje"
@@ -130,7 +130,7 @@ export default function Trip() {
           variant="secondary"
           loading={busy}
           onPress={() =>
-            void run(async () => {
+            run(async () => {
               const permission = await Location.requestForegroundPermissionsAsync();
               if (!permission.granted)
                 throw new Error(
@@ -167,7 +167,7 @@ export default function Trip() {
                 key={i}
                 label={routes.items.length === 1 ? 'Abrir recorrido' : `Abrir tramo ${i + 1}`}
                 icon={Navigation}
-                onPress={() => void run(() => openLink(r.url))}
+                onPress={() => run(() => openLink(r.url))}
               />
             ))}
             <Text style={s.muted}>
@@ -178,7 +178,10 @@ export default function Trip() {
             </Text>
           </View>
           {works.map((o, index) => (
-            <View key={o.id} style={[s.card, { gap: 16 }]}>
+            <View
+              key={o.id}
+              style={[s.card, { gap: 12, borderLeftWidth: 2, borderColor: C.hairline }]}
+            >
               <View style={[s.row, { alignItems: 'flex-start' }]}>
                 <View
                   style={{
@@ -223,7 +226,7 @@ export default function Trip() {
                   label="Cómo llegar"
                   icon={Navigation}
                   variant="secondary"
-                  onPress={() => void run(() => openLink(mapsUrl(o)))}
+                  onPress={() => run(() => openLink(mapsUrl(o)))}
                 />
               </View>
             </View>
