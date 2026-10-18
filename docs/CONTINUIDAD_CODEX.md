@@ -26,7 +26,19 @@ Clave existente fueraGit: /workspace/respaldos/firma-interna/chema-restaurada-1.
 
 Entregar enlace del APK e instruccionesAndroid del informe. Cuando el usuario pruebe: recoger resultados/error concreto antes de modificar código; guardar JSON externo y actualizar encima sin desinstalar/borrar almacenamiento. Si retoma desarrollo, comprobar workspace/Git/remoto y leer este checkpoint; conservar cambios posteriores. Si solo pide descargar, usar APK ya publicado, no repetir compilación/auditoría.
 
-Comandos de verificación: npmci; npmruncheck; npmrunbuild:web; npmrunpreview; CHEMA_TEST_LOCAL=true npmrun test:ui -- --workers=2 (usar espacios normales entre npm/run al copiar). Build nativo requiere JDK21/SDK36/NDK27.1/CMake3.22.1 y CHEMA_ANDROID_KEYSTORE=claveexistente, sin servicios pagos. Ver docs/ANDROID.md para comandos exactos.
+Comandos de verificación (mantener preview en otra terminal):
+
+```bash
+npm ci
+npm run check
+npm run build:web
+npm run preview
+CHEMA_TEST_LOCAL=true npm run test:ui -- --workers=2
+```
+
+Build nativo: JDK21/SDK36/NDK27.1/CMake3.22.1 y CHEMA_ANDROID_KEYSTORE con la clave existente, sin servicios pagos. Ver docs/ANDROID.md para entorno y comando exactos.
+
+El contenido siguiente conserva checkpoints históricos; prevalece este cierre.
 
 ---
 
