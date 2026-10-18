@@ -114,7 +114,7 @@ export function OperationForm({
   onDone: () => void;
 }) {
   const { s } = useUI();
-  const { notifySuccess } = useFeedback();
+  const { notifySuccess, notifyError } = useFeedback();
   const { markDirty, setBusy: setPanelBusy } = usePanelChanges();
   const { state, dispatch } = useInventory(),
     { user } = useAuth();
@@ -406,6 +406,7 @@ export function OperationForm({
             );
             onDone();
           } catch (e) {
+            notifyError(userError(e));
             setError(userError(e));
           } finally {
             saving.current = false;

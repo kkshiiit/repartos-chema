@@ -1,0 +1,862 @@
+
+> repartos-chema@1.4.0 test:ui
+> playwright test --workers=2
+
+
+Running 42 tests using 2 workers
+
+(node:8258) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8257) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/ui/app.spec.ts:3:5 › equipo crea, entrega, deshace y descarga documentos (9.3s)
+  ✓   3 tests/ui/app.spec.ts:43:5 › nombre identifica a la persona sin selector de roles; sesión persiste (3.5s)
+  ✓   2 tests/ui/accessibility.spec.ts:6:7 › accesibilidad automatizada WCAG AA light (14.5s)
+  ✓   4 tests/ui/app.spec.ts:58:5 › demo permite reabrir el tablero sin conexión después de guardar la caché (4.4s)
+  ✓   6 tests/ui/aurora.spec.ts:4:7 › Aurora light: pantallas y ventanas con datos sintéticos (10.4s)
+  ✓   5 tests/ui/accessibility.spec.ts:6:7 › accesibilidad automatizada WCAG AA dark (13.0s)
+  ✓   8 tests/ui/cobalto.spec.ts:106:5 › Cobalto: el asistente conserva cliente, carga y observaciones al volver y cambiar tema (3.9s)
+  ✓   9 tests/ui/cobalto.spec.ts:159:5 › Cobalto: X, Escape y fondo protegen la carga; descartar devuelve foco y no escribe inventario (3.5s)
+  ✓   7 tests/ui/aurora.spec.ts:4:7 › Aurora dark: pantallas y ventanas con datos sintéticos (14.1s)
+  ✘  10 tests/ui/cobalto.spec.ts:201:9 › Cobalto 320dp light: contraste renderizado, bordes y texto 200% (10.0s)
+  ✓  11 tests/ui/aurora.spec.ts:66:5 › un error de GPS queda visible dentro de la ventana y conserva coordenadas manuales (4.6s)
+(node:9119) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  12 tests/ui/combos-local.spec.ts:3:5 › combo se crea, edita, fusiona sin IDs duplicados y elimina conservando la carga (10.9s)
+  ✘  13 tests/ui/cobalto.spec.ts:201:9 › Cobalto 320dp dark: contraste renderizado, bordes y texto 200% (13.2s)
+(node:9379) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  14 tests/ui/import-json.spec.ts:5:5 › seleccionar JSON abre revisión, cancelar conserva datos, confirmar persiste los cinco pedidos (7.3s)
+  ✘  16 tests/ui/local.spec.ts:8:5 › individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y offline (3.4s)
+(node:9581) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  17 tests/ui/local.spec.ts:144:5 › remito Word no queda bloqueado por un filtro Excel inválido (6.8s)
+  ✘  15 tests/ui/cobalto.spec.ts:201:9 › Cobalto 360dp light: contraste renderizado, bordes y texto 200% (18.3s)
+(node:9830) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  18 tests/ui/local.spec.ts:163:5 › temas locales persisten y conservan el formulario (5.0s)
+  ✓  20 tests/ui/operations.spec.ts:3:5 › retiro y reingreso conservan el total (5.2s)
+  ✓  21 tests/ui/operations.spec.ts:37:5 › triangulación, daño y recuperación conservan existencias y procedencia (4.8s)
+  ✘  19 tests/ui/cobalto.spec.ts:201:9 › Cobalto 360dp dark: contraste renderizado, bordes y texto 200% (10.2s)
+(node:10136) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  22 tests/ui/operations.spec.ts:79:5 › wizard prepara carga sin persistir al navegar y confirma un solo alquiler (4.7s)
+  ✓  24 tests/ui/recovery.spec.ts:4:5 › foto local, copia descargada y restauración sobreviven al reinicio (9.2s)
+  ✓  25 tests/ui/recovery.spec.ts:46:5 › borrar foto activa no rompe una recuperación interna retenida (11.5s)
+  ✓  23 tests/ui/cobalto.spec.ts:201:9 › Cobalto 390dp light: contraste renderizado, bordes y texto 200% (27.4s)
+  ✓  26 tests/ui/themes.spec.ts:6:5 › tema automático conserva formulario y no hay selectores repetidos en ventanas (11.5s)
+  ✓  28 tests/ui/themes.spec.ts:64:9 › pantallas 320px light sin recortes (12.6s)
+  ✘  27 tests/ui/cobalto.spec.ts:201:9 › Cobalto 390dp dark: contraste renderizado, bordes y texto 200% (25.0s)
+  ✘  29 tests/ui/themes.spec.ts:64:9 › pantallas 320px dark sin recortes (5.6s)
+(node:11182) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11191) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  31 tests/ui/themes.spec.ts:64:9 › pantallas 360px light sin recortes (6.8s)
+(node:11579) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  32 tests/ui/themes.spec.ts:64:9 › pantallas 360px dark sin recortes (6.9s)
+(node:11768) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  33 tests/ui/themes.spec.ts:64:9 › pantallas 390px light sin recortes (6.8s)
+(node:12040) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  34 tests/ui/themes.spec.ts:64:9 › pantallas 390px dark sin recortes (6.9s)
+(node:12480) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  35 tests/ui/themes.spec.ts:64:9 › pantallas 768px light sin recortes (6.5s)
+(node:12844) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  36 tests/ui/themes.spec.ts:64:9 › pantallas 768px dark sin recortes (6.3s)
+(node:13159) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  37 tests/ui/themes.spec.ts:64:9 › pantallas 1440px light sin recortes (6.5s)
+(node:13431) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  38 tests/ui/themes.spec.ts:64:9 › pantallas 1440px dark sin recortes (6.3s)
+(node:13713) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  39 tests/ui/trip.spec.ts:3:5 › viaje vuelve al depósito fijo y recupera el cambio de Ajustes sin alterar inventario (1.0m)
+(node:14825) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  40 tests/ui/welcome.spec.ts:3:5 › bienvenida breve completa una vez y puede abrirse desde Ajustes (2.3s)
+  ✓  41 tests/ui/welcome.spec.ts:19:5 › cambiar nombre local conserva inventario y autores sin cuentas ni invitaciones (4.6s)
+  ✘  30 tests/ui/cobalto.spec.ts:201:9 › Cobalto 412dp light: contraste renderizado, bordes y texto 200% (4.0m)
+(node:16385) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  42 tests/ui/cobalto.spec.ts:201:9 › Cobalto 412dp dark: contraste renderizado, bordes y texto 200% (31.1s)
+
+
+  1) tests/ui/cobalto.spec.ts:201:9 › Cobalto 320dp light: contraste renderizado, bordes y texto 200%
+
+    Error: viaje 320 light texto200
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 7
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "label": "Usar mi ubicación",
+    +     "left": 20,
+    +     "right": 353.640625,
+    +   },
+    + ]
+
+      69 |     }),
+      70 |   );
+    > 71 |   expect(clipped, description).toEqual([]);
+         |                                ^
+      72 | }
+      73 |
+      74 | /** Browser text enlargement evidence; this does not emulate Android fontScale. */
+        at assertNoOverflow (/workspace/repartos-chema/tests/ui/cobalto.spec.ts:71:32)
+        at /workspace/repartos-chema/tests/ui/cobalto.spec.ts:234:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/cobalto-Cobalto-320dp-ligh-6be5c-erizado-bordes-y-texto-200-/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/cobalto-Cobalto-320dp-ligh-6be5c-erizado-bordes-y-texto-200-/error-context.md
+
+  2) tests/ui/cobalto.spec.ts:201:9 › Cobalto 320dp dark: contraste renderizado, bordes y texto 200%
+
+    Error: viaje 320 dark texto200
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 7
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "label": "Usar mi ubicación",
+    +     "left": 20,
+    +     "right": 353.640625,
+    +   },
+    + ]
+
+      69 |     }),
+      70 |   );
+    > 71 |   expect(clipped, description).toEqual([]);
+         |                                ^
+      72 | }
+      73 |
+      74 | /** Browser text enlargement evidence; this does not emulate Android fontScale. */
+        at assertNoOverflow (/workspace/repartos-chema/tests/ui/cobalto.spec.ts:71:32)
+        at /workspace/repartos-chema/tests/ui/cobalto.spec.ts:234:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/cobalto-Cobalto-320dp-dark-27964-erizado-bordes-y-texto-200-/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/cobalto-Cobalto-320dp-dark-27964-erizado-bordes-y-texto-200-/error-context.md
+
+  3) tests/ui/cobalto.spec.ts:201:9 › Cobalto 360dp light: contraste renderizado, bordes y texto 200%
+
+    Error: detalle 360 light texto200
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 7
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "label": "Remito WhatsApp",
+    +     "left": 36,
+    +     "right": 369.546875,
+    +   },
+    + ]
+
+      69 |     }),
+      70 |   );
+    > 71 |   expect(clipped, description).toEqual([]);
+         |                                ^
+      72 | }
+      73 |
+      74 | /** Browser text enlargement evidence; this does not emulate Android fontScale. */
+        at assertNoOverflow (/workspace/repartos-chema/tests/ui/cobalto.spec.ts:71:32)
+        at /workspace/repartos-chema/tests/ui/cobalto.spec.ts:234:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/cobalto-Cobalto-360dp-ligh-ea797-erizado-bordes-y-texto-200-/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/cobalto-Cobalto-360dp-ligh-ea797-erizado-bordes-y-texto-200-/error-context.md
+
+  4) tests/ui/cobalto.spec.ts:201:9 › Cobalto 360dp dark: contraste renderizado, bordes y texto 200%
+
+    Error: detalle 360 dark texto200
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 7
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "label": "Remito WhatsApp",
+    +     "left": 36,
+    +     "right": 369.546875,
+    +   },
+    + ]
+
+      69 |     }),
+      70 |   );
+    > 71 |   expect(clipped, description).toEqual([]);
+         |                                ^
+      72 | }
+      73 |
+      74 | /** Browser text enlargement evidence; this does not emulate Android fontScale. */
+        at assertNoOverflow (/workspace/repartos-chema/tests/ui/cobalto.spec.ts:71:32)
+        at /workspace/repartos-chema/tests/ui/cobalto.spec.ts:234:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/cobalto-Cobalto-360dp-dark-98f51-erizado-bordes-y-texto-200-/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/cobalto-Cobalto-360dp-dark-98f51-erizado-bordes-y-texto-200-/error-context.md
+
+  5) tests/ui/cobalto.spec.ts:201:9 › Cobalto 390dp dark: contraste renderizado, bordes y texto 200%
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading').first()
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading').first() with timeout 5000ms
+      - waiting for getByRole('heading').first()
+
+
+      213 |       for (const [route, label] of routes) {
+      214 |         await page.goto(route);
+    > 215 |         await expect(page.getByRole('heading').first()).toBeVisible();
+          |                                                         ^
+      216 |         await assertNoOverflow(page, `${label} ${width} ${theme}`);
+      217 |         const result = await new AxeBuilder({ page }).withRules(['color-contrast']).analyze();
+      218 |         reports.push({
+        at /workspace/repartos-chema/tests/ui/cobalto.spec.ts:215:57
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/cobalto-Cobalto-390dp-dark-f9132-erizado-bordes-y-texto-200-/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/cobalto-Cobalto-390dp-dark-f9132-erizado-bordes-y-texto-200-/error-context.md
+
+  6) tests/ui/cobalto.spec.ts:201:9 › Cobalto 412dp light: contraste renderizado, bordes y texto 200%
+
+    Test timeout of 240000ms exceeded.
+
+    Error: locator.fill: Test timeout of 240000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Tu nombre', { exact: true })
+
+
+       at helpers.ts:5
+
+      3 |   await page.addInitScript(() => localStorage.setItem('chema:welcome:v2', 'done'));
+      4 |   await page.goto('/');
+    > 5 |   await page.getByLabel('Tu nombre', { exact: true }).fill(name);
+        |                                                       ^
+      6 |   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+      7 |   await expect(page.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible();
+      8 | }
+        at login (/workspace/repartos-chema/tests/ui/helpers.ts:5:55)
+        at loginSynthetic (/workspace/repartos-chema/tests/ui/helpers.ts:27:3)
+        at /workspace/repartos-chema/tests/ui/cobalto.spec.ts:211:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/cobalto-Cobalto-412dp-ligh-481f5-erizado-bordes-y-texto-200-/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/cobalto-Cobalto-412dp-ligh-481f5-erizado-bordes-y-texto-200-/error-context.md
+
+  7) tests/ui/local.spec.ts:8:5 › individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y offline
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -   1
+    + Received  + 248
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "clienteNombre": "Edificio Las Heras",
+    +     "clienteTelefono": "",
+    +     "direccion": "Las Heras 2840",
+    +     "entregadoPor": Array [
+    +       "Fabián",
+    +     ],
+    +     "estadoProceso": "ENTREGADO",
+    +     "estadoSemaphoro": "ROJO",
+    +     "fechaEntrega": "2026-10-11",
+    +     "fechaRetiroEstimada": "2026-10-16",
+    +     "id": "obra_1",
+    +     "localidadBarrio": "San Martín",
+    +     "materialesCargados": Array [
+    +       Object {
+    +         "cantidad": 16,
+    +         "materialId": "marco130",
+    +         "medida": "1.30m",
+    +         "nombre": "Marco de andamio",
+    +       },
+    +       Object {
+    +         "apodo": "Antideslizante",
+    +         "cantidad": 8,
+    +         "materialId": "tablon",
+    +         "medida": "2.00m",
+    +         "nombre": "Tablón metálico",
+    +       },
+    +       Object {
+    +         "cantidad": 16,
+    +         "materialId": "diagonal",
+    +         "medida": "2.00m",
+    +         "nombre": "Diagonal",
+    +       },
+    +     ],
+    +     "saldosEnObra": Object {
+    +       "diagonal": 16,
+    +       "marco130": 16,
+    +       "tablon": 8,
+    +     },
+    +     "syncStatus": "PENDING",
+    +     "updatedAt": "2026-10-18T15:05:38.985Z",
+    +   },
+    +   Object {
+    +     "clienteNombre": "Casa Los Aromos",
+    +     "clienteTelefono": "",
+    +     "direccion": "Los Aromos 125",
+    +     "entregadoPor": Array [
+    +       "Fabián",
+    +     ],
+    +     "estadoProceso": "ENTREGADO",
+    +     "estadoSemaphoro": "AMARILLO",
+    +     "fechaEntrega": "2026-10-11",
+    +     "fechaRetiroEstimada": "2026-10-18",
+    +     "id": "obra_2",
+    +     "localidadBarrio": "Ballester",
+    +     "materialesCargados": Array [
+    +       Object {
+    +         "cantidad": 8,
+    +         "materialId": "marco130",
+    +         "medida": "1.30m",
+    +         "nombre": "Marco de andamio",
+    +       },
+    +       Object {
+    +         "apodo": "Antideslizante",
+    +         "cantidad": 4,
+    +         "materialId": "tablon",
+    +         "medida": "2.00m",
+    +         "nombre": "Tablón metálico",
+    +       },
+    +       Object {
+    +         "cantidad": 8,
+    +         "materialId": "diagonal",
+    +         "medida": "2.00m",
+    +         "nombre": "Diagonal",
+    +       },
+    +     ],
+    +     "saldosEnObra": Object {
+    +       "diagonal": 8,
+    +       "marco130": 8,
+    +       "tablon": 4,
+    +     },
+    +     "syncStatus": "PENDING",
+    +     "updatedAt": "2026-10-18T15:05:38.985Z",
+    +   },
+    +   Object {
+    +     "clienteNombre": "Local Belgrano",
+    +     "clienteTelefono": "",
+    +     "direccion": "Belgrano 3920",
+    +     "entregadoPor": Array [
+    +       "Fabián",
+    +     ],
+    +     "estadoProceso": "ENTREGADO",
+    +     "estadoSemaphoro": "AMARILLO",
+    +     "fechaEntrega": "2026-10-11",
+    +     "fechaRetiroEstimada": "2026-10-18",
+    +     "id": "obra_3",
+    +     "localidadBarrio": "San Martín",
+    +     "materialesCargados": Array [
+    +       Object {
+    +         "cantidad": 12,
+    +         "materialId": "marco130",
+    +         "medida": "1.30m",
+    +         "nombre": "Marco de andamio",
+    +       },
+    +       Object {
+    +         "apodo": "Antideslizante",
+    +         "cantidad": 6,
+    +         "materialId": "tablon",
+    +         "medida": "2.00m",
+    +         "nombre": "Tablón metálico",
+    +       },
+    +       Object {
+    +         "cantidad": 12,
+    +         "materialId": "diagonal",
+    +         "medida": "2.00m",
+    +         "nombre": "Diagonal",
+    +       },
+    +     ],
+    +     "saldosEnObra": Object {
+    +       "diagonal": 12,
+    +       "marco130": 12,
+    +       "tablon": 6,
+    +     },
+    +     "syncStatus": "PENDING",
+    +     "updatedAt": "2026-10-18T15:05:38.985Z",
+    +   },
+    +   Object {
+    +     "clienteNombre": "Obra La Estación",
+    +     "clienteTelefono": "",
+    +     "direccion": "Independencia 1840",
+    +     "entregadoPor": Array [
+    +       "Fabián",
+    +     ],
+    +     "estadoProceso": "ENTREGADO",
+    +     "estadoSemaphoro": "VERDE",
+    +     "fechaEntrega": "2026-10-11",
+    +     "fechaRetiroEstimada": "2026-10-23",
+    +     "id": "obra_4",
+    +     "localidadBarrio": "Suárez",
+    +     "materialesCargados": Array [
+    +       Object {
+    +         "cantidad": 20,
+    +         "materialId": "marco130",
+    +         "medida": "1.30m",
+    +         "nombre": "Marco de andamio",
+    +       },
+    +       Object {
+    +         "apodo": "Antideslizante",
+    +         "cantidad": 10,
+    +         "materialId": "tablon",
+    +         "medida": "2.00m",
+    +         "nombre": "Tablón metálico",
+    +       },
+    +       Object {
+    +         "cantidad": 20,
+    +         "materialId": "diagonal",
+    +         "medida": "2.00m",
+    +         "nombre": "Diagonal",
+    +       },
+    +     ],
+    +     "saldosEnObra": Object {
+    +       "diagonal": 20,
+    +       "marco130": 20,
+    +       "tablon": 10,
+    +     },
+    +     "syncStatus": "PENDING",
+    +     "updatedAt": "2026-10-18T15:05:38.985Z",
+    +   },
+    +   Object {
+    +     "clienteNombre": "Vivienda Mitre",
+    +     "clienteTelefono": "",
+    +     "direccion": "Mitre 2176",
+    +     "entregadoPor": Array [],
+    +     "estadoProceso": "PENDIENTE_ENTREGA",
+    +     "estadoSemaphoro": "VERDE",
+    +     "fechaEntrega": "2026-10-18",
+    +     "fechaRetiroEstimada": "2026-10-25",
+    +     "id": "obra_5",
+    +     "localidadBarrio": "Ballester",
+    +     "materialesCargados": Array [
+    +       Object {
+    +         "cantidad": 10,
+    +         "materialId": "marco130",
+    +         "medida": "1.30m",
+    +         "nombre": "Marco de andamio",
+    +       },
+    +       Object {
+    +         "apodo": "Antideslizante",
+    +         "cantidad": 5,
+    +         "materialId": "tablon",
+    +         "medida": "2.00m",
+    +         "nombre": "Tablón metálico",
+    +       },
+    +       Object {
+    +         "cantidad": 10,
+    +         "materialId": "diagonal",
+    +         "medida": "2.00m",
+    +         "nombre": "Diagonal",
+    +       },
+    +     ],
+    +     "saldosEnObra": Object {},
+    +     "syncStatus": "PENDING",
+    +     "updatedAt": "2026-10-18T15:05:38.985Z",
+    +   },
+    +   Object {
+    +     "clienteNombre": "Ampliación Italia",
+    +     "clienteTelefono": "",
+    +     "direccion": "Italia 730",
+    +     "entregadoPor": Array [
+    +       "Fabián",
+    +     ],
+    +     "estadoProceso": "ENTREGADO",
+    +     "estadoSemaphoro": "VERDE",
+    +     "fechaEntrega": "2026-10-11",
+    +     "fechaRetiroEstimada": "2026-10-28",
+    +     "id": "obra_6",
+    +     "localidadBarrio": "Suárez",
+    +     "materialesCargados": Array [
+    +       Object {
+    +         "cantidad": 6,
+    +         "materialId": "marco130",
+    +         "medida": "1.30m",
+    +         "nombre": "Marco de andamio",
+    +       },
+    +       Object {
+    +         "apodo": "Antideslizante",
+    +         "cantidad": 3,
+    +         "materialId": "tablon",
+    +         "medida": "2.00m",
+    +         "nombre": "Tablón metálico",
+    +       },
+    +       Object {
+    +         "cantidad": 6,
+    +         "materialId": "diagonal",
+    +         "medida": "2.00m",
+    +         "nombre": "Diagonal",
+    +       },
+    +     ],
+    +     "saldosEnObra": Object {
+    +       "diagonal": 6,
+    +       "marco130": 6,
+    +       "tablon": 3,
+    +     },
+    +     "syncStatus": "PENDING",
+    +     "updatedAt": "2026-10-18T15:05:38.985Z",
+    +   },
+    + ]
+
+      21 |   await login(page, 'Persona local');
+      22 |   const state = () => page.evaluate(() => JSON.parse(localStorage.getItem('chema:demo:v1')!).state);
+    > 23 |   expect((await state()).obras).toEqual([]);
+         |                                 ^
+      24 |   expect((await state()).materiales).toEqual([]);
+      25 |   await expect(page.getByText('Local · En este celular', { exact: true })).toBeVisible();
+      26 |   await page.goto('/galpon');
+        at /workspace/repartos-chema/tests/ui/local.spec.ts:23:33
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/local-individual-vacío-sto-eb768-o-JSON-documentos-y-offline/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/local-individual-vacío-sto-eb768-o-JSON-documentos-y-offline/error-context.md
+
+  8) tests/ui/themes.spec.ts:64:9 › pantallas 320px dark sin recortes ──────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByLabel('Tu nombre', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByLabel('Tu nombre', { exact: true }) with timeout 5000ms
+      - waiting for getByLabel('Tu nombre', { exact: true })
+
+
+      85 |       }, fixture);
+      86 |       await page.goto('/');
+    > 87 |       await expect(page.getByLabel('Tu nombre', { exact: true })).toBeVisible();
+         |                                                                   ^
+      88 |       async function capture(name: string) {
+      89 |         expect(
+      90 |           await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+        at /workspace/repartos-chema/tests/ui/themes.spec.ts:87:67
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/themes-pantallas-320px-dark-sin-recortes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/themes-pantallas-320px-dark-sin-recortes/error-context.md
+
+  9) tests/ui/themes.spec.ts:64:9 › pantallas 360px light sin recortes ─────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByLabel('Tu nombre', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByLabel('Tu nombre', { exact: true }) with timeout 5000ms
+      - waiting for getByLabel('Tu nombre', { exact: true })
+
+
+      85 |       }, fixture);
+      86 |       await page.goto('/');
+    > 87 |       await expect(page.getByLabel('Tu nombre', { exact: true })).toBeVisible();
+         |                                                                   ^
+      88 |       async function capture(name: string) {
+      89 |         expect(
+      90 |           await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+        at /workspace/repartos-chema/tests/ui/themes.spec.ts:87:67
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/themes-pantallas-360px-light-sin-recortes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/themes-pantallas-360px-light-sin-recortes/error-context.md
+
+  10) tests/ui/themes.spec.ts:64:9 › pantallas 360px dark sin recortes ─────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByLabel('Tu nombre', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByLabel('Tu nombre', { exact: true }) with timeout 5000ms
+      - waiting for getByLabel('Tu nombre', { exact: true })
+
+
+      85 |       }, fixture);
+      86 |       await page.goto('/');
+    > 87 |       await expect(page.getByLabel('Tu nombre', { exact: true })).toBeVisible();
+         |                                                                   ^
+      88 |       async function capture(name: string) {
+      89 |         expect(
+      90 |           await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+        at /workspace/repartos-chema/tests/ui/themes.spec.ts:87:67
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/themes-pantallas-360px-dark-sin-recortes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/themes-pantallas-360px-dark-sin-recortes/error-context.md
+
+  11) tests/ui/themes.spec.ts:64:9 › pantallas 390px light sin recortes ────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByLabel('Tu nombre', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByLabel('Tu nombre', { exact: true }) with timeout 5000ms
+      - waiting for getByLabel('Tu nombre', { exact: true })
+
+
+      85 |       }, fixture);
+      86 |       await page.goto('/');
+    > 87 |       await expect(page.getByLabel('Tu nombre', { exact: true })).toBeVisible();
+         |                                                                   ^
+      88 |       async function capture(name: string) {
+      89 |         expect(
+      90 |           await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+        at /workspace/repartos-chema/tests/ui/themes.spec.ts:87:67
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/themes-pantallas-390px-light-sin-recortes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/themes-pantallas-390px-light-sin-recortes/error-context.md
+
+  12) tests/ui/themes.spec.ts:64:9 › pantallas 390px dark sin recortes ─────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByLabel('Tu nombre', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByLabel('Tu nombre', { exact: true }) with timeout 5000ms
+      - waiting for getByLabel('Tu nombre', { exact: true })
+
+
+      85 |       }, fixture);
+      86 |       await page.goto('/');
+    > 87 |       await expect(page.getByLabel('Tu nombre', { exact: true })).toBeVisible();
+         |                                                                   ^
+      88 |       async function capture(name: string) {
+      89 |         expect(
+      90 |           await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+        at /workspace/repartos-chema/tests/ui/themes.spec.ts:87:67
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/themes-pantallas-390px-dark-sin-recortes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/themes-pantallas-390px-dark-sin-recortes/error-context.md
+
+  13) tests/ui/themes.spec.ts:64:9 › pantallas 768px light sin recortes ────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByLabel('Tu nombre', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByLabel('Tu nombre', { exact: true }) with timeout 5000ms
+      - waiting for getByLabel('Tu nombre', { exact: true })
+
+
+      85 |       }, fixture);
+      86 |       await page.goto('/');
+    > 87 |       await expect(page.getByLabel('Tu nombre', { exact: true })).toBeVisible();
+         |                                                                   ^
+      88 |       async function capture(name: string) {
+      89 |         expect(
+      90 |           await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+        at /workspace/repartos-chema/tests/ui/themes.spec.ts:87:67
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/themes-pantallas-768px-light-sin-recortes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/themes-pantallas-768px-light-sin-recortes/error-context.md
+
+  14) tests/ui/themes.spec.ts:64:9 › pantallas 768px dark sin recortes ─────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByLabel('Tu nombre', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByLabel('Tu nombre', { exact: true }) with timeout 5000ms
+      - waiting for getByLabel('Tu nombre', { exact: true })
+
+
+      85 |       }, fixture);
+      86 |       await page.goto('/');
+    > 87 |       await expect(page.getByLabel('Tu nombre', { exact: true })).toBeVisible();
+         |                                                                   ^
+      88 |       async function capture(name: string) {
+      89 |         expect(
+      90 |           await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+        at /workspace/repartos-chema/tests/ui/themes.spec.ts:87:67
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/themes-pantallas-768px-dark-sin-recortes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/themes-pantallas-768px-dark-sin-recortes/error-context.md
+
+  15) tests/ui/themes.spec.ts:64:9 › pantallas 1440px light sin recortes ───────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByLabel('Tu nombre', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByLabel('Tu nombre', { exact: true }) with timeout 5000ms
+      - waiting for getByLabel('Tu nombre', { exact: true })
+
+
+      85 |       }, fixture);
+      86 |       await page.goto('/');
+    > 87 |       await expect(page.getByLabel('Tu nombre', { exact: true })).toBeVisible();
+         |                                                                   ^
+      88 |       async function capture(name: string) {
+      89 |         expect(
+      90 |           await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+        at /workspace/repartos-chema/tests/ui/themes.spec.ts:87:67
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/themes-pantallas-1440px-light-sin-recortes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/themes-pantallas-1440px-light-sin-recortes/error-context.md
+
+  16) tests/ui/themes.spec.ts:64:9 › pantallas 1440px dark sin recortes ────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByLabel('Tu nombre', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByLabel('Tu nombre', { exact: true }) with timeout 5000ms
+      - waiting for getByLabel('Tu nombre', { exact: true })
+
+
+      85 |       }, fixture);
+      86 |       await page.goto('/');
+    > 87 |       await expect(page.getByLabel('Tu nombre', { exact: true })).toBeVisible();
+         |                                                                   ^
+      88 |       async function capture(name: string) {
+      89 |         expect(
+      90 |           await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+        at /workspace/repartos-chema/tests/ui/themes.spec.ts:87:67
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/themes-pantallas-1440px-dark-sin-recortes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/themes-pantallas-1440px-dark-sin-recortes/error-context.md
+
+  17) tests/ui/trip.spec.ts:3:5 › viaje vuelve al depósito fijo y recupera el cambio de Ajustes sin alterar inventario
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.fill: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Tu nombre', { exact: true })
+
+
+       at helpers.ts:5
+
+      3 |   await page.addInitScript(() => localStorage.setItem('chema:welcome:v2', 'done'));
+      4 |   await page.goto('/');
+    > 5 |   await page.getByLabel('Tu nombre', { exact: true }).fill(name);
+        |                                                       ^
+      6 |   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+      7 |   await expect(page.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible();
+      8 | }
+        at login (/workspace/repartos-chema/tests/ui/helpers.ts:5:55)
+        at loginSynthetic (/workspace/repartos-chema/tests/ui/helpers.ts:27:3)
+        at /workspace/repartos-chema/tests/ui/trip.spec.ts:6:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/trip-viaje-vuelve-al-depós-c747e-stes-sin-alterar-inventario/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/trip-viaje-vuelve-al-depós-c747e-stes-sin-alterar-inventario/error-context.md
+
+  17 failed
+    tests/ui/cobalto.spec.ts:201:9 › Cobalto 320dp light: contraste renderizado, bordes y texto 200%
+    tests/ui/cobalto.spec.ts:201:9 › Cobalto 320dp dark: contraste renderizado, bordes y texto 200%
+    tests/ui/cobalto.spec.ts:201:9 › Cobalto 360dp light: contraste renderizado, bordes y texto 200%
+    tests/ui/cobalto.spec.ts:201:9 › Cobalto 360dp dark: contraste renderizado, bordes y texto 200%
+    tests/ui/cobalto.spec.ts:201:9 › Cobalto 390dp dark: contraste renderizado, bordes y texto 200%
+    tests/ui/cobalto.spec.ts:201:9 › Cobalto 412dp light: contraste renderizado, bordes y texto 200%
+    tests/ui/local.spec.ts:8:5 › individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y offline
+    tests/ui/themes.spec.ts:64:9 › pantallas 320px dark sin recortes ───────────────────────────────
+    tests/ui/themes.spec.ts:64:9 › pantallas 360px light sin recortes ──────────────────────────────
+    tests/ui/themes.spec.ts:64:9 › pantallas 360px dark sin recortes ───────────────────────────────
+    tests/ui/themes.spec.ts:64:9 › pantallas 390px light sin recortes ──────────────────────────────
+    tests/ui/themes.spec.ts:64:9 › pantallas 390px dark sin recortes ───────────────────────────────
+    tests/ui/themes.spec.ts:64:9 › pantallas 768px light sin recortes ──────────────────────────────
+    tests/ui/themes.spec.ts:64:9 › pantallas 768px dark sin recortes ───────────────────────────────
+    tests/ui/themes.spec.ts:64:9 › pantallas 1440px light sin recortes ─────────────────────────────
+    tests/ui/themes.spec.ts:64:9 › pantallas 1440px dark sin recortes ──────────────────────────────
+    tests/ui/trip.spec.ts:3:5 › viaje vuelve al depósito fijo y recupera el cambio de Ajustes sin alterar inventario
+  25 passed (7.1m)

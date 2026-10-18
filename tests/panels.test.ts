@@ -171,3 +171,46 @@ it('una promesa pendiente ejecuta una sola operación ante dos pulsaciones inmed
   expect(host(view, 'Guardar').props.disabled).toBe(false);
   await act(async () => view.unmount());
 });
+it('un guardado iniciado por el contenido bloquea Atrás hasta que termina', async () => {
+  function SavingContent() {
+    const panel = usePanelChanges();
+    return React.createElement(
+      React.Fragment,
+      null,
+      React.createElement(Button, {
+        label: 'Empezar guardado',
+        onPress: () => panel.setBusy(true),
+      }),
+      React.createElement(Button, {
+        label: 'Terminar guardado',
+        onPress: () => panel.setBusy(false),
+      }),
+    );
+  }
+  let view!: ReturnType<typeof create>;
+  await act(async () => {
+    view = create(
+      React.createElement(Sheet, {
+        visible: true,
+        title: 'Guardar',
+        onClose: mocks.close,
+        children: React.createElement(SavingContent),
+      }),
+    );
+  });
+  await act(async () => {
+    await host(view, 'Empezar guardado').props.onPress();
+  });
+  await act(async () => {
+    view.root.findByType('Modal' as never).props.onRequestClose();
+  });
+  expect(mocks.close).not.toHaveBeenCalled();
+  await act(async () => {
+    await host(view, 'Terminar guardado').props.onPress();
+  });
+  await act(async () => {
+    view.root.findByType('Modal' as never).props.onRequestClose();
+  });
+  expect(mocks.close).toHaveBeenCalledOnce();
+  await act(async () => view.unmount());
+});

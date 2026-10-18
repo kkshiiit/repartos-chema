@@ -34,12 +34,15 @@ export function TeamSettings() {
       setBusy(false);
     }
   }
-  if(LOCAL_ONLY) return <View style={s.card}>
-    <Text style={s.h2}>Uso individual</Text>
-    <Text style={s.body}>{membership?.nombre}</Text>
-    <Notice text="El nombre identifica tus movimientos en este celular. No es una cuenta en la nube ni comparte datos con otras personas." />
-    <Button label="Cambiar nombre" variant="secondary" onPress={()=>void logout()} />
-  </View>;
+  if (LOCAL_ONLY)
+    return (
+      <View style={s.card}>
+        <Text style={s.h2}>Uso individual</Text>
+        <Text style={s.body}>{membership?.nombre}</Text>
+        <Notice text="El nombre identifica tus movimientos en este celular. No es una cuenta en la nube ni comparte datos con otras personas." />
+        <Button label="Cambiar nombre" variant="secondary" onPress={() => void logout()} />
+      </View>
+    );
   return (
     <View style={s.card}>
       <Text style={s.h2}>Equipo Chema</Text>

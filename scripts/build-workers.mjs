@@ -18,7 +18,7 @@ const mapping = {
   appId: 'APP_ID',
 };
 const config = Object.fromEntries(
-  Object.entries(mapping).map(([k, v]) => [k, env[`EXPO_PUBLIC_FIREBASE_${v}`] || '']),
+  Object.entries(mapping).map(([k, v]) => [k, env.EXPO_PUBLIC_LOCAL_ONLY === 'true' ? '' : env[`EXPO_PUBLIC_FIREBASE_${v}`] || '']),
 );
 await mkdir('dist', { recursive: true });
 await build({

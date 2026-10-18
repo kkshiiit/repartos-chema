@@ -8,7 +8,7 @@ const env = {
 };
 for (const key of Object.keys(env)) if (key.startsWith('EXPO_PUBLIC_FIREBASE_')) delete env[key];
 for (const [command, args] of [
-  ['npx', ['--no-install', 'expo', 'export', '--platform', 'web']],
+  ['npx', ['--no-install', 'expo', 'export', '--platform', 'web', '--clear']],
   ['node', ['scripts/build-workers.mjs']],
 ]) {
   const result = spawnSync(command, args, {

@@ -164,10 +164,10 @@ export function Button({
       style={{
         flex: layout.flex,
         flexGrow: layout.flexGrow,
-        flexShrink: layout.flexShrink,
+        flexShrink: layout.flexShrink ?? 1,
         width: layout.width,
-        minWidth: layout.minWidth,
-        maxWidth: layout.maxWidth,
+        minWidth: layout.minWidth ?? 0,
+        maxWidth: layout.maxWidth ?? '100%',
         alignSelf: layout.alignSelf,
         transform: [{ scale }],
       }}
@@ -300,6 +300,8 @@ export function Chip({
       onPress={onPress}
       style={{
         minHeight: onPress ? 48 : 28,
+        maxWidth: '100%',
+        flexShrink: 1,
         paddingHorizontal: 13,
         paddingVertical: onPress ? 10 : 5,
         borderRadius: radius.input,
@@ -315,6 +317,7 @@ export function Chip({
       <Text
         style={{
           color: selected ? color : C.muted,
+          flexShrink: 1,
           fontSize: 14,
           lineHeight: 20,
           fontWeight: '600',
@@ -330,7 +333,7 @@ type PanelChanges = {
   markDirty: () => void;
   resetDirty: () => void;
   requestClose: () => void;
-  setBusy: (busy: boolean) => void;
+  setBusy: (busy: boolean, owner?: string) => void;
 };
 const noop = () => {};
 const visiblePanels: string[] = [];
@@ -343,7 +346,13 @@ const PanelChangesContext = createContext<PanelChanges>({
 });
 /** Optional outside a panel; composite inputs may mark their enclosing form dirty. */
 export function usePanelChanges() {
-  return useContext(PanelChangesContext);
+  const panel = useContext(PanelChangesContext);
+  const owner = useId();
+  const setBusy = useCallback(
+    (value: boolean) => panel.setBusy(value, owner),
+    [panel.setBusy, owner],
+  );
+  return { ...panel, setBusy };
 }
 
 export function Sheet({
@@ -352,6 +361,7 @@ export function Sheet({
   onClose,
   children,
   protectChanges = false,
+  hasChanges = false,
   busy: externalBusy = false,
 }: {
   visible: boolean;
@@ -359,6 +369,7 @@ export function Sheet({
   onClose: () => void;
   children: React.ReactNode;
   protectChanges?: boolean;
+  hasChanges?: boolean;
   busy?: boolean;
 }) {
   const { C, s } = useUI();
@@ -367,6 +378,12 @@ export function Sheet({
   const insets = useSafeAreaInsets();
   const { motionEnabled } = useTheme();
   const [childBusy, setChildBusy] = useState(false);
+  const busyOwners = useRef(new Set<string>());
+  const updateChildBusy = useCallback((value: boolean, owner = 'direct') => {
+    if (value) busyOwners.current.add(owner);
+    else busyOwners.current.delete(owner);
+    setChildBusy(busyOwners.current.size > 0);
+  }, []);
   const busy = externalBusy || childBusy;
   const [dirty, setDirty] = useState(false);
   const dirtyRef = useRef(false);
@@ -389,13 +406,13 @@ export function Sheet({
       setConfirmDiscard(false);
       return;
     }
-    if (protectChanges && dirtyRef.current) {
+    if (protectChanges && (dirtyRef.current || hasChanges)) {
       setConfirmDiscard(true);
       return;
     }
     closed.current = true;
     onClose();
-  }, [busy, confirmDiscard, onClose, protectChanges, visible]);
+  }, [busy, confirmDiscard, onClose, protectChanges, hasChanges, visible]);
   const pan = useMemo(
     () =>
       // PanResponder stores event callbacks; it does not invoke requestClose during render.
@@ -456,8 +473,8 @@ export function Sheet({
     return () => animation.stop();
   }, [visible, motionEnabled, transition]);
   const panel = useMemo(
-    () => ({ dirty, markDirty, resetDirty, requestClose, setBusy: setChildBusy }),
-    [dirty, markDirty, resetDirty, requestClose],
+    () => ({ dirty, markDirty, resetDirty, requestClose, setBusy: updateChildBusy }),
+    [dirty, markDirty, resetDirty, requestClose, updateChildBusy],
   );
   // Remove the native modal immediately on dismissal: even a transparent native
   // Modal intercepts the underlying screen while an exit animation is running.

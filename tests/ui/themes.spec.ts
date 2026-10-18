@@ -92,7 +92,7 @@ for (const width of [320, 360, 390, 768, 1440])
         ).toBe(true);
         if (width === 390 || width === 1440)
           await page.screenshot({
-            path: `artifacts/capturas/${width}-${theme}-${name}.png`,
+            path: `artifacts/capturas/cobalto-rutas-${width}-${theme}-${name}.png`,
             fullPage: true,
           });
       }
