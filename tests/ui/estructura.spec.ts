@@ -181,19 +181,37 @@ for (const theme of ['light', 'dark'])
       ['/mapa', 'viaje', 445, 812],
       ['/historial', 'historial', 446, 795],
       ['/obra/obra_2', 'detalle', 413, 934],
-      ['/obra/nueva', 'nuevo', 424, 950],
-      ['/configuracion', 'ajustes', 419, 929],
-      ['/combos', 'combos', 420, 929],
-      ['/exportar', 'documentos', 419, 897],
+      ['/obra/nueva', 'nuevo', 424, 934],
+      ['/obra/nueva', 'carga', 413, 902],
+      ['/obra/obra_2', 'retiro', 424, 902],
+      ['/configuracion', 'ajustes', 419, 994],
+      ['/combos', 'combos', 420, 994],
+      ['/exportar', 'documentos', 419, 836],
     ] as const;
     for (const [route, name, width, height] of frames) {
       await page.setViewportSize({ width, height });
       await page.goto(route);
       await expect(page.getByRole('heading').first()).toBeVisible();
-      if (name === 'nuevo') {
+      if (name === 'nuevo' || name === 'carga') {
         await page.getByLabel('Nombre del cliente', { exact: true }).fill('Obra Suárez');
         await page.getByLabel('Barrio / localidad', { exact: true }).fill('José León Suárez');
         await page.getByLabel('Retiro · AAAA-MM-DD', { exact: true }).fill('21/10/2026');
+      }
+      if (name === 'carga') {
+        await page.getByLabel('Dirección', { exact: true }).fill('Dirección de prueba 3');
+        await page.getByRole('button', { name: 'Continuar a carga', exact: true }).click();
+        await page.getByRole('button', { name: 'Usar combo', exact: true }).click();
+        await page.getByRole('button', { name: 'Cargar combo', exact: true }).click();
+        await page.getByRole('button', { name: 'Combo Torre 1.30m', exact: true }).click();
+        await page.getByRole('button', { name: 'Revisar combo', exact: true }).click();
+        const decrease = page.getByRole('button', { name: /^Reducir / });
+        await decrease.nth(0).click();
+        await decrease.nth(0).click();
+        await decrease.nth(1).click();
+      }
+      if (name === 'retiro') {
+        await page.getByRole('button', { name: 'Registrar retiro', exact: true }).click();
+        await page.getByRole('button', { name: 'Fabián', exact: true }).click();
       }
       await page.screenshot({ path: `${output}/referencia-app-${name}-${theme}.png` });
     }
