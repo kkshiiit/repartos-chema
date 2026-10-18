@@ -1,12 +1,32 @@
-# Punto activo — edición individual cobalto 1.4.0 (18/10/2026)
+# Cierre de edición individual cobalto 1.4.0 — 18/10/2026
 
-Último commit funcional publicado: **679807b**. Fuente previa72e6971; encargo base1e5dcc9. Check218/218, typecheck/lint/functions build correctos; npmci limpio1564paquetes. Web individual limpia compilada, LOCAL_ONLY=true verificado en bundle. Playwrightfinal44/44 en3.7min: instalación vacía, operaciones/JSON/fotos/documentos, cierres y temas. Capturas nuevas271, matriz80 superficies con0violaciones/0incomplete. No pruebas Android físicas/fontScale/TalkBack.
+## Estado guardado
 
-APK1.4.0/code7: Gradle completo correcto10m36s, publicado descargas7c9a282 y recuperado desdeGitHub independiente con CRC/hash coincidentes. SHA25679ad05905267460596270333316403796465e5bc9e874d478b04ca8710ca6bb1;56.039.655bytes. Ver artifacts/validacion/android-1.4.0-apk.json y cobalto-recuperacion-github-apk.json. Primer prebuild falló por nombres WAV numéricos, corregidos a chema_ sin cambiar bytes; script conserva/restaura firma privada tras regenerar android/. Certificado esperado fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c. Clave fueraGit /workspace/respaldos/firma-interna/chema-restaurada-1.3.keystore.
+Implementación, verificación web y APK estructuralmente verificado/publicado completas dentro del acceso disponible. **Pendiente validación física Android por el usuario**, no bloqueada por facturación/credenciales. No reanudar rediseño ni recompilar por un cambio documental.
 
-Próximo paso exacto: empaquetar fuentes de este commit con scripts/package.py y web con package-web.py; publicar en descargas/respaldos/v1.4.0-local preservando anteriores. Recuperar fuente ZIP desdeGitHub y compararSHA/restauración. Registrar commit/archivos finales en checkpoint. APK ya está publicado y verificado; no recompilar si solo cambian docs/evidencias. Validación física Android sigue pendiente, sin bloqueo externo para descargar el APK.
+Código funcional APK: **679807b3e135ba791cf7fd78aff5087abde57bc9**. Último main publicado al escribir este punto:876bf4a; el siguiente commit contiene este cierre documental(consultar git log-1). Bloques previos1542ce4/80d4649/d35a01c/d7e9187/72e6971/8cc746a. Paquete base1e5dcc9 conservado; main y descargas del repositorio privado kkshiiit/repartos-chema.
 
-Ver docs/REDISENO_PAPEL_COBALTO.md, docs/AVISOS_LOCALES.md y docs/ENTREGA_COBALTO_1_4.md. Dominio/SQLite/migración/validaciónJSON intactos. Errores resueltos:dobleEscape web, overflow320/texto200, cacheMetro LOCAL_ONLY, recursosWAV inválidos. Intentos1–3 registrados; intento2 invalidado por regenerardist mientrascorría, solo final44acredita entrega.
+APK **1.4.0/code7**, com.grupochema.repartos, ARM64/Android7+,56.039.655bytes. Gradle completo10m36s/658tareas. Certificado idéntico a1.3:fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c. Firma v2/CRC/minSDK24/no debuggable/SQLite/tresWAV originales por SHA comprobados. SHA256 **79ad05905267460596270333316403796465e5bc9e874d478b04ca8710ca6bb1**.
+
+Publicado descargas7c9a282 en android/v1.4.0-local.1; recuperado desde un clon independiente y hash/CRC coincidentes. Fuente876bf4a con manifiesto806archivos, web y base publicadas descargasb38e226 y recuperadas/verificadas. Se agrega ZIP de este cierre documental para conservar este punto también dentro de la copia descargable. Las versiones anteriores permanecen intactas.
+
+## Pruebas y límites
+
+Check218/218(27archivos), typecheck/lint/build Functions correctos. npmci completo en carpeta nueva1564paquetes, decoder local reparado conservado. Web limpia con LOCAL_ONLY=true y DATA_MODE=demo; inicio vacío sin credenciales ni servicios pagos. UI **44/44** en3.7min,271capturas nuevas,80superficies de contraste sin violaciones/incomplete,320/360/390/412ytablet/escritorio; texto200 simuladoDOM. Temas/cierres/doble toque/datos/JSON/fotos/documentos/operaciones cubiertos con fixtures/adaptadores. Integraciones Firebase excluidas y no ejecutadas, sin despliegues.
+
+No Android físico/emulador conectado: no afirmar SQLite/migración, cámara, compartir, permisos, avisos, TalkBack, teclado/fontScale o rendimiento físico verificados. Sonidos/recordatorios locales opcionales, sin push/cloud y con límitesOS. Firma interna de plantilla, no publicación comercial.
+
+## Archivos y decisiones
+
+Ver docs/ENTREGA_COBALTO_1_4.md, GALERIA_COBALTO.md, REDISENO_PAPEL_COBALTO.md, AVISOS_LOCALES.md. Papel/tinta/cobalto reemplaza Aurora; logo original y Word/Excel institucionales intactos. Dominio/SQLite/migración/validaciónJSON no se reescribieron. Tokens/primitivas/rutas/wizard/paneles/feedback rediseñados. Confirmaciones solo tras persistencia; errores inline. Primer prebuild rechazó nombresWAV numéricos: alias chema_ sin cambiar bytes. AAPT compacta rutas de recursos: verificador resuelve tabla y compara hashes. Script nativo conserva clave privada antes/después prebuild.
+
+Clave existente fueraGit: /workspace/respaldos/firma-interna/chema-restaurada-1.3.keystore. No publicar ni incluir en ZIP. Si falta, bloquear actualización con otro certificado. Backups/APK locales /workspace/entregas/cobalto-1.4.0; repositorio descargas /workspace/entregas/apk-github-20261017; recuperación independiente /workspace/recuperacion-github-140.
+
+## Próxima acción exacta
+
+Entregar enlace del APK e instruccionesAndroid del informe. Cuando el usuario pruebe: recoger resultados/error concreto antes de modificar código; guardar JSON externo y actualizar encima sin desinstalar/borrar almacenamiento. Si retoma desarrollo, comprobar workspace/Git/remoto y leer este checkpoint; conservar cambios posteriores. Si solo pide descargar, usar APK ya publicado, no repetir compilación/auditoría.
+
+Comandos de verificación: npmci; npmruncheck; npmrunbuild:web; npmrunpreview; CHEMA_TEST_LOCAL=true npmrun test:ui -- --workers=2 (usar espacios normales entre npm/run al copiar). Build nativo requiere JDK21/SDK36/NDK27.1/CMake3.22.1 y CHEMA_ANDROID_KEYSTORE=claveexistente, sin servicios pagos. Ver docs/ANDROID.md para comandos exactos.
 
 ---
 

@@ -51,7 +51,7 @@ Versión1.4.0/code7, paquete com.grupochema.repartos. Gradle completo correcto e
 
 [Descargar APK](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.4.0-local.1/repartos-chema-local-1.4.0-arm64.apk). Publicado en descargas7c9a282 y recuperado desde un clon independiente. SHA256 **79ad05905267460596270333316403796465e5bc9e874d478b04ca8710ca6bb1**, coincide con el compilado local. Informe en artifacts/validacion/android-1.4.0-apk.json y cobalto-recuperacion-github-apk.json. Primera compilación detenida antes de Gradle por nombres WAV, corregida sin cambiar sonidos. Las versiones previas permanecen en descargas.
 
-[FuenteZIP, manifiestos y web reproducible](https://github.com/kkshiiit/repartos-chema/tree/descargas/respaldos/v1.4.0-local). No incluyen firma privada ni credenciales. Verificación de fuente publicada se registra en el checkpoint al cerrar la entrega.
+[FuenteZIP, manifiestos y web reproducible](https://github.com/kkshiiit/repartos-chema/tree/descargas/respaldos/v1.4.0-local). No incluyen firma privada ni credenciales. Fuente876bf4a, web y base recuperadas desdeGitHub(b38e226); CRC/hash correctos y806archivos de fuente coinciden con su manifiesto. Informe cobalto-recuperacion-github-fuentes.json. Se añade una copia de cierre posterior con este checkpoint final, sin cambiar el código del APK.
 
 Sin dispositivo/emulador ADB conectado. Pendiente prueba física de actualización, SQLite/migración real, cámara/galería, teclado, carpeta/compartir, permisos y notificaciones. No hay métricas físicas FPS/RAM/batería. La firma sigue siendo interna de plantilla, no identidad de publicación comercial.
 
@@ -100,3 +100,13 @@ No hay animaciones de fondo, desenfoque por fila ni fuentes de red. Listas de al
 | Backend/multiusuario/publicación comercial | Fuera del alcance individual; no activados |
 
 Las integraciones *.integration.test.ts están excluidas explícitamente de la suite local y no se ejecutaron; no se presentan como aprobadas. No hubo despliegues ni facturación. GitHub aceptó el APK(53.44MiB) con aviso de tamaño recomendado50MiB; no se activó LFS ni servicio pago.
+
+## Entregables comprobados
+
+- APK único: descargas/android/v1.4.0-local.1/repartos-chema-local-1.4.0-arm64.apk, SHA79ad05905267460596270333316403796465e5bc9e874d478b04ca8710ca6bb1,56.039.655bytes.
+- Fuente876bf4a: descargas/respaldos/v1.4.0-local/repartos-chema-876bf4a.zip, SHA24fd0dc715394949ea4ab19d576cb18c15fe62236ef34fed997509b3cc6d5ee5,806archivos restaurados/verificados. La carpeta también conserva la copia de cierre con documentación final.
+- Web: repartos-chema-web-1.4.0.zip, SHA3471e9a4f6124b09451699a4212c34683d5aa5939aade29e47bf44dd2ed47a88; requiere Node/servidor local, no URL pública.
+- Base previa al rediseño: base-1e5dcc9-antes-cobalto.zip, SHA05ea842e7f3336cca139fc652830f07a7da454b1532bce1708c27105ac21a633.
+- Evidencias:271capturas actuales, logscheck/web/44UI/Gradle, reportes de contraste/firma/metadatos/recuperación en Gitmain. Las7versionesAPK históricas siguen en el árbol de descargas.
+
+El cierre no necesita claves Firebase ni permisos de pago. Lo pendiente requiere tu Android: actualización con datos, cámara/galería, GPS externo, guardado/compartir real, aviso local en silencio/DND, TalkBack y escala/teclado nativos. No se declara validado lo que depende de ese dispositivo.
