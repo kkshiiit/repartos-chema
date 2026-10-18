@@ -1,3 +1,9 @@
+# Punto activo — rediseño papel/cobalto (18/10/2026)
+
+Encargo completo autorizado mediante ZIP adjunto. Base main 1e5dcc9. Extracción y manifiesto verificados; respaldo base inmutable fuera del proyecto. Ver docs/REDISENO_PAPEL_COBALTO.md para matriz de cobertura y procedencia. Bloques en curso: primitivas, formularios, avisos locales y rutas. Cambios visuales separados del dominio/SQLite, que permanecen intactos. Dependencias Expo audio/notificaciones compatibles instaladas para nuevo bloque local opcional; todavía sin build/validación final. Próximo paso: completar rutas, integrar preferencias/avisos, ejecutar check y recorridos nuevos; respaldar antes de Gradle y publicar versión superior a 1.3/code6 con el mismo certificado. No declarar APK nuevo ni pruebas físicas hasta verificarlos.
+
+---
+
 > **Preparación visual posterior:** se instalaron únicamente las7skills solicitadas en `.agents/skills/`, sin cambiar la app ni recompilar. Procedencia, licencias, verificaciones y adaptación de un enlace en [HERRAMIENTAS_UI.md](HERRAMIENTAS_UI.md). **Esperar referencias y especificación visual antes de implementar.** Este bloque no autoriza migraciones, bibliotecas o servicios. El estado de la entrega1.3.0 inferior se conserva como antecedente.
 
 # Continuidad Repartos Chema — 17/10/2026
