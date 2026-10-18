@@ -2,18 +2,19 @@ import { displayDate } from '../utils/dateInput';
 import { userError } from '../services/errors';
 import { useFeedback } from '../context/FeedbackContext';
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, type TextInput } from 'react-native';
+import { View, Text, Pressable, type TextInput } from 'react-native';
 import { router, useNavigation } from 'expo-router';
 import { usePreventRemove } from 'expo-router/react-navigation';
 import type { MaterialCargado, ObraCard } from '../types';
 import { makeId, useInventory } from '../context/InventoryContext';
 import { useAuth } from '../context/AuthContext';
 import { businessDate, required, validDate, quantity, measureKey } from '../domain/rules';
-import { Button, Chip, Field, Notice, Screen, Sheet, useUI } from './ui';
+import { Button, Field, Notice, Screen, Sheet, useUI } from './ui';
 import { LoadDraft } from './LoadEditor';
+import { Disclosure } from './Editorial';
 
 export function ObraForm({ obra }: { obra?: ObraCard }) {
-  const { s } = useUI();
+  const { C, s } = useUI();
   const { notifySuccess, notifyError } = useFeedback();
   const { state, dispatch } = useInventory();
   const { user } = useAuth();
@@ -137,61 +138,22 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
     </View>
   );
   return (
-    <Screen title={obra ? 'Editar alquiler' : 'Nuevo alquiler'} back>
-      <View style={{ maxWidth: 700, width: '100%', alignSelf: 'center', gap: 20 }}>
-        {user?.role !== 'ADMIN' ? (
-          <Notice text="Solo administración puede gestionar obras." tone="error" />
-        ) : (
-          <>
-            <View style={s.wrap}>
-              {['Cliente', 'Carga', 'Revisar'].map((label, index) => (
-                <Chip
-                  key={label}
-                  label={`${index + 1} · ${label}`}
-                  selected={step === index}
-                  onPress={() => {
-                    if (busy) return;
-                    if (index < step || (validateClient() && (index < 2 || validateLoad())))
-                      setStep(index);
-                  }}
-                />
-              ))}
-            </View>
-            <Text style={s.muted}>Paso {step + 1} de 3</Text>
+    <Screen
+      title={
+        step === 1
+          ? 'Carga'
+          : step === 2
+            ? 'Revisar alquiler'
+            : obra
+              ? 'Editar alquiler'
+              : 'Nuevo alquiler'
+      }
+      back
+      footer={
+        user?.role === 'ADMIN' ? (
+          <View style={{ maxWidth: 700, width: '100%', alignSelf: 'center', gap: 8 }}>
             {step === 0 ? (
               <>
-                <Text accessibilityRole="header" style={s.h2}>
-                  Cliente y ubicación
-                </Text>
-                {field('nombre', 'Nombre del cliente', nombre, setNombre, {
-                  placeholder: 'Cliente o nombre del alquiler',
-                })}
-                {field('tel', 'Teléfono con país', tel, setTel, {
-                  placeholder: 'Opcional · incluye código de país',
-                  keyboardType: 'phone-pad',
-                })}
-                {field('direccion', 'Dirección', direccion, setDireccion, {
-                  placeholder: 'Calle y número',
-                })}
-                {field('zona', 'Barrio / localidad', zona, setZona)}
-                <View style={s.divider} />
-                <Text accessibilityRole="header" style={s.h2}>
-                  Planificación
-                </Text>
-                {field('entrega', 'Entrega · AAAA-MM-DD', entrega, setEntrega, { maxLength: 10 })}
-                {field('retiro', 'Retiro · AAAA-MM-DD', retiro, setRetiro, { maxLength: 10 })}
-                <Field
-                  label="Observaciones"
-                  value={observaciones}
-                  onChangeText={setObservaciones}
-                  multiline
-                  maxLength={1000}
-                />
-                {obra?.coordenadas ? (
-                  <Text style={s.muted}>
-                    Ubicación guardada: {obra.coordenadas.lat}, {obra.coordenadas.lng}
-                  </Text>
-                ) : null}
                 <Button
                   label="Continuar a carga"
                   onPress={() => {
@@ -200,73 +162,33 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
                 />
               </>
             ) : step === 1 ? (
-              <>
-                <Text style={s.h2}>{nombre}</Text>
-                <Text style={s.muted}>{zona}</Text>
-                {editableLoad ? (
-                  <LoadDraft items={items} onChange={setItems} />
-                ) : (
-                  <>
-                    <Notice text="Este alquiler ya fue entregado o cerrado. La carga histórica se conserva." />
-                    {items.map((i) => (
-                      <Text key={i.materialId} style={s.body}>
-                        {i.cantidad} × {i.nombre} · {i.medida || 'Sin medida'}
-                        {i.apodo ? ` · ${i.apodo}` : ''}
-                      </Text>
-                    ))}
-                  </>
-                )}
-                {error ? <Notice text={error} tone="error" /> : null}
-                <Button label="Volver a cliente" variant="secondary" onPress={() => setStep(0)} />
+              <View style={[s.row, { flexWrap: 'wrap' }]}>
+                <Button
+                  label="Volver a cliente"
+                  variant="secondary"
+                  style={{ flex: 1, minWidth: 130 }}
+                  onPress={() => setStep(0)}
+                />
                 <Button
                   label="Revisar alquiler"
+                  style={{ flex: 1, minWidth: 150 }}
                   onPress={() => {
                     if (validateLoad()) setStep(2);
                   }}
                 />
-              </>
+              </View>
             ) : (
-              <>
-                <Text accessibilityRole="header" style={s.h2}>
-                  Revisar alquiler
-                </Text>
-                <Text style={s.h2}>{nombre}</Text>
-                <Text style={s.body}>
-                  {direccion} · {zona}
-                </Text>
-                <Text style={s.body}>Teléfono: {tel || 'Sin teléfono'}</Text>
-                <Text style={s.body}>
-                  Entrega: {displayDate(entrega)} · Retiro: {displayDate(retiro)}
-                </Text>
-                <Text style={s.body}>Observaciones: {observaciones || 'Sin observaciones'}</Text>
-                {obra?.coordenadas ? (
-                  <Text style={s.body}>
-                    Ubicación: {obra.coordenadas.lat}, {obra.coordenadas.lng}
-                  </Text>
-                ) : null}
-                <View style={s.divider} />
-                <Text style={s.h2}>Materiales</Text>
-                {items
-                  .filter((i) => i.cantidad > 0)
-                  .map((i) => (
-                    <Text key={i.materialId} style={s.body}>
-                      {i.cantidad} × {i.nombre} · {i.medida || 'Sin medida'}
-                      {i.apodo ? ` · ${i.apodo}` : ''}
-                    </Text>
-                  ))}
-                {!items.some((i) => i.cantidad > 0) ? (
-                  <Text style={s.muted}>Sin carga preparada.</Text>
-                ) : null}
-                <Notice text="Guardar conserva los datos y la carga preparada. No confirma la entrega ni mueve existencias." />
-                {error ? <Notice text={error} tone="error" /> : null}
+              <View style={[s.row, { flexWrap: 'wrap' }]}>
                 <Button
                   label="Volver a carga"
                   variant="secondary"
+                  style={{ flex: 1, minWidth: 130 }}
                   disabled={busy}
                   onPress={() => setStep(1)}
                 />
                 <Button
                   label="Guardar alquiler"
+                  style={{ flex: 1, minWidth: 150 }}
                   loading={busy}
                   onPress={async () => {
                     if (saving.current) return;
@@ -317,6 +239,174 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
                     }
                   }}
                 />
+              </View>
+            )}
+          </View>
+        ) : undefined
+      }
+    >
+      <View style={{ maxWidth: 700, width: '100%', alignSelf: 'center', gap: 20 }}>
+        {user?.role !== 'ADMIN' ? (
+          <Notice text="Solo administración puede gestionar obras." tone="error" />
+        ) : (
+          <>
+            <View
+              accessibilityLabel={`Paso ${step + 1} de 3`}
+              style={[s.row, { gap: 8, flexWrap: 'wrap' }]}
+            >
+              {['Cliente', 'Carga', 'Revisar'].map((label, index) => (
+                <Pressable
+                  key={label}
+                  accessibilityRole="button"
+                  accessibilityLabel={`${index + 1} · ${label}`}
+                  accessibilityState={{ selected: step === index, disabled: busy }}
+                  disabled={busy}
+                  style={[s.row, { flex: 1, gap: 6, minHeight: 48, minWidth: 88 }]}
+                  onPress={() => {
+                    if (busy) return;
+                    if (index < step || (validateClient() && (index < 2 || validateLoad())))
+                      setStep(index);
+                  }}
+                >
+                  <View
+                    style={{
+                      minWidth: 32,
+                      minHeight: 32,
+                      padding: 4,
+                      borderRadius: 16,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: index <= step ? C.primary : 'transparent',
+                      borderWidth: 1,
+                      borderColor: index <= step ? C.primary : C.line,
+                    }}
+                  >
+                    <Text style={[s.label, { color: index <= step ? C.onPrimary : C.muted }]}>
+                      {index < step ? '✓' : index + 1}
+                    </Text>
+                  </View>
+                  <Text
+                    style={[s.muted, { flexShrink: 1, color: index === step ? C.link : C.muted }]}
+                  >
+                    {label}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+            {step === 0 ? (
+              <>
+                <Text accessibilityRole="header" style={s.h2}>
+                  Cliente y ubicación
+                </Text>
+                {field('nombre', 'Nombre del cliente', nombre, setNombre, {
+                  placeholder: 'Cliente o nombre del alquiler',
+                })}
+                {field('tel', 'Teléfono con país', tel, setTel, {
+                  placeholder: 'Opcional · incluye código de país',
+                  keyboardType: 'phone-pad',
+                })}
+                {field('direccion', 'Dirección', direccion, setDireccion, {
+                  placeholder: 'Calle y número',
+                })}
+                {field('zona', 'Barrio / localidad', zona, setZona)}
+                <View style={s.divider} />
+                <Text accessibilityRole="header" style={s.h2}>
+                  Planificación
+                </Text>
+                <View style={[s.row, { alignItems: 'flex-start', flexWrap: 'wrap' }]}>
+                  <View style={{ flex: 1, minWidth: 140 }}>
+                    {field('entrega', 'Entrega · AAAA-MM-DD', entrega, setEntrega, {
+                      maxLength: 10,
+                    })}
+                  </View>
+                  <View style={{ flex: 1, minWidth: 140 }}>
+                    {field('retiro', 'Retiro · AAAA-MM-DD', retiro, setRetiro, { maxLength: 10 })}
+                  </View>
+                </View>
+                <Disclosure title="Agregar observaciones" initiallyOpen={!!observaciones}>
+                  <Field
+                    label="Observaciones"
+                    value={observaciones}
+                    onChangeText={setObservaciones}
+                    multiline
+                    maxLength={1000}
+                  />
+                </Disclosure>
+                {obra?.coordenadas ? (
+                  <Text style={s.muted}>
+                    Ubicación guardada: {obra.coordenadas.lat}, {obra.coordenadas.lng}
+                  </Text>
+                ) : null}
+              </>
+            ) : step === 1 ? (
+              <>
+                <Text style={s.h2}>{nombre}</Text>
+                <Text style={s.muted}>{zona}</Text>
+                {editableLoad ? (
+                  <LoadDraft items={items} onChange={setItems} />
+                ) : (
+                  <>
+                    <Notice text="Este alquiler ya fue entregado o cerrado. La carga histórica se conserva." />
+                    {items.map((i) => (
+                      <Text key={i.materialId} style={s.body}>
+                        {i.cantidad} × {i.nombre} · {i.medida || 'Sin medida'}
+                        {i.apodo ? ` · ${i.apodo}` : ''}
+                      </Text>
+                    ))}
+                  </>
+                )}
+                {error ? <Notice text={error} tone="error" /> : null}
+              </>
+            ) : (
+              <>
+                <Text accessibilityRole="header" style={s.h2}>
+                  Revisar alquiler
+                </Text>
+                <Text style={s.h2}>{nombre}</Text>
+                <Text style={s.body}>
+                  {direccion} · {zona}
+                </Text>
+                <Text style={s.body}>Teléfono: {tel || 'Sin teléfono'}</Text>
+                <Text style={s.body}>
+                  Entrega: {displayDate(entrega)} · Retiro: {displayDate(retiro)}
+                </Text>
+                {observaciones ? <Text style={s.body}>Observaciones: {observaciones}</Text> : null}
+                {obra?.coordenadas ? (
+                  <Text style={s.body}>
+                    Ubicación: {obra.coordenadas.lat}, {obra.coordenadas.lng}
+                  </Text>
+                ) : null}
+                <View style={s.divider} />
+                <Text style={s.h2}>Materiales</Text>
+                {items
+                  .filter((i) => i.cantidad > 0)
+                  .map((i) => (
+                    <View
+                      key={i.materialId}
+                      style={[
+                        s.row,
+                        {
+                          paddingVertical: 10,
+                          borderBottomWidth: 1,
+                          borderBottomColor: C.hairline,
+                        },
+                      ]}
+                    >
+                      <View style={s.grow}>
+                        <Text style={s.label}>{i.nombre}</Text>
+                        <Text style={s.muted}>
+                          {i.medida || 'Sin medida'}
+                          {i.apodo ? ` · ${i.apodo}` : ''}
+                        </Text>
+                      </View>
+                      <Text style={[s.h2, { fontVariant: ['tabular-nums'] }]}>{i.cantidad}</Text>
+                    </View>
+                  ))}
+                {!items.some((i) => i.cantidad > 0) ? (
+                  <Text style={s.muted}>Sin carga preparada.</Text>
+                ) : null}
+                <Notice text="Guardar conserva los datos y la carga preparada. No confirma la entrega ni mueve existencias." />
+                {error ? <Notice text={error} tone="error" /> : null}
               </>
             )}
           </>

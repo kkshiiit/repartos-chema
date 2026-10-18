@@ -113,7 +113,7 @@ export function OperationForm({
   mode: 'entrega' | 'retiro' | 'faltante' | 'transferencia';
   onDone: () => void;
 }) {
-  const { s } = useUI();
+  const { C, s } = useUI();
   const { notifySuccess, notifyError } = useFeedback();
   const { markDirty, setBusy: setPanelBusy } = usePanelChanges();
   const { state, dispatch } = useInventory(),
@@ -172,9 +172,19 @@ export function OperationForm({
             maxLength={10}
           />
           {obra.materialesCargados.map((i) => (
-            <Text key={i.materialId} style={s.body}>
-              {i.cantidad} × {i.nombre} {i.medida}
-            </Text>
+            <View
+              key={i.materialId}
+              style={[
+                s.row,
+                { paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: C.hairline },
+              ]}
+            >
+              <View style={s.grow}>
+                <Text style={s.label}>{i.nombre}</Text>
+                <Text style={s.muted}>{i.medida || 'Sin medida'}</Text>
+              </View>
+              <Text style={[s.h2, { fontVariant: ['tabular-nums'] }]}>{i.cantidad}</Text>
+            </View>
           ))}
           {shortages.map((i) => {
             const stock = state.materiales.find((m) => m.id === i.materialId)?.cantidadGalpon || 0,
@@ -349,7 +359,14 @@ export function OperationForm({
       </View>
       {error ? <Notice text={error} tone="error" /> : null}
       <Button
-        label="Confirmar operación"
+        label={
+          {
+            entrega: 'Confirmar entrega',
+            retiro: 'Confirmar retiro',
+            faltante: 'Confirmar faltante',
+            transferencia: 'Confirmar triangulación',
+          }[mode]
+        }
         loading={busy}
         onPress={async () => {
           if (saving.current) return;

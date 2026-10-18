@@ -1,7 +1,7 @@
 import { userError } from '../src/services/errors';
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
-import { Plus, Layers } from 'lucide-react-native';
+import { Plus, Layers, MoreHorizontal } from 'lucide-react-native';
 import type { ComboPreset } from '../src/types';
 import { useInventory, makeId } from '../src/context/InventoryContext';
 import { useAuth } from '../src/context/AuthContext';
@@ -9,6 +9,7 @@ import {
   Button,
   ConfirmButton,
   Empty,
+  IconButton,
   Field,
   Notice,
   Screen,
@@ -21,6 +22,7 @@ export default function Combos() {
   const { C, s } = useUI();
   const { state, dispatch } = useInventory(),
     { user } = useAuth();
+  const [actions, setActions] = useState<ComboPreset | null>(null);
   const [draft, setDraft] = useState<ComboPreset | null>(null),
     [selected, setSelected] = useState(state.materiales[0]?.id || ''),
     [error, setError] = useState(''),
@@ -28,8 +30,9 @@ export default function Combos() {
   return (
     <Screen
       title="Combos de carga"
+      subtitle="Prepará cargas habituales en menos pasos."
       back
-      action={
+      footer={
         user?.role === 'ADMIN' ? (
           <Button
             label="Nuevo combo"
@@ -46,48 +49,76 @@ export default function Combos() {
         <Notice text="Sección exclusiva de administración." />
       ) : (
         <>
-          <View style={s.wrap}>
-            {state.combos.map((c) => (
+          <View style={{ backgroundColor: C.panel, borderRadius: 16, paddingHorizontal: 16 }}>
+            {state.combos.map((c, index) => (
               <View
                 key={c.id}
                 style={[
-                  s.card,
-                  { width: '100%', maxWidth: 800, borderBottomWidth: 1, borderColor: C.hairline },
+                  s.row,
+                  {
+                    alignItems: 'flex-start',
+                    paddingVertical: 20,
+                    borderBottomWidth: index < state.combos.length - 1 ? 1 : 0,
+                    borderBottomColor: C.hairline,
+                  },
                 ]}
               >
-                <Layers size={26} color={C.link} />
-                <Text style={s.h2}>{c.nombreCombo}</Text>
-                {c.items.map((i) => (
-                  <Text key={i.materialId} style={s.body}>
-                    {i.cantidad} ×{' '}
-                    {state.materiales.find((m) => m.id === i.materialId)?.nombre ||
-                      'Material no disponible'}
-                  </Text>
-                ))}
-                <View style={s.wrap}>
-                  <Button
-                    label="Editar combo"
-                    variant="secondary"
-                    onPress={() => {
-                      setError('');
-                      setDraft(JSON.parse(JSON.stringify(c)));
-                    }}
-                  />
-                  <ConfirmButton
-                    label="Eliminar"
-                    title="Eliminar combo"
-                    description="Las cargas ya preparadas conservarán sus materiales."
-                    onConfirm={() => dispatch({ type: 'DELETE_COMBO', comboId: c.id })}
-                  />
+                <View style={{ paddingTop: 4 }}>
+                  <Layers size={28} color={C.muted} />
                 </View>
+                <View style={[s.grow, { gap: 6 }]}>
+                  <Text style={s.h2}>{c.nombreCombo}</Text>
+                  <Text style={s.muted}>
+                    {c.items
+                      .map((i) => {
+                        const m = state.materiales.find((material) => material.id === i.materialId);
+                        return `${i.cantidad} × ${m ? [m.nombre, m.medida].filter(Boolean).join(' ') : 'Material no disponible'}`;
+                      })
+                      .join(' · ') || 'Sin materiales'}
+                  </Text>
+                </View>
+                <IconButton
+                  label={`Acciones de ${c.nombreCombo}`}
+                  icon={MoreHorizontal}
+                  onPress={() => setActions(c)}
+                />
               </View>
             ))}
           </View>
+          {state.combos.length ? <Notice text="Elegí un combo al preparar la carga." /> : null}
           {!state.combos.length ? (
             <Empty title="Sin combos" detail="Crea tu primera carga frecuente." />
           ) : null}
         </>
       )}
+      <Sheet
+        visible={!!actions}
+        title={actions?.nombreCombo || 'Acciones del combo'}
+        onClose={() => setActions(null)}
+      >
+        {actions ? (
+          <>
+            <Button
+              label="Editar combo"
+              variant="secondary"
+              onPress={() => {
+                setError('');
+                setDraft(JSON.parse(JSON.stringify(actions)));
+                setActions(null);
+              }}
+            />
+            <ConfirmButton
+              label="Eliminar"
+              title="Eliminar combo"
+              description="Las cargas ya preparadas conservarán sus materiales."
+              onConfirm={async () => {
+                await dispatch({ type: 'DELETE_COMBO', comboId: actions.id });
+                setActions(null);
+              }}
+            />
+          </>
+        ) : null}
+      </Sheet>
       <Sheet
         protectChanges
         hasChanges={
@@ -143,7 +174,13 @@ export default function Combos() {
                 ]}
               >
                 <Text style={s.body}>
-                  {state.materiales.find((m) => m.id === i.materialId)?.nombre}
+                  {[
+                    state.materiales.find((m) => m.id === i.materialId)?.nombre ||
+                      'Material no disponible',
+                    state.materiales.find((m) => m.id === i.materialId)?.medida,
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
                 </Text>
                 <SmartCounter
                   value={i.cantidad}

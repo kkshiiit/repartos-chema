@@ -5,6 +5,7 @@ import { LoadEditor } from '../src/components/LoadEditor';
 import { ObraForm } from '../src/components/ObraForm';
 import { OperationForm } from '../src/components/OperationForm';
 import { seed } from '../src/data/seed';
+import { light } from '../src/theme/tokens';
 
 const mocks = vi.hoisted(() => ({
   dispatch: vi.fn(),
@@ -17,7 +18,12 @@ const mocks = vi.hoisted(() => ({
 vi.mock('../src/context/FeedbackContext', () => ({
   useFeedback: () => ({ notifyError: vi.fn(), notifySuccess: mocks.notifySuccess }),
 }));
-vi.mock('react-native', () => ({ View: 'View', Text: 'Text' }));
+vi.mock('react-native', () => ({ View: 'View', Text: 'Text', Pressable: 'Pressable' }));
+vi.mock('lucide-react-native', () => ({
+  Layers: 'Layers',
+  ChevronDown: 'ChevronDown',
+  ChevronUp: 'ChevronUp',
+}));
 vi.mock('expo-router', () => ({
   router: { replace: mocks.replace },
   useNavigation: () => ({ dispatch: mocks.navigate }),
@@ -44,10 +50,25 @@ vi.mock('../src/components/ui', () => {
     Field: host('Field'),
     Notice: host('Notice'),
     Select: host('Select'),
-    Screen: host('Screen'),
+    Screen: ({ children, footer }: { children: React.ReactNode; footer?: React.ReactNode }) =>
+      React.createElement('Screen', {}, children, footer),
     Sheet: ({ visible, children }: { visible: boolean; children: React.ReactNode }) =>
       visible ? React.createElement('Sheet', {}, children) : null,
-    useUI: () => ({ s: { divider: {}, wrap: {}, body: {}, muted: {}, h2: {} } }),
+    useUI: () => ({
+      C: light,
+      s: {
+        divider: {},
+        wrap: {},
+        row: {},
+        card: {},
+        body: {},
+        muted: {},
+        h2: {},
+        label: {},
+        grow: {},
+        title: {},
+      },
+    }),
     usePanelChanges: () => ({ markDirty: () => {} }),
   };
 });
@@ -178,7 +199,7 @@ it('operación conserva responsable y evita dos retiros mientras persiste', asyn
     );
   });
   await press(state.responsables[0]!);
-  const confirm = control('Confirmar operación').props.onPress;
+  const confirm = control('Confirmar retiro').props.onPress;
   let first!: Promise<void>;
   await act(async () => {
     first = confirm();

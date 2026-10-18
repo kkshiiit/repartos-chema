@@ -92,7 +92,7 @@ test('individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y o
     ['Generar remito', 'chema-remito.docx'],
   ]) {
     if (button === 'Generar remito')
-      await page.getByRole('button', { name: 'Word', exact: true }).click();
+      await page.getByRole('tab', { name: 'Word', exact: true }).click();
     const pending = page.waitForEvent('download');
     await page.getByRole('button', { name: button!, exact: true }).click();
     const download = await pending;
@@ -101,6 +101,7 @@ test('individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y o
     expect(bytes.subarray(0, 2).toString()).toBe('PK');
   }
   await page.goto('/configuracion');
+  await page.getByRole('button', { name: 'Copias y restauración', exact: true }).click();
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Descargar copia', exact: true }).click();
   const download = await pending;
@@ -115,6 +116,7 @@ test('individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y o
   await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
   await expect.poll(async () => (await state()).materiales.length).toBe(0);
   await page.reload();
+  await page.getByRole('button', { name: 'Copias y restauración', exact: true }).click();
   await page.getByRole('button', { name: 'Recuperar anterior', exact: true }).click();
   await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
   await expect.poll(async () => (await state()).materiales[0]?.cantidadGalpon).toBe(20);
@@ -156,7 +158,7 @@ test('remito Word no queda bloqueado por un filtro Excel inválido', async ({ pa
   await page.goto('/exportar');
   await page.getByLabel('Entrega desde · AAAA-MM-DD', { exact: true }).fill('incorrecta');
   const pending = page.waitForEvent('download', { timeout: 5000 });
-  await page.getByRole('button', { name: 'Word', exact: true }).click();
+  await page.getByRole('tab', { name: 'Word', exact: true }).click();
   await page.getByRole('button', { name: 'Generar remito', exact: true }).click();
   expect((await pending).suggestedFilename()).toBe('chema-remito.docx');
 });
@@ -173,12 +175,14 @@ test('temas locales persisten y conservan el formulario', async ({ page }) => {
     'Borrador conservado',
   );
   await page.goto('/configuracion');
+  await page.getByRole('button', { name: 'Apariencia', exact: true }).click();
   await page.getByRole('button', { name: 'Claro', exact: true }).click();
   await page.reload();
   await expect
     .poll(() => page.evaluate(() => document.documentElement.style.colorScheme))
     .toBe('light');
   await page.screenshot({ path: 'artifacts/capturas/local-120-ajustes-claro.png', fullPage: true });
+  await page.getByRole('button', { name: 'Apariencia', exact: true }).click();
   await page.getByRole('button', { name: 'Oscuro', exact: true }).click();
   await expect
     .poll(() => page.evaluate(() => document.documentElement.style.colorScheme))

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import { Button, Field, Notice, useUI } from './ui';
+import { Button, Field, Notice, useUI, usePanelChanges } from './ui';
 import { loadDepot, saveDepot } from '../services/depotSettings';
 import { DEFAULT_DEPOT, depotDirectionsUrl } from '../utils/trip';
 import { openLink } from '../services/links';
 import { userError } from '../services/errors';
 export function DepotSettings() {
   const { s } = useUI();
+  const panel = usePanelChanges();
   const [depot, setDepot] = useState(DEFAULT_DEPOT),
     [address, setAddress] = useState(''),
     [error, setError] = useState(''),
@@ -30,13 +31,14 @@ export function DepotSettings() {
         loading={busy}
         onPress={() => {
           setBusy(true);
-          void saveDepot({
+          return saveDepot({
             ...depot,
             direccion: address.trim(),
             coordenadas: address.trim() === depot.direccion ? depot.coordenadas : undefined,
           })
             .then((d) => {
               setDepot(d);
+              panel.resetDirty();
               setNotice('Dirección guardada en este dispositivo.');
               setError('');
             })

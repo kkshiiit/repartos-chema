@@ -5,7 +5,9 @@ import { View, Text } from 'react-native';
 import type { MaterialCargado, ObraCard } from '../types';
 import { useInventory } from '../context/InventoryContext';
 import { mergeLoads } from '../domain/engine';
-import { Button, Chip, Field, Notice, Select, useUI, usePanelChanges } from './ui';
+import { Button, Chip, Field, Notice, Select, Sheet, useUI, usePanelChanges } from './ui';
+import { Layers } from 'lucide-react-native';
+import { Disclosure } from './Editorial';
 import { SmartCounter } from './SmartCounter';
 
 /** Shared draft only: selecting materials never persists or moves stock. */
@@ -37,52 +39,133 @@ export function LoadDraft({
   );
   return (
     <View style={{ gap: 16 }}>
-      <Notice text="La carga es una reserva informativa. Las existencias se mueven al confirmar la entrega." />
+      <View style={[s.row, { justifyContent: 'space-between', flexWrap: 'wrap' }]}>
+        <Text style={[s.label, { flex: 1, minWidth: 120 }]}>
+          {items.reduce((sum, i) => sum + i.cantidad, 0)} piezas seleccionadas
+        </Text>
+        <Button
+          label="Usar combo"
+          icon={Layers}
+          variant="secondary"
+          onPress={() => setShowCombos(true)}
+        />
+      </View>
       <Field
         label="Buscar material"
         value={search}
         onChangeText={setSearch}
         placeholder="Nombre o medida"
       />
-      {!materials.length ? (
-        <Text style={s.muted}>No hay materiales que coincidan con la búsqueda.</Text>
-      ) : (
-        <>
-          <Select
-            label="Agregar material"
-            value={selected}
-            options={materials.map((m) => ({
-              label: `${m.nombre} · ${m.medida || 'Sin medida'} · ${m.cantidadGalpon} en depósito`,
-              value: m.id,
-            }))}
-            onChange={setSelected}
-          />
-          <Button
-            label="Agregar material"
-            variant="secondary"
-            onPress={() => {
-              try {
-                const m = materials.find((m) => m.id === selected);
-                if (!m) throw new Error('Seleccioná un material de la lista.');
-                change(
-                  mergeLoads(items, [
-                    { materialId: m.id, nombre: m.nombre, medida: m.medida, cantidad: 1 },
-                  ]),
-                );
-                setError('');
-              } catch (e) {
-                setError(userError(e));
-              }
+      <Disclosure
+        key={search ? 'search' : 'catalogue'}
+        title="Agregar materiales"
+        initiallyOpen={!!search || !items.length}
+      >
+        {!materials.length ? (
+          <Text style={s.muted}>No hay materiales que coincidan con la búsqueda.</Text>
+        ) : (
+          <>
+            <Select
+              label="Agregar material"
+              value={selected}
+              options={materials.map((m) => ({
+                label: `${m.nombre} · ${m.medida || 'Sin medida'} · ${m.cantidadGalpon} en depósito`,
+                value: m.id,
+              }))}
+              onChange={setSelected}
+            />
+            <Button
+              label="Agregar material"
+              variant="secondary"
+              onPress={() => {
+                try {
+                  const m = materials.find((m) => m.id === selected);
+                  if (!m) throw new Error('Seleccioná un material de la lista.');
+                  change(
+                    mergeLoads(items, [
+                      { materialId: m.id, nombre: m.nombre, medida: m.medida, cantidad: 1 },
+                    ]),
+                  );
+                  setError('');
+                } catch (e) {
+                  setError(userError(e));
+                }
+              }}
+            />
+          </>
+        )}
+      </Disclosure>
+      {error ? <Notice text={error} tone="error" /> : null}
+      {!items.length ? (
+        <Text style={s.muted}>
+          Agregá materiales o un combo. Podés guardar el alquiler sin carga y prepararla después.
+        </Text>
+      ) : null}
+      {items.map((i) => {
+        const m = state.materiales.find((m) => m.id === i.materialId);
+        return (
+          <View
+            key={i.materialId}
+            style={{
+              gap: 8,
+              paddingVertical: 16,
+              borderBottomWidth: 1,
+              borderBottomColor: s.divider.backgroundColor,
             }}
-          />
-        </>
-      )}
-      <Button
-        label={showCombos ? 'Ocultar combos' : 'Usar combo'}
-        variant="secondary"
-        onPress={() => setShowCombos(!showCombos)}
-      />
-      {showCombos ? (
+          >
+            <View style={[s.row, { flexWrap: 'wrap', gap: 12 }]}>
+              <View style={{ flex: 1, minWidth: 120, gap: 4 }}>
+                <Text style={s.label}>{i.nombre}</Text>
+                <Text style={s.muted}>
+                  {i.medida || 'Sin medida'} · {m?.cantidadGalpon ?? 0} en depósito
+                </Text>
+                {i.apodo ? <Text style={s.muted}>{i.apodo}</Text> : null}
+              </View>
+              <SmartCounter
+                label={`${i.nombre} ${i.medida || ''}`}
+                value={i.cantidad}
+                onChange={(cantidad) => update(i.materialId, { cantidad })}
+              />
+            </View>
+            {m && i.cantidad > m.cantidadGalpon ? (
+              <Notice
+                text={`Stock bajo: Pedidos ${i.cantidad} | En Depósito ${m.cantidadGalpon}. Puedes guardar la carga. La entrega requiere procedencia autorizada.`}
+              />
+            ) : null}
+            <Disclosure title={`Detalles de ${i.nombre}`}>
+              <Text style={s.muted}>
+                Medida: {i.medida || 'Sin medida'}. Para otra medida, selecciona su material
+                maestro.
+              </Text>
+              <View style={s.wrap}>
+                {['Con orejas', 'Antideslizante', 'Reforzado', 'De madera'].map((apodo) => (
+                  <Chip
+                    key={apodo}
+                    label={apodo}
+                    selected={i.apodo === apodo}
+                    onPress={() => update(i.materialId, { apodo })}
+                  />
+                ))}
+              </View>
+              <Field
+                label="Apodo de esta carga"
+                value={i.apodo || ''}
+                onChangeText={(apodo) => update(i.materialId, { apodo })}
+                maxLength={80}
+              />
+              <Button
+                label="Quitar material"
+                variant="ghost"
+                onPress={() => change(items.filter((x) => x.materialId !== i.materialId))}
+              />
+            </Disclosure>
+          </View>
+        );
+      })}
+      <Text style={s.muted}>
+        La carga se prepara aquí. Las existencias se mueven al confirmar la entrega.
+      </Text>
+      <Sheet visible={showCombos} title="Usar combo" onClose={() => setShowCombos(false)}>
         <View style={{ gap: 12 }}>
           {!state.combos.length ? (
             <Text style={s.muted}>Todavía no hay combos guardados.</Text>
@@ -113,6 +196,7 @@ export function LoadDraft({
                     });
                     change(mergeLoads(items, loads));
                     setError('');
+                    setShowCombos(false);
                   } catch (e) {
                     setError(userError(e));
                   }
@@ -121,69 +205,8 @@ export function LoadDraft({
             </>
           )}
         </View>
-      ) : null}
-      {error ? <Notice text={error} tone="error" /> : null}
-      <Text accessibilityRole="header" style={s.h2}>
-        Carga · {items.reduce((sum, i) => sum + i.cantidad, 0)} piezas
-      </Text>
-      {!items.length ? (
-        <Text style={s.muted}>
-          Agregá materiales o un combo. Podés guardar el alquiler sin carga y prepararla después.
-        </Text>
-      ) : null}
-      {items.map((i) => {
-        const m = state.materiales.find((m) => m.id === i.materialId);
-        return (
-          <View
-            key={i.materialId}
-            style={{
-              gap: 12,
-              paddingVertical: 16,
-              borderBottomWidth: 1,
-              borderBottomColor: s.divider.backgroundColor,
-            }}
-          >
-            <Text style={s.h2}>{i.nombre}</Text>
-            <Text style={s.muted}>
-              {i.medida || 'Sin medida'} · {m?.cantidadGalpon ?? 0} en depósito
-            </Text>
-            <SmartCounter
-              label={`${i.nombre} ${i.medida || ''}`}
-              value={i.cantidad}
-              onChange={(cantidad) => update(i.materialId, { cantidad })}
-            />
-            {m && i.cantidad > m.cantidadGalpon ? (
-              <Notice
-                text={`Stock bajo: Pedidos ${i.cantidad} | En Depósito ${m.cantidadGalpon}. Puedes guardar la carga. La entrega requiere procedencia autorizada.`}
-              />
-            ) : null}
-            <Text style={s.muted}>
-              Medida: {i.medida || 'Sin medida'}. Para otra medida, selecciona su material maestro.
-            </Text>
-            <View style={s.wrap}>
-              {['Con orejas', 'Antideslizante', 'Reforzado', 'De madera'].map((apodo) => (
-                <Chip
-                  key={apodo}
-                  label={apodo}
-                  selected={i.apodo === apodo}
-                  onPress={() => update(i.materialId, { apodo })}
-                />
-              ))}
-            </View>
-            <Field
-              label="Apodo de esta carga"
-              value={i.apodo || ''}
-              onChangeText={(apodo) => update(i.materialId, { apodo })}
-              maxLength={80}
-            />
-            <Button
-              label="Quitar material"
-              variant="ghost"
-              onPress={() => change(items.filter((x) => x.materialId !== i.materialId))}
-            />
-          </View>
-        );
-      })}
+        {error ? <Notice text={error} tone="error" /> : null}
+      </Sheet>
     </View>
   );
 }
