@@ -26,11 +26,11 @@
 
  Test Files  27 passed (27)
       Tests  218 passed (218)
-   Start at  15:14:45
-   Duration  6.63s (import 44%, tests 37%, transform 16%, worker 3%)
+   Start at  15:26:16
+   Duration  6.65s (import 49%, tests 34%, transform 14%, worker 3%)
 
-    Isolate  27 workers spawned · ~99ms startup each (spawn + environment, per file)
-             at least ~2.57s faster with isolate: false — reuses workers across files instead of one per file
+    Isolate  27 workers spawned · ~100ms startup each (spawn + environment, per file)
+             at least ~2.60s faster with isolate: false — reuses workers across files instead of one per file
 
 
 > repartos-chema-functions@1.0.0 build
