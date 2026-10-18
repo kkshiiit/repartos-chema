@@ -26,12 +26,12 @@ export function ThemeToggle() {
       accessibilityLabel={mode === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'}
       onPress={toggle}
       style={({ pressed }) => ({
-        minWidth: 44,
-        minHeight: 44,
+        minWidth: 48,
+        minHeight: 48,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 14,
-        borderWidth: 1,
+        borderRadius: 12,
+        borderWidth: 0,
         borderColor: colors.hairline,
         backgroundColor: pressed ? colors.selection : colors.glass,
       })}

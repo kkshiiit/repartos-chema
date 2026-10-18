@@ -67,7 +67,7 @@ export function useMotionPreferences() {
     setMotionPreference,
     reduceMotion,
     motionEnabled,
-    ambientEnabled: motionEnabled,
+    ambientEnabled: false,
     motionError,
   };
 }

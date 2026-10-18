@@ -15,6 +15,7 @@ export function MotionView({
   const appeared = useRef(false);
   useEffect(() => {
     if (appeared.current || !motionEnabled) {
+      appeared.current = true;
       progress.setValue(1);
       return;
     }
@@ -22,7 +23,7 @@ export function MotionView({
     progress.setValue(0);
     const animation = Animated.timing(progress, {
       toValue: 1,
-      duration: 220,
+      duration: 160,
       useNativeDriver: true,
     });
     animation.start();

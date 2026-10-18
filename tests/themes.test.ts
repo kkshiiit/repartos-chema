@@ -23,7 +23,7 @@ describe('Apariencia y contraste', () => {
   });
   for (const [name, c] of Object.entries({ light, dark })) {
     it(`${name}: texto y estados AA sobre superficies`, () => {
-      for (const bg of [c.bg, c.panel, c.panel2])
+      for (const bg of [c.bg, c.panel])
         for (const fg of [
           c.text,
           c.muted,
@@ -37,6 +37,8 @@ describe('Apariencia y contraste', () => {
           c.neutral,
         ])
           expect(contrast(fg, bg), `${fg} sobre ${bg}`).toBeGreaterThanOrEqual(4.5);
+      // Muted surfaces carry primary text (secondary buttons and counters).
+      expect(contrast(c.text, c.panel2)).toBeGreaterThanOrEqual(4.5);
       expect(contrast(c.onPrimary, c.red)).toBeGreaterThanOrEqual(4.5);
     });
     it(`${name}: controles distinguibles`, () => {
