@@ -22,7 +22,7 @@ test('viaje vuelve al depósito fijo y recupera el cambio de Ajustes sin alterar
   expect(new URL(first).searchParams.get('destination')).toBe('-34.5530245,-58.5685218');
   await page.getByRole('button', { name: 'Cerrar', exact: true }).last().click();
   await page.getByRole('button', { name: 'Abrir ajustes', exact: true }).click();
-  await page.getByRole('button', { name: 'Depósito', exact: true }).click();
+  await page.getByRole('button', { name: 'Depósito Chema', exact: true }).click();
   const address = 'Depósito de prueba 123, Zona de prueba';
   await page.getByLabel('Dirección del depósito', { exact: true }).fill(address);
   await page.getByRole('button', { name: 'Guardar dirección', exact: true }).click();

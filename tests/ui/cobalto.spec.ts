@@ -3,7 +3,7 @@ import { AxeBuilder } from '@axe-core/playwright';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { loginSynthetic } from './helpers';
 
-const captureDirectory = 'artifacts/capturas/cobalto';
+const captureDirectory = 'artifacts/capturas/estructura-1.5/matriz';
 const reportDirectory = 'artifacts/validacion';
 const routes = [
   ['/', 'alquileres'],
@@ -100,6 +100,10 @@ async function openLoad(page: Page) {
   const prepare = page.getByRole('button', { name: 'Preparar carga', exact: true });
   await expect(prepare).toBeVisible();
   await prepare.click();
+  await page
+    .getByRole('button', { name: /^Detalles de / })
+    .first()
+    .click();
   await expect(page.getByLabel('Apodo de esta carga', { exact: true }).first()).toBeVisible();
 }
 
@@ -116,11 +120,16 @@ test('Cobalto: el asistente conserva cliente, carga y observaciones al volver y 
   await page.getByLabel('Teléfono con país', { exact: true }).fill('+54 11 5555 0123');
   await page.getByLabel('Dirección', { exact: true }).fill('Dirección sintética 1234, planta baja');
   await page.getByLabel('Barrio / localidad', { exact: true }).fill('Localidad sintética');
+  await page.getByRole('button', { name: 'Agregar observaciones', exact: true }).click();
   await page
     .getByLabel('Observaciones', { exact: true })
     .fill('Borrador que debe conservarse sin confirmar stock.');
   await page.getByRole('button', { name: 'Continuar a carga', exact: true }).click();
   await page.getByRole('button', { name: 'Agregar material', exact: true }).last().click();
+  await page
+    .getByRole('button', { name: /^Detalles de / })
+    .first()
+    .click();
   await page
     .getByLabel('Apodo de esta carga', { exact: true })
     .first()
@@ -261,7 +270,7 @@ for (const width of [320, 360, 390, 412])
         fullPage: true,
       });
       await writeFile(
-        `${reportDirectory}/cobalto-contraste-${width}-${theme}.json`,
+        `${reportDirectory}/estructura-contraste-${width}-${theme}.json`,
         JSON.stringify(
           {
             note: 'Navegador con fixture sintético. Texto 200% simulado; no es prueba de fontScale, TalkBack o teclado Android. Incomplete de Axe requiere revisión visual.',

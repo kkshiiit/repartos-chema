@@ -9,7 +9,7 @@ for (const mode of ['light', 'dark'] as const)
     await page.goto('/');
     await expect(page.getByLabel('Tu nombre', { exact: true })).toBeVisible();
     await page.screenshot({
-      path: `artifacts/capturas/cobalto-rutas-390-${mode}-login.png`,
+      path: `artifacts/capturas/estructura-1.5/rutas-390-${mode}-login.png`,
       fullPage: true,
     });
     await loginSynthetic(page);
@@ -30,28 +30,33 @@ for (const mode of ['light', 'dark'] as const)
         await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
       ).toBe(true);
       await page.screenshot({
-        path: `artifacts/capturas/cobalto-rutas-390-${mode}-${name}.png`,
+        path: `artifacts/capturas/estructura-1.5/rutas-390-${mode}-${name}.png`,
         fullPage: true,
       });
     }
     for (const [id, action, name] of [
-      ['obra_5', 'Entregar', 'entrega'],
-      ['obra_1', 'Retirar', 'retiro'],
+      ['obra_5', 'Registrar entrega', 'entrega'],
+      ['obra_1', 'Registrar retiro', 'retiro'],
     ]) {
       await page.goto('/obra/' + id);
       await page.getByRole('button', { name: action!, exact: true }).last().click();
       await expect(
-        page.getByRole('button', { name: 'Confirmar operación', exact: true }),
+        page.getByRole('button', {
+          name: name === 'entrega' ? 'Confirmar entrega' : 'Confirmar retiro',
+          exact: true,
+        }),
       ).toBeVisible();
       await expect(page.getByRole('button', { name: /Activar modo/ })).toHaveCount(0);
       await page.screenshot({
-        path: `artifacts/capturas/cobalto-rutas-390-${mode}-${name}.png`,
+        path: `artifacts/capturas/estructura-1.5/rutas-390-${mode}-${name}.png`,
         fullPage: true,
       });
     }
     await page.goto('/configuracion');
+    await page.getByRole('button', { name: 'Movimiento', exact: true }).click();
     await page.getByRole('button', { name: 'Estático', exact: true }).click();
     await page.reload();
+    await page.getByRole('button', { name: 'Movimiento', exact: true }).click();
     await expect(page.getByRole('button', { name: 'Estático', exact: true })).toHaveAttribute(
       'aria-pressed',
       'true',
@@ -59,7 +64,7 @@ for (const mode of ['light', 'dark'] as const)
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto('/');
     await page.screenshot({
-      path: `artifacts/capturas/cobalto-rutas-1440-${mode}-alquileres.png`,
+      path: `artifacts/capturas/estructura-1.5/rutas-1440-${mode}-alquileres.png`,
       fullPage: true,
     });
   });
@@ -80,6 +85,7 @@ test('un error de GPS queda visible dentro de la ventana y conserva coordenadas 
   });
   await loginSynthetic(page);
   await page.goto('/obra/obra_1');
+  await page.getByRole('button', { name: 'Más acciones', exact: true }).click();
   await page.getByRole('button', { name: 'Ubicación', exact: true }).click();
   await page.getByLabel('Latitud', { exact: true }).fill('-34.5');
   await page.getByRole('button', { name: 'Usar mi GPS', exact: true }).click();
@@ -88,5 +94,8 @@ test('un error de GPS queda visible dentro de la ventana y conserva coordenadas 
     sheet.getByText('Sin permiso de ubicación. Ingresa coordenadas manualmente.', { exact: true }),
   ).toBeVisible();
   await expect(page.getByLabel('Latitud', { exact: true })).toHaveValue('-34.5');
-  await page.screenshot({ path: 'artifacts/capturas/cobalto-rutas-390-error-gps.png', fullPage: true });
+  await page.screenshot({
+    path: 'artifacts/capturas/estructura-1.5/rutas-390-error-gps.png',
+    fullPage: true,
+  });
 });

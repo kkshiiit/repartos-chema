@@ -1,6 +1,6 @@
 import { userError } from '../../src/services/errors';
 import React, { useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, useWindowDimensions } from 'react-native';
 import {
   Plus,
   Package,
@@ -31,6 +31,7 @@ import { ScaffoldSelector } from '../../src/components/ScaffoldSelector';
 import { spacing } from '../../src/theme/tokens';
 export default function WarehousePage() {
   const { C, s } = useUI();
+  const narrow = useWindowDimensions().width < 390;
   const { state, dispatch } = useInventory(),
     { user } = useAuth();
   const [query, setQuery] = useState(''),
@@ -135,15 +136,26 @@ export default function WarehousePage() {
               gap: spacing.sm,
             }}
           >
-            <View style={[s.row, { alignItems: 'flex-start', flexWrap: 'wrap', gap: spacing.sm }]}>
-              <Package size={24} color={C.subtle} />
+            <View
+              style={[
+                s.row,
+                {
+                  alignItems: 'flex-start',
+                  flexWrap: 'wrap',
+                  gap: narrow ? spacing.xs : spacing.sm,
+                },
+              ]}
+            >
+              {!narrow ? <Package size={24} color={C.subtle} /> : null}
               <View style={[s.grow, { gap: spacing.xs, minWidth: spacing.touch + spacing.xxl }]}>
                 <Text style={[s.body, { fontWeight: '700' }]}>{m.nombre}</Text>
                 {m.medida ? <Text style={s.body}>{m.medida}</Text> : null}
               </View>
               <View style={{ alignItems: 'flex-end', gap: spacing.xs, flexShrink: 1 }}>
                 <Text style={[s.h2, { fontVariant: ['tabular-nums'] }]}>{m.cantidadGalpon}</Text>
-                <Text style={s.muted}>Disponibles</Text>
+                <Text style={[s.muted, narrow && { fontSize: 12, lineHeight: 17 }]}>
+                  Disponibles
+                </Text>
               </View>
               {user?.role === 'ADMIN' ? (
                 <IconButton

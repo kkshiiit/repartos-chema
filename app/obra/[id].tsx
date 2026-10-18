@@ -99,7 +99,7 @@ export default function Detail() {
         ) : undefined
       }
     >
-      <View style={{ maxWidth: 760, width: '100%', alignSelf: 'center', gap: 24 }}>
+      <View style={{ maxWidth: 760, width: '100%', alignSelf: 'center', gap: 16 }}>
         <View style={{ gap: 8 }}>
           <Text accessibilityRole="header" style={s.title}>
             {o.clienteNombre}
@@ -129,7 +129,7 @@ export default function Detail() {
           <View
             style={{
               flex: 1,
-              minWidth: 100,
+              minWidth: 90,
               gap: 4,
               borderLeftWidth: 1,
               borderLeftColor: C.hairline,
@@ -158,7 +158,7 @@ export default function Detail() {
                     s.row,
                     {
                       gap: 16,
-                      paddingVertical: 12,
+                      paddingVertical: 10,
                       borderBottomWidth: 1,
                       borderBottomColor: C.hairline,
                     },
@@ -171,9 +171,6 @@ export default function Detail() {
                       {load?.medida || master?.medida || 'Sin medida'}
                       {load?.apodo ? ` · ${load.apodo}` : ''}
                     </Text>
-                    {!pending && load ? (
-                      <Text style={s.muted}>{load.cantidad} en carga original</Text>
-                    ) : null}
                   </View>
                   <View style={{ alignItems: 'flex-end', gap: 2, maxWidth: '40%' }}>
                     <Text style={[s.h2, { fontVariant: ['tabular-nums'] }]}>
@@ -206,15 +203,29 @@ export default function Detail() {
               icon={Navigation}
               variant="secondary"
               disabled={busy}
-              style={{ flex: 1, minWidth: 80, flexDirection: 'column', minHeight: 80 }}
+              style={{
+                flex: 1,
+                minWidth: 80,
+                flexDirection: 'column',
+                minHeight: 64,
+                paddingVertical: 8,
+                gap: 4,
+              }}
               onPress={() => run(() => openLink(mapsUrl(o)))}
             />
             <Button
-              label="Remito WhatsApp"
+              label="Remito"
               icon={MessageCircle}
               variant="secondary"
               disabled={busy}
-              style={{ flex: 1, minWidth: 100, flexDirection: 'column', minHeight: 80 }}
+              style={{
+                flex: 1,
+                minWidth: 80,
+                flexDirection: 'column',
+                minHeight: 64,
+                paddingVertical: 8,
+                gap: 4,
+              }}
               onPress={() => run(() => openLink(whatsappUrl(o)))}
             />
             {user?.role === 'ADMIN' ? (
@@ -222,7 +233,14 @@ export default function Detail() {
                 label="Documento"
                 icon={Download}
                 variant="secondary"
-                style={{ flex: 1, minWidth: 90, flexDirection: 'column', minHeight: 80 }}
+                style={{
+                  flex: 1,
+                  minWidth: 90,
+                  flexDirection: 'column',
+                  minHeight: 64,
+                  paddingVertical: 8,
+                  gap: 4,
+                }}
                 onPress={() => router.push(`/exportar?obraId=${o.id}`)}
               />
             ) : null}
@@ -346,6 +364,17 @@ export default function Detail() {
           </View>
         </Disclosure>
         <Disclosure title="Datos del alquiler">
+          {o.estadoProceso !== 'PENDIENTE_ENTREGA' && o.materialesCargados.length ? (
+            <View style={{ gap: 8 }}>
+              <Text style={s.label}>Carga original</Text>
+              {o.materialesCargados.map((m) => (
+                <Text key={m.materialId} style={s.body}>
+                  {m.cantidad} × {m.nombre} · {m.medida || 'Sin medida'}
+                  {m.apodo ? ` · ${m.apodo}` : ''}
+                </Text>
+              ))}
+            </View>
+          ) : null}
           <Info label="ENTREGA PREVISTA" value={o.fechaEntrega} />
           <Info
             label="ENTREGA EFECTIVA"

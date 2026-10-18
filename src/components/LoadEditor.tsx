@@ -59,6 +59,7 @@ export function LoadDraft({
       <Disclosure
         key={search ? 'search' : 'catalogue'}
         title="Agregar materiales"
+        compact
         initiallyOpen={!!search || !items.length}
       >
         {!materials.length ? (
@@ -101,67 +102,68 @@ export function LoadDraft({
           Agregá materiales o un combo. Podés guardar el alquiler sin carga y prepararla después.
         </Text>
       ) : null}
-      {items.map((i) => {
-        const m = state.materiales.find((m) => m.id === i.materialId);
-        return (
-          <View
-            key={i.materialId}
-            style={{
-              gap: 8,
-              paddingVertical: 16,
-              borderBottomWidth: 1,
-              borderBottomColor: s.divider.backgroundColor,
-            }}
-          >
-            <View style={[s.row, { flexWrap: 'wrap', gap: 12 }]}>
-              <View style={{ flex: 1, minWidth: 120, gap: 4 }}>
-                <Text style={s.label}>{i.nombre}</Text>
+      <View>
+        {items.map((i) => {
+          const m = state.materiales.find((m) => m.id === i.materialId);
+          return (
+            <View
+              key={i.materialId}
+              style={{
+                gap: 4,
+                paddingVertical: 8,
+                borderBottomWidth: 1,
+                borderBottomColor: s.divider.backgroundColor,
+              }}
+            >
+              <View style={[s.row, { flexWrap: 'wrap', gap: 12 }]}>
+                <View style={{ flex: 1, minWidth: 112, gap: 4 }}>
+                  <Text style={s.label}>{i.nombre}</Text>
+                  <Text style={s.muted}>
+                    {i.medida || 'Sin medida'} · {m?.cantidadGalpon ?? 0} en depósito
+                  </Text>
+                </View>
+                <SmartCounter
+                  label={`${i.nombre} ${i.medida || ''}`}
+                  value={i.cantidad}
+                  onChange={(cantidad) => update(i.materialId, { cantidad })}
+                />
+              </View>
+              {m && i.cantidad > m.cantidadGalpon ? (
+                <Notice
+                  text={`Stock bajo: Pedidos ${i.cantidad} | En Depósito ${m.cantidadGalpon}. Puedes guardar la carga. La entrega requiere procedencia autorizada.`}
+                />
+              ) : null}
+              <Disclosure title={`Detalles de ${i.nombre}`} compact>
                 <Text style={s.muted}>
-                  {i.medida || 'Sin medida'} · {m?.cantidadGalpon ?? 0} en depósito
+                  Medida: {i.medida || 'Sin medida'}. Para otra medida, selecciona su material
+                  maestro.
                 </Text>
-                {i.apodo ? <Text style={s.muted}>{i.apodo}</Text> : null}
-              </View>
-              <SmartCounter
-                label={`${i.nombre} ${i.medida || ''}`}
-                value={i.cantidad}
-                onChange={(cantidad) => update(i.materialId, { cantidad })}
-              />
+                <View style={s.wrap}>
+                  {['Con orejas', 'Antideslizante', 'Reforzado', 'De madera'].map((apodo) => (
+                    <Chip
+                      key={apodo}
+                      label={apodo}
+                      selected={i.apodo === apodo}
+                      onPress={() => update(i.materialId, { apodo })}
+                    />
+                  ))}
+                </View>
+                <Field
+                  label="Apodo de esta carga"
+                  value={i.apodo || ''}
+                  onChangeText={(apodo) => update(i.materialId, { apodo })}
+                  maxLength={80}
+                />
+                <Button
+                  label="Quitar material"
+                  variant="ghost"
+                  onPress={() => change(items.filter((x) => x.materialId !== i.materialId))}
+                />
+              </Disclosure>
             </View>
-            {m && i.cantidad > m.cantidadGalpon ? (
-              <Notice
-                text={`Stock bajo: Pedidos ${i.cantidad} | En Depósito ${m.cantidadGalpon}. Puedes guardar la carga. La entrega requiere procedencia autorizada.`}
-              />
-            ) : null}
-            <Disclosure title={`Detalles de ${i.nombre}`}>
-              <Text style={s.muted}>
-                Medida: {i.medida || 'Sin medida'}. Para otra medida, selecciona su material
-                maestro.
-              </Text>
-              <View style={s.wrap}>
-                {['Con orejas', 'Antideslizante', 'Reforzado', 'De madera'].map((apodo) => (
-                  <Chip
-                    key={apodo}
-                    label={apodo}
-                    selected={i.apodo === apodo}
-                    onPress={() => update(i.materialId, { apodo })}
-                  />
-                ))}
-              </View>
-              <Field
-                label="Apodo de esta carga"
-                value={i.apodo || ''}
-                onChangeText={(apodo) => update(i.materialId, { apodo })}
-                maxLength={80}
-              />
-              <Button
-                label="Quitar material"
-                variant="ghost"
-                onPress={() => change(items.filter((x) => x.materialId !== i.materialId))}
-              />
-            </Disclosure>
-          </View>
-        );
-      })}
+          );
+        })}
+      </View>
       <Text style={s.muted}>
         La carga se prepara aquí. Las existencias se mueven al confirmar la entrega.
       </Text>

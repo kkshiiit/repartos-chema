@@ -4,7 +4,9 @@ El usuario reabrió el rediseño porque 1.4 conservaba composición anterior. Es
 
 Fase actual: implementación estructural de las4pestañas, detalle/alta/carga, ajustes/combos/documentos. Sin cambios en dominio, SQLite, migración, fotos ni JSON. Footer compartido y paneles conservan funciones secundarias. Capturas baseline reales430×840 claro/oscuro y fixture fijo en artifacts/capturas/estructura-1.5. No APK nuevo todavía. Pendientes: check completo, adaptar recorridos a paneles, exportar web, comparar capturas con referencias y corregir estructura antes de compilar. Después commits/push, APK1.5.0/code8 con certificado existente, verificación y descargas sin borrar versiones anteriores. No validación física disponible.
 
-Próxima acción exacta: leer /tmp/chema-estructura-check.txt, corregir resultados y ejecutar web+UI sobre build nuevo. Consultar gitlog para commits posteriores.
+Bloques publicados f978056 (pestañas/primitivas) y b4e8f4c (detalle/herramientas). Check nuevo222/222,28archivos, lint/tsc/Functions pasan. Primera UI tuvo7fallos:4cotas estrechas de nombre Depósito y3selectores de menú/CTA no adaptados (Deshacer, Depósito Chema, Agregar material); no se ocultan. Correcciones aplicadas y pendientes repetir. Capturas reales revisadas: alquileres96px/3visibles; se compactaron más Viaje/detalle/carga antes de cierre. Preparada versión1.5.0/code8, sin cambios de dependencias salvo metadata versión.
+
+Próxima acción exacta: terminar check y nueva exportación web, correr UI con JSONreport, generar comparativas exactas contra las láminas y revisarlas ANTES de Gradle. No marcar APK nuevo disponible aún. Consultar gitlog para commits posteriores.
 
 ---
 

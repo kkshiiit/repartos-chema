@@ -65,12 +65,14 @@ export function historyRows(logs: ActivityLog[], today = businessDate()): Histor
   for (const log of [...logs].sort((a, b) => b.timestamp.localeCompare(a.timestamp))) {
     const date = businessDate(new Date(log.timestamp));
     if (date !== last) {
-      const formatted = new Date(`${date}T12:00:00Z`).toLocaleDateString('es-AR', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-        timeZone: 'UTC',
-      }).replaceAll(' de ', ' ');
+      const formatted = new Date(`${date}T12:00:00Z`)
+        .toLocaleDateString('es-AR', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          timeZone: 'UTC',
+        })
+        .replaceAll(' de ', ' ');
       rows.push({
         kind: 'section',
         id: `date_${date}`,
