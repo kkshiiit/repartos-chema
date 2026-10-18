@@ -98,7 +98,7 @@ export default function WarehousePage() {
         ListHeaderComponent={
           <View style={{ gap: spacing.md, paddingBottom: spacing.lg }}>
             <Text style={s.muted}>
-              {state.materiales.length} piezas ·{' '}
+              {state.materiales.length} tipos de pieza ·{' '}
               {state.materiales.filter((m) => m.cantidadGalpon > 0).length} con stock disponible
             </Text>
             <Field

@@ -25,15 +25,23 @@ test('cambiar nombre local conserva inventario y autores sin cuentas ni invitaci
   );
   await page.goto('/configuracion');
   await expect(page.getByRole('button', { name: 'Crear invitación', exact: true })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Persona A', exact: true }).click();
   await page.getByRole('button', { name: 'Cambiar nombre', exact: true }).click();
   await page.getByLabel('Tu nombre', { exact: true }).fill('Persona B');
   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
   await page.goto('/obra/obra_5');
-  await page.getByRole('button', { name: 'Entregar', exact: true }).last().click();
+  await page.getByRole('button', { name: 'Registrar entrega', exact: true }).last().click();
   await page.getByRole('button', { name: 'Fabián', exact: true }).click();
-  await page.getByRole('button', { name: 'Confirmar operación', exact: true }).click();
+  await page.getByRole('button', { name: 'Confirmar entrega', exact: true }).click();
   await page.goto('/historial');
-  await expect(page.getByText(/^Persona B ·/).first()).toBeVisible();
+  await expect(page.getByText(/Persona B/).first()).toBeVisible();
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => JSON.parse(localStorage.getItem('chema:demo:v1')!).state.logs[0].usuarioNombre,
+      ),
+    )
+    .toBe('Persona B');
   expect(
     await page.evaluate(
       () => JSON.parse(localStorage.getItem('chema:demo:v1')!).state.obras.length,

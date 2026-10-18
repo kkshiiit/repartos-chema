@@ -49,11 +49,16 @@ async function fixture(page: Page, theme: string, reference = false) {
     state.obras.forEach((o, i) => {
       const amount = [8, 6, 2][i];
       o.clienteNombre = names[i];
+      o.fechaEntrega = '2026-10-14';
       o.localidadBarrio = zones[i];
       o.fechaRetiroEstimada = ['2026-10-18', '2026-10-17', '2026-10-21'][i];
       o.materialesCargados = o.materialesCargados
         .filter((m) => ['marco130', 'tablon'].includes(m.materialId))
-        .map((m) => ({ ...m, cantidad: m.materialId === 'marco130' ? amount : amount / 2 }));
+        .map((m) => ({
+          ...m,
+          cantidad: m.materialId === 'marco130' ? amount : amount / 2,
+          apodo: undefined,
+        }));
       o.saldosEnObra = Object.fromEntries(
         o.materialesCargados.map((m) => [m.materialId, m.cantidad]),
       );
@@ -70,6 +75,17 @@ async function fixture(page: Page, theme: string, reference = false) {
     state.logs[0].obraNombre = 'Obra Centro';
     state.logs[1].accion = 'Entrega registrada';
     state.logs[1].obraNombre = 'Obra Norte';
+    state.logs.forEach((l, i) => {
+      l.usuarioNombre = 'Fabián';
+      l.timestamp = i ? '2026-10-17T19:37:00Z' : '2026-10-17T13:24:00Z';
+      l.movimientos[0].cantidad = i ? 6 : 8;
+      l.movimientos.push({
+        ...l.movimientos[0],
+        materialId: 'tablon',
+        materialNombre: 'Tablón metálico',
+        cantidad: i ? 3 : 4,
+      });
+    });
   }
   await page.emulateMedia({
     reducedMotion: 'reduce',
@@ -85,9 +101,9 @@ async function fixture(page: Page, theme: string, reference = false) {
         );
       localStorage.setItem('chema:theme:v1', theme);
     },
-    { state, theme },
+    { state, theme: reference ? 'system' : theme },
   );
-  await login(page, 'Juan de prueba');
+  await login(page, reference ? 'Fabián' : 'Juan de prueba');
 }
 
 for (const theme of ['light', 'dark'])
@@ -164,7 +180,7 @@ for (const theme of ['light', 'dark'])
       ['/galpon', 'deposito', 446, 881],
       ['/mapa', 'viaje', 445, 812],
       ['/historial', 'historial', 446, 795],
-      ['/obra/obra_1', 'detalle', 413, 934],
+      ['/obra/obra_2', 'detalle', 413, 934],
       ['/obra/nueva', 'nuevo', 424, 950],
       ['/configuracion', 'ajustes', 419, 929],
       ['/combos', 'combos', 420, 929],
@@ -174,6 +190,11 @@ for (const theme of ['light', 'dark'])
       await page.setViewportSize({ width, height });
       await page.goto(route);
       await expect(page.getByRole('heading').first()).toBeVisible();
+      if (name === 'nuevo') {
+        await page.getByLabel('Nombre del cliente', { exact: true }).fill('Obra Suárez');
+        await page.getByLabel('Barrio / localidad', { exact: true }).fill('José León Suárez');
+        await page.getByLabel('Retiro · AAAA-MM-DD', { exact: true }).fill('21/10/2026');
+      }
       await page.screenshot({ path: `${output}/referencia-app-${name}-${theme}.png` });
     }
   });
