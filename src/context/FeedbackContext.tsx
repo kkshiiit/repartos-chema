@@ -1,0 +1,204 @@
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppState, Text, View } from 'react-native';
+import { useInventory } from './InventoryContext';
+import { useTheme } from './ThemeContext';
+import { Button } from '../components/ui';
+import {
+  notificationAdapter,
+  confirmationFeedback,
+  requestFeedbackPermission,
+} from '../services/feedback/notification-adapter';
+import {
+  FeedbackPreferences,
+  FeedbackState,
+  RentalReference,
+  ReminderService,
+  initialFeedbackState,
+} from '../services/feedback/reminders';
+interface FeedbackValue {
+  state: FeedbackState;
+  ready: boolean;
+  busy: boolean;
+  error: string;
+  supported: boolean;
+  savePreferences: (patch: Partial<FeedbackPreferences>) => Promise<boolean>;
+  scheduleReminder: (
+    obra: RentalReference,
+    at: string,
+    sound: boolean,
+    vibration: boolean,
+  ) => Promise<boolean>;
+  cancelReminder: (obraId: string) => Promise<boolean>;
+  retry: () => Promise<boolean>;
+  notifySuccess: (message: string) => void;
+  notifyError: (message: string, retry?: () => void | Promise<void>) => void;
+}
+const Context = createContext<FeedbackValue | null>(null);
+export function FeedbackProvider({ children }: { children: React.ReactNode }) {
+  const { state: inventory, ready: inventoryReady } = useInventory();
+  const { colors } = useTheme();
+  const [service] = useState(() => new ReminderService(AsyncStorage, notificationAdapter));
+  const [state, setState] = useState(initialFeedbackState),
+    [ready, setReady] = useState(false),
+    [busy, setBusy] = useState(false),
+    [error, setError] = useState(''),
+    [retryingOperation, setRetryingOperation] = useState(false);
+  const [notice, setNotice] = useState<{
+    message: string;
+    error: boolean;
+    retry?: () => void | Promise<void>;
+  } | null>(null);
+  const operationRetryLock = useRef(false);
+  const count = useRef(0),
+    timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const run = useCallback(
+    async (operation: () => Promise<FeedbackState>) => {
+      count.current += 1;
+      setBusy(true);
+      try {
+        setState(await operation());
+        setError('');
+        return true;
+      } catch (e) {
+        setState(service.snapshot());
+        setError(
+          e instanceof Error ? e.message : 'No se pudo actualizar el aviso local. Reintentá.',
+        );
+        return false;
+      } finally {
+        count.current -= 1;
+        setBusy(count.current > 0);
+      }
+    },
+    [service],
+  );
+  const retry = useCallback(
+    () => run(() => service.reconcile(inventory.obras)),
+    [run, service, inventory.obras],
+  );
+  useEffect(() => {
+    let active = true;
+    void Promise.resolve()
+      .then(() => run(() => service.initialize()))
+      .then(() => {
+        if (active) setReady(true);
+      });
+    return () => {
+      active = false;
+    };
+  }, [run, service]);
+  useEffect(() => {
+    if (ready && inventoryReady) void Promise.resolve().then(retry);
+  }, [ready, inventoryReady, retry]);
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (status) => {
+      if (status === 'active' && inventoryReady) void retry();
+    });
+    return () => subscription.remove();
+  }, [retry, inventoryReady]);
+  useEffect(() => () => clearTimeout(timer.current), []);
+  const notify = (message: string, isError: boolean, retryAction?: () => void | Promise<void>) => {
+    clearTimeout(timer.current);
+    setNotice({ message, error: isError, retry: retryAction });
+    if (!isError) timer.current = setTimeout(() => setNotice(null), 6500);
+    if (state.preferences.confirmations)
+      void confirmationFeedback(
+        state.preferences.sound,
+        state.preferences.vibration,
+        isError,
+      ).catch(() =>
+        setError(
+          'No pudo emitirse el sonido o la vibración opcional. Revisá los permisos de avisos.',
+        ),
+      );
+  };
+  return (
+    <Context.Provider
+      value={{
+        state,
+        ready,
+        busy,
+        error,
+        supported: notificationAdapter.supported,
+        savePreferences: (patch) =>
+          run(async () => {
+            const next = { ...service.snapshot().preferences, ...patch };
+            if (
+              next.confirmations &&
+              (next.sound || next.vibration) &&
+              (patch.confirmations === true || patch.sound === true || patch.vibration === true) &&
+              !(await requestFeedbackPermission())
+            )
+              throw new Error(
+                'No se autorizó el permiso para los avisos opcionales. Las preferencias anteriores se conservaron.',
+              );
+            return service.preferences(patch);
+          }),
+        scheduleReminder: (obra, at, sound, vibration) =>
+          run(() => service.enable(obra, at, sound, vibration)),
+        cancelReminder: (id) => run(() => service.cancel(id)),
+        retry,
+        notifySuccess: (message) => notify(message, false),
+        notifyError: (message, retryAction) => notify(message, true, retryAction),
+      }}
+    >
+      {children}
+      {notice && (
+        <View
+          accessibilityLiveRegion={notice.error ? 'assertive' : 'polite'}
+          style={{
+            backgroundColor: notice.error ? colors.dangerBg : colors.panel,
+            borderTopWidth: 1,
+            borderColor: colors.line,
+            padding: 16,
+            gap: 8,
+          }}
+        >
+          <Text
+            style={{
+              color: notice.error ? colors.danger : colors.text,
+              fontSize: 16,
+              lineHeight: 23,
+            }}
+          >
+            {notice.message}
+          </Text>
+          {notice.retry && (
+            <Button
+              label="Reintentar operación"
+              variant="secondary"
+              loading={retryingOperation}
+              onPress={() => {
+                if (operationRetryLock.current || !notice.retry) return;
+                operationRetryLock.current = true;
+                setRetryingOperation(true);
+                void Promise.resolve()
+                  .then(notice.retry)
+                  .catch((failure: unknown) => {
+                    setNotice({
+                      ...notice,
+                      message:
+                        failure instanceof Error
+                          ? failure.message
+                          : 'No se pudo completar la operación. Reintentá.',
+                    });
+                  })
+                  .finally(() => {
+                    operationRetryLock.current = false;
+                    setRetryingOperation(false);
+                  });
+              }}
+            />
+          )}
+          <Button label="Cerrar aviso" variant="ghost" onPress={() => setNotice(null)} />
+        </View>
+      )}
+    </Context.Provider>
+  );
+}
+export function useFeedback() {
+  const context = useContext(Context);
+  if (!context) throw new Error('Falta el proveedor de avisos locales.');
+  return context;
+}

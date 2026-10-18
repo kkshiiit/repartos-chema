@@ -45,7 +45,25 @@
       "expo-font",
       "expo-system-ui",
       "expo-sqlite",
-      "expo-audio"
+      [
+        "expo-audio",
+        {
+          "recordAudioAndroid": false,
+          "microphonePermission": false,
+          "enableBackgroundPlayback": false,
+          "enableBackgroundRecording": false
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "sounds": [
+            "./assets/sounds/01_recordatorio_calido.wav",
+            "./assets/sounds/02_confirmacion_sutil.wav",
+            "./assets/sounds/03_atencion_suave.wav"
+          ]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": false
