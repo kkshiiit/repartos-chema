@@ -69,7 +69,7 @@ describe('adaptadores de notificaciones locales', () => {
     expect(notifications.setNotificationChannelAsync).toHaveBeenCalledWith(
       'chema-reminder-v1-s1-v0',
       expect.objectContaining({
-        sound: '01_recordatorio_calido.wav',
+        sound: 'chema_recordatorio_calido.wav',
         bypassDnd: false,
         enableVibrate: false,
         audioAttributes: expect.objectContaining({

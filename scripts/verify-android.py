@@ -44,7 +44,7 @@ with zipfile.ZipFile(apk) as archive:
     assert {name.split('/')[1] for name in archive.namelist()
             if name.startswith('lib/') and name.count('/') > 1} == {'arm64-v8a'}
     assert 'lib/arm64-v8a/libexpo-sqlite.so' in archive.namelist(), 'Falta SQLite nativo'
-    sounds = ['01_recordatorio_calido.wav', '02_confirmacion_sutil.wav', '03_atencion_suave.wav']
+    sounds = ['chema_recordatorio_calido.wav', 'chema_confirmacion_sutil.wav', 'chema_atencion_suave.wav']
     assert all(any(name.endswith('/' + sound) and name.startswith('res/raw/') for name in archive.namelist()) for sound in sounds), 'Faltan tonos nativos'
     bundle = archive.read('assets/index.android.bundle')
     assert not re.search(rb'AIza[0-9A-Za-z_-]{35}', bundle), 'Clave pública Firebase/Google embebida'

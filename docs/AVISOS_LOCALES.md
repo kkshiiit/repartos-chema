@@ -66,3 +66,7 @@ Utilizar un alquiler de prueba claramente identificado, sin mover stock ni impor
 9. Anotar modelo, versión Android, versión/code del APK, permisos/canal usados, fecha/hora esperada y observada, estado de batería/primer plano y resultado de cada paso. El reporte debe distinguir claramente prueba física, emulador y mocks.
 
 Pendiente al redactar: comprobación física de permiso Android, presentación/sonido/vibración, silencio/DND, persistencia real después de reinicio, políticas de batería y recurso WAV dentro del APK final. No se declaran medidas de FPS o batería.
+
+## Recursos Android
+
+El plugin Expo exige nombres que comiencen con letra. Los WAV originales se conservan en docs/diseno-papel-cobalto/sonidos-v2 y se incluyen sin modificar sus bytes como assets/sounds/chema_recordatorio_calido.wav, chema_confirmacion_sutil.wav y chema_atencion_suave.wav. La validación del plugin (más estricta que aapt2 compile aislado) rechazó los nombres numéricos originales en el primer prebuild; se corrigió antes de Gradle.

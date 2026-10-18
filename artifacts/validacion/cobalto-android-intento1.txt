@@ -1,0 +1,24 @@
+
+> repartos-chema@1.4.0 build:android:demo
+> node scripts/build-android-demo.mjs
+
+- Clearing android
+✔ Cleared android code
+- Creating native directory (./android)
+✔ Created native directory
+- Updating package.json
+✔ Updated package.json | no changes
+- Running prebuild
+✖ Prebuild failed
+Error: [android.dangerous]: withAndroidDangerousBaseMod: [expo-notifications] Resource name "01_recordatorio_calido" is not valid. Android resource names must start with a letter and contain only lowercase a-z, 0-9, or underscore characters. Additionally, Java reserved words are not allowed.
+Error: [android.dangerous]: withAndroidDangerousBaseMod: [expo-notifications] Resource name "01_recordatorio_calido" is not valid. Android resource names must start with a letter and contain only lowercase a-z, 0-9, or underscore characters. Additionally, Java reserved words are not allowed.
+    at assertValidAndroidAssetName (/workspace/repartos-chema/node_modules/@expo/config-plugins/build/utils/validations.js:15:11)
+    at writeNotificationSoundFile (/workspace/repartos-chema/node_modules/expo-notifications/plugin/build/withNotificationsAndroid.js:165:58)
+    at setNotificationSounds (/workspace/repartos-chema/node_modules/expo-notifications/plugin/build/withNotificationsAndroid.js:154:9)
+    at /workspace/repartos-chema/node_modules/expo-notifications/plugin/build/withNotificationsAndroid.js:63:13
+    at action (/workspace/repartos-chema/node_modules/@expo/config-plugins/build/plugins/withMod.js:197:29)
+    at interceptingMod (/workspace/repartos-chema/node_modules/@expo/config-plugins/build/plugins/withMod.js:102:27)
+    at action (/workspace/repartos-chema/node_modules/@expo/config-plugins/build/plugins/withMod.js:202:14)
+    at async interceptingMod (/workspace/repartos-chema/node_modules/@expo/config-plugins/build/plugins/withMod.js:102:21)
+    at async interceptingMod (/workspace/repartos-chema/node_modules/@expo/config-plugins/build/plugins/withMod.js:102:21)
+    at async interceptingMod (/workspace/repartos-chema/node_modules/@expo/config-plugins/build/plugins/withMod.js:102:21)

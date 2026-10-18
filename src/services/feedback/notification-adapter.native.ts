@@ -4,9 +4,9 @@ import { createAudioPlayer, setAudioModeAsync } from 'expo-audio';
 import * as Haptics from 'expo-haptics';
 import type { ReminderAdapter } from './reminders';
 const sounds = {
-  reminder: '01_recordatorio_calido.wav',
-  success: '02_confirmacion_sutil.wav',
-  error: '03_atencion_suave.wav',
+  reminder: 'chema_recordatorio_calido.wav',
+  success: 'chema_confirmacion_sutil.wav',
+  error: 'chema_atencion_suave.wav',
 };
 Notifications.setNotificationHandler({
   handleNotification: async (notification) => ({
@@ -130,8 +130,8 @@ export async function confirmationFeedback(sound: boolean, vibrate: boolean, err
         });
         const player = createAudioPlayer(
           error
-            ? require('../../../assets/sounds/03_atencion_suave.wav')
-            : require('../../../assets/sounds/02_confirmacion_sutil.wav'),
+            ? require('../../../assets/sounds/chema_atencion_suave.wav')
+            : require('../../../assets/sounds/chema_confirmacion_sutil.wav'),
         );
         player.volume = 0.45;
         player.play();
