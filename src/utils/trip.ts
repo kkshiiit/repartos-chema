@@ -1,5 +1,7 @@
 import type { ObraCard } from '../types';
 import { businessDate, coordinates, distanceKm } from '../domain/rules';
+import { obraPresentationStatus } from './listPresentation';
+import { isCalendarDate } from './retirementCalendar';
 export interface DepotSettings {
   schema: 1;
   nombre: string;
@@ -55,14 +57,16 @@ export function sortTripStops(
   } = {},
 ) {
   const today = options.today || businessDate();
-  const rank = (o: ObraCard) =>
-    o.estadoProceso === 'PENDIENTE_ENTREGA'
-      ? 2
-      : o.fechaRetiroEstimada < today
-        ? 0
-        : o.fechaRetiroEstimada === today
-          ? 1
-          : 3;
+  const priorities: Record<string, number> = {
+    ROJO: 0,
+    AMARILLO: 1,
+    PENDIENTE: 2,
+    VERDE: 3,
+    SIN_FECHA: 4,
+  };
+  const rank = (o: ObraCard) => priorities[obraPresentationStatus(o, today).key] ?? 4;
+  const sortDate = (o: ObraCard) =>
+    isCalendarDate(o.fechaRetiroEstimada) ? o.fechaRetiroEstimada : '';
   return items
     .filter((o) => ['ENTREGADO', 'PENDIENTE_ENTREGA'].includes(o.estadoProceso))
     .slice()
@@ -85,8 +89,7 @@ export function sortTripStops(
         if (a.coordenadas && !b.coordenadas) return -1;
       }
       return (
-        a.fechaRetiroEstimada.localeCompare(b.fechaRetiroEstimada) ||
-        a.clienteNombre.localeCompare(b.clienteNombre)
+        sortDate(a).localeCompare(sortDate(b)) || a.clienteNombre.localeCompare(b.clienteNombre)
       );
     });
 }

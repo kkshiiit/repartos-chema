@@ -8,7 +8,8 @@ import { useAuth } from '../src/context/AuthContext';
 import { Button, Field, Notice, Screen, Select, useUI } from '../src/components/ui';
 import { exportDocument } from '../src/services/exportService';
 import { DATA_MODE } from '../src/services/firebase';
-import { obraStatus, validDate } from '../src/domain/rules';
+import { businessDate, validDate } from '../src/domain/rules';
+import { obraPresentationStatus } from '../src/utils/listPresentation';
 export default function Export() {
   const { C, s } = useUI();
   const { obraId } = useLocalSearchParams<{ obraId?: string }>(),
@@ -33,6 +34,7 @@ export default function Export() {
         if (to) validDate(to);
         if (from && to && from > to) throw new Error('Rango de fechas inválido.');
       }
+      const today = businessDate();
       const obras =
         kind === 'word'
           ? state.obras.filter((o) => o.id === selection)
@@ -40,7 +42,7 @@ export default function Export() {
               (o) =>
                 (!from || o.fechaEntrega >= from) &&
                 (!to || o.fechaEntrega <= to) &&
-                (status === 'TODAS' || obraStatus(o).key === status),
+                (status === 'TODAS' || obraPresentationStatus(o, today).key === status),
             );
       setSuccess(await exportDocument(kind, obras, user!, { from, to, status }));
     } catch (e) {
@@ -134,6 +136,7 @@ export default function Export() {
                   { value: 'ROJO', label: 'Vencido' },
                   { value: 'AMARILLO', label: 'Retiro hoy' },
                   { value: 'VERDE', label: 'Al día' },
+                  { value: 'SIN_FECHA', label: 'Sin fecha de retiro' },
                   { value: 'PENDIENTE', label: 'Por entregar' },
                   { value: 'RETIRADO', label: 'Retirado' },
                   { value: 'REINGRESADO', label: 'Reingresado' },
