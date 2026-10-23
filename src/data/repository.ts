@@ -30,7 +30,7 @@ export class Repository {
       if (!validateExisting) return f();
       const fresh = await this.storage.getItem(this.key);
       if (fresh !== null) {
-        const parsed = parseEnvelope(fresh);
+        const parsed = parseEnvelope(fresh, { allowLegacyRetirementDate: true });
         this.envelope = parsed;
       } else if (this.envelope) {
         throw new Error(

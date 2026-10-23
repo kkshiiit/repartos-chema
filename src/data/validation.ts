@@ -48,7 +48,9 @@ const obra = z
     direccion: z.string(),
     localidadBarrio: z.string(),
     fechaEntrega: date,
-    fechaRetiroEstimada: date,
+    // Legacy values remain untouched in historical inverse snapshots. Active state dates
+    // are checked below, with a read-only exception for opening the existing local store.
+    fechaRetiroEstimada: z.string().nullable().optional(),
     fechaRetiroEfectiva: date.optional(),
     fechaEntregaEfectiva: date.optional(),
     recibidoPor: z.string().max(80).optional(),
@@ -170,6 +172,8 @@ export function validateImportEnvelope(e: Envelope): void {
       }
     }
     for (const work of s.obras) {
+      // Imports always need a valid active date, even if their caller used legacy reading.
+      validDate(work.fechaRetiroEstimada);
       const loadIds = new Set<string>();
       for (const item of work.materialesCargados) {
         const master = materials.get(item.materialId);
@@ -225,11 +229,17 @@ export function validateImportEnvelope(e: Envelope): void {
   }
 }
 
-export function parseEnvelope(raw: string): Envelope {
+export function parseEnvelope(
+  raw: string,
+  options: { allowLegacyRetirementDate?: boolean } = {},
+): Envelope {
   try {
     const data: unknown = JSON.parse(raw);
     envelope.parse(data);
     const e = data as Envelope;
+    if (!options.allowLegacyRetirementDate)
+      for (const s of [e.state, e.confirmed])
+        for (const work of s.obras) validDate(work.fechaRetiroEstimada);
     assertState(e.state);
     assertState(e.confirmed);
     if (new Set(e.queue.map((q) => q.operation.id)).size !== e.queue.length)

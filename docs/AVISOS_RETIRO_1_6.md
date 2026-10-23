@@ -38,3 +38,9 @@ No hay dispositivo Android conectado: cierre/reapertura, reinicio real, permiso 
 4. Cerrar normalmente y esperar. Tocar notificación con app abierta, en segundo plano y cerrada: debe abrir el alquiler. Comprobar que no cambió stock.
 5. Cambiar hora general; personalizar otro alquiler y verificar que se conserva su hora. Volver a General. Extender/acortar/retirar: avisos viejos se cancelan, sin duplicados ni disparar pasados.
 6. Reiniciar teléfono con un aviso futuro; esperar y registrar resultado/versiónAndroid/ajustes de batería. Forzar detención es distinto de cerrar y puede impedir avisos hasta reabrir. No eliminar datos para probar.
+
+## Compatibilidad de registros antiguos
+
+La lectura del almacenamiento existente permite `fechaRetiroEstimada` ausente, `null` o texto inválido. No reescribe ni normaliza el original: la UI muestra Sin fecha de retiro y permite Editar. Ningún otro campo de stock/ID/cantidad pierde validación. Crear/editar nuevos alquileres e importar estados activos siguen exigiendo fecha válida. Los snapshots inversos históricos conservan el dato original para auditoría; así el JSON de un alquiler ya reparado sigue siendo exportable/restaurable. Deshacer hacia un dato sin fecha puede rechazarse de forma segura por las reglas vigentes; no se finge reversión ni se modifica stock para forzarla. Se documenta completar fecha antes de operar en esos alquileres.
+
+Treinta regresiones comprueban lectura sin escritura, reparación auditada y reapertura, cantidades/saldos, importación estricta y ciclo real backup→inspección→restauración del estado reparado. No se cambia el esquema SQLite ni el flujo de migración AsyncStorage→SQLite.
