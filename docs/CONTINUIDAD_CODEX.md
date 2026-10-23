@@ -1,3 +1,21 @@
+# Cierre1.6 individual — APK publicado y recuperado — 23/10/2026
+
+**Completado dentro del acceso disponible. Próxima acción: prueba física en Android del usuario.** No reconstruir ni continuar rediseño por un cambio documental. La ejecución actual no activa continuidad automática ni servicios pagos.
+
+Runtime APK: **295a97757446310eba5a48260804ae7b655ec0dd**, versión1.6.0/code9, packagecom.grupochema.repartos, ARM64/Android7+,56174111bytes. Main anterior a este cierre206793b; el siguiente commit guarda informe/pruebas de publicación(consultar gitlog). DescargasAPK **4f4f7988a2c194637df6a0ab37bfdcbb65f1f8b5**, fuente295a977 en96e2274 y web enfad45fc. Descargar android/v1.6.0-local.1/repartos-chema-local-1.6.0-arm64.apk.
+
+SHA256 **29a4a57b7ea1a746c6127d2f8b688b12278a7e41837bd8f85e05eb97ba3bf675**. Certificado **fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c**, mismo que1.5/1.4. Gradle completo BUILD SUCCESSFUL9m32s/701tareas; firma v2,CRC,ABI,minSDK24,no debuggable,SQLite/tresWAV porhash y marcadoresnuevos comprobados. Recuperado desde clon independiente, hash/CRC idénticos y7APKanterior blobs intactos. Ver avisos-descarga-remota.json. APK1.5 anterior permanece preservado localmente en /workspace/entregas/cobalto-1.5.0, no confundir con1.6.
+
+Check final436/436 en37archivos, tsc/lint/Functions build pasan. UIgeneral56/56(4.1min); tras ajuste de formulariolegacy y rolgrupo6/6repetidos(44.5s),8Axe0violaciones/0incompletas. Npmci limpio1565paquetes y lock/decoder verificados. Web exportada;19comparativas reales, manifiesto/capturas/GALERIA_AVISOS_1_6.md. Contraste/renderweb no eshardware. Npm audit9entradas propagadas,0críticas, revisióncompatible pendiente; no auditfix/downgrade.
+
+FechaRetiroEstimada se presenta Alquilado hasta; no nuevofincomercial distinto. CountdowncalendarioArgentina sin guardar días, hookmedianoche/resume. Un único ReminderService migrado v1→v2, generaloptin08:00+3/2/1/0, herencia/personalizaciónreal, manualprotegido, intenciones/cancelaciones/reintentos/permisos converdadparcial. No altera stock. Legacyfechasinválidas se leen sinreescribir y se completan explícitamente; nuevoscomandos/importactivos siguenestrictos. SQLite/migración/fotos/JSON/reglasstock sinreescribir. Automáticossilenciosos independientesdeconfirmaciones, sólohorariosfuturos. Taps esperan sesión/inventario/navegación.
+
+**Límites reales:** adb sin dispositivo/emulador. Instalación/migraciónfísica, calendario, cámara/compartir, notificaciones con appcerrada/reinicio/puntualidad, TalkBack y rendimiento debenprobarse. APK no declaraalarmasexactas; OS puede retrasaravisos. Web no programaavisos. Sin nube/Ads/Firebaseobligatorio/facturación/PlayStore/PDF.
+
+**Retomar:** comprobarworkspace/git/remoto y este punto. Si pideAPK, entregar enlaceexistente y pasosAndroid en ENTREGALOCAL1.6; no recompilar. Si informaerror, conservaroriginal/JSON, reproducirproblemaespecífico sinreset/desinstalar. ClavefueraGit /workspace/respaldos/firma-interna/chema-restaurada-1.3.keystore; no publicar/incluirenZIP ni cambiarfirma. Fuente/runtime295a977 respaldada y restaurada; cierre documental se empaqueta aparte preservando snapshot previo. Guía/informe: docs/ENTREGA_LOCAL_1_6.md y AVISOS_RETIRO_1_6.md.
+
+---
+
 # Gradle1.6 en curso y fuente recuperada de GitHub — 23/10/2026 21:27UTC
 
 Código funcional congelado295a977, main respaldado antes de compilar. ZIP1254archivos en descargas96e2274, SHAeefd6b61ea2fb60b51ce62d873ff89784d40a24a2ad9978d2ce57487d6af8759; restauración local completa y recuperación desde clon independiente con hash/CRC iguales. WebZIP en descargasfad45fc. No borradas versiones anteriores. Reporte principal preparado docs/ENTREGA_LOCAL_1_6.md.
