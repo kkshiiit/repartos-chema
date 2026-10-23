@@ -43,8 +43,13 @@ import { openLink } from '../../src/services/links';
 import { selectPhoto } from '../../src/services/storageService';
 import { LOCAL_ONLY } from '../../src/services/localMode';
 import { DATA_MODE } from '../../src/services/firebase';
+import { businessDate } from '../../src/domain/rules';
+import { useBusinessClock } from '../../src/hooks/useBusinessClock';
+import { retirementCountdown } from '../../src/utils/retirementCalendar';
+import { formatDate } from '../../src/utils/formatters';
 export default function Detail() {
   const { C, s } = useUI();
+  const now = useBusinessClock();
   const { id, accion } = useLocalSearchParams<{ id: string; accion?: string }>(),
     { state, dispatch } = useInventory(),
     { user } = useAuth();
@@ -81,6 +86,7 @@ export default function Detail() {
       </Screen>
     );
   const incident = o.faltantesRegistrados?.find((i) => i.id === recoverId);
+  const countdown = retirementCountdown(o, now);
   const materialIds = [
     ...new Set([
       ...o.materialesCargados.map((m) => m.materialId),
@@ -109,7 +115,7 @@ export default function Detail() {
               <MapPin size={18} color={C.muted} />
               <Text style={[s.muted, s.grow]}>{o.localidadBarrio}</Text>
             </View>
-            <StatusChip obra={o} />
+            <StatusChip obra={o} today={businessDate(now)} />
           </View>
           <Text style={s.muted}>{o.direccion}</Text>
         </View>
@@ -123,7 +129,7 @@ export default function Detail() {
           <View style={{ flex: 1, minWidth: 90, gap: 4 }}>
             <Text style={s.muted}>Entrega prevista</Text>
             <Text style={[s.label, { fontVariant: ['tabular-nums'] }]}>
-              {o.fechaEntrega.split('-').reverse().join('/')}
+              {formatDate(o.fechaEntrega)}
             </Text>
           </View>
           <View
@@ -136,12 +142,22 @@ export default function Detail() {
               paddingLeft: 16,
             }}
           >
-            <Text style={s.muted}>Retiro previsto</Text>
-            <Text style={[s.label, { fontVariant: ['tabular-nums'] }]}>
-              {o.fechaRetiroEstimada.split('-').reverse().join('/')}
+            <Text style={s.muted}>
+              {o.estadoProceso === 'PENDIENTE_ENTREGA' ? 'Retiro previsto' : 'Alquilado hasta'}
             </Text>
+            <Text style={[s.label, { fontVariant: ['tabular-nums'] }]}>
+              {formatDate(o.fechaRetiroEstimada, false, 'Sin fecha de retiro')}
+            </Text>
+            {!countdown.finished && countdown.days !== null ? (
+              <Text accessibilityLiveRegion="polite" style={s.body}>
+                {countdown.label}
+              </Text>
+            ) : null}
           </View>
         </View>
+        {o.fechaRetiroEfectiva ? (
+          <Text style={s.muted}>Retiro efectivo: {formatDate(o.fechaRetiroEfectiva)}</Text>
+        ) : null}
         <View style={{ gap: 12 }}>
           <Text accessibilityRole="header" style={s.h2}>
             {o.estadoProceso === 'PENDIENTE_ENTREGA' ? 'Carga preparada' : 'Materiales en obra'}
@@ -375,15 +391,18 @@ export default function Detail() {
               ))}
             </View>
           ) : null}
-          <Info label="ENTREGA PREVISTA" value={o.fechaEntrega} />
+          <Info label="ENTREGA PREVISTA" value={formatDate(o.fechaEntrega)} />
           <Info
             label="ENTREGA EFECTIVA"
-            value={o.fechaEntregaEfectiva || 'Sin registro efectivo separado'}
+            value={formatDate(o.fechaEntregaEfectiva, false, 'Sin registro efectivo separado')}
           />
           {o.observaciones ? <Info label="OBSERVACIONES" value={o.observaciones} /> : null}
-          <Info label="RETIRO ESTIMADO" value={o.fechaRetiroEstimada} />
+          <Info
+            label="RETIRO ESTIMADO"
+            value={formatDate(o.fechaRetiroEstimada, false, 'Sin fecha de retiro')}
+          />
           {o.fechaRetiroEfectiva ? (
-            <Info label="RETIRO EFECTIVO" value={o.fechaRetiroEfectiva} />
+            <Info label="RETIRO EFECTIVO" value={formatDate(o.fechaRetiroEfectiva)} />
           ) : null}
           <Info label="TELÉFONO" value={o.clienteTelefono || 'Sin teléfono'} />
           <Info label="RECIBIÓ" value={o.recibidoPor || 'Sin registrar'} />

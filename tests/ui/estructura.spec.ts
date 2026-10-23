@@ -195,7 +195,7 @@ for (const theme of ['light', 'dark'])
       if (name === 'nuevo' || name === 'carga') {
         await page.getByLabel('Nombre del cliente', { exact: true }).fill('Obra Suárez');
         await page.getByLabel('Barrio / localidad', { exact: true }).fill('José León Suárez');
-        await page.getByLabel('Retiro · AAAA-MM-DD', { exact: true }).fill('21/10/2026');
+        await page.getByLabel('Alquilado hasta', { exact: true }).fill('2026-10-21');
       }
       if (name === 'carga') {
         await page.getByLabel('Dirección', { exact: true }).fill('Dirección de prueba 3');

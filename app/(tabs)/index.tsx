@@ -8,8 +8,13 @@ import { Button, Empty, Screen, Select, Sheet, useUI } from '../../src/component
 import { CardObra } from '../../src/components/CardObra';
 import { DataList } from '../../src/components/DataList';
 import { SearchToolbar, SectionHeading, Segmented } from '../../src/components/ListStructure';
-import { businessDate, matchesStatusFilter, obraStatus } from '../../src/domain/rules';
-import { rentalRows } from '../../src/utils/listPresentation';
+import { businessDate } from '../../src/domain/rules';
+import {
+  rentalRows,
+  matchesPresentationStatusFilter,
+  obraPresentationStatus,
+} from '../../src/utils/listPresentation';
+import { useBusinessClock } from '../../src/hooks/useBusinessClock';
 export default function Home() {
   const { s } = useUI();
   const { state } = useInventory(),
@@ -18,14 +23,15 @@ export default function Home() {
     [status, setStatus] = useState('TODAS'),
     [zone, setZone] = useState('TODAS'),
     [filtersOpen, setFiltersOpen] = useState(false);
-  const today = businessDate();
+  const now = useBusinessClock();
+  const today = businessDate(now);
   const zones = [...new Set(state.obras.map((o) => o.localidadBarrio))].sort();
   const filtered = useMemo(
     () =>
       state.obras.filter(
         (o) =>
           (zone === 'TODAS' || o.localidadBarrio === zone) &&
-          matchesStatusFilter(o, status, today) &&
+          matchesPresentationStatusFilter(o, status, today) &&
           `${o.clienteNombre} ${o.direccion}`.toLowerCase().includes(query.toLowerCase()),
       ),
     [state.obras, zone, status, query, today],
@@ -33,7 +39,7 @@ export default function Home() {
   const rows = useMemo(() => rentalRows(filtered, today), [filtered, today]);
   const active = state.obras.filter((o) => o.estadoProceso === 'ENTREGADO').length;
   const due = state.obras.filter((o) =>
-    ['ROJO', 'AMARILLO'].includes(obraStatus(o, today).key),
+    ['ROJO', 'AMARILLO'].includes(obraPresentationStatus(o, today).key),
   ).length;
   return (
     <Screen
@@ -90,6 +96,7 @@ export default function Home() {
           ) : (
             <CardObra
               obra={item.obra}
+              now={now}
               first={rows[index - 1]?.kind === 'section'}
               last={!rows[index + 1] || rows[index + 1]?.kind === 'section'}
             />
@@ -115,6 +122,7 @@ export default function Home() {
             { value: 'ROJO', label: 'Vencidos' },
             { value: 'AMARILLO', label: 'Retiro hoy' },
             { value: 'VERDE', label: 'Al día' },
+            { value: 'SIN_FECHA', label: 'Sin fecha de retiro' },
             { value: 'PENDIENTE', label: 'Por entregar' },
             { value: 'RETIRADO', label: 'Retirados' },
           ]}

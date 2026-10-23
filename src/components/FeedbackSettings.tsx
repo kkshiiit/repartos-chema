@@ -27,18 +27,18 @@ export function FeedbackToggle({
     </View>
   );
 }
-export function FeedbackSettings() {
+export function FeedbackSettings({ showError = true }: { showError?: boolean }) {
   const feedback = useFeedback(),
     { s } = useUI();
   const p = feedback.state.preferences;
   return (
     <View style={s.section}>
-      <Text style={s.h2}>Sonido y avisos locales</Text>
+      <Text style={s.h2}>Confirmaciones de operaciones</Text>
       <Text style={s.body}>
         Las confirmaciones son opcionales y aparecen después de guardar una operación. En Android,
         sonido o vibración de confirmación usan una notificación del sistema que se cierra tras unos
-        segundos y requieren permiso al activarlos. Los recordatorios se activan por alquiler, con
-        fecha y hora elegidas.
+        segundos y requieren permiso al activarlos. Esta opción es independiente de los avisos de
+        retiro.
       </Text>
       <FeedbackToggle
         label="Confirmaciones opcionales"
@@ -51,7 +51,7 @@ export function FeedbackSettings() {
       <FeedbackToggle
         label="Sonido de confirmación"
         value={p.sound}
-        disabled={!p.confirmations || feedback.busy || !feedback.supported}
+        disabled={!feedback.ready || !p.confirmations || feedback.busy || !feedback.supported}
         onChange={(value) => {
           void feedback.savePreferences({ sound: value });
         }}
@@ -59,7 +59,7 @@ export function FeedbackSettings() {
       <FeedbackToggle
         label="Vibración de confirmación"
         value={p.vibration}
-        disabled={!p.confirmations || feedback.busy || !feedback.supported}
+        disabled={!feedback.ready || !p.confirmations || feedback.busy || !feedback.supported}
         onChange={(value) => {
           void feedback.savePreferences({ vibration: value });
         }}
@@ -69,7 +69,7 @@ export function FeedbackSettings() {
           ? 'Android controla volumen, silencio, No molestar y canales. Los cambios de sonido crean un canal distinto; el sistema conserva los ajustes de cada canal.'
           : 'En web se muestran confirmaciones de texto. No se programan notificaciones ni se reproduce audio automáticamente.'}
       </Text>
-      {!!feedback.error && (
+      {showError && !!feedback.error && (
         <>
           <Text accessibilityRole="alert" style={s.error}>
             {feedback.error}

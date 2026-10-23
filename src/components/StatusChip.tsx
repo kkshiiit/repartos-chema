@@ -3,10 +3,19 @@ import { statusColor } from '../theme/tokens';
 import { CheckCircle2, Clock, CircleAlert, Archive } from 'lucide-react-native';
 import { View, Text } from 'react-native';
 import type { ObraCard } from '../types';
-import { obraStatus } from '../domain/rules';
-export function StatusChip({ obra, compact = false }: { obra: ObraCard; compact?: boolean }) {
+import { businessDate } from '../domain/rules';
+import { obraPresentationStatus } from '../utils/listPresentation';
+export function StatusChip({
+  obra,
+  compact = false,
+  today = businessDate(),
+}: {
+  obra: ObraCard;
+  compact?: boolean;
+  today?: string;
+}) {
   const { colors } = useTheme();
-  const status = obraStatus(obra);
+  const status = obraPresentationStatus(obra, today);
   const color = statusColor(status.key, colors);
   const Icon =
     status.key === 'VERDE'

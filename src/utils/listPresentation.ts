@@ -1,5 +1,32 @@
 import type { ObraCard, ActivityLog } from '../types';
 import { businessDate, obraStatus } from '../domain/rules';
+import { isCalendarDate } from './retirementCalendar';
+
+/** Read-only fallback for malformed historical dates; domain commands stay strict. */
+export function obraPresentationStatus(obra: ObraCard, today = businessDate()) {
+  if (obra.estadoProceso === 'ENTREGADO' && !isCalendarDate(obra.fechaRetiroEstimada))
+    return { key: 'SIN_FECHA', label: 'Sin fecha de retiro' };
+  return obraStatus(obra, today);
+}
+
+export function matchesPresentationStatusFilter(
+  obra: ObraCard,
+  filter: string,
+  today = businessDate(),
+): boolean {
+  return (
+    filter === 'TODAS' ||
+    (filter === 'RETIRADO'
+      ? ['RETIRADO', 'REINGRESADO'].includes(obra.estadoProceso)
+      : obraPresentationStatus(obra, today).key === filter)
+  );
+}
+
+function rentalSortDate(obra: ObraCard): string {
+  const date =
+    obra.estadoProceso === 'PENDIENTE_ENTREGA' ? obra.fechaEntrega : obra.fechaRetiroEstimada;
+  return isCalendarDate(date) ? date : '';
+}
 
 export type RentalRow =
   | { kind: 'section'; id: string; title: string; count: number }
@@ -11,19 +38,14 @@ export function rentalRows(obras: ObraCard[], today = businessDate()): RentalRow
     { keys: ['AMARILLO'], title: 'Retiros de hoy' },
     { keys: ['PENDIENTE'], title: 'Por entregar' },
     { keys: ['VERDE'], title: 'Próximos retiros' },
+    { keys: ['SIN_FECHA'], title: 'Sin fecha de retiro' },
     { keys: ['RETIRADO', 'REINGRESADO'], title: 'Retirados' },
   ];
   return groups.flatMap(({ keys, title }, index): RentalRow[] => {
     const items = obras
-      .filter((o) => keys.includes(obraStatus(o, today).key))
+      .filter((o) => keys.includes(obraPresentationStatus(o, today).key))
       .sort(
-        (a, b) =>
-          (a.estadoProceso === 'PENDIENTE_ENTREGA'
-            ? a.fechaEntrega
-            : a.fechaRetiroEstimada
-          ).localeCompare(
-            b.estadoProceso === 'PENDIENTE_ENTREGA' ? b.fechaEntrega : b.fechaRetiroEstimada,
-          ) || a.id.localeCompare(b.id),
+        (a, b) => rentalSortDate(a).localeCompare(rentalSortDate(b)) || a.id.localeCompare(b.id),
       );
     return items.length
       ? [

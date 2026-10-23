@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { seed } from '../src/data/seed';
-import { rentalRows, rentalSummary, historyRows } from '../src/utils/listPresentation';
+import {
+  rentalRows,
+  rentalSummary,
+  historyRows,
+  matchesPresentationStatusFilter,
+} from '../src/utils/listPresentation';
 import type { ActivityLog } from '../src/types';
 const today = '2026-10-18';
 describe('agrupación operativa de listas', () => {
@@ -33,6 +38,37 @@ describe('agrupación operativa de listas', () => {
     expect(rows.filter((r) => r.kind === 'section').some((r) => r.title === 'Cerradas')).toBe(
       false,
     );
+  });
+  it('conserva en consulta los alquileres sin retiro válido sin clasificarlos como al día', () => {
+    const obras = seed(new Date(`${today}T15:00:00Z`)).obras.slice(0, 3);
+    obras[0].fechaRetiroEstimada = '2026-02-30';
+    obras[1].fechaRetiroEstimada = undefined as unknown as string;
+    obras[2].fechaRetiroEstimada = '';
+    obras[2].estadoProceso = 'REINGRESADO';
+    const before = JSON.stringify(obras);
+    const rows = rentalRows(obras, today);
+    expect(rows.filter((r) => r.kind === 'section').map((r) => r.title)).toEqual([
+      'Sin fecha de retiro',
+      'Retirados',
+    ]);
+    expect(rows.filter((r) => r.kind === 'rental').map((r) => r.id)).toEqual([
+      'obra_1',
+      'obra_2',
+      'obra_3',
+    ]);
+    expect(matchesPresentationStatusFilter(obras[0], 'SIN_FECHA', today)).toBe(true);
+    expect(matchesPresentationStatusFilter(obras[0], 'VERDE', today)).toBe(false);
+    expect(matchesPresentationStatusFilter(obras[2], 'RETIRADO', today)).toBe(true);
+    expect(JSON.stringify(obras)).toBe(before);
+  });
+  it('reagrupa un retiro al cambiar el día empresarial sin guardar un semáforo nuevo', () => {
+    const obra = seed(new Date(`${today}T15:00:00Z`)).obras[1];
+    obra.fechaRetiroEstimada = '2026-10-19';
+    const before = JSON.stringify(obra);
+    expect(rentalRows([obra], '2026-10-18')[0]).toMatchObject({ title: 'Próximos retiros' });
+    expect(rentalRows([obra], '2026-10-19')[0]).toMatchObject({ title: 'Retiros de hoy' });
+    expect(rentalRows([obra], '2026-10-20')[0]).toMatchObject({ title: 'Vencidos' });
+    expect(JSON.stringify(obra)).toBe(before);
   });
   it('resumen usa saldo actual incluido lo triangulado y conserva carga histórica', () => {
     const o = seed().obras[0];
