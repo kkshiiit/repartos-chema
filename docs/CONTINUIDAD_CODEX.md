@@ -1,3 +1,13 @@
+# Gradle1.6 en curso y fuente recuperada de GitHub — 23/10/2026 21:27UTC
+
+Código funcional congelado295a977, main respaldado antes de compilar. ZIP1254archivos en descargas96e2274, SHAeefd6b61ea2fb60b51ce62d873ff89784d40a24a2ad9978d2ce57487d6af8759; restauración local completa y recuperación desde clon independiente con hash/CRC iguales. WebZIP en descargasfad45fc. No borradas versiones anteriores. Reporte principal preparado docs/ENTREGA_LOCAL_1_6.md.
+
+**Proceso actual:** Gradle completo `npm run build:android:demo` iniciado tras backup limpio, log `artifacts/validacion/avisos-android.txt`, sesión shell28857 en esta ejecución. Selector9.1.0 Java/Kotlin compiló, CMake ARM64 avanzó, bundle generado y lintVital en curso. No BUILD SUCCESSFUL al escribir. No presentar instalador como terminado aún. No hay teléfono/emulador conectado. Clave externa/paquete conservados; no sourcechange durante build.
+
+**Próxima acción exacta:** leer final del log y revisar APK existente ANTES de decidir recompilar. Si termina correcto ejecutar verify-android.py contra APK1.5 preservado, fuente295a977; copiar instalador único1.6.0/code9, comprobar SHA/firma/CRC/ARM64/SQLite/sonidos/noads/noFirebaseembebido. Después publicar android/v1.6.0-local.1, recuperar Git para verificar bytes y7APKanteriores, cerrar documentación, commit/push y ZIPfinal. La fuente ya se puede recuperar aunque se interrumpa la ejecución. No se promete continuidad automática después de detenerse.
+
+---
+
 # Puerta previa al APK1.6 superada — 23/10/2026
 
 **Estado:** código funcional terminado y verificado dentro del acceso disponible. General56/56UI (4.1min); después corrección acotada para que Editar un legacy sinfecha NO invente hoy y rolgrupo accesible en panel: check436/436, tsc/lint/Functions build pasan y6/6UI de avisos/calendario/edición/capturas repetidos(44.5s). Ocho Axe WCAG2A/AA con0violaciones/0incompletas. Datos sintéticos, no Android físico. Comparativas19regeneradas con rótulo1.6 y revisión manual de principales afectadas; ver GALERIA_AVISOS_1_6.md y manifiesto de capturas. No servicios pagos.
