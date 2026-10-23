@@ -6,9 +6,11 @@ The fixture reproduces the illustrated 3 rentals and 2 materials in isolation.
 This artifact is visual evidence, not a functional or Android physical test.
 """
 from pathlib import Path
+import json
 from PIL import Image, ImageDraw, ImageFont
 
 root = Path(__file__).resolve().parents[1]
+version = json.loads((root / 'app.json').read_text())['expo']['version']
 references = root / 'docs/diseno-papel-cobalto/referencias'
 output = root / 'artifacts/capturas/estructura-1.5'
 font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 16)
@@ -33,7 +35,7 @@ for name, source, bounds, theme in frames:
     board = Image.new('RGB', (width * 2 + 32, height + 64), '#D6DADE')
     draw = ImageDraw.Draw(board)
     draw.text((8, 8), f'Referencia · {name} · {theme}', font=font, fill='#18232D')
-    draw.text((width + 24, 8), 'App real 1.5 · mismo tamaño y tema', font=font, fill='#18232D')
+    draw.text((width + 24, 8), f'App real {version} · mismo tamaño y tema', font=font, fill='#18232D')
     board.paste(reference, (8, 48)); board.paste(capture, (width + 24, 48))
     board.save(output / f'comparacion-referencia-{name}.png')
 for theme in ['light', 'dark']:
@@ -44,7 +46,7 @@ for theme in ['light', 'dark']:
         board = Image.new('RGB', (892, 904), '#D6DADE')
         draw = ImageDraw.Draw(board)
         draw.text((8, 8), f'Antes 1.4 · {name}', font=font, fill='#18232D')
-        draw.text((454, 8), f'Después 1.5 · {theme}', font=font, fill='#18232D')
+        draw.text((454, 8), f'Después {version} · {theme}', font=font, fill='#18232D')
         board.paste(before, (8, 48)); board.paste(after, (454, 48))
         board.save(output / f'comparacion-antes-despues-{name}-{theme}.png')
 print('19 comparativas generadas; capturas originales intactas. Revisar visualmente antes del APK.')

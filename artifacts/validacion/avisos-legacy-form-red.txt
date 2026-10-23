@@ -1,0 +1,44 @@
+
+ RUN  v5.0.3 /workspace/repartos-chema
+
+stderr | tests/formularios-cobalto.test.ts > editar una fecha ausente (undefined) pide completarla y no inventa hoy
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+
+stderr | tests/formularios-cobalto.test.ts > editar una fecha ausente (null) pide completarla y no inventa hoy
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+
+stderr | tests/formularios-cobalto.test.ts > editar una fecha ausente () pide completarla y no inventa hoy
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+
+ ❯ tests/formularios-cobalto.test.ts (10 tests | 3 failed) 145ms
+   × editar una fecha ausente (undefined) pide completarla y no inventa hoy 7ms
+   × editar una fecha ausente (null) pide completarla y no inventa hoy 3ms
+   × editar una fecha ausente () pide completarla y no inventa hoy 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/formularios-cobalto.test.ts > editar una fecha ausente (undefined) pide completarla y no inventa hoy
+ FAIL  tests/formularios-cobalto.test.ts > editar una fecha ausente (null) pide completarla y no inventa hoy
+ FAIL  tests/formularios-cobalto.test.ts > editar una fecha ausente () pide completarla y no inventa hoy
+AssertionError: expected '2026-10-23' to be '' // Object.is equality
+
+- Expected
++ Received
+
++ 2026-10-23
+
+ ❯ tests/formularios-cobalto.test.ts:286:36
+    284|   await act(async () => { view = create(React.createElement(ObraForm, …
+    285|   const input = view.root.findAll((node) => node.type === 'input' && n…
+    286|   expect(input.props.defaultValue).toBe('');
+       |                                    ^
+    287|   await press('Continuar a carga');
+    288|   expect(mocks.dispatch).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 7 passed (10)
+   Start at  21:13:46
+   Duration  502ms (transform 39%, tests 36%, import 25%, worker 1%)

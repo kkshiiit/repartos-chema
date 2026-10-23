@@ -26,7 +26,7 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
   const [direccion, setDireccion] = useState(obra?.direccion || '');
   const [zona, setZona] = useState(obra?.localidadBarrio || '');
   const [entrega, setEntrega] = useState(obra?.fechaEntrega || businessDate());
-  const [retiro, setRetiro] = useState(obra?.fechaRetiroEstimada || businessDate());
+  const [retiro, setRetiro] = useState(obra ? obra.fechaRetiroEstimada || '' : businessDate());
   const [items, setItems] = useState<MaterialCargado[]>(obra?.materialesCargados || []);
   const [step, setStep] = useState(0);
   const [errors, setErrors] = useState<Record<string, string>>({});

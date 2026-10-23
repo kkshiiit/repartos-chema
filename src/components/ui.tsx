@@ -515,6 +515,7 @@ export function Sheet({
           />
           <Animated.View
             accessibilityViewIsModal
+            role={Platform.OS === 'web' ? 'group' : undefined}
             accessibilityLabel={title}
             style={{
               width: '100%',
