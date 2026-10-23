@@ -39,6 +39,7 @@ import { openLink } from '../../src/services/links';
 import { userError } from '../../src/services/errors';
 import { spacing, radius } from '../../src/theme/tokens';
 import { rentalSummary } from '../../src/utils/listPresentation';
+import { useBusinessClock } from '../../src/hooks/useBusinessClock';
 export default function Trip() {
   const { C, s } = useUI(),
     { state } = useInventory();
@@ -65,7 +66,8 @@ export default function Trip() {
       };
     }, []),
   );
-  const today = businessDate();
+  const now = useBusinessClock();
+  const today = businessDate(now);
   const works = useMemo(
     () =>
       sortTripStops(
@@ -270,7 +272,7 @@ export default function Trip() {
                     <Text style={s.muted}>{rentalSummary(o)}</Text>
                   </View>
                   <View style={{ flexShrink: 1, maxWidth: '40%' }}>
-                    <StatusChip obra={o} compact />
+                    <StatusChip obra={o} compact today={today} />
                   </View>
                   <ChevronRight size={20} color={C.subtle} />
                 </Pressable>
@@ -399,7 +401,7 @@ export default function Trip() {
         ) : selectedStop ? (
           <>
             <Text style={s.h2}>{selectedStop.clienteNombre}</Text>
-            <StatusChip obra={selectedStop} />
+            <StatusChip obra={selectedStop} today={today} />
             <Text style={s.body}>{selectedStop.direccion}</Text>
             <Text style={s.muted}>{selectedStop.localidadBarrio}</Text>
             <Button

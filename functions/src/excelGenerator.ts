@@ -1,6 +1,7 @@
 import type ExcelJS from 'exceljs';
 import type { ObraCard } from '../../src/types';
-import { obraStatus } from '../../src/domain/rules';
+import { businessDate } from '../../src/domain/rules';
+import { obraPresentationStatus } from '../../src/utils/listPresentation';
 export async function generateExcel(obras: ObraCard[], Workbook: typeof ExcelJS.Workbook) {
   const workbook = new Workbook();
   workbook.creator = 'Grupo Chema Construcciones';
@@ -23,11 +24,13 @@ export async function generateExcel(obras: ObraCard[], Workbook: typeof ExcelJS.
   ]);
   sheet.getRow(2).font = { bold: true, color: { argb: 'FF0F172A' } };
   sheet.getRow(2).height = 25;
+  const today = businessDate();
   for (const o of obras) {
+    const status = obraPresentationStatus(o, today);
     const row = sheet.addRow([
       o.clienteNombre,
       `${o.direccion}, ${o.localidadBarrio}`,
-      obraStatus(o).label,
+      status.label,
       o.materialesCargados
         .map(
           (m) => `${m.cantidad} × ${m.nombre} ${m.medida || ''}${m.apodo ? ` (${m.apodo})` : ''}`,
@@ -48,16 +51,18 @@ export async function generateExcel(obras: ObraCard[], Workbook: typeof ExcelJS.
       type: 'pattern',
       pattern: 'solid',
       fgColor: {
-        argb: (
-          {
-            VERDE: 'FFDCFCE7',
-            AMARILLO: 'FFFEF08A',
-            ROJO: 'FFFEE2E2',
-            PENDIENTE: 'FFEDE9FE',
-            RETIRADO: 'FFE2E8F0',
-            REINGRESADO: 'FFE2E8F0',
-          } as Record<string, string>
-        )[obraStatus(o).key]!,
+        argb:
+          (
+            {
+              VERDE: 'FFDCFCE7',
+              AMARILLO: 'FFFEF08A',
+              ROJO: 'FFFEE2E2',
+              PENDIENTE: 'FFEDE9FE',
+              RETIRADO: 'FFE2E8F0',
+              REINGRESADO: 'FFE2E8F0',
+              SIN_FECHA: 'FFE2E8F0',
+            } as Record<string, string>
+          )[status.key] || 'FFE2E8F0',
       },
     };
   }

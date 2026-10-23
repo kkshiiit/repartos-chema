@@ -11,6 +11,7 @@ import {
   AlignmentType,
 } from 'docx';
 import type { ObraCard } from '../../src/types';
+import { isCalendarDate } from '../../src/utils/retirementCalendar';
 export function remitoDocument(o: ObraCard) {
   const border = { style: BorderStyle.SINGLE, size: 4, color: 'D5DBE3' };
   const cell = (text: string, header = false) =>
@@ -48,7 +49,7 @@ export function remitoDocument(o: ObraCard) {
           new Paragraph(`Cliente: ${o.clienteNombre}`),
           new Paragraph(`Destino: ${o.direccion} · ${o.localidadBarrio}`),
           new Paragraph(
-            `Entrega prevista: ${o.fechaEntrega}    |    Retiro estimado: ${o.fechaRetiroEstimada}`,
+            `Entrega prevista: ${o.fechaEntrega}    |    Retiro estimado: ${isCalendarDate(o.fechaRetiroEstimada) ? o.fechaRetiroEstimada : 'Sin fecha de retiro'}`,
           ),
           new Paragraph(`Entrega efectiva: ${o.fechaEntregaEfectiva || 'Sin registro separado'}`),
           new Table({
