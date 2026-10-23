@@ -1,0 +1,37 @@
+{
+  "version": "1.6.0",
+  "versionCode": 9,
+  "package": "com.grupochema.repartos",
+  "codigoFuncional": "295a97757446310eba5a48260804ae7b655ec0dd",
+  "archivo": "repartos-chema-local-1.6.0-arm64.apk",
+  "bytes": 56174111,
+  "sha256": "29a4a57b7ea1a746c6127d2f8b688b12278a7e41837bd8f85e05eb97ba3bf675",
+  "certificadoSHA256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+  "firmaV2": true,
+  "certificadoCoincideConAnterior": true,
+  "apkAnterior": "repartos-chema-local-1.5.0-arm64.apk",
+  "CRC": "correcto",
+  "ABI": "arm64-v8a",
+  "minSDK": 24,
+  "debuggable": false,
+  "sqliteNativoIncluido": true,
+  "tonosLocalesIncluidos": true,
+  "tonosVerificados": {
+    "chema_recordatorio_calido.wav": {
+      "recursoAPK": "res/52.wav",
+      "sha256": "d9ebac4c4effdd4ae5c55e6e584ab70568d8b9e783dbd8a29b0e912bfe719691"
+    },
+    "chema_confirmacion_sutil.wav": {
+      "recursoAPK": "res/4o.wav",
+      "sha256": "6543cc3d5462476d826179824d567db062ac3d8b1ebf8c62a5e3b5f5f659be5f"
+    },
+    "chema_atencion_suave.wav": {
+      "recursoAPK": "res/ue.wav",
+      "sha256": "261ad27e0a5f582db294f019e674fdecdf9a2f64fc5733b2b9881b34cca06e46"
+    }
+  },
+  "pruebaFisica": false,
+  "publicidadDetectada": false,
+  "configFirebaseEmbebida": false,
+  "generadoUTC": "2026-10-23T21:28:07.307923+00:00"
+}

@@ -64,7 +64,15 @@ Auditoría npm:9entradas(5altas/4moderadas/0críticas), principalmente cadenas p
 
 ## Estado del instalador
 
-Gradle completo en curso al escribir esta sección. No se presenta como APK verificado hasta que exista el reporte android-1.6.0-apk.json y la publicación recuperada por hash. El cierre posterior actualiza esta sección y docs/CONTINUIDAD_CODEX.md.
+**APK1.6.0/code9 generado, publicado y recuperado/verificado desdeGitHub.** Gradle completo BUILD SUCCESSFUL9m32s,701tareas(673ejecutadas/28actualizadas). Código funcional `295a97757446310eba5a48260804ae7b655ec0dd`; commits documentales posteriores no cambian el runtime. 56174111bytes, ARM64/Android7+, package `com.grupochema.repartos`.
+
+[Descargar APK](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.6.0-local.1/repartos-chema-local-1.6.0-arm64.apk) · [Verificación/instalación](https://github.com/kkshiiit/repartos-chema/blob/descargas/android/v1.6.0-local.1/LEEME.md) · [Respaldo fuente/web](https://github.com/kkshiiit/repartos-chema/tree/descargas/respaldos/v1.6.0-local)
+
+SHA256: `29a4a57b7ea1a746c6127d2f8b688b12278a7e41837bd8f85e05eb97ba3bf675`
+
+Certificado: `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`, idéntico al APK1.5 verificado contra1.4. Firma v2/CRC/ABI/minSDK24/no debuggable/SQLite/tresWAV originales comprobados. Marcadores nuevos Alquilado hasta/globalPolicy/rentalPolicies/claveexistente presentes en bundleHermes. APK declara RECEIVE_BOOT_COMPLETED/POST_NOTIFICATIONS, sin SCHEDULE_EXACT_ALARM ni USE_EXACT_ALARM. Ausencia de marcadores publicitarios propios y configuraciónFirebase embebida comprobada; esto no acredita una auditoría total del código de todas las dependencias.
+
+Publicado en descargas `4f4f7988a2c194637df6a0ab37bfdcbb65f1f8b5`; recuperado desde clon independiente, SHA/CRC y bytes coincidentes. Los7APK anteriores tienen los mismos objetosGit, sin sobrescritura. Logs/metadatos en artifacts/validacion/avisos-android.txt, android-1.6.0-*.json/txt, avisos-apk-contenido.json y avisos-descarga-remota.json. No equivale a prueba física de ejecución.
 
 ## Cambios de archivos respecto del código1.5
 
@@ -121,3 +129,13 @@ Gradle completo en curso al escribir esta sección. No se presenta como APK veri
 - `tests/ui/reminders.spec.ts`
 
 Los cambios se agrupan en commits coherentes: bc3068c(cierre recuperado1.5),4a8dbd3(calendario/motor/UI),6086ff2(lectura legacy separada),cca787e(consultas/documentos),59c9a6d(regresiones de permisos/persistencia),295a977(verificación/capturas previa al APK). No subir clave privada ni .env al repositorio.
+
+
+## Estado final por categoría
+
+- **Completado y comprobado:** código/commits/remotos, respaldo recuperable y fuente desdeGit, instalaciónnpm limpia, lógica de fechas/políticas/recuperación, recorridos web de operación/JSON/fotos/documentos/temas, comparativas reales y verificaciones estáticas de APK/firma/publicación.
+- **Implementado, pendiente de validar en Android físico:** instalación encima/migración del dispositivo, calendario nativo real, entrega de avisos con appcerrada/reinicio/canales/batería, cámara/galería, compartirWord/Excel/JSON, TalkBack/fontScale/teclado y rendimiento del teléfono. No hay resultados físicos simulados.
+- **Pendiente de mantenimiento:** revisión compatible de las dependencias transitivas señaladas por npm. No se hicieron cambios de versión incompatibles ni se oculta el informe.
+- **Fuera de alcance por decisión vigente:** publicidad, backend obligatorio, multiusuario/cloud, Blaze, servicios pagos, publicaciónPlayStore y PDF automático. Functions/Firebase no desplegados. No son requisitos para iniciar esta edición individual.
+
+La próxima acción es la prueba física de los seis pasos anteriores. Si sólo se pide descargar, usar este APK existente, no recompilar por cambios documentales. Para retomar: leer CONTINUIDAD_CODEX.md, comprobar Git/remoto/archivos y atender el resultado concreto del Android.

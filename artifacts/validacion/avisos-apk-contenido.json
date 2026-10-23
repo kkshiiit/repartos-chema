@@ -1,0 +1,16 @@
+{
+  "bundleSHA256": "11d748c47afdf236b248658967396fbcfde9c17aa4c2f515a80fb4999de0de52",
+  "marcadoresNuevos": {
+    "Alquilado hasta": true,
+    "globalPolicy": true,
+    "rentalPolicies": true,
+    "chema:local-feedback:v1": true
+  },
+  "permisos": {
+    "RECEIVE_BOOT_COMPLETED": true,
+    "POST_NOTIFICATIONS": true,
+    "SCHEDULE_EXACT_ALARM": false,
+    "USE_EXACT_ALARM": false
+  },
+  "pruebaFisica": false
+}
