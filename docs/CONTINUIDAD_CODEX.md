@@ -1,3 +1,15 @@
+# Integración de avisos 1.6 — 23/10/2026 · punto previo a validación UI
+
+Último bloque publicado al escribir: cca787e (queries legacy), precedido por6086ff2(lectura compatible) y4a8dbd3(calendario/recordatorios). APK1.5 verificado y preservado; NO confundirlo con1.6. Paquete com.grupochema.repartos y clave existente sin cambios. Se prepara1.6.0/code9 con selector nativo9.1.0 (única dependencia añadida, compatiblebundledExpo57).
+
+**Comprobado ahora:** check433/433 en37archivos, tsc/lint/Functions build pasan; npmci limpio1565paquetes, decoder/lock verificados. Web limpia y reexportada incrementalmente con mismosflags LOCAL_ONLY=true/DATA_MODE=demo, no nube. Pruebas nuevas de calendario/hook/políticas/legacy/selectores/navegación/permisos/reintentos/presentación. No dispositivo físico. Auditoría npm9entradas transitivas propagadas documentadas, sin auditfix ni downgrade.
+
+**En curso:**6recorridos Playwright nuevos contra web actual (log avisos-ui-nuevo-inicial); después suite completa y capturas. Revisión corrigió acoplamiento de sonido a confirmaciones, expiradosconpermiso denegado, verdadUI antepersistenciafallida y error de tapfrío borrado porreconcile. Docdetalle AVISOS_RETIRO_1_6.md. Cambios de lectura de datos en commit separado; no SQLite/migración/fotos/stock alterados.
+
+**Próxima acción exacta:** revisar6UI, corregir selectores/bugs reales y volver a exportar si cambia fuente. Correr56UI, inspeccionar capturas claras/oscuras y comparativas previas de estructura. Commit/push estable, árbol limpio y ZIP fuente verificado antes de Gradle completo. VerificarAPK1.6 contra1.5/preservarcertificado/ARM64/CRC/SHA. Publicar versiones únicas en descargas junto a fuente y checks; recuperar desde Git para comparar hashes. Actualizar este punto. Pruebas físicas de actualización/migración/notificaciones/reinicio siguen pendientes y no se sustituyen por mocks.
+
+---
+
 # Reanudación y ampliación de avisos — 23/10/2026
 
 Main recuperado: 67f3a2e011ce335e1e903c02ae78d92a2dd2771e, remoto comprobado sin divergencia. La ejecución anterior sí terminó: UI50/50 (8.9min) y Gradle1.5 BUILD SUCCESSFUL (13m49s). Se verificó y preservó el APK1.5 fuera de android antes de nuevos cambios: /workspace/entregas/cobalto-1.5.0/repartos-chema-local-1.5.0-arm64.apk. SHA256 2aaeefdb3a278c674e0a78c2a349702575604f580cafdd2170b6263469eade82. Firma v2, certificado idéntico a1.4, package com.grupochema.repartos, code8, ARM64/CRC/SQLite/tresWAV verificados. No probado en hardware ni publicado aún. Este registro cierra evidencias de1.5, no acredita los nuevos avisos.

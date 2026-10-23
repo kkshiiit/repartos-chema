@@ -128,7 +128,7 @@ it('abre una respuesta nueva en primer plano y explica un alquiler eliminado sin
   await render();
   await act(async () => f.opens!({ obraId: 'deleted', responseKey: 'missing-1' }));
   expect(f.push).not.toHaveBeenCalled();
-  expect(feedback.error).toContain('ya no está');
+  expect(JSON.stringify(view.toJSON())).toContain('ya no está');
   expect(f.ack).toHaveBeenCalledWith('missing-1');
   await act(async () => f.opens!({ obraId: 'rental_a', responseKey: 'live-2' }));
   expect(f.push).toHaveBeenCalledOnce();
@@ -155,4 +155,24 @@ it('persiste intención general al denegar permiso, informa error y no toca alqu
   expect(Object.values(feedback.state.reminders).every((r) => r.status === 'pending')).toBe(true);
   expect(f.native.schedule).not.toHaveBeenCalled();
   expect(JSON.stringify(f.inventory.state)).toBe(original);
+});
+
+it('el aviso de un tap frío eliminado no se borra al terminar la reconciliación automática', async () => {
+  await render();
+  await act(async () => f.opens!({ obraId: 'deleted', responseKey: 'cold-missing' }));
+  let finish!: () => void;
+  const pending = new Promise<string[]>((resolve) => {
+    finish = () => resolve([]);
+  });
+  f.native.scheduled.mockImplementationOnce(() => pending);
+  f.auth.user = { uid: 'local' };
+  f.inventory.ready = true;
+  f.navigation = { key: 'ready' };
+  await refresh();
+  expect(JSON.stringify(view.toJSON())).toContain('ya no está');
+  await act(async () => {
+    finish();
+  });
+  expect(JSON.stringify(view.toJSON())).toContain('ya no está');
+  expect(f.push).not.toHaveBeenCalled();
 });
