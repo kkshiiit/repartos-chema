@@ -1,6 +1,8 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppState, Text, View } from 'react-native';
+import { router, useRootNavigationState } from 'expo-router';
+import { useAuth } from './AuthContext';
 import { useInventory } from './InventoryContext';
 import { useTheme } from './ThemeContext';
 import { Button } from '../components/ui';
@@ -8,6 +10,9 @@ import {
   notificationAdapter,
   confirmationFeedback,
   requestFeedbackPermission,
+  watchReminderOpens,
+  acknowledgeReminderOpen,
+  type ReminderOpen,
 } from '../services/feedback/notification-adapter';
 import {
   FeedbackPreferences,
@@ -15,6 +20,8 @@ import {
   RentalReference,
   ReminderService,
   initialFeedbackState,
+  type RetirementPolicy,
+  type RentalReminderPolicy,
 } from '../services/feedback/reminders';
 interface FeedbackValue {
   state: FeedbackState;
@@ -30,6 +37,8 @@ interface FeedbackValue {
     vibration: boolean,
   ) => Promise<boolean>;
   cancelReminder: (obraId: string) => Promise<boolean>;
+  configureGeneral: (policy: RetirementPolicy) => Promise<boolean>;
+  configureRental: (obraId: string, policy: RentalReminderPolicy) => Promise<boolean>;
   retry: () => Promise<boolean>;
   notifySuccess: (message: string) => void;
   notifyError: (message: string, retry?: () => void | Promise<void>) => void;
@@ -38,6 +47,10 @@ const Context = createContext<FeedbackValue | null>(null);
 export function FeedbackProvider({ children }: { children: React.ReactNode }) {
   const { state: inventory, ready: inventoryReady } = useInventory();
   const { colors } = useTheme();
+  const { user, loading: authLoading } = useAuth();
+  const navigation = useRootNavigationState();
+  const [pendingOpen, setPendingOpen] = useState<ReminderOpen | null>(null);
+  const handledOpen = useRef<string | null>(null);
   const [service] = useState(() => new ReminderService(AsyncStorage, notificationAdapter));
   const [state, setState] = useState(initialFeedbackState),
     [ready, setReady] = useState(false),
@@ -89,14 +102,39 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
     };
   }, [run, service]);
   useEffect(() => {
-    if (ready && inventoryReady) void Promise.resolve().then(retry);
-  }, [ready, inventoryReady, retry]);
+    if (ready && inventoryReady && user) void Promise.resolve().then(retry);
+  }, [ready, inventoryReady, user, retry]);
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (status) => {
-      if (status === 'active' && inventoryReady) void retry();
+      if (status === 'active' && ready && inventoryReady && user) void retry();
     });
     return () => subscription.remove();
-  }, [retry, inventoryReady]);
+  }, [retry, inventoryReady, ready, user]);
+  // The OS retains the launch response until navigation, session and inventory are ready.
+  // The listener is installed before reading the cold-start response in the adapter.
+  useEffect(() => watchReminderOpens(setPendingOpen, (failure) => setError(failure)), []);
+  useEffect(() => {
+    if (!pendingOpen || authLoading || !user || !inventoryReady || !navigation?.key) return;
+    let active = true;
+    void Promise.resolve().then(() => {
+      if (!active || handledOpen.current === pendingOpen.responseKey) return;
+      handledOpen.current = pendingOpen.responseKey;
+      if (inventory.obras.some((obra) => obra.id === pendingOpen.obraId)) {
+        router.push({ pathname: '/obra/[id]', params: { id: pendingOpen.obraId } });
+      } else {
+        setError('El alquiler de este aviso ya no está en el inventario local.');
+      }
+      void acknowledgeReminderOpen(pendingOpen.responseKey).catch(() => {
+        setError('Se abrió el aviso, pero no se pudo confirmar su lectura al sistema.');
+      });
+      setPendingOpen((current) =>
+        current?.responseKey === pendingOpen.responseKey ? null : current,
+      );
+    });
+    return () => {
+      active = false;
+    };
+  }, [pendingOpen, authLoading, user, inventoryReady, inventory.obras, navigation?.key]);
   useEffect(() => () => clearTimeout(timer.current), []);
   const notify = (message: string, isError: boolean, retryAction?: () => void | Promise<void>) => {
     clearTimeout(timer.current);
@@ -138,6 +176,9 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
         scheduleReminder: (obra, at, sound, vibration) =>
           run(() => service.enable(obra, at, sound, vibration)),
         cancelReminder: (id) => run(() => service.cancel(id)),
+        configureGeneral: (policy) => run(() => service.configureGeneral(policy, inventory.obras)),
+        configureRental: (id, policy) =>
+          run(() => service.configureRental(id, policy, inventory.obras)),
         retry,
         notifySuccess: (message) => notify(message, false),
         notifyError: (message, retryAction) => notify(message, true, retryAction),

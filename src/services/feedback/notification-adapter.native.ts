@@ -3,6 +3,8 @@ import * as Notifications from 'expo-notifications';
 import { createAudioPlayer, setAudioModeAsync } from 'expo-audio';
 import * as Haptics from 'expo-haptics';
 import type { ReminderAdapter } from './reminders';
+import { reminderOpenFromResponse, type ReminderOpen } from './reminderNavigation';
+export type { ReminderOpen } from './reminderNavigation';
 const sounds = {
   reminder: 'chema_recordatorio_calido.wav',
   success: 'chema_confirmacion_sutil.wav',
@@ -72,8 +74,10 @@ export const notificationAdapter: ReminderAdapter = {
     await Notifications.scheduleNotificationAsync({
       identifier,
       content: {
-        title: 'Recordatorio de alquiler',
-        body: `${reminder.title} · Revisá el retiro previsto en Repartos Chema.`,
+        title: reminder.notificationTitle || 'Recordatorio de alquiler',
+        body:
+          reminder.notificationBody ||
+          `${reminder.title} · Revisá el retiro previsto en Repartos Chema.`,
         sound: reminder.sound ? sounds.reminder : false,
         vibrate: reminder.vibrate ? [0, 100] : [0],
         data: { obraId: reminder.obraId, kind: 'reminder', sound: reminder.sound },
@@ -87,6 +91,61 @@ export const notificationAdapter: ReminderAdapter = {
   },
   cancel: (identifier) => Notifications.cancelScheduledNotificationAsync(identifier),
 };
+
+/** Subscribe before reading cold-start state so a tap during startup cannot be missed. */
+export function watchReminderOpens(
+  onOpen: (value: ReminderOpen) => void,
+  onError: (message: string) => void,
+): () => void {
+  let active = true;
+  let subscription:
+    ReturnType<typeof Notifications.addNotificationResponseReceivedListener> | undefined;
+  const seen = new Set<string>();
+  const report = (error: unknown) => {
+    if (!active) return;
+    onError(
+      error instanceof Error && error.message
+        ? error.message
+        : typeof error === 'string' && error
+          ? error
+          : 'No se pudo abrir el recordatorio.',
+    );
+  };
+  const receive = (response: unknown) => {
+    if (!active) return;
+    const value = reminderOpenFromResponse(response);
+    if (!value || seen.has(value.responseKey)) return;
+    seen.add(value.responseKey);
+    try {
+      onOpen(value);
+    } catch (error) {
+      seen.delete(value.responseKey);
+      report(error);
+    }
+  };
+  try {
+    subscription = Notifications.addNotificationResponseReceivedListener(receive);
+  } catch (error) {
+    report(error);
+  }
+  try {
+    void Notifications.getLastNotificationResponseAsync().then(receive, report);
+  } catch (error) {
+    report(error);
+  }
+  return () => {
+    if (!active) return;
+    active = false;
+    subscription?.remove();
+  };
+}
+
+/** Called after navigation; never clear a newer, unrelated notification response. */
+export async function acknowledgeReminderOpen(responseKey: string): Promise<void> {
+  const latest = reminderOpenFromResponse(await Notifications.getLastNotificationResponseAsync());
+  if (latest?.responseKey === responseKey) await Notifications.clearLastNotificationResponseAsync();
+}
+
 let feedbackPlaying = false;
 let confirmationGeneration = 0;
 export async function confirmationFeedback(sound: boolean, vibrate: boolean, error: boolean) {

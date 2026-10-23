@@ -12,6 +12,7 @@ import { businessDate, required, validDate, quantity, measureKey } from '../doma
 import { Button, Field, Notice, Screen, Sheet, useUI } from './ui';
 import { LoadDraft } from './LoadEditor';
 import { Disclosure } from './Editorial';
+import { CalendarField } from './DateTimeFields';
 
 export function ObraForm({ obra }: { obra?: ObraCard }) {
   const { C, s } = useUI();
@@ -315,12 +316,22 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
                 </Text>
                 <View style={[s.row, { alignItems: 'flex-start', flexWrap: 'wrap' }]}>
                   <View style={{ flex: 1, minWidth: 140 }}>
-                    {field('entrega', 'Entrega · AAAA-MM-DD', entrega, setEntrega, {
-                      maxLength: 10,
-                    })}
+                    <CalendarField
+                      label="Entrega"
+                      value={entrega}
+                      onChange={setEntrega}
+                      error={errors.entrega}
+                      disabled={busy}
+                    />
                   </View>
                   <View style={{ flex: 1, minWidth: 140 }}>
-                    {field('retiro', 'Retiro · AAAA-MM-DD', retiro, setRetiro, { maxLength: 10 })}
+                    <CalendarField
+                      label="Alquilado hasta"
+                      value={retiro}
+                      onChange={setRetiro}
+                      error={errors.retiro}
+                      disabled={busy}
+                    />
                   </View>
                 </View>
                 <Disclosure title="Agregar observaciones" initiallyOpen={!!observaciones} compact>
@@ -368,7 +379,7 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
                 </Text>
                 <Text style={s.body}>Teléfono: {tel || 'Sin teléfono'}</Text>
                 <Text style={s.body}>
-                  Entrega: {displayDate(entrega)} · Retiro: {displayDate(retiro)}
+                  Entrega: {displayDate(entrega)} · Alquilado hasta: {displayDate(retiro)}
                 </Text>
                 {observaciones ? <Text style={s.body}>Observaciones: {observaciones}</Text> : null}
                 {obra?.coordenadas ? (

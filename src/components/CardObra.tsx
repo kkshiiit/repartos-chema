@@ -6,23 +6,30 @@ import type { ObraCard } from '../types';
 import { useUI } from './ui';
 import { StatusChip } from './StatusChip';
 import { rentalSummary } from '../utils/listPresentation';
+import { businessDate } from '../domain/rules';
+import { retirementCountdown, isCalendarDate } from '../utils/retirementCalendar';
+import { formatDate } from '../utils/formatters';
 /** A rental is a row. Secondary actions and complete information belong in its detail. */
 export function CardObra({
   obra: o,
   first = false,
   last = false,
+  now = new Date(),
 }: {
   obra: ObraCard;
   first?: boolean;
   last?: boolean;
+  now?: Date;
 }) {
   const { C, s } = useUI();
   const { fontScale } = useWindowDimensions();
+  const countdown = retirementCountdown(o, now);
+  const rowDate = o.estadoProceso === 'PENDIENTE_ENTREGA' ? o.fechaEntrega : o.fechaRetiroEstimada;
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={`Abrir ${o.clienteNombre}`}
-      accessibilityHint={`${o.direccion}, ${o.localidadBarrio}. ${rentalSummary(o)}. Abrir detalle y operaciones.`}
+      accessibilityHint={`${o.direccion}, ${o.localidadBarrio}. ${rentalSummary(o)}. ${countdown.label}. Abrir detalle y operaciones.`}
       onPress={() => router.push(`/obra/${o.id}`)}
       style={({ pressed }) => ({
         backgroundColor: pressed ? C.selection : C.panel,
@@ -51,16 +58,19 @@ export function CardObra({
         <Text numberOfLines={1} style={[s.muted, { fontSize: 13, lineHeight: 19 }]}>
           {rentalSummary(o)}
         </Text>
+        {!countdown.finished &&
+        (countdown.days !== null || o.estadoProceso === 'PENDIENTE_ENTREGA') ? (
+          <Text style={[s.muted, { fontSize: 12, lineHeight: 17 }]}>{countdown.label}</Text>
+        ) : null}
       </View>
       <View style={{ alignItems: 'flex-end', gap: 5, maxWidth: '39%' }}>
-        <StatusChip obra={o} compact />
-        <Text style={[s.muted, { fontSize: 12, lineHeight: 17, fontVariant: ['tabular-nums'] }]}>
-          {(o.estadoProceso === 'PENDIENTE_ENTREGA' ? o.fechaEntrega : o.fechaRetiroEstimada)
-            .slice(5)
-            .split('-')
-            .reverse()
-            .join('/')}
-        </Text>
+        <StatusChip obra={o} compact today={businessDate(now)} />
+        {isCalendarDate(rowDate) ? (
+          <Text style={[s.muted, { fontSize: 12, lineHeight: 17, fontVariant: ['tabular-nums'] }]}>
+            {o.estadoProceso === 'PENDIENTE_ENTREGA' ? 'Entrega ' : 'Hasta '}
+            {formatDate(rowDate, true)}
+          </Text>
+        ) : null}
       </View>
       <ChevronRight size={16} color={C.muted} />
     </Pressable>

@@ -1,4 +1,5 @@
 import { FeedbackSettings } from '../src/components/FeedbackSettings';
+import { RetirementReminderSettings } from '../src/components/RetirementReminderSettings';
 import { DepotSettings } from '../src/components/DepotSettings';
 import { TeamSettings } from '../src/components/TeamSettings';
 import { LocalBackupActions } from '../src/components/LocalBackupActions';
@@ -201,7 +202,7 @@ export default function Settings() {
         title={panel ? titles[panel] : 'Ajustes'}
         onClose={close}
         busy={busy}
-        protectChanges={panel === 'depot' || panel === 'responsables'}
+        protectChanges={panel === 'depot' || panel === 'responsables' || panel === 'feedback'}
         hasChanges={
           panel === 'responsables' && names !== null && names !== state.responsables.join('\n')
         }
@@ -254,7 +255,8 @@ export default function Settings() {
         ) : null}
         {panel === 'feedback' ? (
           <>
-            <FeedbackSettings />
+            <RetirementReminderSettings />
+            <FeedbackSettings showError={false} />
             {admin && !LOCAL_ONLY ? (
               <Button
                 loading={busy}

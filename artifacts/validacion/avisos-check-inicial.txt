@@ -1,0 +1,46 @@
+
+> repartos-chema@1.6.0 check
+> npm run typecheck && npm run lint && npm test && npm --prefix functions run build
+
+
+> repartos-chema@1.6.0 typecheck
+> tsc --noEmit
+
+
+> repartos-chema@1.6.0 lint
+> eslint app src tests functions/src
+
+
+/workspace/repartos-chema/src/context/FeedbackContext.tsx
+  123:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/workspace/repartos-chema/src/context/FeedbackContext.tsx:123:7
+  121 |       router.push({ pathname: '/obra/[id]', params: { id: pendingOpen.obraId } });
+  122 |     } else {
+> 123 |       setError('El alquiler de este aviso ya no está en el inventario local.');
+      |       ^^^^^^^^ Avoid calling setState() directly within an effect
+  124 |     }
+  125 |     void acknowledgeReminderOpen(pendingOpen.responseKey).catch(() => {
+  126 |       setError('Se abrió el aviso, pero no se pudo confirmar su lectura al sistema.');  react-hooks/set-state-in-effect
+
+/workspace/repartos-chema/tests/feedback-context.test.ts
+  72:3  error  Error: Cannot reassign variables declared outside of the component/hook
+
+Variable `feedback` is declared outside of the component/hook. Reassigning this value during render is a form of side effect, which can cause unpredictable behavior depending on when the component happens to re-render. If this variable is used in rendering, use useState instead. Otherwise, consider updating it in an effect. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#side-effects-must-run-outside-of-render).
+
+/workspace/repartos-chema/tests/feedback-context.test.ts:72:3
+  70 | let feedback: ReturnType<typeof useFeedback>;
+  71 | function Probe() {
+> 72 |   feedback = useFeedback();
+     |   ^^^^^^^^ `feedback` cannot be reassigned
+  73 |   return null;
+  74 | }
+  75 | async function render() {  react-hooks/globals
+
+✖ 2 problems (2 errors, 0 warnings)
