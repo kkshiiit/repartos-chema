@@ -1,5 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
-import { mkdir } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
+import AxeBuilder from '@axe-core/playwright';
 import { seed } from '../../src/data/seed';
 import type { AppState } from '../../src/types';
 import type { FeedbackState, Reminder } from '../../src/services/feedback/reminders';
@@ -341,22 +342,33 @@ test('capturas reales de principal, detalle, ajustes y personalización en claro
         .poll(() => page.evaluate(() => localStorage.getItem('chema:theme:v1')))
         .toBe('dark');
     }
+    const capture = async (screen: string) => {
+      const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
+      await writeFile(
+        `artifacts/validacion/avisos-axe-${theme}-${screen}.json`,
+        JSON.stringify({ violations: result.violations, incomplete: result.incomplete }, null, 2) +
+          '\n',
+      );
+      expect(result.violations, `${theme} ${screen}: accesibilidad automatizada`).toEqual([]);
+      expect(result.incomplete, `${theme} ${screen}: comprobaciones sin resolver`).toEqual([]);
+      await page.screenshot({ path: `${captureDirectory}/390-${theme}-${screen}.png` });
+    };
     await page.goto('/');
     await expect(
       page.getByRole('button', { name: 'Abrir Cliente hoy', exact: true }),
     ).toBeVisible();
-    await page.screenshot({ path: `${captureDirectory}/390-${theme}-principal.png` });
+    await capture('principal');
     await page.goto('/obra/obra_4');
     await expect(page.getByText('Retirar en 5 días', { exact: true })).toBeVisible();
-    await page.screenshot({ path: `${captureDirectory}/390-${theme}-detalle.png` });
+    await capture('detalle');
     await openSettings(page);
     await expect(page.getByLabel('Horario de los avisos', { exact: true })).toHaveValue('08:00');
-    await page.screenshot({ path: `${captureDirectory}/390-${theme}-ajustes.png` });
+    await capture('ajustes');
     await openRentalReminders(page);
     await page.getByRole('button', { name: 'Personalizar avisos', exact: true }).click();
     await expect(
       page.getByRole('button', { name: 'Guardar avisos del alquiler', exact: true }),
     ).toBeVisible();
-    await page.screenshot({ path: `${captureDirectory}/390-${theme}-personalizado.png` });
+    await capture('personalizado');
   }
 });

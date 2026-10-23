@@ -277,3 +277,23 @@ it('carga avisa éxito una vez después de persistir y conserva el editor ante f
   );
   await act(async () => view.unmount());
 });
+
+it.each([undefined, null, ''])(
+  'editar una fecha ausente (%s) pide completarla y no inventa hoy',
+  async (date) => {
+    const obra = { ...seed().obras[0]! };
+    Reflect.set(obra, 'fechaRetiroEstimada', date);
+    await act(async () => {
+      view = create(React.createElement(ObraForm, { obra }));
+    });
+    const input = view.root.findAll(
+      (node) => node.type === 'input' && node.props['aria-label'] === 'Alquilado hasta',
+    )[0]!;
+    expect(input.props.defaultValue).toBe('');
+    await press('Continuar a carga');
+    expect(mocks.dispatch).not.toHaveBeenCalled();
+    expect(input.props['aria-invalid']).toBe(true);
+    expect(view.root.findAll((node) => node.props.role === 'alert').length).toBeGreaterThan(0);
+    await act(async () => view.unmount());
+  },
+);

@@ -1,3 +1,15 @@
+# Puerta previa al APK1.6 superada — 23/10/2026
+
+**Estado:** código funcional terminado y verificado dentro del acceso disponible. General56/56UI (4.1min); después corrección acotada para que Editar un legacy sinfecha NO invente hoy y rolgrupo accesible en panel: check436/436, tsc/lint/Functions build pasan y6/6UI de avisos/calendario/edición/capturas repetidos(44.5s). Ocho Axe WCAG2A/AA con0violaciones/0incompletas. Datos sintéticos, no Android físico. Comparativas19regeneradas con rótulo1.6 y revisión manual de principales afectadas; ver GALERIA_AVISOS_1_6.md y manifiesto de capturas. No servicios pagos.
+
+**Último main al escribir:**59c9a6d; el siguiente commit guarda este punto y evidencia final. Cambios de datos separados6086ff2/cca787e, reglasdecomandos/stock/SQLite/migración/fotos/JSON preservadas. Lecturaexistinglegacy tolera fecha ausente para completar; importactiva exigeválida. No más cambios funcionales previstos antes del APK.
+
+**Próxima acción exacta:** commit/push de este bloque, comprobar árbol limpio y HEAD=origin/main; generar ZIP con scripts/package.py verificando todosSHA al restaurar. Ejecutar Gradle completo1.6.0/code9 con JDK21/SDK36 y CHEMA_ANDROID_KEYSTORE existente, log artifacts/validacion/avisos-android.txt. APK1.5 anterior preservado en /workspace/entregas/cobalto-1.5.0, certificado fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c. Verificar1.6 contraeseAPK con scripts/verify-android.py. Luego publicar carpeta nueva android/v1.6.0-local.1 y respaldo fuente en descargas preservando7versiones anteriores, recuperar desdeGit y comparar bytes/SHA. Actualizar informe/checkpoint y entregarlink.
+
+**Bloqueos reales:** no hardware/emuladoradbconectado; instalación encima, migraciónSQLite real, permisos/cámara/compartir/notificación/reinicio puntualidad requierenAndroidfísico. npm audit9entradas propagadas(0críticas), ver AVISOS_RETIRO_1_6.md; no downgradeExpo ni auditfix. No automatización de continuidad configurada ni promesa de ejecución futura.
+
+---
+
 # Integración de avisos 1.6 — 23/10/2026 · punto previo a validación UI
 
 Último bloque publicado al escribir: cca787e (queries legacy), precedido por6086ff2(lectura compatible) y4a8dbd3(calendario/recordatorios). APK1.5 verificado y preservado; NO confundirlo con1.6. Paquete com.grupochema.repartos y clave existente sin cambios. Se prepara1.6.0/code9 con selector nativo9.1.0 (única dependencia añadida, compatiblebundledExpo57).
