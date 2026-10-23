@@ -112,7 +112,10 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
   }, [retry, inventoryReady, ready, user]);
   // The OS retains the launch response until navigation, session and inventory are ready.
   // The listener is installed before reading the cold-start response in the adapter.
-  useEffect(() => watchReminderOpens(setPendingOpen, (failure) => setError(failure)), []);
+  useEffect(
+    () => watchReminderOpens(setPendingOpen, (message) => setNotice({ message, error: true })),
+    [],
+  );
   useEffect(() => {
     if (!pendingOpen || authLoading || !user || !inventoryReady || !navigation?.key) return;
     let active = true;
@@ -122,10 +125,16 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
       if (inventory.obras.some((obra) => obra.id === pendingOpen.obraId)) {
         router.push({ pathname: '/obra/[id]', params: { id: pendingOpen.obraId } });
       } else {
-        setError('El alquiler de este aviso ya no está en el inventario local.');
+        setNotice({
+          message: 'El alquiler de este aviso ya no está en el inventario local.',
+          error: true,
+        });
       }
       void acknowledgeReminderOpen(pendingOpen.responseKey).catch(() => {
-        setError('Se abrió el aviso, pero no se pudo confirmar su lectura al sistema.');
+        setNotice({
+          message: 'Se abrió el aviso, pero no se pudo confirmar su lectura al sistema.',
+          error: true,
+        });
       });
       setPendingOpen((current) =>
         current?.responseKey === pendingOpen.responseKey ? null : current,

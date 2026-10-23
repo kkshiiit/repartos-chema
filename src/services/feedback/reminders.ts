@@ -231,8 +231,9 @@ export class ReminderService {
           title: obra.clienteNombre,
           retirementDate: obra.fechaRetiroEstimada,
           at: instant.toISOString(),
-          sound: state.preferences.sound,
-          vibrate: state.preferences.vibration,
+          // Confirmation preferences are independent of automatic retirement notices.
+          sound: false,
+          vibrate: false,
           offset,
           notificationTitle: `Retiro ${when} · ${obra.clienteNombre}`,
           notificationBody: `${obra.direccion ? `${obra.direccion} · ` : ''}Retiro previsto: ${date}.`,
@@ -498,13 +499,14 @@ export class ReminderService {
       const identifier = REMINDER_PREFIX + key;
       let reminder = original;
       try {
-        if (!allowed) {
-          const automatic = reminder.offset !== undefined;
-          deniedAutomatic ||= automatic && Date.parse(reminder.at) > this.now();
+        if (
+          Date.parse(reminder.at) <= this.now() &&
+          (reminder.status === 'pending' || !scheduled.has(identifier) || !allowed)
+        ) {
           reminder = {
             ...reminder,
-            status: automatic ? 'pending' : 'cancelled',
-            reason: permissionMessage,
+            status: 'elapsed',
+            reason: 'La hora prevista ya pasó. No se repite automáticamente.',
             cancellationPending: true,
           };
           await this.put(key, reminder);
@@ -513,14 +515,13 @@ export class ReminderService {
           await this.put(key, { ...reminder, cancellationPending: false });
           continue;
         }
-        if (
-          Date.parse(reminder.at) <= this.now() &&
-          (reminder.status === 'pending' || !scheduled.has(identifier))
-        ) {
+        if (!allowed) {
+          const automatic = reminder.offset !== undefined;
+          deniedAutomatic ||= automatic && Date.parse(reminder.at) > this.now();
           reminder = {
             ...reminder,
-            status: 'elapsed',
-            reason: 'La hora prevista ya pasó. No se repite automáticamente.',
+            status: automatic ? 'pending' : 'cancelled',
+            reason: permissionMessage,
             cancellationPending: true,
           };
           await this.put(key, reminder);

@@ -44,3 +44,17 @@ No hay dispositivo Android conectado: cierre/reapertura, reinicio real, permiso 
 La lectura del almacenamiento existente permite `fechaRetiroEstimada` ausente, `null` o texto inválido. No reescribe ni normaliza el original: la UI muestra Sin fecha de retiro y permite Editar. Ningún otro campo de stock/ID/cantidad pierde validación. Crear/editar nuevos alquileres e importar estados activos siguen exigiendo fecha válida. Los snapshots inversos históricos conservan el dato original para auditoría; así el JSON de un alquiler ya reparado sigue siendo exportable/restaurable. Deshacer hacia un dato sin fecha puede rechazarse de forma segura por las reglas vigentes; no se finge reversión ni se modifica stock para forzarla. Se documenta completar fecha antes de operar en esos alquileres.
 
 Treinta regresiones comprueban lectura sin escritura, reparación auditada y reapertura, cantidades/saldos, importación estricta y ciclo real backup→inspección→restauración del estado reparado. No se cambia el esquema SQLite ni el flujo de migración AsyncStorage→SQLite.
+
+## Revisión y regresiones posteriores
+
+- Los avisos automáticos se solicitan silenciosos y sin vibración propia; no heredan los controles de sonido/vibración de confirmaciones. Los manuales históricos conservan sus opciones. No se cambia un aviso silencioso a sonoro al reconciliar por haber cambiado una confirmación.
+- Si falla el almacenamiento durante una extensión, el servicio intenta cancelar los avisos antiguos. La UI no presenta el snapshot anterior como confirmación actual: muestra «Programación por verificar», error y reintento. No inventa un guardado correcto.
+- Con permiso denegado, los horarios ya pasados pasan a transcurridos y no quedan como reintentos pendientes imposibles.
+- Un aviso abierto para un alquiler eliminado permanece visible aunque termine una reconciliación automática posterior; no se borra la explicación ni se ejecutan operaciones comerciales.
+- Check actualizado: **433/433 en37archivos**, tipos/lint/Functions build correctos. Instalación limpia aislada con scripts:1565paquetes; decoder local directo/transitivo y datetimepicker9.1.0 verificados, lock original intacto. No se ejecutó npm audit fix.
+
+## Dependencias: resultado real de auditoría
+
+`npm audit --omit=dev --json` informó9entradas (5altas,4moderadas,0críticas), conservadas en artifacts/validacion/avisos-audit-runtime.json. No son9vulnerabilidades independientes: propagación del aviso de node-forge por ExpoCLI/certificados/Expo/peer del selector; uuid afecta ExcelJS y herramientas xcode. Las entradas se clasifican por árbol npm: eso no demuestra exposición en el APK. Node-forge está en herramientas de firma/certificados de ExpoCLI; el APK interno se firma con Gradle/apksigner. uuid requiere revisar la ruta/API de buffers indicada por su aviso. No se acreditó explotación ni ausencia total de riesgo.
+
+El instalador propone degradar Expo a44 y el selector a8.1 para algunas cadenas; no se aplicó esa solución incompatible. Queda revisión específica de parches transitivos compatibles, separada de una actualización ciega del stack. La app opera offline; no se habilitó ningún servicio ni gasto. Este informe no equivale a certificación de seguridad.

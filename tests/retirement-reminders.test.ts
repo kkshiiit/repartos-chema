@@ -43,6 +43,84 @@ function fixture(now = '2032-02-01T00:00:00.000Z') {
 }
 
 describe('políticas locales de retiro automáticas', () => {
+  it('sonido y vibración de confirmación no cambian ni reprograman los avisos automáticos', async () => {
+    const f = fixture();
+    await f.service.configureGeneral(enabled, [obra]);
+    vi.mocked(f.adapter.schedule).mockClear();
+    vi.mocked(f.adapter.cancel).mockClear();
+    await f.service.preferences({ confirmations: true, sound: true, vibration: true });
+    await f.service.reconcile([obra]);
+    expect(Object.values(f.service.snapshot().reminders)).toHaveLength(4);
+    for (const reminder of f.scheduled.values())
+      expect(reminder).toMatchObject({ sound: false, vibrate: false });
+    expect(f.adapter.schedule).not.toHaveBeenCalled();
+    expect(f.adapter.cancel).not.toHaveBeenCalled();
+  });
+
+  it('cambiar confirmaciones conserva sonido y vibración propios del manual legacy', async () => {
+    const f = fixture();
+    await f.service.enable(obra, '2032-03-02T15:00:00.000Z', true, false);
+    vi.mocked(f.adapter.schedule).mockClear();
+    await f.service.preferences({ confirmations: true, sound: false, vibration: true });
+    await f.service.reconcile([obra]);
+    expect(f.scheduled.get(REMINDER_PREFIX + obra.id)).toMatchObject({
+      sound: true,
+      vibrate: false,
+    });
+    expect(f.service.snapshot().rentalPolicies[obra.id]).toEqual({ mode: 'legacy' });
+    expect(f.adapter.schedule).not.toHaveBeenCalled();
+  });
+
+  it('marca como pasados los avisos pendientes que vencieron con el permiso denegado', async () => {
+    const f = fixture();
+    let now = Date.parse('2032-02-01T00:00:00.000Z');
+    const service = new ReminderService(f.storage, f.adapter, () => now);
+    vi.mocked(f.adapter.permission).mockResolvedValue(false);
+    await expect(service.configureGeneral(enabled, [obra])).rejects.toThrow('permiso');
+    now = Date.parse('2032-03-04T12:00:00.000Z');
+    await service.reconcile([obra]);
+    for (const reminder of Object.values(service.snapshot().reminders))
+      expect(reminder).toMatchObject({ status: 'elapsed', cancellationPending: false });
+    expect(f.scheduled.size).toBe(0);
+    expect(f.adapter.schedule).not.toHaveBeenCalled();
+  });
+
+  it('conserva el programado demorado por el OS hasta que se revoca el permiso y queda pasado', async () => {
+    const f = fixture();
+    let now = Date.parse('2032-02-01T00:00:00.000Z');
+    const service = new ReminderService(f.storage, f.adapter, () => now);
+    await service.configureGeneral({ ...enabled, offsets: [0] }, [obra]);
+    now = Date.parse('2032-03-04T12:00:00.000Z');
+    await service.reconcile([obra]);
+    expect(service.snapshot().reminders[`${obra.id}:d0`]?.status).toBe('scheduled');
+    expect(f.scheduled.size).toBe(1);
+    vi.mocked(f.adapter.permission).mockResolvedValue(false);
+    await service.reconcile([obra]);
+    expect(service.snapshot().reminders[`${obra.id}:d0`]).toMatchObject({
+      status: 'elapsed',
+      cancellationPending: false,
+    });
+    expect(f.scheduled.size).toBe(0);
+    expect(f.adapter.schedule).toHaveBeenCalledTimes(1);
+  });
+
+  it('extender con almacenamiento lleno cancela cuatro avisos obsoletos y conserva la intención durable', async () => {
+    const f = fixture();
+    await f.service.configureGeneral(enabled, [obra]);
+    const previousState = structuredClone(f.service.snapshot());
+    const previousRaw = f.data.get(FEEDBACK_KEY);
+    f.storage.setItem.mockRejectedValueOnce(new Error('sin espacio'));
+    await expect(
+      f.service.reconcile([{ ...obra, fechaRetiroEstimada: '2032-03-10' }]),
+    ).rejects.toThrow('sin espacio');
+    expect(f.scheduled.size).toBe(0);
+    expect(f.data.get(FEEDBACK_KEY)).toBe(previousRaw);
+    expect(f.service.snapshot()).toEqual(previousState);
+    await f.service.reconcile([{ ...obra, fechaRetiroEstimada: '2032-03-10' }]);
+    expect(f.scheduled.size).toBe(4);
+    expect(f.scheduled.get(identifier(obra.id, 0))?.at).toBe('2032-03-10T11:00:00.000Z');
+  });
+
   it('persiste cancelaciones de avisos huérfanos y las reintenta aun si el OS ya no los enumera', async () => {
     const f = fixture();
     const key = 'rental-orphan:d1';

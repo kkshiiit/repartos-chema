@@ -60,6 +60,8 @@ export function RetirementPolicyFields({
               accessibilityRole="checkbox"
               accessibilityLabel={offsetLabel(offset)}
               accessibilityState={{ checked: selected, disabled }}
+              aria-checked={selected}
+              aria-disabled={disabled}
               disabled={disabled}
               onPress={() =>
                 change({
@@ -105,9 +107,11 @@ export function RetirementPolicyFields({
 export function ReminderStatusList({
   reminders,
   supported,
+  verificationError = false,
 }: {
   reminders: Reminder[];
   supported: boolean;
+  verificationError?: boolean;
 }) {
   const { s } = useUI();
   if (!reminders.length) return null;
@@ -127,9 +131,11 @@ export function ReminderStatusList({
           const label = reminder.cancellationPending
             ? 'Cancelación pendiente'
             : reminder.status === 'scheduled'
-              ? supported
-                ? 'Programado'
-                : 'Registrado como programado en la app'
+              ? verificationError
+                ? 'Programación por verificar'
+                : supported
+                  ? 'Programado'
+                  : 'Registrado como programado en la app'
               : reminder.status === 'pending'
                 ? 'Pendiente de programación · no activo'
                 : reminder.status === 'elapsed'
@@ -231,13 +237,15 @@ function GeneralReminderEditor() {
       <Text accessibilityLiveRegion="polite" style={s.body}>
         {!feedback.supported
           ? 'Sin avisos activos en este navegador.'
-          : scheduled
-            ? `${scheduled} ${scheduled === 1 ? 'aviso programado' : 'avisos programados'}${pending ? ` · ${pending} pendientes` : ''}.`
-            : pending
-              ? `Hay ${pending} cambios de programación o cancelación pendientes de completar.`
-              : saved.enabled
-                ? 'Sin avisos programados. No hay horarios futuros disponibles o falta completar la programación.'
-                : 'Solicitud general desactivada.'}
+          : localError || feedback.error
+            ? 'Programación por verificar. No se pudo confirmar el estado actual de los avisos.'
+            : scheduled
+              ? `${scheduled} ${scheduled === 1 ? 'aviso programado' : 'avisos programados'}${pending ? ` · ${pending} pendientes` : ''}.`
+              : pending
+                ? `Hay ${pending} cambios de programación o cancelación pendientes de completar.`
+                : saved.enabled
+                  ? 'Sin avisos programados. No hay horarios futuros disponibles o falta completar la programación.'
+                  : 'Solicitud general desactivada.'}
       </Text>
       {localError || feedback.error || pending ? (
         <>

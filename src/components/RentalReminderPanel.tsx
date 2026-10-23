@@ -163,15 +163,17 @@ export function RentalReminderPanel({ obra }: { obra: ObraCard }) {
               <Text accessibilityLiveRegion="polite" style={s.body}>
                 {!feedback.supported
                   ? 'Sin avisos activos en este navegador.'
-                  : scheduled
-                    ? `${scheduled} ${scheduled === 1 ? 'aviso programado' : 'avisos programados'}${pending ? ' · hay avisos pendientes' : ''}.`
-                    : pending
-                      ? 'Hay cambios de programación o cancelación pendientes de completar.'
-                      : final
-                        ? 'Alquiler finalizado. No se programan nuevos avisos.'
-                        : effective.enabled
-                          ? 'Sin avisos programados para horarios futuros.'
-                          : 'Solicitud de avisos desactivada.'}
+                  : localError || feedback.error
+                    ? 'Programación por verificar. No se pudo confirmar el estado actual de los avisos.'
+                    : scheduled
+                      ? `${scheduled} ${scheduled === 1 ? 'aviso programado' : 'avisos programados'}${pending ? ' · hay avisos pendientes' : ''}.`
+                      : pending
+                        ? 'Hay cambios de programación o cancelación pendientes de completar.'
+                        : final
+                          ? 'Alquiler finalizado. No se programan nuevos avisos.'
+                          : effective.enabled
+                            ? 'Sin avisos programados para horarios futuros.'
+                            : 'Solicitud de avisos desactivada.'}
               </Text>
             </>
           )}
@@ -181,7 +183,11 @@ export function RentalReminderPanel({ obra }: { obra: ObraCard }) {
               preferencias; para recibir avisos, configurálos en la app Android/iOS.
             </Text>
           ) : null}
-          <ReminderStatusList reminders={reminders} supported={feedback.supported} />
+          <ReminderStatusList
+            reminders={reminders}
+            supported={feedback.supported}
+            verificationError={!!(localError || feedback.error)}
+          />
           {!final ? (
             <>
               <Button
