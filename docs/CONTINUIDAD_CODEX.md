@@ -1,3 +1,13 @@
+# Reanudación y ampliación de avisos — 23/10/2026
+
+Main recuperado: 67f3a2e011ce335e1e903c02ae78d92a2dd2771e, remoto comprobado sin divergencia. La ejecución anterior sí terminó: UI50/50 (8.9min) y Gradle1.5 BUILD SUCCESSFUL (13m49s). Se verificó y preservó el APK1.5 fuera de android antes de nuevos cambios: /workspace/entregas/cobalto-1.5.0/repartos-chema-local-1.5.0-arm64.apk. SHA256 2aaeefdb3a278c674e0a78c2a349702575604f580cafdd2170b6263469eade82. Firma v2, certificado idéntico a1.4, package com.grupochema.repartos, code8, ARM64/CRC/SQLite/tresWAV verificados. No probado en hardware ni publicado aún. Este registro cierra evidencias de1.5, no acredita los nuevos avisos.
+
+**Ampliación autorizada en curso:** Alquilado hasta reutiliza fechaRetiroEstimada (retiro previsto, sin fecha comercial distinta en modelo); fechaRetiroEfectiva se conserva. Contador derivado del calendario Argentina, refresco medianoche/reanudación. General opt-in08:00 con offsets3/2/1/0, herencia real y personalización. Extender único ReminderService con migración v1→v2, intenciones durables/cancelaciones/reintentos/permiso, proteger manuales anteriores. Taps al detalle tras carga y sesión. Selector nativo compatible9.1.0; web date/time. Nueva versión funcional prevista1.6/code9, independiente del APK1.5 preservado. No datos/stock/SQLite/fotos/JSON/certificado alterados por diseño.
+
+**Próxima acción exacta:** integrar motor/políticas/calendario/selectores/UI; ejecutar pruebas de nuevos avisos, check y UI, respaldar fuente y push ANTES del Gradle1.6. Publicar APK nuevo solo tras verificación, conservar anteriores. Cierre/reinicio real Android y puntualidad OS quedan pendientes de dispositivo físico. No prometer trabajo futuro automático.
+
+---
+
 # Puerta visual superada — 1.5.0/code8 — 18/10/2026 20:48 UTC
 
 **Estado activo:** estructura implementada y comparada manualmente ANTES del APK.19comparativas (11contra recortes de referencias al mismo tamaño/tema y8antes/después),346capturas actuales en artifacts/capturas/estructura-1.5. Ver COMPARACION_VISUAL_1_5.md para datos sintéticos y diferencias intencionales.
