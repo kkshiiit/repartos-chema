@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "upstream": "https://github.com/msitarzewski/agency-agents",
+  "commit": "4e3ac3ca6604c75113f52c695dbddcc7af928b46",
+  "installedUTC": "2026-10-24T17:21:39.273727+00:00",
+  "scope": "project",
+  "format": "standalone Codex TOML",
+  "codexCLI": "0.159.2",
+  "license": {
+    "path": ".codex/agents/LICENSE.agency-agents",
+    "spdx": "MIT",
+    "sha256": "9a45258434d5cedf0af73c9ad4771373701225038d246c49219026c33677f66f",
+    "copyright": "2025 AgentLand Contributors"
+  },
+  "agents": [
+    {
+      "name": "chema_arquitectura_datos",
+      "path": ".codex/agents/chema_arquitectura_datos.toml",
+      "sourcePath": "engineering/engineering-software-architect.md",
+      "sourceURL": "https://github.com/msitarzewski/agency-agents/blob/4e3ac3ca6604c75113f52c695dbddcc7af928b46/engineering/engineering-software-architect.md",
+      "sourceSHA256": "b85121691776147bacde26673e68fbbacd6a7f0816d1ca8e203c264d25ce1d30",
+      "adaptedSHA256": "6220a0db518c70103b0588cadea517f5b749197ff4b8f18d62e7dc9a3c84f0ba",
+      "description": "Arquitectura local, invariantes de inventario, persistencia y recuperación; decisiones pequeñas y compatibles."
+    },
+    {
+      "name": "chema_react_native",
+      "path": ".codex/agents/chema_react_native.toml",
+      "sourcePath": "engineering/engineering-mobile-app-builder.md",
+      "sourceURL": "https://github.com/msitarzewski/agency-agents/blob/4e3ac3ca6604c75113f52c695dbddcc7af928b46/engineering/engineering-mobile-app-builder.md",
+      "sourceSHA256": "1a3e043f806b0b7c071d58b2ee3ab3c58c8342e2727c1ca9e6e5175f86986caf",
+      "adaptedSHA256": "bce452df20aef005f3a5aa18ee7e4dcbcfa8c208748cd09f744e0b740a75f989",
+      "description": "Especialista Expo y React Native para cambios Android locales, navegación, estado e integración nativa de Repartos Chema."
+    },
+    {
+      "name": "chema_accesibilidad",
+      "path": ".codex/agents/chema_accesibilidad.toml",
+      "sourcePath": "testing/testing-accessibility-auditor.md",
+      "sourceURL": "https://github.com/msitarzewski/agency-agents/blob/4e3ac3ca6604c75113f52c695dbddcc7af928b46/testing/testing-accessibility-auditor.md",
+      "sourceSHA256": "362935907af23839775b9c6162f38c0c5a740542ab4350cb5c5b5a0d9f9a4268",
+      "adaptedSHA256": "f68be840a3f284bb87f2ae08a8dba70b0041df700cfb0758ba016c828cf07c45",
+      "description": "Revisión móvil de accesibilidad, temas, foco, formularios y fidelidad visual con evidencia separada."
+    },
+    {
+      "name": "chema_qa_evidencia",
+      "path": ".codex/agents/chema_qa_evidencia.toml",
+      "sourcePath": "testing/testing-reality-checker.md",
+      "sourceURL": "https://github.com/msitarzewski/agency-agents/blob/4e3ac3ca6604c75113f52c695dbddcc7af928b46/testing/testing-reality-checker.md",
+      "sourceSHA256": "6d32fcdb114233e13902ec6372d50293b120e85d490b5e81d372c29808f988a1",
+      "adaptedSHA256": "9cba22457b6aa69b2892e7055669cc276bb8c0c637096adf1948c3c835839552",
+      "description": "Contrastar requisitos con código y evidencia, regresiones de inventario y recorridos sin falsas declaraciones de Android probado."
+    },
+    {
+      "name": "chema_rendimiento",
+      "path": ".codex/agents/chema_rendimiento.toml",
+      "sourcePath": "testing/testing-performance-benchmarker.md",
+      "sourceURL": "https://github.com/msitarzewski/agency-agents/blob/4e3ac3ca6604c75113f52c695dbddcc7af928b46/testing/testing-performance-benchmarker.md",
+      "sourceSHA256": "736fd1538678af699220803c0f6a84e1626eaf9346c5af88a2290c075cd55fd5",
+      "adaptedSHA256": "ae1c6ad36735c53b966eb4bd74cdb75ee0190635da763bc7b53b56c8e4423199",
+      "description": "Diagnosticar lentitud real de Android/React Native, listas, documentos y memoria; medir antes y después sin alterar integridad."
+    },
+    {
+      "name": "chema_seguridad",
+      "path": ".codex/agents/chema_seguridad.toml",
+      "sourcePath": "security/security-appsec-engineer.md",
+      "sourceURL": "https://github.com/msitarzewski/agency-agents/blob/4e3ac3ca6604c75113f52c695dbddcc7af928b46/security/security-appsec-engineer.md",
+      "sourceSHA256": "a19f0bda46f4adca5737365dbc3c7ed93e9d93b71349536d92ff055dcf4e3b83",
+      "adaptedSHA256": "a2f039b98d9c0763e84ed4ef33b89392ada97ab9d7c83cf47acbe2dfdceb7e2e",
+      "description": "Revisor AppSec de datos locales, autorizaciones de dominio, importación, archivos y dependencias de Repartos Chema."
+    },
+    {
+      "name": "chema_entrega_android",
+      "path": ".codex/agents/chema_entrega_android.toml",
+      "sourcePath": "engineering/engineering-mobile-release-engineer.md",
+      "sourceURL": "https://github.com/msitarzewski/agency-agents/blob/4e3ac3ca6604c75113f52c695dbddcc7af928b46/engineering/engineering-mobile-release-engineer.md",
+      "sourceSHA256": "3fae6975de4c2038a7fb0c4a8e366b8f87e8f3bb89e0a64ce4d4bcfdead15617",
+      "adaptedSHA256": "a49645102f68bc953652a48a4e898d60816b9326a88a2f92469049bb7f4177e7",
+      "description": "Especialista en respaldo, compilación Gradle, firma y verificación de APK Android locales de Repartos Chema."
+    }
+  ],
+  "adaptation": "Selección y adaptación en español al dominio y al stack Expo/RN local Android; se omiten stacks ajenos, comandos obligatorios de plantilla, métricas garantizadas y publicación automática. Modelos, herramientas y permisos se heredan; sin config global ni cambios de app. No se ejecutó el instalador global."
+}

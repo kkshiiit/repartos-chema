@@ -1,3 +1,13 @@
+# Herramientas del proyecto: Agency Agents — 24/10/2026
+
+Alcance de esta ejecución: instalar y verificar perfiles de proyecto, sin modificar ni compilar la aplicación. Base main55c0725/remoto coincidente y limpio. Se agregaron7TOML en `.codex/agents/`: chema_arquitectura_datos, chema_react_native, chema_accesibilidad, chema_qa_evidencia, chema_rendimiento, chema_seguridad y chema_entrega_android. Upstream4e3ac3ca6604c75113f52c695dbddcc7af928b46, adaptados al stack/edición local en español; licencia MIT y hashes en ORIGEN.json. Skills/config existentes conservados; no nuevo config.toml, modelos, MCP, servicios ni permisos.
+
+Verificación:7TOML correctos y loader nativo CodexCLI0.159.2 reconoció7nombres en prueba controlada sobre la ruta real; duplicados temporales retirados, carga final0advertencias. Sólo initialize/config/read, sin turn/start/inferencia. Confianza configurada únicamente en home temporal de prueba; no cambiarla en configuración personal. Catálogo de esta sesión no recargado ni selector agent_type expuesto: para invocar nativamente abrir sesión nueva desde repo con confianza del cliente; alternativa lectura explícita del perfil sin fingir subagente. Guía y pruebas en docs/AGENCY_AGENTS.md y AGENCY_AGENTS.verificacion.json.
+
+**La app y el APK1.6 del cierre inferior no cambiaron.** No reconstruirlos por instalar perfiles. Próximo paso: usar sólo el especialista necesario cuando el usuario indique una tarea; si pide APK, entregar la versión ya publicada. Estos perfiles no activan rediseños ni trabajo persistente automático. Consultar gitlog para el commit de esta instalación.
+
+---
+
 # Cierre1.6 individual — APK publicado y recuperado — 23/10/2026
 
 **Completado dentro del acceso disponible. Próxima acción: prueba física en Android del usuario.** No reconstruir ni continuar rediseño por un cambio documental. La ejecución actual no activa continuidad automática ni servicios pagos.
