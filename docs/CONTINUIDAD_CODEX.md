@@ -1,3 +1,15 @@
+# Cierre correctivo 1.6.1 y auditoría completa — 24/10/2026
+
+Encargo: terminar todo lo posible sin costos y guardar auditoría antes de agotar uso. Base dc69734 limpia/remoto coincidente. Archivo maestro completo YA creado en docs/AUDITORIA_MAESTRA_ACTUAL.md (más de800líneas, incluye requisitos/historia/matriz/código/riesgos/Git/pruebas/plan y anexos íntegros17Oct/entrega1.6/avisos). Se actualizará con resultados finales, no depender sólo del chat.
+
+Hallazgos confirmados/corregidos: F1 DELIVER podía aceptar retiro anterior a entrega planificada y crear copia no restaurable; guarda de dominio +2regresiones. F2 Zod4.6.5 aviso nuevo GHSA-mrhx-c7xc-m3w5; se actualizó exclusivamente raíz/Functions a4.6.6 exact y sus locks, +regresión límites. Especialistas aplicaron perfiles arquitectura/QA/seguridad/entrega como guías en subagentes reales, sin afirmar selección nativa agent_type. 439unitarias/39archivos pasaron, tipos/Functions correctos; pendiente check coordinado/UI/build de entrega.
+
+Preparada1.6.1/code10, paquete/firma anteriores intactos. Próximaacción: check completo y exportación local/recorridos afectados; commit/push de código y ZIPrestaurado ANTES de Gradle. Después verificar APKcontra1.6.0, publicar ruta nueva y recuperarhash; guardar fuente final/auditoría en descargas. No rotarfirma/reset/desinstalar/serviciospagos. Si interrupción, comprobarprocesos/logs/APKexistente antesderecompilar.
+
+Persisten: sinhardwarefísico, npmraízaudit9entradaspropagadas(Zodvulnerable sóloCLI3.x), Functions10históricos sin desplegar, arraysdecopias sinmáximoindividual/archivo50MB. Todo documentado, no inventar0riesgos ni pruebasOS. Los282perfiles y7skills se conservan. El APK1.6.0 de abajo sigue disponible como versión anterior, no incluye los parches1.6.1.
+
+---
+
 # Catálogo Agency Agents completo — 24/10/2026
 
 El usuario amplió expresamente a TODOS los perfiles y pidió usar sólo los necesarios después. Base21f33ba limpia/remoto coincidente. Se conserva cada byte de los7chema_* y sus licencias/manifiesto; se agregan275genéricos en .codex/agents/catalogo/<división>. Total282perfiles/18divisiones, cada fuente representada una vez. Origen4e3ac3ca6604c75113f52c695dbddcc7af928b46, conversión oficial externa alrepo, cuerpos completos más contexto/límitesChema. No app/deps/APK/skills/config personal alterados ni servicios habilitados.
