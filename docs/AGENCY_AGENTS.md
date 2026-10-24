@@ -1,79 +1,67 @@
 # Agency Agents para Repartos Chema
 
-Instalación de orientación técnica, **sin cambios en la aplicación**. Base comprobada: repositorio privado `kkshiiit/repartos-chema`, main `55c0725af789bb1d0393a29569896ceb52a5ed47`, árbol limpio y remoto coincidente. App1.6.0 individual Android, Expo57/RN0.86/React19/TS6, Router/Context, SQLite/AsyncStorage, FlashList, avisos locales, Word/Excel y Vitest/Playwright. Las versiones son las observadas al instalar; cada especialista debe volver a verificarlas.
+## Estado actual: catálogo completo
 
-No había AGENTS.md aplicable en `/`, `/workspace`, raíz o subdirectorios del proyecto; no se creó ni reemplazó uno. Tampoco existían perfiles/configuración `.codex` del proyecto ni agentes personales TOML. Se conservaron las7skills y83archivos de `.agents/skills`, su manifiesto/licencias y `skills-lock.json`. Una skill no equivale a una biblioteca instalada ni a un agente en ejecución.
+Por instrucción posterior del usuario se amplió la selección inicial a **282perfiles de18divisiones**:275nuevos más los7`chema_*` conservados. Se instalaron únicamente definiciones Codex dentro de `.codex/agents/`; no se modificó, compiló ni ejecutó la aplicación. Base de esta ampliación: main`21f33ba`, árbol limpio y remoto coincidente.
 
-## Selección instalada
+[**Índice de los282perfiles y nombres para invocarlos**](AGENCY_AGENTS_CATALOGO.md) · [Procedencia completa](../.codex/agents/CATALOGO.origen.json) · [Prueba de carga nativa](AGENCY_AGENTS.catalogo.verificacion.json).
 
-| Nombre para invocar | Alcance | Perfil original |
-|---|---|---|
-| [`chema_arquitectura_datos`](../.codex/agents/chema_arquitectura_datos.toml) | Arquitectura local, invariantes de inventario, persistencia y recuperación; decisiones pequeñas y compatibles. | [engineering-software-architect.md](https://github.com/msitarzewski/agency-agents/blob/4e3ac3ca6604c75113f52c695dbddcc7af928b46/engineering/engineering-software-architect.md) |
-| [`chema_react_native`](../.codex/agents/chema_react_native.toml) | Especialista Expo y React Native para cambios Android locales, navegación, estado e integración nativa de Repartos Chema. | [engineering-mobile-app-builder.md](https://github.com/msitarzewski/agency-agents/blob/4e3ac3ca6604c75113f52c695dbddcc7af928b46/engineering/engineering-mobile-app-builder.md) |
-| [`chema_accesibilidad`](../.codex/agents/chema_accesibilidad.toml) | Revisión móvil de accesibilidad, temas, foco, formularios y fidelidad visual con evidencia separada. | [testing-accessibility-auditor.md](https://github.com/msitarzewski/agency-agents/blob/4e3ac3ca6604c75113f52c695dbddcc7af928b46/testing/testing-accessibility-auditor.md) |
-| [`chema_qa_evidencia`](../.codex/agents/chema_qa_evidencia.toml) | Contrastar requisitos con código y evidencia, regresiones de inventario y recorridos sin falsas declaraciones de Android probado. | [testing-reality-checker.md](https://github.com/msitarzewski/agency-agents/blob/4e3ac3ca6604c75113f52c695dbddcc7af928b46/testing/testing-reality-checker.md) |
-| [`chema_rendimiento`](../.codex/agents/chema_rendimiento.toml) | Diagnosticar lentitud real de Android/React Native, listas, documentos y memoria; medir antes y después sin alterar integridad. | [testing-performance-benchmarker.md](https://github.com/msitarzewski/agency-agents/blob/4e3ac3ca6604c75113f52c695dbddcc7af928b46/testing/testing-performance-benchmarker.md) |
-| [`chema_seguridad`](../.codex/agents/chema_seguridad.toml) | Revisor AppSec de datos locales, autorizaciones de dominio, importación, archivos y dependencias de Repartos Chema. | [security-appsec-engineer.md](https://github.com/msitarzewski/agency-agents/blob/4e3ac3ca6604c75113f52c695dbddcc7af928b46/security/security-appsec-engineer.md) |
-| [`chema_entrega_android`](../.codex/agents/chema_entrega_android.toml) | Especialista en respaldo, compilación Gradle, firma y verificación de APK Android locales de Repartos Chema. | [engineering-mobile-release-engineer.md](https://github.com/msitarzewski/agency-agents/blob/4e3ac3ca6604c75113f52c695dbddcc7af928b46/engineering/engineering-mobile-release-engineer.md) |
+La app sigue en1.6 individual Android/local/offline, con Expo57/RN0.86/TypeScript6/Router, SQLite/AsyncStorage, FlashList, avisos locales y Word/Excel. Instalar especialistas de otras plataformas no migra ese stack. Se mantienen las7skills/83archivos existentes, configuración personal, AGENTS.md, paquete/firma, fotos, JSON y datos; no se agregan dependencias, MCP, proveedores o servicios.
 
-La coordinación permanece en el agente principal. No se instaló todo el catálogo: quedan fuera marketing/redes, monetización, servidores/infraestructura cloud, stacks Laravel/Flutter y especialistas duplicados de desarrollo web o coordinación. Accesibilidad/QA/rendimiento se separan por evidencia y responsabilidad; reutilizan las skills técnicas existentes.
+## Perfiles preferentes para esta app
 
-Cada TOML tiene únicamente `name`, `description` y `developer_instructions`. No fija modelo, esfuerzo, permisos, proveedor, MCP ni cuota/concurrencia. Hereda esas opciones de la sesión principal. Las restricciones de lectura del texto son instrucciones de trabajo, no un sandbox adicional. Instalar estos perfiles no consume inferencia; utilizarlos sí consume la cuota de Codex disponible y no concede créditos o continuidad automática.
+| Perfil | Trabajo habitual |
+|---|---|
+| `chema_arquitectura_datos` | Invariantes, persistencia, importación y recuperación |
+| `chema_react_native` | Desarrollo Expo/React Native y funciones nativas |
+| `chema_accesibilidad` | Temas, contraste, teclado/TalkBack y composición |
+| `chema_qa_evidencia` | Requisitos, regresiones y evidencia verificable |
+| `chema_rendimiento` | Medición y cuellos de botella reales |
+| `chema_seguridad` | Validación, permisos, secretos y dependencias |
+| `chema_entrega_android` | Respaldo, Gradle, firma y entrega de APK |
 
-## Procedencia y adaptación
+Los275genéricos están agrupados en `.codex/agents/catalogo/<división>/agency_<nombre>.toml`. Los7adaptados permanecen donde estaban. La coordinación elige uno o pocos perfiles por necesidad, no lanza los282 ni impone fases de todas las especialidades. Algunos ejemplos:
 
-Fuente oficial: [msitarzewski/agency-agents](https://github.com/msitarzewski/agency-agents), commit **`4e3ac3ca6604c75113f52c695dbddcc7af928b46`**, revisado el24/10/2026. Se leyeron README, integración Codex, conversor/instalador y los siete perfiles elegidos. Los tres perfiles móvil/seguridad/entrega fueron leídos por un especialista delegado; los cuatro restantes por el principal.
+> Usá `chema_react_native` para revisar el flujo de entrega, sin modificar archivos.
 
-[ORIGEN.json](../.codex/agents/ORIGEN.json) registra rutas/permalinks, commit, hashes del original y de cada adaptación. [Licencia MIT íntegra](../.codex/agents/LICENSE.agency-agents), copyright2025AgentLandContributors, copiada byte a byte. No se cambió la licencia del proyecto.
+> Usá `agency_frontend_developer` como apoyo para analizar la versión web, respetando el stack y sin implementar todavía.
 
-Las adaptaciones son condensaciones en español de misión/metodología, **no copias idénticas**: se sustituyen ejemplos ajenos por dominio/logística/Expo/Android, se eliminan comandos obligatorios de plantilla, biografías o métricas pretendidas y certificaciones sin evidencia. Se exige preservar inventario/stock, idempotencia, almacenamiento/fotos/JSON/firma y diferenciar navegador/mocks/build de hardware. Siguen vigentes los límites de servicios gratuitos y autorizaciones del encargo.
+> Usá el perfil pertinente del catálogo para esta tarea; conservá los límites y autorizaciones de Repartos Chema.
 
-El instalador upstream usa por defecto `~/.codex/agents/`. No se ejecutó ese instalador ni una conversión masiva. Se crearon sólo los siete TOML revisados en **`.codex/agents/`**, con prefijo`chema_` para no reemplazar `default`, `worker`, `explorer` u otros roles. No se creó `.codex/config.toml` ni se modificó configuración personal.
+La referencia por `name` dentro de la sesión es el método documentado. `codex --agent` no es un flag disponible en el CLI verificado. Para abrir la raíz se admite `codex -C /workspace/repartos-chema`.
 
-## Verificación real con Codex
+## Origen y conversión
 
-Documentación vigente consultada:
+Fuente revisada: [Agency Agents](https://github.com/msitarzewski/agency-agents), commit**`4e3ac3ca6604c75113f52c695dbddcc7af928b46`**. Se volvió a consultar main al ampliar, sin cambios respecto del origen de la selección inicial. Censo completo según `divisions.json`:18divisiones/282fuentes, todas con metadata y cuerpo válidos;0colisiones de nombre/slug/cuerpo.
 
-- [Codex: custom agents, descubrimiento y esquema](https://developers.openai.com/codex/subagents/#custom-agents).
-- [Agency Agents: integración Codex fijada al commit](https://github.com/msitarzewski/agency-agents/blob/4e3ac3ca6604c75113f52c695dbddcc7af928b46/integrations/codex/README.md).
-- [Conversor oficial](https://github.com/msitarzewski/agency-agents/blob/4e3ac3ca6604c75113f52c695dbddcc7af928b46/scripts/convert.sh).
-- [Loader de Codex0.159.2](https://github.com/openai/codex/blob/rust-v0.159.2/codex-rs/agent-roles/src/loader.rs), [descubrimiento](https://github.com/openai/codex/blob/rust-v0.159.2/codex-rs/agent-roles/src/discovery.rs) y [configuración del rol](https://github.com/openai/codex/blob/rust-v0.159.2/codex-rs/agent-roles/src/agent_role_config.rs).
+Conversor oficial, ejecutado sólo en un directorio temporal externo al proyecto:
 
-Resultados actuales:
+```bash
+bash scripts/convert.sh --tool codex --out /tmp/chema-agency-complete-converted-20261024
+```
 
-1. Python`tomllib`:7TOML válidos, los3campos requeridos no vacíos,7nombres únicos, nombres/archivos coincidentes, sin redefinir roles incorporados ni opciones ajenas.
-2. Licencia y procedencia verificadas por SHA256; referencias locales de skills/documentos existentes. Sin dependencias de app añadidas ni scripts upstream ejecutados.
-3. **CodexCLI0.159.2 real, loader de ámbito proyecto:** proceso app-server aislado con `CODEX_HOME` temporal, analytics desactivado, sin claves y proveedor de prueba en loopback sin servicio. Sólo `initialize` → `initialized` → `config/read`; **cero `turn/start` y cero inferencia**.
-4. Para demostrar reconocimiento sin inventar un comando de catálogo, se añadieron duplicados de control temporales: el loader emitió exactamente7advertencias con los7nombres y la ruta real `.codex/agents`. Se retiraron todos en`finally`. Nueva carga de los7perfiles finales: **cero advertencias**, sin duplicados ni campos inválidos. [Registro nativo](AGENCY_AGENTS.verificacion.json).
-5. El primer comprobador buscaba los nombres sin las comillas invertidas que usa el CLI: falló su aserción de extracción, no el loader. Se ajustó y repitió; los controles temporales se retiraron también tras ese intento.
-6. La confianza necesaria para esa prueba se configuró **sólo en el CODEX_HOME temporal**. No se habilitó confianza, permisos ni servicios en la configuración real del usuario. La carga sin confianza devolvió una capa de proyecto deshabilitada; el resultado está documentado, no se presenta como catálogo activo de este chat.
+Generó282TOML. Cada uno se contrastó con nombre/descripción/cuerpo de fuente:0diferencias de conversión. No se ejecutó el instalador global `install.sh` ni se copió a `~/.codex/agents/`.
 
-`codex agents` enumera sesiones, no perfiles. `debug prompt-input` no expone los esquemas completos de herramientas y `config/read` no devuelve un catálogo resuelto. Por eso no se usaron como una falsa prueba de instalación. No se iniciaron pruebas/lint/build de la app ni otro APK: estos archivos no alteran su funcionamiento.
+Para275nuevos, se conserva el cuerpo completo convertido y se agrega contexto de Chema: seleccionar bajo demanda, alcance delegado, no ejecución automática, protección de datos/firma, no servicios/gastos/publicaciones sin autorización, comprobar stack y herramientas, distinguir ejemplos/metas de hechos o resultados. Se renombra a`agency_*` para evitar colisiones con roles incorporados y las adaptaciones actuales. Los7orígenes ya representados se mapean a`chema_*`, sin crear otra copia ni cambiar sus bytes.
 
-## Cómo invocarlos
+Cada TOML sólo define `name`, `description`, `developer_instructions`; no traslada metadata `tools/services` a permisos o capacidades reales. No fija modelos, esfuerzo, proveedor, tier, confianza ni concurrencia: se heredan de la sesión. MIT original íntegra en [LICENSE.agency-agents](../.codex/agents/LICENSE.agency-agents). El registro inicial [ORIGEN.json](../.codex/agents/ORIGEN.json) permanece intacto; el completo registra282orígenes, nombres, rutas y hashes. Dos cuerpos upstream contienen U+0004; las cadenas se codifican con escapes TOML válidos, sin ejecutar ni truncar ejemplos.
 
-En una **sesión nueva de Codex abierta en este repositorio**, con el proyecto considerado de confianza por tu cliente, pedí por su nombre exacto:
+## Verificación real y alcance
 
-> Usá el agente `chema_react_native` para revisar el flujo de entrega. Sólo análisis, sin modificar archivos.
+- `tomllib`:282TOML válidos, nombres/archivos únicos y correspondencia uno a uno con las282fuentes;275cuerpos originales íntegros y7adaptaciones idénticas a la instalación previa.
+- **CodexCLI0.159.2 nativo:** app-server aislado, `CODEX_HOME` temporal, proveedor loopback sin servicio, sin claves ni inferencia. Sólo `initialize`, `initialized` y `config/read`; no `turn/start`.
+- Reconocimiento positivo por control de duplicación: el loader detectó los282nombres de la ruta real. Todos los duplicados temporales se retiraron en`finally`; una nueva carga de los282finales terminó con**0advertencias**. No se confunde parsear TOML con verificar carga de Codex.
+- La confianza para la prueba se configura sólo en home temporal: no se cambian permisos/configuración reales. Sin confianza, Codex deshabilita la capa del proyecto. [Evidencia completa](AGENCY_AGENTS.catalogo.verificacion.json).
+- Hashes de la base verifican que la aplicación, los83archivos de skills y las7adaptaciones originales siguen intactos. Sólo cambian documentación/checkpoint y se añaden catálogo/procedencia. No se ejecuta `npm`, lint, pruebas de app, build o APK por esta instalación.
 
-> Usá `chema_arquitectura_datos` para analizar el riesgo de este cambio de importación JSON y `chema_qa_evidencia` para definir las pruebas necesarias. No implementes todavía.
+**Sesión actual:** el catálogo no se recarga automáticamente en su herramienta de delegación y ésta no expone `agent_type`. No se afirma que los282tipos ya sean seleccionables aquí. Para carga nativa, abrir/refrescar una sesión Codex desde el repositorio en un cliente compatible y con el proyecto considerado confiable. No se automatizó esa confianza.
 
-> Usá `chema_accesibilidad` para revisar estas capturas y los componentes correspondientes, respetando el diseño aprobado.
+Si el cliente no descubre tipos, el uso explícito es leer el TOML y aplicar sus instrucciones al encargo; eso es usar el perfil como guía, no demostrar un nuevo tipo de subagente ejecutándose. Instalarlos no otorga modelos, herramientas, créditos ni trabajo continuo; invocarlos consume la cuota disponible de Codex.
 
-> Usá `chema_entrega_android` para verificar el APK existente, sin recompilar ni publicar.
+## Mantenimiento y antecedentes
 
-Sólo elegí el especialista pertinente; no se exige ejecutar los siete. Para implementar, indicá tarea/archivos/resultado y autorización con claridad. La publicación, migraciones sensibles o gastos no se habilitan por invocar un perfil. No hay un flag `codex --agent` documentado por este CLI: la referencia por nombre dentro de la sesión es el método oficial. Opcionalmente se puede abrir el CLI con `codex -C /workspace/repartos-chema`.
+Comprobar `installedSHA256` y personalizaciones antes de actualizar; no sobrescribir archivos locales por regenerar el catálogo. El conversor se mantiene fuera del proyecto y sus salidas se revisan antes de copiarlas. No convertir integraciones/ejemplos en perfiles duplicados ni reemplazar AGENTS.md. Una ampliación del catálogo no autoriza instalar sus herramientas ni modificar la app.
 
-**Límite de esta sesión:** su herramienta de delegación no expone `agent_type` y su catálogo no se recargó al escribir archivos. No afirmamos que estos siete tipos nuevos ya estén seleccionables aquí. Reabrir/refrescar Codex desde la raíz del repo permite el descubrimiento si el cliente lo admite; si pide confiar en el proyecto, esa decisión se hace en el cliente, no se automatizó para ocultar la limitación.
+Instalación inicial: commit21f33ba,7adaptaciones, pruebas y licencia preservadas; su [registro nativo inicial](AGENCY_AGENTS.verificacion.json) sigue disponible. La antigua limitación a una selección quedó sustituida por el pedido expreso de instalar todos los perfiles, manteniendo selección de uso posterior.
 
-Si el cliente no descubre perfiles, el uso explícito alternativo es:
-
-> Leé `.codex/agents/chema_react_native.toml` y aplicá sus `developer_instructions` al encargo autorizado. Informá si sólo estás usando el perfil como guía o si realmente se creó un subagente de ese tipo.
-
-Esta lectura es una alternativa de contexto, no prueba de un subagente nativo ejecutándose ni de instalación global en otra PC/Work.
-
-## Mantenimiento
-
-Antes de actualizar: comprobar ORIGEN.json y comparar hashes con las personalizaciones actuales. Conservar diferencias locales; no sobrescribir por ejecutar install/update genérico. Revisar nuevos upstream, licencia y esquema Codex antes de adaptar. Nunca convertir toda la agencia ni reemplazar AGENTS.md por una plantilla.
-
-El alcance de esta instalación termina en perfiles, procedencia, comprobación y documentación. La app1.6, su APK/firma, inventario, JSON/fotos/SQLite, package/lockfiles y servicios permanecen intactos. Para seguir desarrollando, leer el checkpoint y atender el nuevo encargo concreto.
+Documentación oficial consultada: [Codex custom agents](https://developers.openai.com/codex/subagents/#custom-agents), [integración Agency/Codex](https://github.com/msitarzewski/agency-agents/blob/4e3ac3ca6604c75113f52c695dbddcc7af928b46/integrations/codex/README.md), [loaderCodex0.159.2](https://github.com/openai/codex/blob/rust-v0.159.2/codex-rs/agent-roles/src/loader.rs).

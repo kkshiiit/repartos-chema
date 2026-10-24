@@ -1,3 +1,13 @@
+# Catálogo Agency Agents completo — 24/10/2026
+
+El usuario amplió expresamente a TODOS los perfiles y pidió usar sólo los necesarios después. Base21f33ba limpia/remoto coincidente. Se conserva cada byte de los7chema_* y sus licencias/manifiesto; se agregan275genéricos en .codex/agents/catalogo/<división>. Total282perfiles/18divisiones, cada fuente representada una vez. Origen4e3ac3ca6604c75113f52c695dbddcc7af928b46, conversión oficial externa alrepo, cuerpos completos más contexto/límitesChema. No app/deps/APK/skills/config personal alterados ni servicios habilitados.
+
+Cargador real Codex0.159.2 verificó282nombres con control temporal y carga final0advertencias; pruebas sin turn/start/inferencia, confianza sólo en home temporal. Controles duplicados retirados; no catálogo activo recargado en esta sesión ni agent_type en su herramienta. Para uso nativo, sesión nueva desde repo con confianza del cliente; lectura explícita delperfil es alternativa de contexto, sin simularsubagente.
+
+Guía docs/AGENCY_AGENTS.md, índice completo AGENCY_AGENTS_CATALOGO.md, procedencia .codex/agents/CATALOGO.origen.json y verificación AGENCY_AGENTS.catalogo.verificacion.json. Preferir los7adaptados para Android/logística, elegir los otros por necesidad, no activarlos todos ni prometer trabajo continuo. Instalarcatálogo no autoriza Ads/nube/gastos/publicaciones/migraciones. Próximaacción: esperarencargo; APK1.6 ya publicado siguevigente, no recompilarporperfiles. Consultargitlog paraelcommitdeestaampliación.
+
+---
+
 # Herramientas del proyecto: Agency Agents — 24/10/2026
 
 Alcance de esta ejecución: instalar y verificar perfiles de proyecto, sin modificar ni compilar la aplicación. Base main55c0725/remoto coincidente y limpio. Se agregaron7TOML en `.codex/agents/`: chema_arquitectura_datos, chema_react_native, chema_accesibilidad, chema_qa_evidencia, chema_rendimiento, chema_seguridad y chema_entrega_android. Upstream4e3ac3ca6604c75113f52c695dbddcc7af928b46, adaptados al stack/edición local en español; licencia MIT y hashes en ORIGEN.json. Skills/config existentes conservados; no nuevo config.toml, modelos, MCP, servicios ni permisos.
