@@ -1,0 +1,15 @@
+
+> repartos-chema@1.6.0 test
+> vitest run tests/zod-limits.test.ts tests/domain.test.ts tests/backup.test.ts tests/import-json.test.ts tests/import-integrity.test.ts tests/legacy-retirement-date.test.ts
+
+
+ RUN  v5.0.3 /workspace/repartos-chema
+
+
+ Test Files  6 passed (6)
+      Tests  128 passed (128)
+   Start at  17:53:23
+   Duration  4.16s (import 45%, tests 32%, transform 21%, worker 2%)
+
+    Isolate  6 workers spawned · ~245ms startup each (spawn + environment, per file)
+             at least ~1.23s faster with isolate: false — reuses workers across files instead of one per file

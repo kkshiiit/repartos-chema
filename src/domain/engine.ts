@@ -318,6 +318,10 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
       const names = drivers(a.responsables);
       if (a.fechaRetiroEstimada) o.fechaRetiroEstimada = validDate(a.fechaRetiroEstimada);
       ensure(
+        o.fechaRetiroEstimada >= o.fechaEntrega,
+        'El retiro previsto no puede ser anterior a la entrega planificada.',
+      );
+      ensure(
         o.fechaRetiroEstimada >= businessDate(now),
         'Revisa la fecha de retiro: precede la entrega efectiva de hoy.',
       );
