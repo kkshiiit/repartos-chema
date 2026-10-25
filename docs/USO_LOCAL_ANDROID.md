@@ -1,4 +1,4 @@
-# Uso individual Android — edición estructural cobalto1.5
+# Uso individual Android — edición Cobalto 1.6.1
 
 Esta edición no necesita Firebase, Cloudflare, suscripción ni una PC encendida. Los datos no se sincronizan con otros celulares. El nombre identifica movimientos locales; no crea una cuenta ni autentica a una persona.
 
@@ -25,7 +25,15 @@ Claro/Oscuro/Seguir sistema en Ajustes → Apariencia; sol/luna solo en las cabe
 
 Alquileres agrupa Vencidos, Retiros de hoy, Por entregar, Próximos retiros y Retirados. La búsqueda y Filtros están juntos: Filtros abre Zona y todos los estados. Tocar una fila abre su detalle. Nuevo alquiler abre Cliente → Carga → Revisar; avanzar no guarda ni mueve stock. Guardar alquiler conserva el borrador y recién Registrar entrega → Confirmar entrega mueve existencias. En Depósito usar los tres puntos de cada pieza para Editar, Mover stock o Ajustar. Faltantes/fotos se abren desde sus secciones del detalle. Los cambios de panel piden seguir editando o descartar; cerrar no confirma una operación. Documentos permite elegir Excel o Word antes de generar. Más acciones del alquiler conserva triangulación, ubicación, reactivación/reingreso y demás operaciones según estado. En Viaje, tocar una parada permite ordenar o abrir Cómo llegar; Opciones del viaje incluye Volver al depósito. Historial → tocar un movimiento → Deshacer ofrece la reversión segura durante cinco minutos, si corresponde. Para cambiar el nombre, Ajustes → fila de identidad → Cambiar nombre.
 
-Los avisos son locales y opcionales: en cada alquiler elegir fecha y hora explícitas. No tienen una hora automática ni se repiten solos. Los sonidos y vibración de confirmación están apagados inicialmente y se configuran en Ajustes. Web no programa notificaciones; Android puede retrasarlas por batería/silencio/No molestar. La guía [AVISOS_LOCALES.md](AVISOS_LOCALES.md) explica permisos y límites. No se envían push ni se requieren servicios pagos.
+## Avisos de retiro
+
+Los avisos son locales y opcionales. En Ajustes → Avisos de retiro, la función comienza desactivada; muestra las **08:00** como horario sugerido editable y selecciona los cuatro avisos: **3, 2 y 1 día antes, y el mismo día**. Al activarla se solicita permiso de notificaciones. Si se deniega, el alquiler se guarda normalmente y sus avisos no se presentan como activos.
+
+Cada alquiler usa inicialmente la configuración general. En su sección Recordatorios se puede personalizar horario y anticipaciones, desactivar sus avisos o volver a Usar configuración general. Cambiar los ajustes generales reprograma los avisos futuros de los alquileres que los heredan; conserva las preferencias personalizadas. Cambiar «Alquilado hasta» recalcula las fechas y completar el retiro cancela los avisos pendientes. Sólo se programan horarios futuros: los ya pasados no se disparan juntos. Una notificación nunca modifica el inventario.
+
+Los recordatorios manuales anteriores conservan sus datos y opciones durante la migración; no se duplican al incorporar la nueva programación. La aplicación conserva las intenciones y los errores recuperables para reintentar y reconciliar con Android. Un fallo parcial no equivale a una programación completa. Los sonidos y la vibración de confirmación siguen siendo una preferencia independiente, apagada inicialmente; los avisos automáticos de retiro se programan silenciosos.
+
+Web no programa notificaciones. En Android, el horario es el solicitado al sistema: batería, permisos, silencio o No molestar pueden retrasar u ocultar un aviso. No se promete puntualidad exacta ni se considera probada la entrega tras cerrar la app o reiniciar el teléfono sin una comprobación física. La guía [AVISOS_RETIRO_1_6.md](AVISOS_RETIRO_1_6.md) explica configuración, herencia, permisos, migración y pruebas pendientes. No se envían push ni se requieren conexión o servicios pagos para estos avisos.
 
 ## Comprobación breve después de instalar
 

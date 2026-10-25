@@ -1,0 +1,154 @@
+
+ RUN  v5.0.3 /workspace/repartos-chema
+
+ ❯ tests/whatsapp-legacy.test.ts (5 tests | 4 failed) 33ms
+   ❯ remito de alquileres antiguos sin fecha de retiro válida (5)
+     × informa la fecha pendiente: undefined 27ms
+     × informa la fecha pendiente: null 2ms
+     × informa la fecha pendiente:  1ms
+     × informa la fecha pendiente: 2026-02-30 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/whatsapp-legacy.test.ts > remito de alquileres antiguos sin fecha de retiro válida > informa la fecha pendiente: undefined
+AssertionError: expected 'REMITO · GRUPO CHEMA CONSTRUCCIONES\n…' to contain 'Retiro estimado: Sin fecha de retiro'
+
+- Expected
++ Received
+
+- Retiro estimado: Sin fecha de retiro
++ REMITO · GRUPO CHEMA CONSTRUCCIONES
++ Cliente: Edificio Las Heras
++ Destino: Las Heras 2840 · San Martín
++ Entrega prevista: 2026-10-17
++ Entrega efectiva: Sin registro separado
++ Retiro estimado: undefined
++
++ Andamios y accesorios:
++ • 16 × Marco de andamio · 1.30m
++ • 8 × Tablón metálico · 2.00m (Antideslizante)
++ • 16 × Diagonal · 2.00m
++
++ Recibió: Sin registrar
++ Entrega: Fabián
++ Retiro: Por asignar
++ Repartos Chema · Remito informativo
+
+ ❯ tests/whatsapp-legacy.test.ts:10:32
+      8|     // Emulates persisted legacy data, which the reader preserves for …
+      9|     Object.assign(rental, { fechaRetiroEstimada: date });
+     10|     expect(remitoText(rental)).toContain('Retiro estimado: Sin fecha d…
+       |                                ^
+     11|   });
+     12|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/whatsapp-legacy.test.ts > remito de alquileres antiguos sin fecha de retiro válida > informa la fecha pendiente: null
+AssertionError: expected 'REMITO · GRUPO CHEMA CONSTRUCCIONES\n…' to contain 'Retiro estimado: Sin fecha de retiro'
+
+- Expected
++ Received
+
+- Retiro estimado: Sin fecha de retiro
++ REMITO · GRUPO CHEMA CONSTRUCCIONES
++ Cliente: Edificio Las Heras
++ Destino: Las Heras 2840 · San Martín
++ Entrega prevista: 2026-10-17
++ Entrega efectiva: Sin registro separado
++ Retiro estimado: null
++
++ Andamios y accesorios:
++ • 16 × Marco de andamio · 1.30m
++ • 8 × Tablón metálico · 2.00m (Antideslizante)
++ • 16 × Diagonal · 2.00m
++
++ Recibió: Sin registrar
++ Entrega: Fabián
++ Retiro: Por asignar
++ Repartos Chema · Remito informativo
+
+ ❯ tests/whatsapp-legacy.test.ts:10:32
+      8|     // Emulates persisted legacy data, which the reader preserves for …
+      9|     Object.assign(rental, { fechaRetiroEstimada: date });
+     10|     expect(remitoText(rental)).toContain('Retiro estimado: Sin fecha d…
+       |                                ^
+     11|   });
+     12|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/whatsapp-legacy.test.ts > remito de alquileres antiguos sin fecha de retiro válida > informa la fecha pendiente: 
+AssertionError: expected 'REMITO · GRUPO CHEMA CONSTRUCCIONES\n…' to contain 'Retiro estimado: Sin fecha de retiro'
+
+- Expected
++ Received
+
+- Retiro estimado: Sin fecha de retiro
++ REMITO · GRUPO CHEMA CONSTRUCCIONES
++ Cliente: Edificio Las Heras
++ Destino: Las Heras 2840 · San Martín
++ Entrega prevista: 2026-10-17
++ Entrega efectiva: Sin registro separado
++ Retiro estimado: 
++
++ Andamios y accesorios:
++ • 16 × Marco de andamio · 1.30m
++ • 8 × Tablón metálico · 2.00m (Antideslizante)
++ • 16 × Diagonal · 2.00m
++
++ Recibió: Sin registrar
++ Entrega: Fabián
++ Retiro: Por asignar
++ Repartos Chema · Remito informativo
+
+ ❯ tests/whatsapp-legacy.test.ts:10:32
+      8|     // Emulates persisted legacy data, which the reader preserves for …
+      9|     Object.assign(rental, { fechaRetiroEstimada: date });
+     10|     expect(remitoText(rental)).toContain('Retiro estimado: Sin fecha d…
+       |                                ^
+     11|   });
+     12|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  tests/whatsapp-legacy.test.ts > remito de alquileres antiguos sin fecha de retiro válida > informa la fecha pendiente: 2026-02-30
+AssertionError: expected 'REMITO · GRUPO CHEMA CONSTRUCCIONES\n…' to contain 'Retiro estimado: Sin fecha de retiro'
+
+- Expected
++ Received
+
+- Retiro estimado: Sin fecha de retiro
++ REMITO · GRUPO CHEMA CONSTRUCCIONES
++ Cliente: Edificio Las Heras
++ Destino: Las Heras 2840 · San Martín
++ Entrega prevista: 2026-10-17
++ Entrega efectiva: Sin registro separado
++ Retiro estimado: 2026-02-30
++
++ Andamios y accesorios:
++ • 16 × Marco de andamio · 1.30m
++ • 8 × Tablón metálico · 2.00m (Antideslizante)
++ • 16 × Diagonal · 2.00m
++
++ Recibió: Sin registrar
++ Entrega: Fabián
++ Retiro: Por asignar
++ Repartos Chema · Remito informativo
+
+ ❯ tests/whatsapp-legacy.test.ts:10:32
+      8|     // Emulates persisted legacy data, which the reader preserves for …
+      9|     Object.assign(rental, { fechaRetiroEstimada: date });
+     10|     expect(remitoText(rental)).toContain('Retiro estimado: Sin fecha d…
+       |                                ^
+     11|   });
+     12|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 1 passed (5)
+   Start at  21:09:31
+   Duration  210ms (transform 44%, tests 37%, import 13%, worker 5%)
+

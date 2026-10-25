@@ -2,6 +2,17 @@
 
 **Documento único para el usuario y otro asistente.** Fecha de apertura: 2026-10-24T17:55:41.358643+00:00. Base inicial: `dc69734fae42224fa380278ba9516cb75cadf8c6`. Este archivo se guarda al comenzar el cierre para no depender de los tokens/historial. Los anexos conservan evidencia histórica completa; el estado actual de esta primera parte prevalece sobre sus pendientes antiguos. No contiene claves privadas ni datos comerciales del teléfono.
 
+## Continuación comprobada — 25/10/2026 (Argentina)
+
+Este documento completo ya está en GitHub desde `1ef9be4`. Se retomó sobre ese commit, conservando la carpeta y el remoto privado. La revisión independiente aplicó los perfiles QA y entrega Android; encontró una contradicción documental sobre avisos, corregida en `docs/USO_LOCAL_ANDROID.md`. No se reinstalaron perfiles ni se activaron servicios.
+
+- F1 y F2 están corregidos y probados en código; todavía no se presenta el APK anterior como si incluyera esos cambios.
+- F3 menor: el remito de WhatsApp de un registro antiguo con fecha ausente/inválida mostraba `undefined`, `null` o el texto inválido. Ahora muestra **Sin fecha de retiro**, sin modificar el alquiler. Se reprodujo el fallo antes del cambio y pasaron cinco casos después.
+- Check coordinado fresco del 25/10: **444/444 pruebas en 40 archivos**, TypeScript y compilación de Functions correctos; lint cero errores y una advertencia `import/no-named-as-default` en la prueba de Axe. Evidencia: `artifacts/validacion/cierre-2026-10-25-check.txt`.
+- Se agregó el recorrido `tests/ui/fecha-entrega.spec.ts`: rechazo sin mover stock ni perder formulario y corrección posterior con reapertura. Su ejecución y la suite general se registrarán al concluir.
+- En curso: instalación limpia aislada con `npm ci`, exportación web final, suite UI, respaldo del commit estable, Gradle completo y publicación versionada 1.6.1. No se afirma aún que el APK nuevo esté generado ni publicado.
+- Sin dispositivo conectado: ninguna comprobación con mocks, Chromium, firma o Gradle se declara prueba física.
+
 ## Actualización del cierre — 24/10/2026
 
 El informe completo ya está guardado; esta sección prevalece sobre los estados «en curso» del borrador y sobre los anexos históricos.
@@ -20,7 +31,7 @@ Repartos Chema es una aplicación interna de Grupo Chema Construcciones para reg
 
 Hay un APK1.6.0/code9 completo publicado y recuperado desde GitHub, con firma/paquete e integridad comprobados. Eso **no equivale a prueba física de funcionamiento**: no hay teléfono/emulador conectado. Ya se verificaron el dominio y los recorridos web; instalación encima, SQLite físico, permisos, cámara/compartir y avisos/reinicio requieren Android real. El cierre actual revisa fallos concretos y prepara la corrección1.6.1, no reabre el diseño ni reescribe la app.
 
-**Hallazgos nuevos comprobados el24/10:** (F1) entrega anticipada con fecha de retiro anterior a entrega planificada podía producir copia no restaurable; (F2) aviso de seguridad nuevo ZodGHSA-mrhx-c7xc-m3w5, parche4.6.6. Están en corrección y se actualizará su resultado aquí. El APK1.6 anterior no incluye esas correcciones. No se presenta una revisión en curso como éxito final.
+**Hallazgos nuevos comprobados el24/10:** (F1) entrega anticipada con fecha de retiro anterior a entrega planificada podía producir copia no restaurable; (F2) aviso de seguridad nuevo ZodGHSA-mrhx-c7xc-m3w5, parche4.6.6. Corregidos en código y cubiertos por regresiones; el encabezado vigente registra su entrega. El APK1.6 anterior no incluye esas correcciones. No se presenta una revisión en curso como éxito final.
 
 ## 2. Historial recuperado y límites
 

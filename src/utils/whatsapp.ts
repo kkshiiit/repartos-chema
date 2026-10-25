@@ -1,4 +1,5 @@
 import type { ObraCard } from '../types';
+import { isCalendarDate } from './retirementCalendar';
 export function remitoText(o: ObraCard): string {
   return [
     'REMITO · GRUPO CHEMA CONSTRUCCIONES',
@@ -6,7 +7,7 @@ export function remitoText(o: ObraCard): string {
     `Destino: ${o.direccion} · ${o.localidadBarrio}`,
     `Entrega prevista: ${o.fechaEntrega}`,
     `Entrega efectiva: ${o.fechaEntregaEfectiva || 'Sin registro separado'}`,
-    `Retiro estimado: ${o.fechaRetiroEstimada}`,
+    `Retiro estimado: ${isCalendarDate(o.fechaRetiroEstimada) ? o.fechaRetiroEstimada : 'Sin fecha de retiro'}`,
     '',
     'Andamios y accesorios:',
     ...o.materialesCargados.map(
