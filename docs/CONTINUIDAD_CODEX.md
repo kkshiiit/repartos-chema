@@ -1,3 +1,15 @@
+# Puerta previa 1.6.1 aprobada — 25/10/2026
+
+**Estado:** 444/444 unitarias, tipos/Functions correctos, lint0errores/1advertencia; npmci limpio1565paquetes+decoder/transitivo; **UI final57/57,0omitidas,4.8min**, 8Axe0violaciones/0incompletas. Dos intentos previos no aprobados se conservan (OOM de concurrencia; carrera en test de nombre corregida esperando acuse visual). No cambió app desdeacdb43f. Mainactual663b3ce, siguientecommit guarda esta puerta y capturas.
+
+**Se está preparando respaldo/Gradle1.6.1/code10.** Regeneradas19comparativas; manifiesto capturas en cierre-2026-10-25-capturas.json. Fuenteestable se guardará con scripts/package.py, hashes/restauración total; commit/push y fuente en descargas antes de compilar. No correr npmci/Chrome/Gradle juntos: cgroup8GiB.
+
+**Próxima acción exacta:** verificar árbol limpio y remoto; empaquetar/publicar copia; ejecutar build:android:demo con JDK21/SDK36/ARM64 y CHEMA_ANDROID_KEYSTORE=/workspace/respaldos/firma-interna/chema-restaurada-1.3.keystore. Log cierre-2026-10-25-android.txt. Antes de recompilar tras interrupción, leer log/proceso y comprobar APKexistente. Verificar contra1.6.0 (firma/paquete/CRC/SQLite/tonos/markers), publicar ruta nueva android/v1.6.1-local.1, preservar8anteriores, recuperar bytes de GitHub independiente. Cerrar auditoría/entrega y fuente final.
+
+No Android físico/emulador; no prometer recepción/reinicio/migración física ni exactitud de avisos. Audit fresco21raíz/10Functions, nuevos avisos clasificados devFirebaseCLI; riesgos no se ocultan. Informe íntegro docs/AUDITORIA_MAESTRA_ACTUAL.md ya respaldado. No gastos/Ads/backend/firma nueva/reset/servicios adicionales.
+
+---
+
 # Control antes del cierre UI y Gradle — 25/10/2026
 
 Último main respaldado: `acdb43f`. No hay más cambios de app desde ese código (sólo sincronización de test welcome y documentación/evidencias). **npm ci limpio FINAL aprobado**:1565paquetes, Zod4.6.6, decoder directo/transitivo5casos, lockSHA8bcc9d6d38c49cab700316ef07e1193eef2fc468b01616e202cb76fb74f37bc1 intacto. Primera tanda UI concurrente afectada por OOM; primera secuencial56/57, caso welcome pasó solo y se corrigió espera del test antes de navegación completa. Nueva suite57 con1worker está activa; revisar cierre-2026-10-25-ui.txt/json antes de repetir.

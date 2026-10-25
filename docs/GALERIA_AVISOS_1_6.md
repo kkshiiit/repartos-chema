@@ -1,3 +1,9 @@
+# Actualización visual 1.6.1 — 25/10/2026
+
+Capturas regeneradas en la suite actual57/57, Chromium y datos sintéticos. El parche1.6.1 no cambia composición/estilos. Diecinueve comparativas regeneradas con rótulo1.6.1; manifiesto actual `artifacts/validacion/cierre-2026-10-25-capturas.json`. OchoAxe0violaciones/0incompletas. Revisadas manualmente principalclaro y panelpersonalizadooscuro; comparación de principal/formulario mantiene estructura de referencia. No prueba Android físico. Los enlaces inferiores siguen las carpetas históricas y apuntan a los archivos actualizados de este commit; versiones previas quedan en Git.
+
+---
+
 # Capturas reales 1.6 · web
 
 Contenido sintético, reloj fijo23/10/2026 para avisos. Navegador Chromium, viewport390×844; no son maquetas ni capturas Android. Los controles fecha/hora del navegador se dibujan según su idioma/entorno; escritura alternativa DD/MM/AAAA y HH:mm disponible.
