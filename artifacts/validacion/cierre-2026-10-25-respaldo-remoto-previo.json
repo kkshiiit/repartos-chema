@@ -1,0 +1,11 @@
+{
+  "commitDescargas": "815cafeddd9e2d380058866650ecf490e011f143",
+  "ruta": "respaldos/v1.6.1-local/repartos-chema-f9f018d.zip",
+  "sha256": "d7eecffe67effa7d5c93f684a4afe8c01253935d673ef33011658ae4a9ce4fb5",
+  "bytes": 57829524,
+  "CRC": "correcto",
+  "archivosVerificados": 1594,
+  "manifiestoSHA256": "todos coinciden",
+  "fechaUTC": "2026-10-25T21:32:16.373728+00:00",
+  "clonIndependiente": "/workspace/recuperacion-github-140"
+}

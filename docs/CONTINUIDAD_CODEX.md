@@ -1,3 +1,15 @@
+# Gradle 1.6.1 en curso, fuente congelada y recuperada — 25/10/2026
+
+**Código funcional congelado:** `f9f018d3d33d6d474babcc669b1144412802ad28`, main respaldado antes de compilar. Sólo se agregarán documentos/evidencias mientras corre Gradle. **Fuente en descargas815cafeddd9e2d380058866650ecf490e011f143**: ZIP1594archivos, 57829524bytes, SHAd7eecffe67effa7d5c93f684a4afe8c01253935d673ef33011658ae4a9ce4fb5. Restauración local y recuperación independiente desdeGitHub: todos los hashes y CRC coinciden. Webportable también publicada. Auditoría íntegra ya guardada.
+
+Build nativo completo iniciado con build:android:demo, JDK21/SDK36/NDK27.1 y firma externa previa. **No terminado al escribir.** Log `artifacts/validacion/cierre-2026-10-25-android.txt`; sesión shell70594 en esta ejecución (no reutilizar a ciegas en otra). Metadatos previos en cierre-2026-10-25-compilacion-base.json. No npmci/Chrome/Gradle simultáneos.
+
+**Próxima acción exacta:** leer cierre del log y comprobar proceso/APK antes de decidir recompilar. Si BUILD SUCCESSFUL, ejecutar scripts/verify-android.py contra /workspace/entregas/cobalto-1.6.0/repartos-chema-local-1.6.0-arm64.apk, salida /workspace/entregas/cobalto-1.6.1 y fuente f9f018d. Exigir1.6.1/code10/mismo package y certificado, CRC/ARM64/SQLite/tonos, sinAds/configFirebase. Comprobar marcador de nueva guarda de entrega en Hermes. Publicar android/v1.6.1-local.1 sin sobrescribir8anteriores, recuperar archivo desde clon independiente y SHAidéntico. Después informe final/auditoría/checkpoint, fuente final y Gitmain limpio/push.
+
+**Aprobado antes del build:**444unitarias,57/57UIfinal con0omitidas, npmci limpio1565paquetes/lockintacto/Zod4.6.6/decoderdirecto-transitivo,348capturas reales/19comparativas/8Axe0violaciones. Lint0errores/1advertencia. Sin prueba física; no prometer notificaciones/reinicio/migración/compartir Android verificados. Audit21raíz/10Functions detallado, no0riesgos. Sin gastos, backend o anuncios. Clave privada fuera deGit; no rotarla ni publicar. No resetear datos.
+
+---
+
 # Puerta previa 1.6.1 aprobada — 25/10/2026
 
 **Estado:** 444/444 unitarias, tipos/Functions correctos, lint0errores/1advertencia; npmci limpio1565paquetes+decoder/transitivo; **UI final57/57,0omitidas,4.8min**, 8Axe0violaciones/0incompletas. Dos intentos previos no aprobados se conservan (OOM de concurrencia; carrera en test de nombre corregida esperando acuse visual). No cambió app desdeacdb43f. Mainactual663b3ce, siguientecommit guarda esta puerta y capturas.

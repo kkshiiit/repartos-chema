@@ -2,6 +2,12 @@
 
 **Documento único para el usuario y otro asistente.** Fecha de apertura: 2026-10-24T17:55:41.358643+00:00. Base inicial: `dc69734fae42224fa380278ba9516cb75cadf8c6`. Este archivo se guarda al comenzar el cierre para no depender de los tokens/historial. Los anexos conservan evidencia histórica completa; el estado actual de esta primera parte prevalece sobre sus pendientes antiguos. No contiene claves privadas ni datos comerciales del teléfono.
 
+## Compilación en curso y fuente asegurada — 25/10/2026
+
+Código congelado `f9f018d3d33d6d474babcc669b1144412802ad28`. CopiaZIP en descargas `815cafeddd9e2d380058866650ecf490e011f143`:1594archivos, SHA256 `d7eecffe67effa7d5c93f684a4afe8c01253935d673ef33011658ae4a9ce4fb5`. Extraída y restaurada localmente; recuperada desde clon independiente y verificados todos los hashes individuales/CRC. Fuente y web disponibles antes de iniciar Gradle. No incluye claves de firma ni dependencias regenerables.
+
+Gradle completo1.6.1/code10 está en curso en `cierre-2026-10-25-android.txt`; todavía no se acredita instalador nuevo. La fuente no cambiará durante la compilación. Los commits documentales posteriores no alteran el código funcional congelado. La siguiente sección acredita las pruebas terminadas; el cierre final añadirá APK, firma, SHA y recuperación real.
+
 ## Puerta previa al instalador superada — 25/10/2026
 
 **Resultados frescos:** 444/444 unitarias (40archivos); tipos y Functions build correctos; lint0errores/1advertencia de test. Instalación limpia y decoder aprobados. **Suite completa final: 57/57, cero omitidas y cero fallidas, 4.8min**, con un worker y sin instalaciones/Gradle concurrentes. El caso de cambio de nombre espera ahora el acuse visual antes de forzar navegación; el fallo anterior y los intentos con OOM están conservados. No se rebajaron reglas de negocio ni expectativas de cantidades/autores.
