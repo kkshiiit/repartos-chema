@@ -1,6 +1,18 @@
 # Entrega individual Android 1.6.1 — Repartos Chema
 
-Estado de preparación del 25/10/2026 (Argentina). Este informe se actualiza al terminar; una compilación o prueba en curso no se declara aprobada. La auditoría integral y el contexto para otro asistente están en [AUDITORIA_MAESTRA_ACTUAL.md](AUDITORIA_MAESTRA_ACTUAL.md).
+## Estado final comprobado — 25/10/2026 (Argentina)
+
+**Edición individual gratuita cerrada dentro del alcance del entorno. APK 1.6.1/código10 generado, publicado y recuperado desde GitHub.** Este estado final prevalece sobre los registros previos de preparación y los anexos históricos. La aceptación en un Android físico sigue pendiente y no se declara realizada.
+
+- [Descargar APK ARM64](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.6.1-local.1/repartos-chema-local-1.6.1-arm64.apk) · [Fuente y web](https://github.com/kkshiiit/repartos-chema/tree/descargas/respaldos/v1.6.1-local) · [Guía de instalación](https://github.com/kkshiiit/repartos-chema/blob/descargas/android/v1.6.1-local.1/LEEME.md).
+- Paquete `com.grupochema.repartos`, Android7+/ARM64, 56176031bytes, versión1.6.1/code10. SHA256 **`03e42657ad62d9c39ddd3cc2060a8ebd1d11d861fd78c0da46bda2f311c578f1`**.
+- CertificadoSHA256 `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`, igual al1.6.0 y sus anteriores. Firma v2/CRC/ABI/SQLite/3tonos por hash/no debuggable comprobados. Nueva guarda de entrega presente en Hermes. Sin marcadores publicitarios propios ni configuraciónFirebase embebida. No equivale a una auditoría completa de cada dependencia binaria.
+- Gradle completo **BUILD SUCCESSFUL,9min12s,701tareas (673ejecutadas/28actualizadas)**. Código funcional congelado **`f9f018d3d33d6d474babcc669b1144412802ad28`**; los commits documentales posteriores no cambian el runtime. Descargas APK **`293e748c162a5518a02b9f91330779064beed6f5`**, recuperado desde clon independiente: SHA/CRC/firma correctos; **ocho APK anteriores con objetosGit idénticos**.
+- **444/444 unitarias en40archivos;57/57 recorridos Chromium en4.8min,0omitidos/fallidos; npmci limpio1565paquetes, Zod4.6.6/decoder/lock verificados; tipos y Functions build correctos; lint0errores/1advertencia.** 348capturas actuales,19comparativas,8Axe0violaciones/0incompletas. Los intentos fallidos están conservados y explicados, no sumados como aprobados.
+- Corregidos **F1** (fecha de retiro incoherente con entrega planificada), **F2** (Zod4.6.6) y **F3** (remito legacy sin fecha). La corrección previene nuevas operaciones incoherentes; no inspecciona ni reescribe silenciosamente los datos reales de un teléfono. Si un alquiler antiguo ya tiene fechas incompatibles, conservar la copia original y corregirlas explícitamente.
+- Fuente previa a Gradle: ZIP1594archivos, SHA256 `d7eecffe67effa7d5c93f684a4afe8c01253935d673ef33011658ae4a9ce4fb5`, publicado y recuperado con todos sus hashes verificados antes de compilar. El respaldo de cierre con documentación actualizada se guarda adicionalmente, preservando ese snapshot.
+- Sin publicidad, backend obligatorio, Firebase productivo, hosting, EAS, despliegue, PlayStore ni facturación activados. Una instalación nueva empieza vacía; una actualización conserva datos. No hay sincronización entre celulares ni promesa de trabajo automático futuro.
+- **Pendientes reales:** instalación/actualización y migraciónSQLite en teléfono, permisos/cámara/selector/Compartir/TalkBack, recepción de avisos con cierre/reinicio/batería y rendimiento en dispositivo. No se promete puntualidad exacta. Audit npm actual21raíz/10Functions; nuevos avisos clasificados como herramientas dev bajoFirebaseCLI, sin caminoAPK identificado. Persisten mantenimiento de transitivos, límite de memoria con JSON grande y custodia externa segura de la clave de firma. La fuente no incluye esa clave.
 
 ## Alcance y cambios
 
@@ -12,21 +24,28 @@ Edición gratuita, individual, local/offline. Inicio vacío, sin borrar bases ex
 4. **Manual vigente:** corrige la descripción de los avisos: general opcional08:00/3/2/1/0, herencia, personalización y manuales migrados. `docs/USO_LOCAL_ANDROID.md`.
 5. **Auditoría y continuidad:** informe completo guardado y respaldado desde1ef9be4; checkpoint persistente, perfiles QA/seguridad/arquitectura/entrega aplicados a revisión real. Los282 perfiles no se ejecutan todos ni significan una automatización permanente.
 
-## Evidencia de esta ejecución
+## Pruebas actuales y resultados
 
-- `npm run check`: **444/444**, 40archivos, TypeScript y Functions build aprobados; lint0errores/1advertencia de importación de Axe en un test.
-- `npm run build:web`: exportación local correcta; seis fragmentos JavaScript, principal5.5MB informados por Expo, sin prometer tiempo de inicio ni memoria Android. Word/Excel se cargan de forma separada. FCM sin configurar/no activado.
-- `tests/ui/fecha-entrega.spec.ts`: nuevo recorrido de error visible, formulario conservado, cantidades intactas, corrección y reapertura. La primera comprobación esperaba ISO en un campo DD/MM/AAAA: corregida sin cambiar la aplicación.
-- **Instalación limpia final aprobada:**1565paquetes, Zod4.6.6, decoder directo/transitivo y5casos correctos, lock intacto. **Suite final57/57 en4.8min,0omitidas/fallidas**, con1worker. OchoAxe0violaciones/0incompletas;19comparativas regeneradas y manifiesto actual. Primer `npm ci` instaló1565paquetes con scripts y sin cambiar lock; su comprobación posterior buscaba el nombre de archivo equivocado. Una segunda instalación concurrente terminó por señal9 y Chromium informó Page/Target crashed; límite cgroup8GiB y eventosOOM registrados. La repetición final se realiza secuencialmente; se conservan logs de intentos fallidos, no se ocultan como éxitos.
-- No se ejecuta Firebase Emulator/producción: no forman parte de esta edición. No hay dispositivo físico/emulador conectado.
+| Comando/acción | Resultado real | Evidencia |
+|---|---|---|
+| npm run check |444/444,40archivos; tipos/Functions correctos; lint0errores/1advertencia | cierre-2026-10-25-check.txt |
+| npm ci aislado, scripts habilitados |1565paquetes; Zod4.6.6/decoder/transitivo/lock correctos | cierre-2026-10-25-npm-ci-final.txt |
+| npm run build:web |exportación local correcta,6fragmentosJS; principal5.5MB reportado por Expo | cierre-2026-10-25-web.txt |
+| CHEMA_TEST_LOCAL=true npx playwright test --workers=1 --reporter=list,json |57/57,0omitidas,0fallidas,4.8min | cierre-2026-10-25-ui.txt/json |
+| Capturas y comparaciones |348actuales/19tableros;8Axe0violaciones/0incompletas | cierre-2026-10-25-capturas.json y GALERIA_AVISOS_1_6.md |
+| Gradle assembleRelease ARM64 |BUILD SUCCESSFUL9min12s,701tareas | cierre-2026-10-25-android.txt |
+| Firma/metadatos/CRC/recursos |correctos, certificado anterior, SQLite y3WAV por hash | android-1.6.1-*.json/txt |
+| Publicación y recuperación independiente |SHA/firma/CRC correctos,8APKprevios intactos | cierre-2026-10-25-descarga-remota.json |
+| Fuente ZIP antes de Gradle |1594hashes correctos al extraer y recuperarGit | cierre-2026-10-25-respaldo-remoto-previo.json |
+| Firebase Emulator/producción, iOS, teléfono/emulador |no ejecutados/no disponibles; no necesarios para local | límites explícitos |
 
-## Seguridad y límites
+Intentos fallidos conservados: verificador con nombre index.js incorrecto; instalación concurrente señal9/Chromium crashed por memoria; expectativa ISO en campoDD/MM; navegación anticipada del test de cambio de nombre. Se corrigieron las comprobaciones y se repitieron hasta resultados finales reales, sin modificar el dominio para acomodar las pruebas. Cgroup8GiB: no ejecutar tareas pesadas juntas. Gradle informa APIs obsoletas para una futura versión10; no impidió el build9.3.1 ni justifica actualizar nativos sin comprobar compatibilidad.
 
-Paquete `com.grupochema.repartos`, versión1.6.1/código10, ARM64/Android7+. Se exige certificadoSHA256 `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`, igual al1.6.0 y anteriores; clave privada fuera de Git/ZIP. Se verifica firma, metadata, ABI,CRC,SQLite, tres tonos y ausencia de marcadores publicitarios propios/configuraciónFirebase en el bundle antes de publicar.
+## Seguridad y límites de uso
 
-La auditoría npm fresca del 25/10 no queda en cero: **21 entradas en raíz (12 altas, 9 moderadas, 0 críticas)** y diez en Functions histórico. El recuento de nueve del 24/10 quedó histórico. Los nuevos avisos analizados son herramientas dev bajo Firebase CLI, sin camino de ejecución en APK identificado; ver `cierre-2026-10-25-seguridad-clasificacion.md`. La aplicación usa Zod parcheado; Expo CLI conserva Zod3.x. Node-forge no tiene parche publicado confirmado; consumidores uuid revisados usan v4 sin buffer. No se demostró explotación en APK y no se aplican downgrades o actualizaciones nativas a ciegas. Las copias JSON tienen límite50MB pero arrays sin máximo individual: queda riesgo de memoria con archivos grandes/adversarios. No se debilita validación ni se reescriben datos antiguos para ocultarlo.
+La auditoría integral detalla21entradas raíz/10Functions heredado; los nuevos avisos analizados son herramientas dev bajoFirebaseCLI, sin caminoAPK identificado. No se declara0vulnerabilidades. No se activaron servidores/productos cloud. Copias JSON/comerciales deben guardarse en privado; su tamaño máximo50MB no garantiza consumo de RAM acotado. La clave de firma está fuera de Git y necesita custodia privada externa; no compartirla con el código.
 
-Los avisos se solicitan al sistema, sin permiso de alarmas exactas. Android puede retrasarlos por batería/DND/fabricante/force-stop. No se acredita recepción con app cerrada/reinicio, migración real o compartir nativo mediante pruebas de navegador.
+APK no declara alarmas exactas. Android puede retrasar avisos por permisos, batería, fabricante o force-stop. No hay pruebas físicas de instalación/migración/SQLite/permisos/cámara/Compartir/TalkBack/reinicio/consumo. No hay PDF automático ni sincronización entre teléfonos.
 
 ## Instalación y pruebas desde Android
 
@@ -44,6 +63,7 @@ Una instalación nueva inicia vacía. Si se actualiza una base antigua, no se re
 
 ```bash
 npm ci
+npm --prefix functions ci
 npm run check
 npm run build:web
 npm run preview
@@ -52,6 +72,13 @@ CHEMA_TEST_LOCAL=true npm run test:ui -- --workers=1
 
 No se necesita `.env` para el uso individual; `.env.example` no contiene secretos. Para Android usar JDK21, SDK/build-tools36, NDK27.1.12297006 y clave anterior mediante `CHEMA_ANDROID_KEYSTORE`; detalles en [ANDROID.md](ANDROID.md). No incluir la clave en respaldos compartidos. No se pide al usuario ejecutar estos comandos desde el celular.
 
-## Instalador y respaldos
+## Instalador, fuentes y commits
 
-En preparación. La versión1.6.0 publicada se conserva como anterior; no incluye estos parches. El encabezado final añadirá commit fuente, ZIP restaurado, SHA256 del nuevo APK, publicación y recuperación desde clon independiente. No declarar APK nuevo a partir de un bundle Hermes.
+- APK: [repartos-chema-local-1.6.1-arm64.apk](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.6.1-local.1/repartos-chema-local-1.6.1-arm64.apk); SHA256 `03e42657ad62d9c39ddd3cc2060a8ebd1d11d861fd78c0da46bda2f311c578f1`. Publicación `293e748c162a5518a02b9f91330779064beed6f5` y recuperación independiente comprobadas.
+- Fuente funcional `f9f018d3d33d6d474babcc669b1144412802ad28`; ZIP previo a Gradle publicado815cafeddd9e2d380058866650ecf490e011f143, SHA256 d7eecffe67effa7d5c93f684a4afe8c01253935d673ef33011658ae4a9ce4fb5. Se conserva junto a fuente de cierre y manifiestos en [respaldos1.6.1](https://github.com/kkshiiit/repartos-chema/tree/descargas/respaldos/v1.6.1-local).
+- Main:1ef9be4(guardafechas/Zod/auditoría), acdb43f(remito/manual),663b3ce(instalación/seguridad/test),f9f018d(57recorridos/capturas y fuente delAPK),2c1c3e2(respaldo remoto/puntoGradle). Commits posteriores son cierre documental/evidencia, sin cambiar código delAPK.
+- [Auditoría completa](AUDITORIA_MAESTRA_ACTUAL.md), [checkpoint](CONTINUIDAD_CODEX.md), [manual](USO_LOCAL_ANDROID.md), [capturas](GALERIA_AVISOS_1_6.md). Las versiones anteriores se preservan; no forzar reinstalación ni borrar almacenamiento.
+
+## Estado por categoría
+
+Completado y comprobado: dominio/pruebas unitarias, recorridosweb, capturas/contraste automatizado, instalación de dependencias, exportaciónweb, GradleAPK/firma/integridad/publicación/recuperación, código y copiasSHA. Implementado pero pendiente de validación física: APIsAndroid, migración e instalación sobre datos reales, avisos/reinicio, cámara/selector/Compartir/TalkBack y rendimiento del teléfono. Bloqueo externo de esa validación: no hay dispositivo conectado; debe realizarla el usuario. Pendiente: mantenimiento de herramientas/transitivos y custodia privada externa de firma. No hay un bloqueo de facturación o credenciales para utilizar la edición individual.

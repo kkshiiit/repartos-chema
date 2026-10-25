@@ -1,3 +1,28 @@
+# Repartos Chema 1.6.1 — Android individual y gratuito
+
+[**Descargar APK 1.6.1 ARM64**](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.6.1-local.1/repartos-chema-local-1.6.1-arm64.apk) · [Instalación y SHA256](https://github.com/kkshiiit/repartos-chema/blob/descargas/android/v1.6.1-local.1/LEEME.md) · [Auditoría completa](docs/AUDITORIA_MAESTRA_ACTUAL.md) · [Informe de entrega](docs/ENTREGA_LOCAL_1_6_1.md) · [Fuente ZIP y web](https://github.com/kkshiiit/repartos-chema/tree/descargas/respaldos/v1.6.1-local)
+
+Local y offline, instalación nueva vacía, sin anuncios ni backend/servicios pagos obligatorios. Antes de actualizar: guardar JSON fuera de la app e instalar encima, sin desinstalar ni borrar datos. Mismo paquete/certificado. 444unitarias/57recorridosweb, Gradle completo y descarga recuperada verificados; **prueba físicaAndroid pendiente**. Los avisos dependen de los permisos y las restricciones del sistema, sin puntualidad exacta garantizada.
+
+SHA256 APK: `03e42657ad62d9c39ddd3cc2060a8ebd1d11d861fd78c0da46bda2f311c578f1`. [Manual](docs/USO_LOCAL_ANDROID.md) · [Capturas claras/oscuras](docs/GALERIA_AVISOS_1_6.md) · [Continuidad](docs/CONTINUIDAD_CODEX.md).
+
+## Desarrollo local actual
+
+```bash
+npm ci
+npm --prefix functions ci
+npm run check
+npm run build:web
+npm run preview
+CHEMA_TEST_LOCAL=true npm run test:ui -- --workers=1
+```
+
+Node24 probado; Chromium para Playwright (CHROMIUM_PATH si está en otra ruta). Sin .env para individual. Android necesita JDK21/SDK36 y la clave anterior externa: [guía](docs/ANDROID.md). No correr instalaciones, Chromium y Gradle simultáneamente en un entorno con8GiB. Npm audit no está en cero; revisión y límites en la auditoría. No activar cloud ni facturación para la demo individual.
+
+---
+
+## Antecedente 1.4, preservado como historial
+
 # Repartos Chema 1.4.0 — individual local
 
 [**Descargar APK único 1.4.0 ARM64**](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.4.0-local.1/repartos-chema-local-1.4.0-arm64.apk)
