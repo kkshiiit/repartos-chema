@@ -1,0 +1,12 @@
+{
+  "commitFuente": "f6648de",
+  "commitDescargas": "62208bcbf3695c22c67588864934c379c5aff705",
+  "ruta": "respaldos/v1.6.1-local/repartos-chema-f6648de.zip",
+  "sha256": "c8487b31d7e07608c0609f3755fdb3ded36e21381cb4fcb12be5cd87174f7777",
+  "bytes": 57853608,
+  "CRC": "correcto",
+  "archivosVerificados": 1602,
+  "manifiestoSHA256": "todos coinciden",
+  "clonIndependiente": "/workspace/recuperacion-github-140",
+  "fechaUTC": "2026-10-25T21:47:51.307512+00:00"
+}

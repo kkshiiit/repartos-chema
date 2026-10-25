@@ -2,6 +2,12 @@
 
 **Documento único para el usuario y otro asistente.** Fecha de apertura: 2026-10-24T17:55:41.358643+00:00. Base inicial: `dc69734fae42224fa380278ba9516cb75cadf8c6`. Este archivo se guarda al comenzar el cierre para no depender de los tokens/historial. Los anexos conservan evidencia histórica completa; el estado actual de esta primera parte prevalece sobre sus pendientes antiguos. No contiene claves privadas ni datos comerciales del teléfono.
 
+## Respaldo final recuperado — cierre completo de esta ejecución
+
+[**Descargar fuente ZIP de cierre**](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/respaldos/v1.6.1-local/repartos-chema-f6648de.zip) · [Manifiesto y verificación](https://github.com/kkshiiit/repartos-chema/blob/descargas/respaldos/v1.6.1-local/repartos-chema-f6648de.zip.verificado.json). Snapshot main **`f6648de`**, 1602archivos, 57853608bytes; SHA256 **`c8487b31d7e07608c0609f3755fdb3ded36e21381cb4fcb12be5cd87174f7777`**. Publicado en descargas **`62208bcbf3695c22c67588864934c379c5aff705`**, recuperado desde un clon independiente y verificados todos sus hashes y CRC. Incluye el informe completo con APK/pruebas y el código funcional inalterado. No se sobrescribió el ZIP previo a Gradle ni ningún APK anterior.
+
+Este documento y el checkpoint incorporan ahora el recibo posterior de esa recuperación. Son actualizaciones documentales; no cambian el APK ni obligan a reconstruirlo. La copia Markdown independiente se distribuye junto al ZIP y sus manifiestos. **No quedan tareas de compilación/publicación activas ni continuidad automática prometida.** La próxima acción es la aceptación física en el teléfono y corregir únicamente errores reales que se informen.
+
 ## Estado final comprobado — 25/10/2026 (Argentina)
 
 **Edición individual gratuita cerrada dentro del alcance del entorno. APK 1.6.1/código10 generado, publicado y recuperado desde GitHub.** Este estado final prevalece sobre los registros previos de preparación y los anexos históricos. La aceptación en un Android físico sigue pendiente y no se declara realizada.
@@ -12,7 +18,7 @@
 - Gradle completo **BUILD SUCCESSFUL,9min12s,701tareas (673ejecutadas/28actualizadas)**. Código funcional congelado **`f9f018d3d33d6d474babcc669b1144412802ad28`**; los commits documentales posteriores no cambian el runtime. Descargas APK **`293e748c162a5518a02b9f91330779064beed6f5`**, recuperado desde clon independiente: SHA/CRC/firma correctos; **ocho APK anteriores con objetosGit idénticos**.
 - **444/444 unitarias en40archivos;57/57 recorridos Chromium en4.8min,0omitidos/fallidos; npmci limpio1565paquetes, Zod4.6.6/decoder/lock verificados; tipos y Functions build correctos; lint0errores/1advertencia.** 348capturas actuales,19comparativas,8Axe0violaciones/0incompletas. Los intentos fallidos están conservados y explicados, no sumados como aprobados.
 - Corregidos **F1** (fecha de retiro incoherente con entrega planificada), **F2** (Zod4.6.6) y **F3** (remito legacy sin fecha). La corrección previene nuevas operaciones incoherentes; no inspecciona ni reescribe silenciosamente los datos reales de un teléfono. Si un alquiler antiguo ya tiene fechas incompatibles, conservar la copia original y corregirlas explícitamente.
-- Fuente previa a Gradle: ZIP1594archivos, SHA256 `d7eecffe67effa7d5c93f684a4afe8c01253935d673ef33011658ae4a9ce4fb5`, publicado y recuperado con todos sus hashes verificados antes de compilar. El respaldo de cierre con documentación actualizada se guarda adicionalmente, preservando ese snapshot.
+- Fuente previa a Gradle: ZIP1594archivos, SHA256 `d7eecffe67effa7d5c93f684a4afe8c01253935d673ef33011658ae4a9ce4fb5`, publicado y recuperado con todos sus hashes verificados antes de compilar. El respaldo de cierre f6648de también está publicado y recuperado, preservando ese snapshot.
 - Sin publicidad, backend obligatorio, Firebase productivo, hosting, EAS, despliegue, PlayStore ni facturación activados. Una instalación nueva empieza vacía; una actualización conserva datos. No hay sincronización entre celulares ni promesa de trabajo automático futuro.
 - **Pendientes reales:** instalación/actualización y migraciónSQLite en teléfono, permisos/cámara/selector/Compartir/TalkBack, recepción de avisos con cierre/reinicio/batería y rendimiento en dispositivo. No se promete puntualidad exacta. Audit npm actual21raíz/10Functions; nuevos avisos clasificados como herramientas dev bajoFirebaseCLI, sin caminoAPK identificado. Persisten mantenimiento de transitivos, límite de memoria con JSON grande y custodia externa segura de la clave de firma. La fuente no incluye esa clave.
 
@@ -178,6 +184,7 @@ A	artifacts/validacion/cierre-2026-10-25-npm-ci-final.txt
 A	artifacts/validacion/cierre-2026-10-25-npm-ci-verificado.txt
 A	artifacts/validacion/cierre-2026-10-25-npm-ci.txt
 A	artifacts/validacion/cierre-2026-10-25-recursos.json
+A	artifacts/validacion/cierre-2026-10-25-respaldo-final-remoto.json
 A	artifacts/validacion/cierre-2026-10-25-respaldo-remoto-previo.json
 A	artifacts/validacion/cierre-2026-10-25-seguridad-clasificacion.md
 A	artifacts/validacion/cierre-2026-10-25-ui-antes-espera.json
