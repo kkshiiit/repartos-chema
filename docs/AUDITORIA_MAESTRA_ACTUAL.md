@@ -2,13 +2,223 @@
 
 **Documento único para el usuario y otro asistente.** Fecha de apertura: 2026-10-24T17:55:41.358643+00:00. Base inicial: `dc69734fae42224fa380278ba9516cb75cadf8c6`. Este archivo se guarda al comenzar el cierre para no depender de los tokens/historial. Los anexos conservan evidencia histórica completa; el estado actual de esta primera parte prevalece sobre sus pendientes antiguos. No contiene claves privadas ni datos comerciales del teléfono.
 
-## Compilación en curso y fuente asegurada — 25/10/2026
+## Estado final comprobado — 25/10/2026 (Argentina)
+
+**Edición individual gratuita cerrada dentro del alcance del entorno. APK 1.6.1/código10 generado, publicado y recuperado desde GitHub.** Este estado final prevalece sobre los registros previos de preparación y los anexos históricos. La aceptación en un Android físico sigue pendiente y no se declara realizada.
+
+- [Descargar APK ARM64](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.6.1-local.1/repartos-chema-local-1.6.1-arm64.apk) · [Fuente y web](https://github.com/kkshiiit/repartos-chema/tree/descargas/respaldos/v1.6.1-local) · [Guía de instalación](https://github.com/kkshiiit/repartos-chema/blob/descargas/android/v1.6.1-local.1/LEEME.md).
+- Paquete `com.grupochema.repartos`, Android7+/ARM64, 56176031bytes, versión1.6.1/code10. SHA256 **`03e42657ad62d9c39ddd3cc2060a8ebd1d11d861fd78c0da46bda2f311c578f1`**.
+- CertificadoSHA256 `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`, igual al1.6.0 y sus anteriores. Firma v2/CRC/ABI/SQLite/3tonos por hash/no debuggable comprobados. Nueva guarda de entrega presente en Hermes. Sin marcadores publicitarios propios ni configuraciónFirebase embebida. No equivale a una auditoría completa de cada dependencia binaria.
+- Gradle completo **BUILD SUCCESSFUL,9min12s,701tareas (673ejecutadas/28actualizadas)**. Código funcional congelado **`f9f018d3d33d6d474babcc669b1144412802ad28`**; los commits documentales posteriores no cambian el runtime. Descargas APK **`293e748c162a5518a02b9f91330779064beed6f5`**, recuperado desde clon independiente: SHA/CRC/firma correctos; **ocho APK anteriores con objetosGit idénticos**.
+- **444/444 unitarias en40archivos;57/57 recorridos Chromium en4.8min,0omitidos/fallidos; npmci limpio1565paquetes, Zod4.6.6/decoder/lock verificados; tipos y Functions build correctos; lint0errores/1advertencia.** 348capturas actuales,19comparativas,8Axe0violaciones/0incompletas. Los intentos fallidos están conservados y explicados, no sumados como aprobados.
+- Corregidos **F1** (fecha de retiro incoherente con entrega planificada), **F2** (Zod4.6.6) y **F3** (remito legacy sin fecha). La corrección previene nuevas operaciones incoherentes; no inspecciona ni reescribe silenciosamente los datos reales de un teléfono. Si un alquiler antiguo ya tiene fechas incompatibles, conservar la copia original y corregirlas explícitamente.
+- Fuente previa a Gradle: ZIP1594archivos, SHA256 `d7eecffe67effa7d5c93f684a4afe8c01253935d673ef33011658ae4a9ce4fb5`, publicado y recuperado con todos sus hashes verificados antes de compilar. El respaldo de cierre con documentación actualizada se guarda adicionalmente, preservando ese snapshot.
+- Sin publicidad, backend obligatorio, Firebase productivo, hosting, EAS, despliegue, PlayStore ni facturación activados. Una instalación nueva empieza vacía; una actualización conserva datos. No hay sincronización entre celulares ni promesa de trabajo automático futuro.
+- **Pendientes reales:** instalación/actualización y migraciónSQLite en teléfono, permisos/cámara/selector/Compartir/TalkBack, recepción de avisos con cierre/reinicio/batería y rendimiento en dispositivo. No se promete puntualidad exacta. Audit npm actual21raíz/10Functions; nuevos avisos clasificados como herramientas dev bajoFirebaseCLI, sin caminoAPK identificado. Persisten mantenimiento de transitivos, límite de memoria con JSON grande y custodia externa segura de la clave de firma. La fuente no incluye esa clave.
+
+## Inventario exacto de cambios de este cierre
+
+Base anterior al encargo: `dc69734`. A=archivo nuevo, M=modificado. Incluye capturas y logs generados, además de código/configuración/documentación. Sin borrados de datos ni cambios de firma/SQLite/fotos/JSON. Los registros de pruebas fallidas se conservan; una salida de auditoría npm1 informa avisos, no prueba un build fallido. Este inventario se obtuvo de Git, no de memoria.
+
+```text
+M	README.md
+M	app.json
+M	artifacts/capturas/estructura-1.5/bienvenida-1.png
+M	artifacts/capturas/estructura-1.5/comparacion-antes-despues-alquileres-dark.png
+M	artifacts/capturas/estructura-1.5/comparacion-antes-despues-alquileres-light.png
+M	artifacts/capturas/estructura-1.5/comparacion-antes-despues-deposito-dark.png
+M	artifacts/capturas/estructura-1.5/comparacion-antes-despues-deposito-light.png
+M	artifacts/capturas/estructura-1.5/comparacion-antes-despues-historial-dark.png
+M	artifacts/capturas/estructura-1.5/comparacion-antes-despues-historial-light.png
+M	artifacts/capturas/estructura-1.5/comparacion-antes-despues-viaje-dark.png
+M	artifacts/capturas/estructura-1.5/comparacion-antes-despues-viaje-light.png
+M	artifacts/capturas/estructura-1.5/comparacion-referencia-ajustes.png
+M	artifacts/capturas/estructura-1.5/comparacion-referencia-alquileres.png
+M	artifacts/capturas/estructura-1.5/comparacion-referencia-carga.png
+M	artifacts/capturas/estructura-1.5/comparacion-referencia-combos.png
+M	artifacts/capturas/estructura-1.5/comparacion-referencia-deposito.png
+M	artifacts/capturas/estructura-1.5/comparacion-referencia-detalle.png
+M	artifacts/capturas/estructura-1.5/comparacion-referencia-documentos.png
+M	artifacts/capturas/estructura-1.5/comparacion-referencia-historial.png
+M	artifacts/capturas/estructura-1.5/comparacion-referencia-nuevo.png
+M	artifacts/capturas/estructura-1.5/comparacion-referencia-retiro.png
+M	artifacts/capturas/estructura-1.5/comparacion-referencia-viaje.png
+M	artifacts/capturas/estructura-1.5/dashboard-desktop.png
+M	artifacts/capturas/estructura-1.5/dashboard-mobile.png
+M	artifacts/capturas/estructura-1.5/despues-filtros-historial-dark.png
+M	artifacts/capturas/estructura-1.5/local-alquileres.png
+M	artifacts/capturas/estructura-1.5/matriz/320-dark-alquileres.png
+M	artifacts/capturas/estructura-1.5/matriz/320-dark-detalle-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/320-dark-detalle.png
+M	artifacts/capturas/estructura-1.5/matriz/320-dark-nuevo-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/320-dark-nuevo.png
+M	artifacts/capturas/estructura-1.5/matriz/320-dark-viaje-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/320-dark-viaje.png
+M	artifacts/capturas/estructura-1.5/matriz/320-light-alquileres.png
+M	artifacts/capturas/estructura-1.5/matriz/320-light-deposito-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/320-light-detalle-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/320-light-detalle.png
+M	artifacts/capturas/estructura-1.5/matriz/320-light-nuevo.png
+M	artifacts/capturas/estructura-1.5/matriz/320-light-viaje-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/320-light-viaje.png
+M	artifacts/capturas/estructura-1.5/matriz/360-dark-alquileres-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/360-dark-alquileres.png
+M	artifacts/capturas/estructura-1.5/matriz/360-dark-detalle-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/360-dark-detalle.png
+M	artifacts/capturas/estructura-1.5/matriz/360-dark-nuevo-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/360-dark-nuevo.png
+M	artifacts/capturas/estructura-1.5/matriz/360-dark-panel-carga-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/360-dark-viaje-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/360-dark-viaje.png
+M	artifacts/capturas/estructura-1.5/matriz/360-light-alquileres.png
+M	artifacts/capturas/estructura-1.5/matriz/360-light-detalle-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/360-light-detalle.png
+M	artifacts/capturas/estructura-1.5/matriz/360-light-nuevo-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/360-light-nuevo.png
+M	artifacts/capturas/estructura-1.5/matriz/360-light-viaje-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/360-light-viaje.png
+M	artifacts/capturas/estructura-1.5/matriz/390-dark-alquileres-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/390-dark-alquileres.png
+M	artifacts/capturas/estructura-1.5/matriz/390-dark-detalle-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/390-dark-detalle.png
+M	artifacts/capturas/estructura-1.5/matriz/390-dark-nuevo-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/390-dark-nuevo.png
+M	artifacts/capturas/estructura-1.5/matriz/390-dark-viaje-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/390-dark-viaje.png
+M	artifacts/capturas/estructura-1.5/matriz/390-light-alquileres-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/390-light-alquileres.png
+M	artifacts/capturas/estructura-1.5/matriz/390-light-detalle-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/390-light-detalle.png
+M	artifacts/capturas/estructura-1.5/matriz/390-light-historial-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/390-light-nuevo.png
+M	artifacts/capturas/estructura-1.5/matriz/390-light-viaje-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/390-light-viaje.png
+M	artifacts/capturas/estructura-1.5/matriz/412-dark-alquileres-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/412-dark-alquileres.png
+M	artifacts/capturas/estructura-1.5/matriz/412-dark-detalle-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/412-dark-detalle.png
+M	artifacts/capturas/estructura-1.5/matriz/412-dark-nuevo.png
+M	artifacts/capturas/estructura-1.5/matriz/412-dark-panel-carga-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/412-dark-viaje-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/412-dark-viaje.png
+M	artifacts/capturas/estructura-1.5/matriz/412-light-alquileres-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/412-light-alquileres.png
+M	artifacts/capturas/estructura-1.5/matriz/412-light-deposito-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/412-light-detalle-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/412-light-detalle.png
+M	artifacts/capturas/estructura-1.5/matriz/412-light-nuevo.png
+M	artifacts/capturas/estructura-1.5/matriz/412-light-viaje-texto200.png
+M	artifacts/capturas/estructura-1.5/matriz/412-light-viaje.png
+M	artifacts/capturas/estructura-1.5/responsable.png
+M	artifacts/capturas/estructura-1.5/rutas-1440-dark-alquileres.png
+M	artifacts/capturas/estructura-1.5/rutas-1440-dark-entrega.png
+M	artifacts/capturas/estructura-1.5/rutas-1440-dark-mapa.png
+M	artifacts/capturas/estructura-1.5/rutas-1440-dark-obra-nueva.png
+M	artifacts/capturas/estructura-1.5/rutas-1440-dark-obra-obra_5.png
+M	artifacts/capturas/estructura-1.5/rutas-1440-dark-obras.png
+M	artifacts/capturas/estructura-1.5/rutas-1440-light-alquileres.png
+M	artifacts/capturas/estructura-1.5/rutas-1440-light-entrega.png
+M	artifacts/capturas/estructura-1.5/rutas-1440-light-mapa.png
+M	artifacts/capturas/estructura-1.5/rutas-1440-light-obra-nueva.png
+M	artifacts/capturas/estructura-1.5/rutas-1440-light-obra-obra_5.png
+M	artifacts/capturas/estructura-1.5/rutas-1440-light-obras.png
+M	artifacts/capturas/estructura-1.5/rutas-390-dark-alquileres.png
+M	artifacts/capturas/estructura-1.5/rutas-390-dark-detalle.png
+M	artifacts/capturas/estructura-1.5/rutas-390-dark-entrega.png
+M	artifacts/capturas/estructura-1.5/rutas-390-dark-historial.png
+M	artifacts/capturas/estructura-1.5/rutas-390-dark-mapa.png
+M	artifacts/capturas/estructura-1.5/rutas-390-dark-nuevo.png
+M	artifacts/capturas/estructura-1.5/rutas-390-dark-obra-nueva.png
+M	artifacts/capturas/estructura-1.5/rutas-390-dark-obras.png
+M	artifacts/capturas/estructura-1.5/rutas-390-dark-viaje.png
+M	artifacts/capturas/estructura-1.5/rutas-390-light-alquileres.png
+M	artifacts/capturas/estructura-1.5/rutas-390-light-detalle.png
+M	artifacts/capturas/estructura-1.5/rutas-390-light-entrega.png
+M	artifacts/capturas/estructura-1.5/rutas-390-light-mapa.png
+M	artifacts/capturas/estructura-1.5/rutas-390-light-nuevo.png
+M	artifacts/capturas/estructura-1.5/rutas-390-light-obra-nueva.png
+M	artifacts/capturas/estructura-1.5/rutas-390-light-obras.png
+M	artifacts/capturas/estructura-1.5/rutas-390-light-viaje.png
+M	artifacts/capturas/estructura-1.5/superficies/390-dark-editar-cliente.png
+M	artifacts/capturas/estructura-1.5/superficies/390-dark-selector-historial-alquiler.png
+M	artifacts/capturas/estructura-1.5/superficies/390-dark-selector-historial-usuario.png
+M	artifacts/capturas/estructura-1.5/superficies/390-dark-ubicacion-editor.png
+M	artifacts/capturas/estructura-1.5/superficies/390-dark-wizard-revisar.png
+M	artifacts/capturas/estructura-1.5/superficies/390-light-editar-cliente.png
+M	artifacts/capturas/estructura-1.5/superficies/390-light-selector-historial-alquiler.png
+M	artifacts/capturas/estructura-1.5/superficies/390-light-selector-historial-usuario.png
+M	artifacts/capturas/estructura-1.5/superficies/390-light-ubicacion-editor.png
+M	artifacts/capturas/estructura-1.5/superficies/390-light-wizard-revisar.png
+A	artifacts/validacion/android-1.6.1-apk.json
+A	artifacts/validacion/android-1.6.1-firma.txt
+A	artifacts/validacion/android-1.6.1-metadata.txt
+A	artifacts/validacion/cierre-2026-10-24-audit-functions.json
+A	artifacts/validacion/cierre-2026-10-24-audit-runtime.json
+A	artifacts/validacion/cierre-2026-10-24-check.txt
+A	artifacts/validacion/cierre-2026-10-24-web.txt
+A	artifacts/validacion/cierre-2026-10-24-zod-focal.txt
+A	artifacts/validacion/cierre-2026-10-24-zod-functions-build.txt
+A	artifacts/validacion/cierre-2026-10-24-zod-install-functions.txt
+A	artifacts/validacion/cierre-2026-10-24-zod-install-root.txt
+A	artifacts/validacion/cierre-2026-10-24-zod-lint.txt
+A	artifacts/validacion/cierre-2026-10-24-zod-red.txt
+A	artifacts/validacion/cierre-2026-10-24-zod-suite.txt
+A	artifacts/validacion/cierre-2026-10-24-zod-typecheck.txt
+A	artifacts/validacion/cierre-2026-10-25-android.txt
+A	artifacts/validacion/cierre-2026-10-25-apk-contenido.json
+A	artifacts/validacion/cierre-2026-10-25-audit-functions.json
+A	artifacts/validacion/cierre-2026-10-25-audit-raiz.json
+A	artifacts/validacion/cierre-2026-10-25-capturas.json
+A	artifacts/validacion/cierre-2026-10-25-check.txt
+A	artifacts/validacion/cierre-2026-10-25-compilacion-base.json
+A	artifacts/validacion/cierre-2026-10-25-descarga-remota.json
+A	artifacts/validacion/cierre-2026-10-25-descargas-previas.json
+A	artifacts/validacion/cierre-2026-10-25-focal.txt
+A	artifacts/validacion/cierre-2026-10-25-npm-ci-final.txt
+A	artifacts/validacion/cierre-2026-10-25-npm-ci-verificado.txt
+A	artifacts/validacion/cierre-2026-10-25-npm-ci.txt
+A	artifacts/validacion/cierre-2026-10-25-recursos.json
+A	artifacts/validacion/cierre-2026-10-25-respaldo-remoto-previo.json
+A	artifacts/validacion/cierre-2026-10-25-seguridad-clasificacion.md
+A	artifacts/validacion/cierre-2026-10-25-ui-antes-espera.json
+A	artifacts/validacion/cierre-2026-10-25-ui-antes-espera.txt
+A	artifacts/validacion/cierre-2026-10-25-ui-concurrente.json
+A	artifacts/validacion/cierre-2026-10-25-ui-concurrente.txt
+A	artifacts/validacion/cierre-2026-10-25-ui-estatico.txt
+A	artifacts/validacion/cierre-2026-10-25-ui-focal.json
+A	artifacts/validacion/cierre-2026-10-25-ui-focal.txt
+A	artifacts/validacion/cierre-2026-10-25-ui-nombre-diagnostico.json
+A	artifacts/validacion/cierre-2026-10-25-ui-nombre-diagnostico.txt
+A	artifacts/validacion/cierre-2026-10-25-ui.json
+A	artifacts/validacion/cierre-2026-10-25-ui.txt
+A	artifacts/validacion/cierre-2026-10-25-web.txt
+A	artifacts/validacion/cierre-2026-10-25-welcome-estatico.txt
+A	artifacts/validacion/cierre-2026-10-25-whatsapp-red.txt
+A	docs/AUDITORIA_MAESTRA_ACTUAL.md
+M	docs/CONTINUIDAD_CODEX.md
+A	docs/ENTREGA_LOCAL_1_6_1.md
+M	docs/GALERIA_AVISOS_1_6.md
+M	docs/USO_LOCAL_ANDROID.md
+M	functions/package-lock.json
+M	functions/package.json
+M	package-lock.json
+M	package.json
+M	src/domain/engine.ts
+M	src/utils/whatsapp.ts
+A	tests/fecha-entrega-integridad.test.ts
+A	tests/ui/fecha-entrega.spec.ts
+M	tests/ui/welcome.spec.ts
+A	tests/whatsapp-legacy.test.ts
+A	tests/zod-limits.test.ts
+```
+
+## Registro previo: compilación en curso y fuente asegurada — 25/10/2026
 
 Código congelado `f9f018d3d33d6d474babcc669b1144412802ad28`. CopiaZIP en descargas `815cafeddd9e2d380058866650ecf490e011f143`:1594archivos, SHA256 `d7eecffe67effa7d5c93f684a4afe8c01253935d673ef33011658ae4a9ce4fb5`. Extraída y restaurada localmente; recuperada desde clon independiente y verificados todos los hashes individuales/CRC. Fuente y web disponibles antes de iniciar Gradle. No incluye claves de firma ni dependencias regenerables.
 
 Gradle completo1.6.1/code10 está en curso en `cierre-2026-10-25-android.txt`; todavía no se acredita instalador nuevo. La fuente no cambiará durante la compilación. Los commits documentales posteriores no alteran el código funcional congelado. La siguiente sección acredita las pruebas terminadas; el cierre final añadirá APK, firma, SHA y recuperación real.
 
-## Puerta previa al instalador superada — 25/10/2026
+## Registro previo: puerta previa al instalador superada — 25/10/2026
 
 **Resultados frescos:** 444/444 unitarias (40archivos); tipos y Functions build correctos; lint0errores/1advertencia de test. Instalación limpia y decoder aprobados. **Suite completa final: 57/57, cero omitidas y cero fallidas, 4.8min**, con un worker y sin instalaciones/Gradle concurrentes. El caso de cambio de nombre espera ahora el acuse visual antes de forzar navegación; el fallo anterior y los intentos con OOM están conservados. No se rebajaron reglas de negocio ni expectativas de cantidades/autores.
 
@@ -28,7 +238,7 @@ Los avisos nuevos analizados (`basic-ftp`, `fast-uri`, `ip-address`, `body-parse
 
 **Recursos del entorno:** cgroup8GiB; dos instalaciones más Chromium ocasionaron cierres Page/Target crashed y eventosOOM. La tanda concurrente se interrumpió (19pasados,5fallidos,2interrumpidos,31sin ejecutar). Se redujo la concurrencia, sin cambiar aplicación, expectativas ni timeouts para ocultar fallos. La primera suite secuencial terminó56/57: sólo el cambio de nombre navegaba con page.goto antes del acuse visual de la entrega; el mismo caso pasó aislado sin cambiarlo. Se corrigió la sincronización de esa prueba para esperar login y «Registrar retiro», igual que los recorridos existentes. Se repite la suite completa; no se declara verde hasta que termine.
 
-## Continuación comprobada — 25/10/2026 (Argentina)
+## Registro previo: continuación comprobada — 25/10/2026 (Argentina)
 
 Este documento completo ya está en GitHub desde `1ef9be4`. Se retomó sobre ese commit, conservando la carpeta y el remoto privado. La revisión independiente aplicó los perfiles QA y entrega Android; encontró una contradicción documental sobre avisos, corregida en `docs/USO_LOCAL_ANDROID.md`. No se reinstalaron perfiles ni se activaron servicios.
 
@@ -39,9 +249,9 @@ Este documento completo ya está en GitHub desde `1ef9be4`. Se retomó sobre ese
 - En curso: instalación limpia aislada con `npm ci`, exportación web final, suite UI, respaldo del commit estable, Gradle completo y publicación versionada 1.6.1. No se afirma aún que el APK nuevo esté generado ni publicado.
 - Sin dispositivo conectado: ninguna comprobación con mocks, Chromium, firma o Gradle se declara prueba física.
 
-## Actualización del cierre — 24/10/2026
+## Registro histórico del cierre — 24/10/2026
 
-El informe completo ya está guardado; esta sección prevalece sobre los estados «en curso» del borrador y sobre los anexos históricos.
+Registro histórico del24/10, conservado para trazabilidad; el Estado final del25/10 prevalece sobre sus estados y recuentos anteriores.
 
 - **F1 corregido:** el dominio ahora rechaza una entrega cuyo retiro sea anterior a la entrega planificada, además del límite por fecha efectiva. No corrige fechas automáticamente ni mueve stock ante rechazo. Dos regresiones comprueban persistencia intacta y el ciclo de copia → restauración → reapertura cuando el retiro coincide con la fecha planificada.
 - **F2 corregido en la app y Functions:** Zod fijado a **4.6.6**, exclusivamente en esos paquetes y sus lockfiles. Una petición SET_LOAD de 101 elementos inválidos producía 304 errores; el parche rechaza por un único límite antes de procesar cada elemento. No se simuló un agotamiento de memoria real. Las colecciones sin límite individual de las copias siguen siendo un límite de recursos a evaluar: el archivo tiene máximo de 50 MB, pero eso no garantiza consumo acotado de RAM.
@@ -55,7 +265,7 @@ El informe completo ya está guardado; esta sección prevalece sobre los estados
 
 Repartos Chema es una aplicación interna de Grupo Chema Construcciones para registrar alquileres de andamios/equipos, destino, cliente, materiales, responsables, fechas, entrega, retiro, triangulación, daños, pérdidas y recuperación. Su entrega vigente es **individual Android, gratuita y local/offline**, con inicio vacío, fotos locales, documentos y respaldos JSON. No necesita una PC encendida, servidor, Firebase, Cloudflare, anuncios ni suscripción para operar con datos locales.
 
-Hay un APK1.6.0/code9 completo publicado y recuperado desde GitHub, con firma/paquete e integridad comprobados. Eso **no equivale a prueba física de funcionamiento**: no hay teléfono/emulador conectado. Ya se verificaron el dominio y los recorridos web; instalación encima, SQLite físico, permisos, cámara/compartir y avisos/reinicio requieren Android real. El cierre actual revisa fallos concretos y prepara la corrección1.6.1, no reabre el diseño ni reescribe la app.
+Hay un APK1.6.1/code10 completo publicado y recuperado desde GitHub, con firma/paquete e integridad comprobados. La versión1.6.0 anterior permanece conservada. Eso **no equivale a prueba física de funcionamiento**: no hay teléfono/emulador conectado. Ya se verificaron el dominio y los recorridos web; instalación encima, SQLite físico, permisos, cámara/compartir y avisos/reinicio requieren Android real. El cierre actual corrigió fallos concretos y entregó1.6.1, sin reabrir el diseño ni reescribir la app.
 
 **Hallazgos nuevos comprobados el24/10:** (F1) entrega anticipada con fecha de retiro anterior a entrega planificada podía producir copia no restaurable; (F2) aviso de seguridad nuevo ZodGHSA-mrhx-c7xc-m3w5, parche4.6.6. Corregidos en código y cubiertos por regresiones; el encabezado vigente registra su entrega. El APK1.6 anterior no incluye esas correcciones. No se presenta una revisión en curso como éxito final.
 
@@ -137,7 +347,7 @@ UserProfile conserva rol técnicoADMIN/OPERADOR; el acceso individual por nombre
 | Tarjetas/filas compactas | CardObra/ListStructure | Capturas reales y comparación con referencias; contador agregó una línea |
 | Preparar carga/medida/apodo | LoadEditor/ScaffoldSelector/SmartCounter | U/W; maatmaestro no se renombra por apodo, cantidades enteras |
 | ComboCRUD/aplicar/revisar | combos/LoadDraft/domain | U/W, fusiona IDs y medidas sin duplicar accidentalmente |
-| Entrega/retirar/reingresar/reactivar | OperationForm/engine | U/W; F1corrección de coherencia de fechas en este cierre |
+| Entrega/retirar/reingresar/reactivar | OperationForm/engine | U/W; F1corregido con2regresiones y recorridoUI |
 | Triangulación/procedencia | engine/OperationForm | U/W, origen/destino/motivo/saldo real |
 | Galpón/buckets/ajustes | tabs/galpon/engine | U/W; reservas de incidentes y confirmación |
 | Pérdidas/daños/recuperación | FaltantesForm/engine | U/W, taller/perdido sin stock negativo; pushremoto fuera |
@@ -190,8 +400,8 @@ FirebaseJS y functions/reglas siguen en el árbol para integración histórica. 
 
 | Riesgo/hallazgo | Evidencia/estado | Cierre o limitación |
 |---|---|---|
-| F1fechasDELIVER vsbackup | Repro actual24/10enfixture: entregaanticipada admite retiro<planificada, JSON luego rechazado | Corrección mínima y regresión en curso; no manipulardatosreales |
-| F2ZodGHSA-mrhx-c7xc-m3w5 | Aviso actual24/10, validación de colecciones/import puede agotar memoria; firstpatched4.6.6 | Parchecompatible raíz/functions en curso; no pérdida de datos demostrada |
+| F1fechasDELIVER vsbackup | Repro actual24/10enfixture: entregaanticipada admite retiro<planificada, JSON luego rechazado | Corregido y probado: guarda previa al stock,2unitarias y recorridoUI; datos reales no reescritos |
+| F2ZodGHSA-mrhx-c7xc-m3w5 | Aviso actual24/10, validación de colecciones/import puede agotar memoria; firstpatched4.6.6 | Parche4.6.6 raíz/Functions y locks; regresión de límites aprobada; no se afirmó reproducir agotamiento real |
 | Node-forge transitivoCLI | AvisoRSAverificación; cadena herramientasExpoCLI, sinparche publicado comprobado en revisión | No bajarExpo a44ni auditfixforce; no afirmarque afectaautomáticamenteAPK |
 | UUIDtransitivo | Aviso de buffers/APIv3-v5-v6; ExcelJS/xcodeusanv4 según revisión | Exposición específica por seguir; no inventar0vulnerabilidades |
 | Nombredeingreso | Identificaciónlocal sin verificación | Usoindividual deliberado; bloqueo delteléfono/copiaexterna, noAuthproductiva |
@@ -216,13 +426,13 @@ Cada afirmación remite al código/commit/tests del inventario; el estado de los
 
 Se conservan virtualizaciónFlashList, filascompactas, cálculosderivados y un reloj porpantalla, pausaAppState/movimiento reducido, carga diferida de documentos/workersweb y compresiónlocaldefotos. No se añadióblur costoso por elemento. No se cambióelgestor deestado por preferencia.
 
-Medidas disponibles: tamañoAPK1.6=56.174.111bytes, webexport≈7.8MBsincomprimir/ZIP≈1.9MB; tiemposdetests/Gradle son delentorno, no latenciadelapp. NingúnFPS, RAM/batería o arranquefísico medido. Snapshotagregadoylogs, cientosdeavisos, imágenes grandes y múltiplescopiaspuedenafectar memoria/IO; riesgos concretos ameritanmediciónconfixture antes de cambios. No se promete escala ilimitada.
+Medidas disponibles: tamañoAPK1.6.1=56176031bytes (1.6.0anterior56.174.111), webexport≈7.8MBsincomprimir/ZIP≈1.9MB; tiemposdetests/Gradle son delentorno, no latenciadelapp. NingúnFPS, RAM/batería o arranquefísico medido. Snapshotagregadoylogs, cientosdeavisos, imágenes grandes y múltiplescopiaspuedenafectar memoria/IO; riesgos concretos ameritanmediciónconfixture antes de cambios. No se promete escala ilimitada.
 
 ## 12. Git, respaldos, entrega y persistencia
 
 Repo privadoautorizado:`https://github.com/kkshiiit/repartos-chema.git`. Main=código/docs; descargas=APK/ZIPversionados. Git está inicializado, sin reset/forcepush. El usuario eligiókkshiiit entre doscuentas. La copia delcódigo no incluye node_modules/secretos/firmaprivada. Herramientapackage.pycreaSHA256.json, compruebaCRC, extraetodosycomparahashes. La persistenciadelentorno remoto no se promete indefinida: elrespaldodescargable/GitHub es la ruta derecuperación.
 
-APK1.6.0/code9:
+APK1.6.0/code9 (antecedente preservado; versión vigente1.6.1 en Estado final):
 - packagecom.grupochema.repartos; Android7+/ARM64; nodebuggable;SQLitey3WAVoriginales.
 - runtime295a97757446310eba5a48260804ae7b655ec0dd; Gradle9m32s/701tareas.
 - SHA256`29a4a57b7ea1a746c6127d2f8b688b12278a7e41837bd8f85e05eb97ba3bf675`.
@@ -230,7 +440,7 @@ APK1.6.0/code9:
 - descargas4f4f7988a2c194637df6a0ab37bfdcbb65f1f8b5; recuperadodesdeclonindependiente conbytes/SHA/CRCigualy7APKpreviosintactos.
 - [Descargar](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.6.0-local.1/repartos-chema-local-1.6.0-arm64.apk). Este enlace seguirá siendo histórico cuando sepubliqueelcorrectivo.
 
-Fuenteantesdebuild295a977ZIPrestaurado1254archivos, SHAeefd6b61ea2fb60b51ce62d873ff89784d40a24a2ad9978d2ce57487d6af8759. WebZIPSHA b084b6eec37d54224fdd13a3374b86752c2ca42ff17616c0fd7edddeeba67772. Fuente55c0725de cierre existe localmente; laampliacióndeagentes posteriornoalteróAPK. Elcierre actualdebe respaldarse también en ZIPdescargable yactualizarsus hashes reales.
+Fuenteantesdebuild295a977ZIPrestaurado1254archivos, SHAeefd6b61ea2fb60b51ce62d873ff89784d40a24a2ad9978d2ce57487d6af8759. WebZIPSHA b084b6eec37d54224fdd13a3374b86752c2ca42ff17616c0fd7edddeeba67772. Fuente55c0725de cierre existe localmente; laampliacióndeagentes posteriornoalteróAPK. El cierre actual también tiene fuente f9f018d restaurada y recuperada; ver Estado final y carpeta1.6.1.
 
 No hubo creación comprobada de carpeta en C:\Users delusuario desdeesteentorno. El trabajo viveen/workspaceyGitHub; sepuedeusarAPKdesdeAndroid sinPC. No se inventanURLsdepreviewpúblicas; localhostdelentorno noesaccesodesdeelcelular.
 
@@ -244,38 +454,49 @@ Noautomatización dereanudación configuradaparaeste cierre. Herramientasdeautom
 
 ## 14. Pruebas y compilación: evidencias y límites
 
-Resultadosde23/10registrados enartifacts/validacion: check436/436en37archivos, tsc/lint/Functionsbuildcorrectos; UI56/56(4.1min),6/6repetidos trasajustefinal;8Axe0violaciones/0incompletas; npmcilimpio1565paquetes/decoderverificado. Losintentosfallidospreviosseconservan: linteneffect/test, selectorNoticefrenteaCalendarField, ariagroupincompleto, selectoresdeUIantiguos. No sepresentancomoéxitos.
+Resultados actuales del25/10:444/444,57/57UI,348capturas/19comparativas/8Axe0errores, npmci y Gradle9m12s correctos. Evidencias `artifacts/validacion/cierre-2026-10-25-*` y `android-1.6.1-*`. Primera tanda concurrente se interrumpió por agotamiento del entorno; secuencial56/57 identificó una espera faltante del test, corregida y suite completa repetida57/57. No se ocultan esas ejecuciones ni se cuentan como éxito.
 
-Comandosreproducibles:
+Comandos reproducibles (Node24 probado en este entorno; Functions declara22 y su instalación avisa esa diferencia):
+
 ```bash
 npm ci
+npm --prefix functions ci
 npm run check
 npm run build:web
 npm run preview
-CHEMA_TEST_LOCAL=true npm run test:ui -- --workers=2
+CHEMA_TEST_LOCAL=true npm run test:ui -- --workers=1
 ```
 
-Firebaseintegración semantieneseparada:`npm run test:integration`; no seejecutani necesita credencialesparaelmodo local. Compilarfunctions no esdesplegar. iOSnoestácompiladonicertificado. NopresentarHermesbundlecomoAPK. Elcierre24/10registraráresultados nuevosensecciónactualizacionesalprincipio; no reutilizar436comoresultadodeunrunqueaúnno terminó.
+Playwright usa Chromium instalado; se puede definir CHROMIUM_PATH para otra ubicación. Android exige JDK21/SDK36/NDK27.1 y la clave previa externa mediante CHEMA_ANDROID_KEYSTORE; ver docs/ANDROID.md. No ejecutar npmci/Chrome/Gradle juntos en este entorno de8GiB. Firebase Emulator/producción no se ejecutó ni se necesita para el modo local. Compilar Functions no es desplegar. iOS no se compiló ni certificó. Un bundle Hermes no sustituye un APK. Las capturas y contrastes de navegador no acreditan hardware ni TalkBack.
 
-## 15. Plan para terminar sin gastar
+## 15. Cierre gratuito y próximos pasos priorizados
 
-1. **Guardar esta auditoría temprano y pushmain.** Yaexisteel archivo; al cerrarse completarestados, commitsyevidencias. Noesperaraagotartokens.
-2. **ResolverF1/F2 acotados.** Guardafechascoherenteentregaplanificada/efectiva, regresión debackup; parcheZodcompatible, locks/versionesypruebasactuales. No frameworks, datosrealesnimigraciones.
-3. **Checkfresco yrecorridos afectados.** Unitaria/dominio/JSON/fechas/importación/temas/documentos; UIactualsobreexportlocal. Corregirfallosreales, sinomitirlos.
-4. **Respaldar fuente estable antes decompilar.** Commit/push, ZIPrestaurado/manifiesto; preservarkeystoreexterno.
-5. **CorrectivoAndroidsi cambiacódigo.** 1.6.1/code10, mismo paquete/firma, Gradlecompleto, métadatos/SHA/CRC/ABI, publicarendescargasrutanuéva, conservaranterioresyrecuperarbytesdesdeGit.
-6. **Auditoría yentregafinales.** ZIPsourceactual(incluyendoinforme), enlaceAPK, capturasválidasylímitesexactos. Si faltaunrecurso externo, continuarindependiente yregistrarbloqueo.
-7. **Aceptaciónfísica porusuario.** ExportarJSONexterno, actualizarsindesinstalar, comprobarstock/fotos/historial/temas; avisoahorafutura cierre/reinicio; Word/Excel/cámara/GPS. No borrar almacenamiento pararesolvererrores.
+1. **Completado y comprobado:** auditoría completa temprana en GitHub, commits por bloques, fuente ZIP/SHA/restauración y recuperación independiente. No se depende sólo del entorno ni del chat.
+2. **Completado y comprobado en unidad/web:** F1/F2/F3, integridad y recorridos de la edición individual, documentos, JSON/fotos y temas. No migrar frameworks o datos por preferencia.
+3. **Completado y comprobado como artefacto:** Gradle completo, APK1.6.1 con paquete/certificado anteriores, firma/CRC/ABI/recursos/markers, publicación y recuperación independiente preservando8APKanterior.
+4. **Completado y comprobado en navegador:** capturas claras/oscuras y comparativas estructurales; no es validación Android.
+5. **Pendiente de aceptación física:** copiaJSON externa → instalar encima → comparar stock/alquileres/fotos/historial → modoavión/cierre/reapertura → permisos/notificaciones/reinicio → Word/Excel/Compartir/cámara/GPS. Registrar modelo/versiónOS y mensajes exactos; no borrar almacenamiento para resolver fallos.
+6. **Mantenimiento siguiente:** parches compatibles de herramientas, custodia privada de firma fuera del entorno, medición de volumen/memoria y copias grandes. No auditfixforce ni actualización nativa sin prueba y compatibilidad. Si se informa un error real, conservar original y reproducirlo antes de corregir; no reabrir auditoría general ni reconstruir APK sólo por documentación.
 
-Terminado dentrodelentorno no significa producciónmultiusuario ni validaciónfísica no ejecutada. No se inventa porcentaje de avance: se clasificanpartes/evidencias. Losriesgosnode-forge/tooling sinparche no sedisfrazan de0auditni searreglan con downgradeSDK.
+La app actual no necesita servicios externos pagos. No se promete capacidad ilimitada, disponibilidad permanente del workspace, sincronización cloud ni puntualidad garantizada del sistema operativo.
 
 ## 16. CONTEXTO COMPLETO PARA CONTINUAR EL DESARROLLO
 
-Proyecto privado kkshiiit/repartos-chema en/workspace/repartos-chema. Objetivo vigente individualAndroidgratis/local/offline, sinAds/backendpagado/Firebaseobligatorio/PlayStore; inicio vacío ypreservacióndatos. StackExpo57/RN0.86/React19/TS6/Router, Context, SQLitecomercial con migraciónAsyncStorageconservada, fotoslocales, JSONcompleto, docx/exceljs, Vitest/Playwright. Código1.6yaAPKpublicado(runtime295a977/code9), metadataposterior incluye282perfiles, sólo elegirnecesarios. Firmaypackage NOcambiar. No rehacerrediseñoPapel/Cobalto. NoagregarfiltroCerradas. ClavenoestáenGit; si falta, detenerbuildsinesustituirla.
+Proyecto privado `kkshiiit/repartos-chema`, directorio `/workspace/repartos-chema`. Objetivo confirmado: edición individual Android gratuita/local/offline, inicialmente vacía, datos existentes preservados, sin anuncios, backend obligatorio, servicios pagos, Firebase productivo ni PlayStore. Diseño actual Papel/Cobalto, cuatro pestañas Alquileres/Depósito/Viaje/Historial, Claro/Oscuro/Sistema persistente y control principal. No volver a Aurora ni agregar Cerradas por leer documentos antiguos.
 
-ReanudarleyendoCONTINUIDAD_CODEX yesta auditoría, gitstatus/log/remoto yúltimasecciónactualizada. Conservartrabajoajeno. NuevohallazgoF1entregaanticipada rompebackup yF2Zodparche4.6.6 secierranenestasesión: verificarcommits/pruebas realesactuales antes derepetir. Si hayAPKcorrectivo yahecho, verificarloantes derecompilar. ProbarunidadesyUIafectada proporcionalmente, guardarlogs/reporte, pushporbloques yantesdebuildslargos. PrepararZIPconSHA yrestauración, APKARM64conmismafirma yversionCodecreciente, publicaciónautorizadaendescargassinborraranteriores, recuperaciónindependiente.
+Stack verificado: Expo57.0.30, RN0.86.3, React19.2.3, TS6.0.3/Router/Context, SQLite comercial con migraciónAsyncStorage no destructiva, fotos locales comprimidas, JSON completo, docx/ExcelJS, Vitest/Playwright. Dominio separado de UI/repositorio; enteros no negativos, IDs estables, revisiones, idempotencia y auditoría/undo5min. Alquileres/carga/combos/entrega/retiro/reingreso/reactivación/triangulación/faltantes/recuperación/ajustes/responsables, viaje/GPS/WhatsApp, historial, fotos y documentos están implementados con pruebas unitarias/web; sus APIs nativas necesitan aceptación física. Nombre local identifica movimientos y no autentica una cuenta cloud. Roles técnicos se conservan; no agregar cuentas demo a la interfaz individual.
 
-Nohayteléfonoconectado; no simularpruebasfísicas,puntualidadOS, FPSomemoria. Generalavisos08:00+3/2/1/0opt-in, herencia ycustomización, calendarioArgentina, unúnicoservicio/clavev1representaciónv2, manualesmigradossin duplicar. Cierre/reingreso cancelan, notificacionesnomuevenstock. La app no depende deesta sesión parafuncionar. Node-forge/UUIDyZoddeCLIpuedenmanteneravisostransitivos: distinguirpaquetes/herramientas/exposición delruntime, noauditfixforce. Documentaciónconfig/cloudhistórica noreactivaelalcanceviejo. Elusuario pidearchivo completoantesdeagotaruso: actualizarloypreservarlo, no sólo unmensajedechat.
+**Entregado1.6.1/code10**, paquete `com.grupochema.repartos`, fuente funcional `f9f018d3d33d6d474babcc669b1144412802ad28`. APK `https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.6.1-local.1/repartos-chema-local-1.6.1-arm64.apk`, SHA256 `03e42657ad62d9c39ddd3cc2060a8ebd1d11d861fd78c0da46bda2f311c578f1`, 56176031bytes. CertificadoSHA256 `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`, idéntico al anterior. Descargas `293e748c162a5518a02b9f91330779064beed6f5`; recuperado en clon independiente con firma/SHA/CRC coincidentes y8APKprevios intactos. No recompilar por un cambio de documentación. Si falta la clave externa, no sustituirla ni rotarla. Fuente previa ZIPf9f018d restaurada/recuperada1594archivos; respaldos adicionales y audit final en carpeta1.6.1, cada uno con manifiesto. No subir claves/envs/dependencias regenerables.
+
+F1 cerrado: DELIVER rechaza retiro anterior a entrega planificada antes de mover stock; fechas efectivas separadas,2regresiones yUI. F2 cerrado en app/Functions: Zod4.6.6, locks y límites con regresión. F3 cerrado: remito legacy sin fecha usa «Sin fecha de retiro»,5casos. No normaliza datos reales silenciosamente. Legacy sin fecha puede abrirse para completar; importación activa estricta, originales y snapshots retenidos. No borrar datos ni desinstalar para arreglar corrupción.
+
+Avisos1.6: fechaRetiroEstimada = Alquilado hasta; cuenta civil Argentina derivada, actualiza al cambiar día/resume/edición. General opt-in08:00+3/2/1/0, herencia real y personalizados, un ReminderService/clavev1 con representaciónv2, manuales conservados, intenciones/reintentos/cancelación reconciliados. Sólo futuros; finalizar retiro/reingreso cancela. Avisos no mueven stock. Taps esperan sesión/inventario/navegación. Android no declara alarmas exactas: no prometer puntualidad, recepción con cierre/reinicio/force-stop o ejecución permanente sin probarla.
+
+Pruebas frescas25/10:444unitarias/40archivos,57/57UI/0omitidas,8Axe0violaciones,348capturas actuales/19comparativas, npmci limpio1565paquetes/decoder directo y transitivo/lockintacto, tipos y Functions build correctos, lint0errores/1advertencia. Gradle9m12s/701tareas. Logs de fallos previos conservados: OOM al ejecutar instalaciones yChrome juntos; test de cambio de nombre adelantaba navegación completa y ahora espera acuse. No repetirlos ni inventar prueba física. Cgroup8GiB: ejecutar tareas pesadas secuencialmente.
+
+Seguridad residual: npm audit21raíz(12altas9moderadas0críticas)/10Functions heredado. Nuevos avisos revisados son herramientas dev bajoFirebaseCLI; Zod de app parcheado, CLI3.x sigue señalado; node-forge sin parche confirmado; uuid consumidores revisadosv4 sin buffer. Sin camino de ejecución nuevo en APK identificado, no ausencia total de vulnerabilidades. No auditfixforce/downgrades SDK ni exponer servidores CLI/MCP/emuladores. JSON máximo50MB no garantiza RAM acotada para arrays sin máximo individual. Respaldo privado externo del certificado requiere custodia segura; nunca publicarlo.
+
+**Primera acción al retomar:** leer docs/CONTINUIDAD_CODEX.md, esta auditoría y docs/ENTREGA_LOCAL_1_6_1.md; gitstatus/log/remoto. Si sólo piden APK, entregar el ya publicado. Siguiente tarea pendiente real: aceptar en un Android del usuario con JSONexterno, actualizar encima y comprobar stock/fotos/historial/temas/offline/avisos/permisos/cámara/compartir. No existe teléfono/emulador conectado ni automatización de trabajo futuro confirmada. Usar sólo perfiles/skills pertinentes entre282agentes instalados; instalar perfiles no los ejecuta. No reactivar cloud o publicidad. Guardar resultados y checkpoint antes de límites; no prometer continuidad fuera de la ejecución activa.
 
 ## 17. Inventario y evidencia histórica íntegra
 

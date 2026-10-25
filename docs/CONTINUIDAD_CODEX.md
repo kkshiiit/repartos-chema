@@ -1,3 +1,17 @@
+# Entrega 1.6.1 publicada y recuperada — 25/10/2026
+
+**Cerrado dentro del acceso disponible; pendiente aceptación en Android físico.** No iniciar otro rediseño/compilación por documentos. Código funcional `f9f018d3d33d6d474babcc669b1144412802ad28`,1.6.1/code10, paquete `com.grupochema.repartos`, 56176031bytes. APK en descargas `293e748c162a5518a02b9f91330779064beed6f5` ruta `android/v1.6.1-local.1/repartos-chema-local-1.6.1-arm64.apk`; SHA256 `03e42657ad62d9c39ddd3cc2060a8ebd1d11d861fd78c0da46bda2f311c578f1`. Certificado `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`, mismo anterior. Firma/CRC/ARM64/minSDK24/SQLite/3WAV/noAds/configFirebase y nueva guardaHermes comprobados. Recuperado desde clon independiente y8APKprevios intactos. Gradle9m12s/701tareas; no teléfono/emulador.
+
+444unitarias/40archivos,57/57UI/0omitidas,348capturas/19comparativas/8Axe0violaciones, npmci limpio1565paquetes/decoder/lock/Zod4.6.6, tipos/Functions correctos; lint0errores/1advertencia. Intentosfallidos preservados, no contados como aprobados. Audit21raíz/10Functions, nuevos avisos clasificados herramientas dev; no auditfixforce.
+
+Fuente antes de Gradle:1594archivos, SHA d7eecffe67effa7d5c93f684a4afe8c01253935d673ef33011658ae4a9ce4fb5, descargas815cafeddd9e2d380058866650ecf490e011f143. Todos hashes al restaurar/recuperarGit correctos. **Último paso activo: guardar informe/auditoría final, commit/push y ZIP de cierre con documentación; preservar snapshot previo.** Auditar original completo en docs/AUDITORIA_MAESTRA_ACTUAL.md y entrega en ENTREGA_LOCAL_1_6_1.md.
+
+**Próxima acción al retomar:** comprobar gitstatus/log/remoto y si el respaldo final ya se publicó antes de repetir. Si sólo pide APK, entregar URL existente. Pendiente real tras respaldo: usuario guarda JSON externo, instala encima sin desinstalar, compara stock/alquileres/fotos/historial/temas, prueba modoavión/reapertura, permisos/avisos/cierre/reinicio/tap y cámara/WordExcelCompartir/GPS. Si error, conservar mensaje y original, reproducir específicamente; no resetear datos. No se promete trabajo automático fuera de ejecución.
+
+Clavede firma fueraGit en /workspace/respaldos/firma-interna/chema-restaurada-1.3.keystore, no incluir enZIP ni rotar. Falta custodia privada externa confirmada. No gastos/Ads/Firebase/Cloudflare/EAS/hosting/PlayStore. Perfiles282/skills7 conservados; usar pertinentes, no simular recarga nativa agent_type. Cgroup8GiB: tareas pesadas secuenciales. No más cambios de app desde f9f018d.
+
+---
+
 # Gradle 1.6.1 en curso, fuente congelada y recuperada — 25/10/2026
 
 **Código funcional congelado:** `f9f018d3d33d6d474babcc669b1144412802ad28`, main respaldado antes de compilar. Sólo se agregarán documentos/evidencias mientras corre Gradle. **Fuente en descargas815cafeddd9e2d380058866650ecf490e011f143**: ZIP1594archivos, 57829524bytes, SHAd7eecffe67effa7d5c93f684a4afe8c01253935d673ef33011658ae4a9ce4fb5. Restauración local y recuperación independiente desdeGitHub: todos los hashes y CRC coinciden. Webportable también publicada. Auditoría íntegra ya guardada.
