@@ -1,0 +1,41 @@
+
+Running 1 test using 1 worker
+
+(node:3434) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/ui/fecha-entrega.spec.ts:6:5 › entrega anticipada rechaza fecha incoherente sin perder formulario ni mover stock (9.5s)
+
+
+  1) tests/ui/fecha-entrega.spec.ts:6:5 › entrega anticipada rechaza fecha incoherente sin perder formulario ni mover stock 
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator:  getByLabel('Retiro previsto · AAAA-MM-DD', { exact: true })
+    Expected: "2026-10-25"
+    Received: "25/10/2026"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveValue" getByLabel('Retiro previsto · AAAA-MM-DD', { exact: true }) with timeout 5000ms
+      - waiting for getByLabel('Retiro previsto · AAAA-MM-DD', { exact: true })
+        14 × locator resolved to <input rows="1" dir="auto" maxlength="10" autocorrect="on" autocomplete="on" spellcheck="true" value="25/10/2026" autocapitalize="sentences" virtualkeyboardpolicy="auto" aria-label="Retiro previsto · AAAA-MM-DD" class="css-11aywtz r-6taxm2 r-14lw9ot r-sjaoer r-1q9bdsx r-rs99b7 r-1y0i4b6 r-ubezar r-1pl7oy7 r-ywh0we r-gu64tb"/>
+           - unexpected value "25/10/2026"
+
+
+      48 |   expect(await raw()).toBe(before);
+      49 |   await expect(page.getByLabel('Recibió', { exact: true })).toHaveValue('Receptor sintético');
+    > 50 |   await expect(retirement).toHaveValue('2026-10-25');
+         |                            ^
+      51 |   await retirement.fill('2026-10-30');
+      52 |   await page.getByRole('button', { name: 'Confirmar entrega', exact: true }).click();
+      53 |   await expect(retirement).toHaveCount(0);
+        at /workspace/repartos-chema/tests/ui/fecha-entrega.spec.ts:50:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/fecha-entrega-entrega-anti-03dc8-r-formulario-ni-mover-stock/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/fecha-entrega-entrega-anti-03dc8-r-formulario-ni-mover-stock/error-context.md
+
+  1 failed
+    tests/ui/fecha-entrega.spec.ts:6:5 › entrega anticipada rechaza fecha incoherente sin perder formulario ni mover stock 

@@ -1,0 +1,185 @@
+{
+  "config": {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "/workspace/repartos-chema/node_modules/.bin/playwright",
+      "test",
+      "tests/ui/fecha-entrega.spec.ts",
+      "--workers=1",
+      "--reporter=list,json"
+    ],
+    "configFile": "/workspace/repartos-chema/playwright.config.ts",
+    "rootDir": "/workspace/repartos-chema/tests/ui",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/workspace/repartos-chema/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/workspace/repartos-chema/tests/ui",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/workspace/repartos-chema/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "/workspace/repartos-chema/tests/ui",
+        "snapshotDir": "/workspace/repartos-chema/tests/ui",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:8081",
+          "headless": true,
+          "launchOptions": {
+            "executablePath": "/usr/bin/chromium",
+            "args": [
+              "--no-sandbox"
+            ]
+          },
+          "screenshot": "only-on-failure"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "fecha-entrega.spec.ts",
+      "file": "fecha-entrega.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "entrega anticipada rechaza fecha incoherente sin perder formulario ni mover stock",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 9549,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByLabel('Retiro previsto · AAAA-MM-DD', { exact: true })\nExpected: \u001b[32m\"2\u001b[7m026-10-25\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2\u001b[7m5/10/2026\u001b[27m\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" getByLabel('Retiro previsto · AAAA-MM-DD', { exact: true }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByLabel('Retiro previsto · AAAA-MM-DD', { exact: true })\u001b[22m\n\u001b[2m    14 × locator resolved to <input rows=\"1\" dir=\"auto\" maxlength=\"10\" autocorrect=\"on\" autocomplete=\"on\" spellcheck=\"true\" value=\"25/10/2026\" autocapitalize=\"sentences\" virtualkeyboardpolicy=\"auto\" aria-label=\"Retiro previsto · AAAA-MM-DD\" class=\"css-11aywtz r-6taxm2 r-14lw9ot r-sjaoer r-1q9bdsx r-rs99b7 r-1y0i4b6 r-ubezar r-1pl7oy7 r-ywh0we r-gu64tb\"/>\u001b[22m\n\u001b[2m       - unexpected value \"25/10/2026\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByLabel('Retiro previsto · AAAA-MM-DD', { exact: true })\nExpected: \u001b[32m\"2\u001b[7m026-10-25\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2\u001b[7m5/10/2026\u001b[27m\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" getByLabel('Retiro previsto · AAAA-MM-DD', { exact: true }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByLabel('Retiro previsto · AAAA-MM-DD', { exact: true })\u001b[22m\n\u001b[2m    14 × locator resolved to <input rows=\"1\" dir=\"auto\" maxlength=\"10\" autocorrect=\"on\" autocomplete=\"on\" spellcheck=\"true\" value=\"25/10/2026\" autocapitalize=\"sentences\" virtualkeyboardpolicy=\"auto\" aria-label=\"Retiro previsto · AAAA-MM-DD\" class=\"css-11aywtz r-6taxm2 r-14lw9ot r-sjaoer r-1q9bdsx r-rs99b7 r-1y0i4b6 r-ubezar r-1pl7oy7 r-ywh0we r-gu64tb\"/>\u001b[22m\n\u001b[2m       - unexpected value \"25/10/2026\"\u001b[22m\n\n    at /workspace/repartos-chema/tests/ui/fecha-entrega.spec.ts:50:28",
+                    "location": {
+                      "file": "/workspace/repartos-chema/tests/ui/fecha-entrega.spec.ts",
+                      "column": 28,
+                      "line": 50
+                    },
+                    "snippet": "  48 |   expect(await raw()).toBe(before);\n  49 |   await expect(page.getByLabel('Recibió', { exact: true })).toHaveValue('Receptor sintético');\n> 50 |   await expect(retirement).toHaveValue('2026-10-25');\n     |                            ^\n  51 |   await retirement.fill('2026-10-30');\n  52 |   await page.getByRole('button', { name: 'Confirmar entrega', exact: true }).click();\n  53 |   await expect(retirement).toHaveCount(0);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/repartos-chema/tests/ui/fecha-entrega.spec.ts",
+                        "column": 28,
+                        "line": 50
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByLabel('Retiro previsto · AAAA-MM-DD', { exact: true })\nExpected: \u001b[32m\"2\u001b[7m026-10-25\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2\u001b[7m5/10/2026\u001b[27m\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" getByLabel('Retiro previsto · AAAA-MM-DD', { exact: true }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByLabel('Retiro previsto · AAAA-MM-DD', { exact: true })\u001b[22m\n\u001b[2m    14 × locator resolved to <input rows=\"1\" dir=\"auto\" maxlength=\"10\" autocorrect=\"on\" autocomplete=\"on\" spellcheck=\"true\" value=\"25/10/2026\" autocapitalize=\"sentences\" virtualkeyboardpolicy=\"auto\" aria-label=\"Retiro previsto · AAAA-MM-DD\" class=\"css-11aywtz r-6taxm2 r-14lw9ot r-sjaoer r-1q9bdsx r-rs99b7 r-1y0i4b6 r-ubezar r-1pl7oy7 r-ywh0we r-gu64tb\"/>\u001b[22m\n\u001b[2m       - unexpected value \"25/10/2026\"\u001b[22m\n\n\n  48 |   expect(await raw()).toBe(before);\n  49 |   await expect(page.getByLabel('Recibió', { exact: true })).toHaveValue('Receptor sintético');\n> 50 |   await expect(retirement).toHaveValue('2026-10-25');\n     |                            ^\n  51 |   await retirement.fill('2026-10-30');\n  52 |   await page.getByRole('button', { name: 'Confirmar entrega', exact: true }).click();\n  53 |   await expect(retirement).toHaveCount(0);\n    at /workspace/repartos-chema/tests/ui/fecha-entrega.spec.ts:50:28"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:12:51.574Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/workspace/repartos-chema/test-results/fecha-entrega-entrega-anti-03dc8-r-formulario-ni-mover-stock/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/repartos-chema/test-results/fecha-entrega-entrega-anti-03dc8-r-formulario-ni-mover-stock/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/repartos-chema/tests/ui/fecha-entrega.spec.ts",
+                    "column": 28,
+                    "line": 50
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "c0c89610288c0de63bf2-12269cb46c456d6be257",
+          "file": "fecha-entrega.spec.ts",
+          "line": 6,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-25T21:12:50.523Z",
+    "duration": 12095.166000000001,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

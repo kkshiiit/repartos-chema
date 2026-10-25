@@ -1,3 +1,13 @@
+# Control antes del cierre UI y Gradle — 25/10/2026
+
+Último main respaldado: `acdb43f`. No hay más cambios de app desde ese código (sólo sincronización de test welcome y documentación/evidencias). **npm ci limpio FINAL aprobado**:1565paquetes, Zod4.6.6, decoder directo/transitivo5casos, lockSHA8bcc9d6d38c49cab700316ef07e1193eef2fc468b01616e202cb76fb74f37bc1 intacto. Primera tanda UI concurrente afectada por OOM; primera secuencial56/57, caso welcome pasó solo y se corrigió espera del test antes de navegación completa. Nueva suite57 con1worker está activa; revisar cierre-2026-10-25-ui.txt/json antes de repetir.
+
+Audit fresco ahora21entradas raíz(12altas9moderadas0críticas), Functions10. Nuevos avisos analizados son herramientas dev bajo firebase-tools, no caminoAPK identificado. Clasificación persistida en artifacts/validacion/cierre-2026-10-25-seguridad-clasificacion.md. No actualizar nativos a ciegas ni ocultar riesgos. Registro cgroup8GiB en recursos.json; no correr npm ci/Chrome/Gradle juntos.
+
+**Próximo paso exacto:** al completar UI, si pasa: regenerar19comparativas, revisar capturas claras/oscuras, guardar manifiesto fresco. Restaurar únicamente fixtures DOCX/XLSX generadas por tests; guardar pruebas/docs/capturas, commit/push, empaquetar ZIP desde árbol limpio y verificar restauración ANTES de Gradle. Generar1.6.1/code10 contra misma clave, verificar contra1.6.0, publicar nueva ruta descargas preservando8APKanteriores, recuperar bytes desde clon independiente. Auditoría completa ya guardada; actualizarla al final con hashes/commits y pendientes físicos.
+
+---
+
 # Continuación 1.6.1 — 25/10/2026 (Argentina)
 
 Base retomada `1ef9be4`, main/remoto coincidentes. Auditoría completa ya respaldada en GitHub: `docs/AUDITORIA_MAESTRA_ACTUAL.md`. F1 entrega anticipada y F2 Zod4.6.6 probados. Agregado F3 remito legacy con fecha inválida → «Sin fecha de retiro», sin reescribir datos. Cinco casos rojo/verde. Check fresco: **444/444**, 40 archivos, tipos y Functions correctos; lint 0 errores/1 advertencia Axe. Manual vigente actualizado por revisión independiente, anexo histórico intacto.

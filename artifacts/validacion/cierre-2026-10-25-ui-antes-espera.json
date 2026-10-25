@@ -1,0 +1,2290 @@
+{
+  "config": {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "/workspace/repartos-chema/node_modules/.bin/playwright",
+      "test",
+      "--workers=1",
+      "--reporter=list,json"
+    ],
+    "configFile": "/workspace/repartos-chema/playwright.config.ts",
+    "rootDir": "/workspace/repartos-chema/tests/ui",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/workspace/repartos-chema/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/workspace/repartos-chema/tests/ui",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/workspace/repartos-chema/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "/workspace/repartos-chema/tests/ui",
+        "snapshotDir": "/workspace/repartos-chema/tests/ui",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:8081",
+          "headless": true,
+          "launchOptions": {
+            "executablePath": "/usr/bin/chromium",
+            "args": [
+              "--no-sandbox"
+            ]
+          },
+          "screenshot": "only-on-failure"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "accessibility.spec.ts",
+      "file": "accessibility.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "accesibilidad automatizada WCAG AA light",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6694,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:17:58.585Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ddd864604af8a6a0198f-7ca5bbd3c818860ead27",
+          "file": "accessibility.spec.ts",
+          "line": 6,
+          "column": 7
+        },
+        {
+          "title": "accesibilidad automatizada WCAG AA dark",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6962,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:18:05.493Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ddd864604af8a6a0198f-1a6e5d4043ad6ffb7dc4",
+          "file": "accessibility.spec.ts",
+          "line": 6,
+          "column": 7
+        }
+      ]
+    },
+    {
+      "title": "app.spec.ts",
+      "file": "app.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "equipo crea, entrega, deshace y descarga documentos",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5257,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:18:12.477Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c31ff144dc4fee3acd0a-13d4334e9ec2a412b56d",
+          "file": "app.spec.ts",
+          "line": 3,
+          "column": 5
+        },
+        {
+          "title": "nombre identifica a la persona sin selector de roles; sesión persiste",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3134,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:18:17.753Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c31ff144dc4fee3acd0a-28752f16a57744994ce0",
+          "file": "app.spec.ts",
+          "line": 54,
+          "column": 5
+        },
+        {
+          "title": "demo permite reabrir el tablero sin conexión después de guardar la caché",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2326,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:18:20.912Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c31ff144dc4fee3acd0a-f6d91e2445cef4ec0186",
+          "file": "app.spec.ts",
+          "line": 78,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "aurora.spec.ts",
+      "file": "aurora.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Cobalto light: pantallas y ventanas con datos sintéticos",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6353,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:18:23.268Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "faa1c65b27f2f3b4edee-f215b3ed6645734151fc",
+          "file": "aurora.spec.ts",
+          "line": 4,
+          "column": 7
+        },
+        {
+          "title": "Cobalto dark: pantallas y ventanas con datos sintéticos",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6268,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:18:29.631Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "faa1c65b27f2f3b4edee-116a5a66fdaac965cd21",
+          "file": "aurora.spec.ts",
+          "line": 4,
+          "column": 7
+        },
+        {
+          "title": "un error de GPS queda visible dentro de la ventana y conserva coordenadas manuales",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2455,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:18:35.918Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "faa1c65b27f2f3b4edee-397d6cf56a3eadbdeb3a",
+          "file": "aurora.spec.ts",
+          "line": 71,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "cobalto-surfaces.spec.ts",
+      "file": "cobalto-surfaces.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Cobalto superficies secundarias light: formularios, selectores y revisiones con fixture sintético",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6719,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Edición y los pasos Cliente, Carga y Revisar sin persistir",
+                      "duration": 885
+                    },
+                    {
+                      "title": "Filtros de zona y de historial con sus selectores",
+                      "duration": 1099
+                    },
+                    {
+                      "title": "Opciones de pieza, edición, ajuste y movimiento sin guardar",
+                      "duration": 865
+                    },
+                    {
+                      "title": "Editor de combo, materiales y contador",
+                      "duration": 472
+                    },
+                    {
+                      "title": "Detalle con fotos, incidencias y coordenadas manuales",
+                      "duration": 1128
+                    },
+                    {
+                      "title": "Revisión JSON real validada y cancelación sin reemplazar datos",
+                      "duration": 456
+                    },
+                    {
+                      "title": "Los cuatro pasos de bienvenida accesibles desde Ajustes",
+                      "duration": 395
+                    }
+                  ],
+                  "startTime": "2026-10-25T21:18:38.399Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0c8a19e69ef008018339-10b343569121dbae72b6",
+          "file": "cobalto-surfaces.spec.ts",
+          "line": 8,
+          "column": 7
+        },
+        {
+          "title": "Cobalto superficies secundarias dark: formularios, selectores y revisiones con fixture sintético",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6700,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Edición y los pasos Cliente, Carga y Revisar sin persistir",
+                      "duration": 896
+                    },
+                    {
+                      "title": "Filtros de zona y de historial con sus selectores",
+                      "duration": 1081
+                    },
+                    {
+                      "title": "Opciones de pieza, edición, ajuste y movimiento sin guardar",
+                      "duration": 899
+                    },
+                    {
+                      "title": "Editor de combo, materiales y contador",
+                      "duration": 553
+                    },
+                    {
+                      "title": "Detalle con fotos, incidencias y coordenadas manuales",
+                      "duration": 1063
+                    },
+                    {
+                      "title": "Revisión JSON real validada y cancelación sin reemplazar datos",
+                      "duration": 519
+                    },
+                    {
+                      "title": "Los cuatro pasos de bienvenida accesibles desde Ajustes",
+                      "duration": 376
+                    }
+                  ],
+                  "startTime": "2026-10-25T21:18:45.133Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0c8a19e69ef008018339-00e3712134b0f08735a7",
+          "file": "cobalto-surfaces.spec.ts",
+          "line": 8,
+          "column": 7
+        }
+      ]
+    },
+    {
+      "title": "cobalto.spec.ts",
+      "file": "cobalto.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Cobalto: el asistente conserva cliente, carga y observaciones al volver y cambiar tema",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2075,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:18:51.855Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5d98fa5988b77cfa9350-65e39a8a321fc5cefe3b",
+          "file": "cobalto.spec.ts",
+          "line": 110,
+          "column": 5
+        },
+        {
+          "title": "Cobalto: X, Escape y fondo protegen la carga; descartar devuelve foco y no escribe inventario",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2407,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Cerrar mediante x",
+                      "duration": 114
+                    },
+                    {
+                      "title": "Cerrar mediante escape",
+                      "duration": 64
+                    },
+                    {
+                      "title": "Cerrar mediante backdrop",
+                      "duration": 98
+                    }
+                  ],
+                  "startTime": "2026-10-25T21:18:53.942Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5d98fa5988b77cfa9350-d35dc083742c5ca4a862",
+          "file": "cobalto.spec.ts",
+          "line": 168,
+          "column": 5
+        },
+        {
+          "title": "Cobalto 320dp light: contraste renderizado, bordes y texto 200%",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8413,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:18:56.369Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5d98fa5988b77cfa9350-826cc93413138c543b9e",
+          "file": "cobalto.spec.ts",
+          "line": 210,
+          "column": 9
+        },
+        {
+          "title": "Cobalto 320dp dark: contraste renderizado, bordes y texto 200%",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8369,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:19:04.804Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5d98fa5988b77cfa9350-817946bbb8adc901d958",
+          "file": "cobalto.spec.ts",
+          "line": 210,
+          "column": 9
+        },
+        {
+          "title": "Cobalto 360dp light: contraste renderizado, bordes y texto 200%",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8516,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:19:13.187Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5d98fa5988b77cfa9350-0be980b82a18434b65c1",
+          "file": "cobalto.spec.ts",
+          "line": 210,
+          "column": 9
+        },
+        {
+          "title": "Cobalto 360dp dark: contraste renderizado, bordes y texto 200%",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9022,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:19:21.720Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5d98fa5988b77cfa9350-2527a8ffbcb25cfaeec6",
+          "file": "cobalto.spec.ts",
+          "line": 210,
+          "column": 9
+        },
+        {
+          "title": "Cobalto 390dp light: contraste renderizado, bordes y texto 200%",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8636,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:19:30.757Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5d98fa5988b77cfa9350-a19459edaaa53ccf298f",
+          "file": "cobalto.spec.ts",
+          "line": 210,
+          "column": 9
+        },
+        {
+          "title": "Cobalto 390dp dark: contraste renderizado, bordes y texto 200%",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8537,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:19:39.411Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5d98fa5988b77cfa9350-7c28d112f54f91ebb4d9",
+          "file": "cobalto.spec.ts",
+          "line": 210,
+          "column": 9
+        },
+        {
+          "title": "Cobalto 412dp light: contraste renderizado, bordes y texto 200%",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9240,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:19:47.962Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5d98fa5988b77cfa9350-a1278f266cdffdc05e91",
+          "file": "cobalto.spec.ts",
+          "line": 210,
+          "column": 9
+        },
+        {
+          "title": "Cobalto 412dp dark: contraste renderizado, bordes y texto 200%",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8625,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:19:57.238Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5d98fa5988b77cfa9350-8922d3860c337306777b",
+          "file": "cobalto.spec.ts",
+          "line": 210,
+          "column": 9
+        }
+      ]
+    },
+    {
+      "title": "combos-local.spec.ts",
+      "file": "combos-local.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "combo se crea, edita, fusiona sin IDs duplicados y elimina conservando la carga",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6060,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:20:05.877Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f3fdd3daf6b3b366c4ae-9b96e6c7b3f1205c8ea1",
+          "file": "combos-local.spec.ts",
+          "line": 3,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "deposito-viaje-estructura.spec.ts",
+      "file": "deposito-viaje-estructura.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "depósito: filas y menú conservan las operaciones y el inventario al cancelar",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2100,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:20:11.971Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2986001067d7dc03caee-e62c036e2eba4f780c17",
+          "file": "deposito-viaje-estructura.spec.ts",
+          "line": 4,
+          "column": 5
+        },
+        {
+          "title": "viaje: secuencia, orden manual, tramos y regreso siguen accesibles desde los detalles",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2827,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:20:14.081Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2986001067d7dc03caee-492f4d23b4d21c987658",
+          "file": "deposito-viaje-estructura.spec.ts",
+          "line": 26,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "estructura.spec.ts",
+      "file": "estructura.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "comparación estructural light",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4184,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:20:16.927Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be3c05654681989de339-25bfe67bd94a92adc5e4",
+          "file": "estructura.spec.ts",
+          "line": 110,
+          "column": 7
+        },
+        {
+          "title": "comparación estructural dark",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4470,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:20:21.130Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be3c05654681989de339-458a1f014af4e1f6a100",
+          "file": "estructura.spec.ts",
+          "line": 110,
+          "column": 7
+        },
+        {
+          "title": "láminas de referencia light: mismas dimensiones y fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5508,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:20:25.610Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be3c05654681989de339-8d38f13e622ea2437eb3",
+          "file": "estructura.spec.ts",
+          "line": 174,
+          "column": 7
+        },
+        {
+          "title": "láminas de referencia dark: mismas dimensiones y fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5370,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:20:31.130Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be3c05654681989de339-6729efaf9d007d0c796b",
+          "file": "estructura.spec.ts",
+          "line": 174,
+          "column": 7
+        }
+      ]
+    },
+    {
+      "title": "fecha-entrega.spec.ts",
+      "file": "fecha-entrega.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "entrega anticipada rechaza fecha incoherente sin perder formulario ni mover stock",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2451,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:20:36.517Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c0c89610288c0de63bf2-12269cb46c456d6be257",
+          "file": "fecha-entrega.spec.ts",
+          "line": 6,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "import-json.spec.ts",
+      "file": "import-json.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "seleccionar JSON abre revisión, cancelar conserva datos, confirmar persiste los cinco pedidos",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4307,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:20:38.989Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0db0a33fe9d9869416b8-361e38939537aaf721b2",
+          "file": "import-json.spec.ts",
+          "line": 5,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "local.spec.ts",
+      "file": "local.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y offline",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 13073,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:20:43.326Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f8ab1ecd5facf788fad0-7b968251609c45a22720",
+          "file": "local.spec.ts",
+          "line": 8,
+          "column": 5
+        },
+        {
+          "title": "remito Word no queda bloqueado por un filtro Excel inválido",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2569,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:20:56.409Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f8ab1ecd5facf788fad0-cff41b6b87c14a945ddd",
+          "file": "local.spec.ts",
+          "line": 159,
+          "column": 5
+        },
+        {
+          "title": "temas locales persisten y conservan el formulario",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3513,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:20:58.991Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f8ab1ecd5facf788fad0-341316f4248467dca347",
+          "file": "local.spec.ts",
+          "line": 178,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "operations.spec.ts",
+      "file": "operations.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "retiro y reingreso conservan el total",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3423,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:21:02.520Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4f8fd72df7d8ab107a64-bf3a29ed833706504b24",
+          "file": "operations.spec.ts",
+          "line": 3,
+          "column": 5
+        },
+        {
+          "title": "triangulación, daño y recuperación conservan existencias y procedencia",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3845,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:21:05.956Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4f8fd72df7d8ab107a64-1eb5ed6a8b76ea010bbf",
+          "file": "operations.spec.ts",
+          "line": 38,
+          "column": 5
+        },
+        {
+          "title": "wizard prepara carga sin persistir al navegar y confirma un solo alquiler",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2193,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:21:09.816Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4f8fd72df7d8ab107a64-17d102367d4b0e28c232",
+          "file": "operations.spec.ts",
+          "line": 82,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "recovery.spec.ts",
+      "file": "recovery.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "foto local, copia descargada y restauración sobreviven al reinicio",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4921,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:21:12.034Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef78f3da5c9c24fceacf-4ca4319eb181eb2075ae",
+          "file": "recovery.spec.ts",
+          "line": 4,
+          "column": 5
+        },
+        {
+          "title": "borrar foto activa no rompe una recuperación interna retenida",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5918,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:21:16.967Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ef78f3da5c9c24fceacf-8b5be3dbfedc6dd8110c",
+          "file": "recovery.spec.ts",
+          "line": 47,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "reminders.spec.ts",
+      "file": "reminders.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "contador civil muestra hoy, mañana, vencido y cierre sin cuenta activa",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2497,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:21:22.920Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa75b1db4695422e71e4-25f2997da045792900cb",
+          "file": "reminders.spec.ts",
+          "line": 117,
+          "column": 5
+        },
+        {
+          "title": "Alquilado hasta usa calendario, admite escritura y persiste al crear y editar",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2688,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:21:25.431Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa75b1db4695422e71e4-d82476968d23ba566a26",
+          "file": "reminders.spec.ts",
+          "line": 148,
+          "column": 5
+        },
+        {
+          "title": "ajustes muestran 08:00 y cuatro días antes de activar; web guarda intención sin programar",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2554,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:21:28.128Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa75b1db4695422e71e4-2cd3d4e71a5b9e665790",
+          "file": "reminders.spec.ts",
+          "line": 199,
+          "column": 5
+        },
+        {
+          "title": "personalización se conserva ante cambios generales y puede volver a heredar",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3781,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:21:30.700Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa75b1db4695422e71e4-9599f3a819ec669971a7",
+          "file": "reminders.spec.ts",
+          "line": 252,
+          "column": 5
+        },
+        {
+          "title": "aviso manual anterior permanece protegido y la transición muestra cancelación pendiente",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2069,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:21:34.496Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa75b1db4695422e71e4-33ca9b6a20bab0613624",
+          "file": "reminders.spec.ts",
+          "line": 292,
+          "column": 5
+        },
+        {
+          "title": "capturas reales de principal, detalle, ajustes y personalización en claro y oscuro",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10676,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:21:36.578Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa75b1db4695422e71e4-f162b56bb64cff21f653",
+          "file": "reminders.spec.ts",
+          "line": 330,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "themes.spec.ts",
+      "file": "themes.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "tema automático conserva formulario y no hay selectores repetidos en ventanas",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4550,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:21:47.288Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d9a1a05a5866edb60a2f-03de17c47e98a073b765",
+          "file": "themes.spec.ts",
+          "line": 6,
+          "column": 5
+        },
+        {
+          "title": "pantallas 320px light sin recortes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4428,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:21:51.877Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d9a1a05a5866edb60a2f-cef587fdfb4ea30e4d6d",
+          "file": "themes.spec.ts",
+          "line": 71,
+          "column": 9
+        },
+        {
+          "title": "pantallas 320px dark sin recortes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4418,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:21:56.317Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d9a1a05a5866edb60a2f-3b5c19f0f78a7c09cec2",
+          "file": "themes.spec.ts",
+          "line": 71,
+          "column": 9
+        },
+        {
+          "title": "pantallas 360px light sin recortes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4447,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:22:00.751Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d9a1a05a5866edb60a2f-732cb761e3bef7c1e529",
+          "file": "themes.spec.ts",
+          "line": 71,
+          "column": 9
+        },
+        {
+          "title": "pantallas 360px dark sin recortes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4569,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:22:05.210Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d9a1a05a5866edb60a2f-59baa93fa16129416bd8",
+          "file": "themes.spec.ts",
+          "line": 71,
+          "column": 9
+        },
+        {
+          "title": "pantallas 390px light sin recortes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4773,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:22:09.788Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d9a1a05a5866edb60a2f-28afae757a4f4571e54b",
+          "file": "themes.spec.ts",
+          "line": 71,
+          "column": 9
+        },
+        {
+          "title": "pantallas 390px dark sin recortes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4755,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:22:14.575Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d9a1a05a5866edb60a2f-38c1e2d084bc0bcf69fb",
+          "file": "themes.spec.ts",
+          "line": 71,
+          "column": 9
+        },
+        {
+          "title": "pantallas 768px light sin recortes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4585,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:22:19.346Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d9a1a05a5866edb60a2f-6d01be8249c7b28770e5",
+          "file": "themes.spec.ts",
+          "line": 71,
+          "column": 9
+        },
+        {
+          "title": "pantallas 768px dark sin recortes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5345,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:22:23.943Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d9a1a05a5866edb60a2f-2b435bfe6fab4b062dd6",
+          "file": "themes.spec.ts",
+          "line": 71,
+          "column": 9
+        },
+        {
+          "title": "pantallas 1440px light sin recortes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5061,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:22:29.301Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d9a1a05a5866edb60a2f-3449aa1b7f14079f80c4",
+          "file": "themes.spec.ts",
+          "line": 71,
+          "column": 9
+        },
+        {
+          "title": "pantallas 1440px dark sin recortes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5163,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:22:34.375Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d9a1a05a5866edb60a2f-3779234fe2c8e5be9164",
+          "file": "themes.spec.ts",
+          "line": 71,
+          "column": 9
+        }
+      ]
+    },
+    {
+      "title": "trip.spec.ts",
+      "file": "trip.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "viaje vuelve al depósito fijo y recupera el cambio de Ajustes sin alterar inventario",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3514,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:22:39.558Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "33198bd4efd7d645cef2-43ef960208ce0e0ea597",
+          "file": "trip.spec.ts",
+          "line": 3,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "welcome.spec.ts",
+      "file": "welcome.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "bienvenida breve completa una vez y puede abrirse desde Ajustes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2182,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:22:43.096Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "da1fd1626cb8a4028979-b8dff9a8ab5b97cfc4e1",
+          "file": "welcome.spec.ts",
+          "line": 3,
+          "column": 5
+        },
+        {
+          "title": "cambiar nombre local conserva inventario y autores sin cuentas ni invitaciones",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 8500,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Persona B/).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByText(/Persona B/).first() with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Persona B/).first()\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Persona B/).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByText(/Persona B/).first() with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Persona B/).first()\u001b[22m\n\n    at /workspace/repartos-chema/tests/ui/welcome.spec.ts:37:53",
+                    "location": {
+                      "file": "/workspace/repartos-chema/tests/ui/welcome.spec.ts",
+                      "column": 53,
+                      "line": 37
+                    },
+                    "snippet": "  35 |   await page.getByRole('button', { name: 'Confirmar entrega', exact: true }).click();\n  36 |   await page.goto('/historial');\n> 37 |   await expect(page.getByText(/Persona B/).first()).toBeVisible();\n     |                                                     ^\n  38 |   await expect\n  39 |     .poll(() =>\n  40 |       page.evaluate("
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/workspace/repartos-chema/tests/ui/welcome.spec.ts",
+                        "column": 53,
+                        "line": 37
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Persona B/).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByText(/Persona B/).first() with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Persona B/).first()\u001b[22m\n\n\n  35 |   await page.getByRole('button', { name: 'Confirmar entrega', exact: true }).click();\n  36 |   await page.goto('/historial');\n> 37 |   await expect(page.getByText(/Persona B/).first()).toBeVisible();\n     |                                                     ^\n  38 |   await expect\n  39 |     .poll(() =>\n  40 |       page.evaluate(\n    at /workspace/repartos-chema/tests/ui/welcome.spec.ts:37:53"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-25T21:22:45.297Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/workspace/repartos-chema/test-results/welcome-cambiar-nombre-loc-daaa9-sin-cuentas-ni-invitaciones/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/workspace/repartos-chema/test-results/welcome-cambiar-nombre-loc-daaa9-sin-cuentas-ni-invitaciones/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/workspace/repartos-chema/tests/ui/welcome.spec.ts",
+                    "column": 53,
+                    "line": 37
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "da1fd1626cb8a4028979-383898db7a10dac79b9f",
+          "file": "welcome.spec.ts",
+          "line": 19,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-25T21:17:58.070Z",
+    "duration": 295847.338,
+    "expected": 56,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

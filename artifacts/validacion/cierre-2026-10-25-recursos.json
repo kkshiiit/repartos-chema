@@ -1,0 +1,10 @@
+{
+  "observadoUTC": "2026-10-25T21:16:11.510165+00:00",
+  "memoryMax": "8589934592",
+  "memoryEvents": "low 0\nhigh 0\nmax 9148\noom 154\noom_kill 8\noom_group_kill 0\n",
+  "sintomas": [
+    "npm ci secundario termin\u00f3 por se\u00f1al9",
+    "Chromium Page crashed/Target crashed en suite concurrente"
+  ],
+  "medida": "Detener suite afectada, terminar CI aislado y repetir UI con un solo worker sin instalaciones ni Gradle concurrentes; no modificar aplicaci\u00f3n o debilitar pruebas."
+}

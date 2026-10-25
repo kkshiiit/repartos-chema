@@ -1,0 +1,207 @@
+
+Running 57 tests using 2 workers
+
+(node:4136) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4137) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 tests/ui/app.spec.ts:3:5 › equipo crea, entrega, deshace y descarga documentos (8.1s)
+  ✓   1 tests/ui/accessibility.spec.ts:6:7 › accesibilidad automatizada WCAG AA light (11.4s)
+  ✓   3 tests/ui/app.spec.ts:54:5 › nombre identifica a la persona sin selector de roles; sesión persiste (4.9s)
+  ✓   5 tests/ui/app.spec.ts:78:5 › demo permite reabrir el tablero sin conexión después de guardar la caché (4.6s)
+  ✓   4 tests/ui/accessibility.spec.ts:6:7 › accesibilidad automatizada WCAG AA dark (17.0s)
+  ✓   6 tests/ui/aurora.spec.ts:4:7 › Cobalto light: pantallas y ventanas con datos sintéticos (17.6s)
+  ✓   7 tests/ui/cobalto-surfaces.spec.ts:8:7 › Cobalto superficies secundarias light: formularios, selectores y revisiones con fixture sintético (19.0s)
+  ✓   8 tests/ui/aurora.spec.ts:4:7 › Cobalto dark: pantallas y ventanas con datos sintéticos (16.5s)
+  ✓  10 tests/ui/aurora.spec.ts:71:5 › un error de GPS queda visible dentro de la ventana y conserva coordenadas manuales (3.1s)
+  ✓  11 tests/ui/cobalto.spec.ts:110:5 › Cobalto: el asistente conserva cliente, carga y observaciones al volver y cambiar tema (4.1s)
+  ✓   9 tests/ui/cobalto-surfaces.spec.ts:8:7 › Cobalto superficies secundarias dark: formularios, selectores y revisiones con fixture sintético (15.6s)
+  ✓  12 tests/ui/cobalto.spec.ts:168:5 › Cobalto: X, Escape y fondo protegen la carga; descartar devuelve foco y no escribe inventario (7.2s)
+  ✓  13 tests/ui/combos-local.spec.ts:3:5 › combo se crea, edita, fusiona sin IDs duplicados y elimina conservando la carga (14.1s)
+  ✓  15 tests/ui/deposito-viaje-estructura.spec.ts:4:5 › depósito: filas y menú conservan las operaciones y el inventario al cancelar (7.3s)
+  ✓  16 tests/ui/deposito-viaje-estructura.spec.ts:26:5 › viaje: secuencia, orden manual, tramos y regreso siguen accesibles desde los detalles (8.9s)
+  ✘  14 tests/ui/cobalto.spec.ts:210:9 › Cobalto 320dp light: contraste renderizado, bordes y texto 200% (34.2s)
+(node:5621) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  17 tests/ui/estructura.spec.ts:110:7 › comparación estructural light (13.3s)
+(node:5790) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  18 tests/ui/cobalto.spec.ts:210:9 › Cobalto 320dp dark: contraste renderizado, bordes y texto 200% (8.1s)
+(node:5942) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  19 tests/ui/estructura.spec.ts:110:7 › comparación estructural dark (4.7s)
+(node:5956) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  20 tests/ui/cobalto.spec.ts:210:9 › Cobalto 360dp light: contraste renderizado, bordes y texto 200% (1.2s)
+(node:6141) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  21 tests/ui/estructura.spec.ts:174:7 › láminas de referencia light: mismas dimensiones y fixture (15.1s)
+  ✓  22 tests/ui/cobalto.spec.ts:210:9 › Cobalto 360dp dark: contraste renderizado, bordes y texto 200% (18.9s)
+  ✓  23 tests/ui/estructura.spec.ts:174:7 › láminas de referencia dark: mismas dimensiones y fixture (11.2s)
+  ✓  25 tests/ui/fecha-entrega.spec.ts:6:5 › entrega anticipada rechaza fecha incoherente sin perder formulario ni mover stock (5.3s)
+  ✘  24 tests/ui/cobalto.spec.ts:210:9 › Cobalto 390dp light: contraste renderizado, bordes y texto 200% (14.0s)
+  ✘  26 tests/ui/import-json.spec.ts:5:5 › seleccionar JSON abre revisión, cancelar conserva datos, confirmar persiste los cinco pedidos (4.5s)
+
+
+  1) tests/ui/cobalto.spec.ts:210:9 › Cobalto 320dp light: contraste renderizado, bordes y texto 200% 
+
+    Error: page.goto: Page crashed
+    Call log:
+      - navigating to "http://127.0.0.1:8081/obra/obra_5", waiting until "load"
+
+
+      247 |         });
+      248 |       }
+    > 249 |       await page.goto('/obra/obra_5');
+          |                  ^
+      250 |       await openLoad(page);
+      251 |       await assertNoOverflow(page, `panel carga ${width} ${theme}`);
+      252 |       const panelResult = await new AxeBuilder({ page }).withRules(['color-contrast']).analyze();
+        at /workspace/repartos-chema/tests/ui/cobalto.spec.ts:249:18
+
+    Error Context: test-results/cobalto-Cobalto-320dp-ligh-6be5c-erizado-bordes-y-texto-200-/error-context.md
+
+  2) tests/ui/cobalto.spec.ts:210:9 › Cobalto 320dp dark: contraste renderizado, bordes y texto 200% 
+
+    Error: locator.evaluateAll: Target crashed 
+
+      36 |   // Check the actual visible action boxes, including fixed navigation, rather
+      37 |   // than relying on document overflow (a root can hide overflowing children).
+    > 38 |   const clipped = await page.getByRole('button').evaluateAll((buttons) =>
+         |                                                  ^
+      39 |     buttons.flatMap((button) => {
+      40 |       const rect = button.getBoundingClientRect();
+      41 |       const style = getComputedStyle(button);
+        at assertNoOverflow (/workspace/repartos-chema/tests/ui/cobalto.spec.ts:38:50)
+        at /workspace/repartos-chema/tests/ui/cobalto.spec.ts:225:9
+
+    Error Context: test-results/cobalto-Cobalto-320dp-dark-27964-erizado-bordes-y-texto-200-/error-context.md
+
+  3) tests/ui/cobalto.spec.ts:210:9 › Cobalto 360dp light: contraste renderizado, bordes y texto 200% 
+
+    Error: page.goto: Page crashed
+    Call log:
+      - navigating to "http://127.0.0.1:8081/", waiting until "load"
+
+
+       at helpers.ts:4
+
+      2 | export async function login(page: Page, name = 'Persona de prueba') {
+      3 |   await page.addInitScript(() => localStorage.setItem('chema:welcome:v2', 'done'));
+    > 4 |   await page.goto('/');
+        |              ^
+      5 |   await page.getByLabel('Tu nombre', { exact: true }).fill(name);
+      6 |   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+      7 |   await expect(page.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible();
+        at login (/workspace/repartos-chema/tests/ui/helpers.ts:4:14)
+        at loginSynthetic (/workspace/repartos-chema/tests/ui/helpers.ts:27:3)
+        at /workspace/repartos-chema/tests/ui/cobalto.spec.ts:220:7
+
+    Error Context: test-results/cobalto-Cobalto-360dp-ligh-ea797-erizado-bordes-y-texto-200-/error-context.md
+
+  4) tests/ui/estructura.spec.ts:110:7 › comparación estructural light ─────────────────────────────
+
+    Error: page.screenshot: Target crashed 
+    Call log:
+      - taking page screenshot
+      - waiting for fonts to load...
+      - fonts loaded
+
+
+      135 |       await page.goto(route);
+      136 |       await expect(page.getByRole('heading').first()).toBeVisible();
+    > 137 |       await page.screenshot({
+          |                  ^
+      138 |         path: `${output}/${baseline ? 'antes' : 'despues'}-${name}-${theme}.png`,
+      139 |       });
+      140 |       if (!baseline && name === 'alquileres') {
+        at /workspace/repartos-chema/tests/ui/estructura.spec.ts:137:18
+
+    Error Context: test-results/estructura-comparación-estructural-light/error-context.md
+
+  5) tests/ui/estructura.spec.ts:110:7 › comparación estructural dark ──────────────────────────────
+
+    Error: locator.fill: Target crashed 
+    Call log:
+      - waiting for getByLabel('Tu nombre', { exact: true })
+
+
+       at helpers.ts:5
+
+      3 |   await page.addInitScript(() => localStorage.setItem('chema:welcome:v2', 'done'));
+      4 |   await page.goto('/');
+    > 5 |   await page.getByLabel('Tu nombre', { exact: true }).fill(name);
+        |                                                       ^
+      6 |   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+      7 |   await expect(page.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible();
+      8 | }
+        at login (/workspace/repartos-chema/tests/ui/helpers.ts:5:55)
+        at fixture (/workspace/repartos-chema/tests/ui/estructura.spec.ts:106:3)
+        at /workspace/repartos-chema/tests/ui/estructura.spec.ts:113:5
+
+    Error Context: test-results/estructura-comparación-estructural-dark/error-context.md
+
+  6) tests/ui/cobalto.spec.ts:210:9 › Cobalto 390dp light: contraste renderizado, bordes y texto 200% 
+
+    Test was interrupted.
+
+    Error: page.screenshot: Test ended.
+    Call log:
+      - taking page screenshot
+      - waiting for fonts to load...
+      - fonts loaded
+
+
+      242 |         await enlargeText200(page);
+      243 |         await assertNoOverflow(page, `${label} ${width} ${theme} texto200`);
+    > 244 |         await page.screenshot({
+          |                    ^
+      245 |           path: `${captureDirectory}/${width}-${theme}-${label}-texto200.png`,
+      246 |           fullPage: true,
+      247 |         });
+        at /workspace/repartos-chema/tests/ui/cobalto.spec.ts:244:20
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/cobalto-Cobalto-390dp-ligh-86804-erizado-bordes-y-texto-200-/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/cobalto-Cobalto-390dp-ligh-86804-erizado-bordes-y-texto-200-/error-context.md
+
+  7) tests/ui/import-json.spec.ts:5:5 › seleccionar JSON abre revisión, cancelar conserva datos, confirmar persiste los cinco pedidos 
+
+    Test was interrupted.
+
+    Error: locator.click: Test ended.
+    Call log:
+      - waiting for getByRole('button', { name: 'Copias y restauración', exact: true })
+        - locator resolved to <button tabindex="0" role="button" type="button" aria-label="Copias y restauración" class="css-g5y9jx r-1loqt21 r-1otgn73">…</button>
+      - attempting click action
+        - waiting for element to be visible, enabled and stable
+
+
+       8 |   await login(page, 'Importación local');
+       9 |   await page.goto('/configuracion');
+    > 10 |   await page.getByRole('button', { name: 'Copias y restauración', exact: true }).click();
+         |                                                                                  ^
+      11 |   const before = await page.evaluate(() => localStorage.getItem('chema:demo:v1'));
+      12 |   const select = async (buffer: Buffer, name = 'pedidos.json') => {
+      13 |     const chooser = page.waitForEvent('filechooser');
+        at /workspace/repartos-chema/tests/ui/import-json.spec.ts:10:82
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/import-json-seleccionar-JS-2243c--persiste-los-cinco-pedidos/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/import-json-seleccionar-JS-2243c--persiste-los-cinco-pedidos/error-context.md
+
+  5 failed
+    tests/ui/cobalto.spec.ts:210:9 › Cobalto 320dp light: contraste renderizado, bordes y texto 200% 
+    tests/ui/cobalto.spec.ts:210:9 › Cobalto 320dp dark: contraste renderizado, bordes y texto 200% 
+    tests/ui/cobalto.spec.ts:210:9 › Cobalto 360dp light: contraste renderizado, bordes y texto 200% 
+    tests/ui/estructura.spec.ts:110:7 › comparación estructural light ──────────────────────────────
+    tests/ui/estructura.spec.ts:110:7 › comparación estructural dark ───────────────────────────────
+  2 interrupted
+    tests/ui/cobalto.spec.ts:210:9 › Cobalto 390dp light: contraste renderizado, bordes y texto 200% 
+    tests/ui/import-json.spec.ts:5:5 › seleccionar JSON abre revisión, cancelar conserva datos, confirmar persiste los cinco pedidos 
+  31 did not run
+  19 passed (2.6m)
