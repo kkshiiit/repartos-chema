@@ -1,3 +1,15 @@
+# Continuación 1.6.1 — 25/10/2026 (Argentina)
+
+Base retomada `1ef9be4`, main/remoto coincidentes. Auditoría completa ya respaldada en GitHub: `docs/AUDITORIA_MAESTRA_ACTUAL.md`. F1 entrega anticipada y F2 Zod4.6.6 probados. Agregado F3 remito legacy con fecha inválida → «Sin fecha de retiro», sin reescribir datos. Cinco casos rojo/verde. Check fresco: **444/444**, 40 archivos, tipos y Functions correctos; lint 0 errores/1 advertencia Axe. Manual vigente actualizado por revisión independiente, anexo histórico intacto.
+
+**Trabajo actual:** finalizar npm ci aislado y exportación web; ejecutar nueva regresión UI y suite general. Archivos de esta continuación: `src/utils/whatsapp.ts`, `tests/whatsapp-legacy.test.ts`, `tests/ui/fecha-entrega.spec.ts`, `docs/USO_LOCAL_ANDROID.md`, auditoría/checkpoint y evidencias. No tocar datos, paquete ni firma. 1.6.1/code10 ya está preparado; APK1.6.0 anterior no contiene estos cambios.
+
+**Próxima acción:** leer logs `artifacts/validacion/cierre-2026-10-25-*`; no repetir procesos activos. Tras UI y npm ci correctos: restaurar sólo fixtures generadas Word/Excel, commit/push estable y ZIP restaurado antes de Gradle. Verificar APK contra1.6.0, publicar nueva ruta descargas preservando versiones, recuperar por SHA desde clon separado, cerrar informe y fuente final. Si límite: conservar este estado y no afirmar que el build terminó.
+
+Sin Android físico; no servicios pagos, cloud, anuncios o nuevo certificado. Riesgos transitivos ya detallados en auditoría. Los perfiles fueron guías de subagentes reales, no se afirma que el catálogo nativo de esta sesión haya sido recargado.
+
+---
+
 # Cierre correctivo 1.6.1 y auditoría completa — 24/10/2026
 
 Encargo: terminar todo lo posible sin costos y guardar auditoría antes de agotar uso. Base dc69734 limpia/remoto coincidente. Archivo maestro completo YA creado en docs/AUDITORIA_MAESTRA_ACTUAL.md (más de800líneas, incluye requisitos/historia/matriz/código/riesgos/Git/pruebas/plan y anexos íntegros17Oct/entrega1.6/avisos). Se actualizará con resultados finales, no depender sólo del chat.
