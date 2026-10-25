@@ -2,6 +2,16 @@
 
 **Documento único para el usuario y otro asistente.** Fecha de apertura: 2026-10-24T17:55:41.358643+00:00. Base inicial: `dc69734fae42224fa380278ba9516cb75cadf8c6`. Este archivo se guarda al comenzar el cierre para no depender de los tokens/historial. Los anexos conservan evidencia histórica completa; el estado actual de esta primera parte prevalece sobre sus pendientes antiguos. No contiene claves privadas ni datos comerciales del teléfono.
 
+## Puerta previa al instalador superada — 25/10/2026
+
+**Resultados frescos:** 444/444 unitarias (40archivos); tipos y Functions build correctos; lint0errores/1advertencia de test. Instalación limpia y decoder aprobados. **Suite completa final: 57/57, cero omitidas y cero fallidas, 4.8min**, con un worker y sin instalaciones/Gradle concurrentes. El caso de cambio de nombre espera ahora el acuse visual antes de forzar navegación; el fallo anterior y los intentos con OOM están conservados. No se rebajaron reglas de negocio ni expectativas de cantidades/autores.
+
+Los recorridos incluyen inicio vacío, nombres/autores, inventario, carga/combos, entrega/retiro/reingreso, triangulación, faltantes/recuperación, historial/deshacer, JSON/fotos/restauración, reapertura offline, Word/Excel, viaje, contador y ajustes de avisos. Temas y formularios/paneles se comprueban en320/360/390/768/1440px; contraste renderizado/texto200% en320/360/390/412dp, dos temas. Ocho superficies Axe sin violaciones/incompletas. Son comprobaciones Chromium; no certifican Android físico, TalkBack ni consumo móvil.
+
+Se regeneraron19comparativas con referencias originales y capturas reales al mismo tamaño/tema; el diseño no cambió en este parche. El manifiesto `artifacts/validacion/cierre-2026-10-25-capturas.json` identifica las capturas actuales por SHA y dimensiones. No interpretar el nombre histórico de las carpetas como la versión del instalador. Se conservan imágenes anteriores en Git.
+
+El código funcional está en main (`1ef9be4` integridad/Zod; `acdb43f` remito; `663b3ce` comprobaciones/manual). Próxima etapa: respaldar el árbol estable, comprobar restauración y compilar **1.6.1/code10** con el mismo certificado. Todavía no se declara publicada hasta confirmar Gradle, firma, SHA y recuperación desde descargas.
+
 ## Seguridad y pruebas actualizadas — 25/10/2026
 
 La revisión fresca del registro npm informa **21 entradas en raíz: 12 altas, 9 moderadas, 0 críticas**; Functions heredado conserva10 (1alta/9moderadas). Esto sustituye el recuento de9del24/10, que permanece como evidencia histórica. No son21 vulnerabilidades independientes: el informe propaga cadenas de dependencia.

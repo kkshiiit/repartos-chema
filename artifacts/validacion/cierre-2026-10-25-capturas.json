@@ -1,0 +1,2156 @@
+{
+  "version": "1.6.1",
+  "codigoFuncional": "663b3cea8557d9f525e3e98ec02a6cb75dbd4fa2",
+  "generadoUTC": "2026-10-25T21:29:46.592288+00:00",
+  "capturasReales": "Chromium; contenido sint\u00e9tico; no Android f\u00edsico",
+  "statsPlaywright": {
+    "startTime": "2026-10-25T21:24:23.046Z",
+    "duration": 288611.299,
+    "expected": 57,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "capturasActuales": 348,
+  "comparativasReferenciaYAntesDespues": 19,
+  "imagenes": [
+    {
+      "archivo": "artifacts/capturas/avisos-1.6/390-dark-ajustes.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "572160abfa724ebdb1eb4cc9e1dc99486379c1b88d98734fc6010b057f0a6a6c"
+    },
+    {
+      "archivo": "artifacts/capturas/avisos-1.6/390-dark-detalle.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "490f67421708c0032b8bc1cbef37d73c1387595dba77cdb44a6584953e1e7f94"
+    },
+    {
+      "archivo": "artifacts/capturas/avisos-1.6/390-dark-personalizado.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "d25fec44cde659cfe256b992f358f1c2713b28412a0a6441e4e18d8beb728bf5"
+    },
+    {
+      "archivo": "artifacts/capturas/avisos-1.6/390-dark-principal.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "b2546915533c1cd2dea2879663bb350ee59e8c7f2dee00848683b79798c05ed1"
+    },
+    {
+      "archivo": "artifacts/capturas/avisos-1.6/390-light-ajustes.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "09a0fecd769854971c6eca64d442804c639381a7627c5bdde0eecea9b782a6da"
+    },
+    {
+      "archivo": "artifacts/capturas/avisos-1.6/390-light-detalle.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "dedd0c95cf4ad6d044722f51807609df174b1f94507f33d0f285299c4adae6c0"
+    },
+    {
+      "archivo": "artifacts/capturas/avisos-1.6/390-light-personalizado.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "4f1bdf485bd4652042ac122eb996cc64e3d4b99ce19e5125be7edb329fbaa26d"
+    },
+    {
+      "archivo": "artifacts/capturas/avisos-1.6/390-light-principal.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "0eb524d444b3bace0c1819f36da0e07ecc192b5a4f946938c331c3bf42cce439"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/bienvenida-1.png",
+      "ancho": 1280,
+      "alto": 720,
+      "sha256": "1a28297091b4c47a0646ce3416b17afc97144674ea090eec507ca06eddfe5a3a"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-antes-despues-alquileres-dark.png",
+      "ancho": 892,
+      "alto": 904,
+      "sha256": "8b1edd25d25267eacf29779d351c65a04a3066752bb2c9616295ab9becda4a24"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-antes-despues-alquileres-light.png",
+      "ancho": 892,
+      "alto": 904,
+      "sha256": "8a20ba1f732924a7cdc20c488d084e7093ecf62427ddadd931d04f9783ee0f8b"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-antes-despues-deposito-dark.png",
+      "ancho": 892,
+      "alto": 904,
+      "sha256": "980be8198338f57735d08be5cf5649754cfc45c9e4fae4d9d7cf6f42ae5de95f"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-antes-despues-deposito-light.png",
+      "ancho": 892,
+      "alto": 904,
+      "sha256": "83a826f346b0e836a6a2773aed7b2470708b38ff593e653b23920d5f618815c6"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-antes-despues-historial-dark.png",
+      "ancho": 892,
+      "alto": 904,
+      "sha256": "b98b4a3df655f46dc0b52f40d38f57d8e8c13eff614143d6d5f0a2905967d3d6"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-antes-despues-historial-light.png",
+      "ancho": 892,
+      "alto": 904,
+      "sha256": "bfc5cbcc82b30b23254994b12c8fbc954e9477373317cd8d8f0214c1e6105a36"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-antes-despues-viaje-dark.png",
+      "ancho": 892,
+      "alto": 904,
+      "sha256": "228efafa14be93795444df44ce5fc74957fdf895c09fe3c9e4e23d59a9faf34e"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-antes-despues-viaje-light.png",
+      "ancho": 892,
+      "alto": 904,
+      "sha256": "0aef9e61616e6ea73d9617431c1721f294a61610f4427d720a3d4b232bb11a07"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-referencia-ajustes.png",
+      "ancho": 870,
+      "alto": 1058,
+      "sha256": "bfa66976804f77f97b097a36fa14eb590e378dbabfc596f422f829e2f53157a5"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-referencia-alquileres.png",
+      "ancho": 920,
+      "alto": 926,
+      "sha256": "43de387f6faee92f975911fe46de81d8bada1457a79c0e4d937f6002ef8a80ae"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-referencia-carga.png",
+      "ancho": 858,
+      "alto": 966,
+      "sha256": "a09121f884badcc6248326bb5adc9d828f85da3a091d01a173f71a4a96d1528b"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-referencia-combos.png",
+      "ancho": 872,
+      "alto": 1058,
+      "sha256": "343c6981d45dbf4ca120b5d9fc0a2733fb839f856987b6eda7a65c4af2e3557c"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-referencia-deposito.png",
+      "ancho": 924,
+      "alto": 945,
+      "sha256": "ca000af6a5408437cd817cd2696020cf1898e20dcb34bbba11cb17a285db52b7"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-referencia-detalle.png",
+      "ancho": 858,
+      "alto": 998,
+      "sha256": "ee2ec2f0366b78701fe9e5f28cffad5b77036034dd7f5f033b2a46013a1adf6b"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-referencia-documentos.png",
+      "ancho": 870,
+      "alto": 900,
+      "sha256": "b379bc27968f0a7bd9196b8a99b9a034927d29f49c60f272c67a6024b4e9a2cd"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-referencia-historial.png",
+      "ancho": 924,
+      "alto": 859,
+      "sha256": "6b131b8ccb4e47cfc9552c0485bd4902bac258beba35d2204f1d8e7a88770b79"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-referencia-nuevo.png",
+      "ancho": 880,
+      "alto": 998,
+      "sha256": "6efc304048d4af1a918067f3bac955adab6e2d3c0b002b9e8e37a1986965307e"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-referencia-retiro.png",
+      "ancho": 880,
+      "alto": 966,
+      "sha256": "2cd749c5f1b2d4602d4111d859f17501e7d86ded87fc453eac5dcb6dfffa444e"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/comparacion-referencia-viaje.png",
+      "ancho": 922,
+      "alto": 876,
+      "sha256": "059244cfd9c5ad6cecd97efc6cca7269a4f03cde63617838f5ce51fce48cfed0"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/dashboard-desktop.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "1122f737937c3d77472ae68c69fe550b70e23a3d95fedf4a8c5e138a0a7deff1"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/dashboard-mobile.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "8167784ee80ec82c1d8dd02aba779ba3e1ea38ba4aaf3a9a06bbef4965a82c24"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-ajustes-dark.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "bbdbee0669808e4f648ecbd3480dd4adb58420d4c5befa715a8e923ff7f5c251"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-ajustes-light.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "13f0b30b70dc790ae1d4321dafea47ffa85529bdfbfa46dd2945cd24930e1b43"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-alquileres-dark.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "64f8761a4e409abede30efea0c54721f02e4f6b8732d3733b1bd7fb656dbe4d1"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-alquileres-light.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "0009db3167f7746494befa06a30f8f5f8d831dba18a46b281e7ba3d09b8d987d"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-combos-dark.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "f0dc78de2af54cfeee44b9f700fe9fbff41220a62405376c8d7d32d0b68a463b"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-combos-light.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "fefa1548e0a1ebf4d67272518716f0fdd860600b907e53f6b88940c73c1dc261"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-deposito-dark.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "ef1045678b93b0eb687c265e8d2230b0e7e779199b08a5231da1988d71ade180"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-deposito-light.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "fb086c34d3073b67e491b770fc6a8ce1c0d9a6a8b7508b300a89945510849c80"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-detalle-dark.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "bee258386c6b886a904e797ab1337d5810a9e1f7b946b9410ed3c4616c87974f"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-detalle-light.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "c860ffab56d805e6ccaf4e628e5cbd5f6bc5b0660a306691161958e8717ce54a"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-documentos-dark.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "27ab881aafc4acbf7978a7b8bfe141e8035c01d2346da192981bbf87cb0385ac"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-documentos-light.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "6df138fbfea9908972688835cd10352ee3c93b35485c5ff1f5f2d70d9c11f64e"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-filtros-dark.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "8504de34ec3295970d4fff4229222ceaac6544b3f95208dc8738fa37d1adb01f"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-filtros-historial-dark.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "a393bf2f8df984862b969f6a75a3c5bf17b5154b32b46f7a1b5d4152c8bea14d"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-filtros-historial-light.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "a605e64dfda44796f1182a0dd326d4d7f80fdaed43ab6f8cdce9ef333873703f"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-filtros-light.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "e0600d93e78e3bd196211e6ba6e792dae702365436a8167530cc68abef208b45"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-historial-dark.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "a8f3f2e52d5b8e57cbe57348d466959c6e900a92d2bb677b775e37157b257b63"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-historial-light.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "faba27937c398ab50da4028dda48f90d0e35105cc84e1ee4c6533b9fbed96578"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-nuevo-dark.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "6488ceb9bd81fe0bb18c7cb8daee565a9c57d7cb9824b3723726eb126dcbe4c9"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-nuevo-light.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "bb0ba4c9fb6853d9d21429425ebb10b1baaf5f21b5c97a710f4ba49d0a3fdd7b"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-viaje-dark.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "9ba0400bf91e35e9bf067a0f2c836573fcab42b4b3d2fa103656c3e78fb6f555"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/despues-viaje-light.png",
+      "ancho": 430,
+      "alto": 840,
+      "sha256": "db35c38d68aca678ce70d01934bbc5fdd24288154c01d542565d0f5fecff51d5"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/local-ajustes-claro.png",
+      "ancho": 1280,
+      "alto": 720,
+      "sha256": "a5b239f605e5cdec556b1245f48031ca4eed6829f6e8a612593339d8d0147dbc"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/local-alquileres.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "4777826b5cdac5e206d88234213e58d2adecce2d4b35669539164fcc23b91a57"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-ajustes-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "97f280dab859f28be0d6db097480cf824a5ee80e43bbe7a04e80df2cd0517ba6"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-ajustes.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "b6f16b7401848006f03de89df9236b4b58a0eb619be18e6e37392d7f6e2cc6ee"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-alquileres-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "fbf9c010a085b735ef34ebaa39f8baf0e5d95820bd021652b52302b25f1b6214"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-alquileres.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "f6526e7fbbe65c60ed85405fc8de9dff48aca290b7294f075b9f19cc4f2f8033"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-combos-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "6f3d7dc4a5de8a68b303cfb282a3f0eb091649fec84d167fb7ee8245914a729a"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-combos.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "3a180ef34735a3c147fa2f8f4cdd63f0a6d8fabc3bc42bd30ddbab7a861aad09"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-deposito-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "e21a02e22d9dfb880b08391fd7ccb707fa1ec6c321fad05d851c2bc3f47e62c2"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-deposito.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "b620c842522fd14b65ae4b50b12cb1893e0b15fc9062190e3f9e5bf40cea5474"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-detalle-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "bd04c5ffddccbfd05a5ffdf4fa3e1c463685cad4bf6a93c9c9c74faf331cb4d5"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-detalle.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "8a57377a48622cabbe370d807a9925ad3266472865704fbd091c8e8746a92450"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-documentos-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "afdf639a992431dcb6100ac4cf2a970e8ec663159a90c933a36ca303ee653ca2"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-documentos.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "4f708614e7341af33986ea5a61232b0d039bbf03fed9bf39cbe7c682171e9ea3"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-historial-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "8c2c06c2c323b1ebe7d20d6cd1cd6a7db3c200c2ead249a10ce86aa5182f4ccf"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-historial.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "32a6c839dc101e6ebe53282c696151d10eea1aa182d939712240554ac5946f2a"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-nuevo-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "77993e1748c048e51949cf8a0f882f5536cba0cb1fae532956486a8316a85561"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-nuevo.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "76ce2b7e88d302a7ba42e6510fddff615d9cdae292556571fe92e9fc4064b82a"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-panel-carga-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "0861ec42ee27486599e997612cd5708d3edabe6e37ecbc98bcdcc45b586951b9"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-panel-carga.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "8a1d51af67bcfccaa74f326a7d636cf266aa2a4adc2ff07605e1ae250c9a78a1"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-viaje-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "6e7c39a5fb5d1d7a48745af9c51f841164f9f0b0570246a52e8dc75fb64d80a2"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-dark-viaje.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "23d0acac52a3c0b1f062d6cefdc0df06df08682da664944b010987a908a1fba4"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-ajustes-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "45fc63cedeebde2b2bc12b3d84686b01950b69cfe4bcd4af09160da2cb69e057"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-ajustes.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "a5e0bf7f85fd6601d7783e7f42e996e7faa02ff66b1049ff5a5cd461a1dd7afd"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-alquileres-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "f0dc67a34d9a4fce5bd50f5563d7ee67d084b5be8049fbb9ca363f2fd8bb30b9"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-alquileres.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "fb2f5398ae30c1b50967af3efb50fe9844f9145aee9c9665359fc9809e4e9b32"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-combos-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "97380b152bf1001c73c85fdc9cac7f3daa697ff544018345ac2e3b2789aa5c8d"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-combos.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "f17c004a09ba11144603c308761941e3e143f39e5ba396b36877478eb34376d9"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-deposito-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "3cffd09a2f48a558525939a18ece102876d860010bba8c19b5fa6b061c515c1b"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-deposito.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "4ccb8380fb8c3b84791558e2fa52e76666941a7bf0a6f39f794f0c8e9f4206cf"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-detalle-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "68568c909d72e211e0409e25428606190f5a8b4a4237da8b57e74e744d8cfc20"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-detalle.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "6c65e06fab313d90aa9758bc0b20bf30bfef570610e9e206fb799789b9f0e582"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-documentos-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "30cb6abecf17a05ff4039c49a1e2557448e3b781d2427723b32bcda246d04e44"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-documentos.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "40622a72f291e93f04adeeb26559bb7c69edaf9f81550a2b11248f8e1d54833d"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-historial-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "844f924e2a5cf2e29917ecb71e76e480bf336f3faf51d31f6356ecb4e568eb71"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-historial.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "d49a71184a35c03a2ac320115b51ed7d10097883193381abcd92cc5c5189d191"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-nuevo-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "3fe9143f7d9a8c7cd64927b342b31589811ec3875b553a830d646d1c6cafac15"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-nuevo.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "3b2eca5d21a63423511713d78f69f4cce1cb19a115dd5f756d4c8d26561e87b2"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-panel-carga-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "1cd7f2cfbd5a1715b3f743f730ae6a9f935a46416f3ea34ba48ab6f0f7751b85"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-panel-carga.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "c1b5f2ad991ceb9305ed4962702e846f29810a2ab5df06254c1cb5f54a69215b"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-viaje-texto200.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "4bd495d976e6a8a938d28f2c68824a099c6aa935e87bbc9c9b5c97e97406d9e9"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/320-light-viaje.png",
+      "ancho": 320,
+      "alto": 900,
+      "sha256": "698bc01d2d9355fba64148b6786456783420751790c9d1b056982f606d9d80fe"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-ajustes-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "d1b1055005f1256afab6fd51701edeb2518fc67f6da3233b9a05dbf108437289"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-ajustes.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "9b681ef544777ee98246ec45126aaba9aea03bfdea18b541e330edfc44dc89c2"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-alquileres-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "1e486d07cd87aef53bc901b97663baa8b12883ca73c639dc99d763f44e9d9084"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-alquileres.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "e4524d03ac97c146919ab7c52f86f57d4cb01931f9fe90d409b9b0645882c754"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-combos-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "b850b03824beba774df9c654ee81b1c27253cb7c5523d5a857e2d0ad6eb79604"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-combos.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "12816cfbd4023d32c945de5d0164eac382a5a15a39c15936d57f7adfc575c21c"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-deposito-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "4aaad20e11b7c80943bea12a7344a195ec4bb20a64d44e7978b614f086215b43"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-deposito.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "89e4a054944f31fc1df1f98e7aff28e7e7affb0276885a96dde0f9364ce35a6f"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-detalle-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "c272446e6b59987c0a0fafb336847072f4cdf36ef19417d85ae4492040ce5952"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-detalle.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "095cfc737f7fec4ee36a19070381da4f9489ce74bc0d3ffd86204087ec2ec2d3"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-documentos-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "0ecd4fb704598702e274370f3bf1c3255a165d4283ee44140476c7b4dd9248ba"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-documentos.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "c0dc9e76333b3187862dd35613c290a4612830b3c274fb2f73c95fb22ca3b9c8"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-historial-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "736d9857aa77c8c30cfb44fc117052ca977e0fa47861100ddccecbf0b202e262"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-historial.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "0c90e8d3b9b1021aaf9c3174545d9a87f32373ac378072ad2122181da849863f"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-nuevo-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "62d08afaefeeefdc0e05e6ec7e267da86cbf4776243a2ef767d592df4180be83"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-nuevo.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "14fe22822c782e9dc7ee57a1be9ab01995ed94e6363f43e9cd395641c3f18e63"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-panel-carga-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "6781da8de338be13107a1408211b1dbc8d74cfc6a812f72731fa7df90339a329"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-panel-carga.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "c55d1f4b34e8c55a6d812ed167882eca8d7bb69159d168085883ffcdf7b990b0"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-viaje-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "d2417690a747ff4cbaadcf87d25b01f15e082f98c8a0f5b9d97ccf8f5bd1f4cb"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-dark-viaje.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "0c4b367da5318e82a74a6779f4d4098f20b3e98cb53579282c41a4f340208fd9"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-ajustes-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "742e600caffc80f07024c5abe36147981031c01dd36d1615e79b3a98872d5b42"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-ajustes.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "4270bd6f8c369e0f4369a253388df3d5b46f6aeade8ececa654430dbb9cef891"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-alquileres-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "d2d5b905d833beaad14b202ea505ea9206b2cdb85365492efd1d647975e085d2"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-alquileres.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "357b14480b25e714340c28bd414af927f1db223040190732400148145104c3a6"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-combos-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "a2230e6fb7b9d71874725097e4452f03746c20b09bd2771cc4f534ddfcb59003"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-combos.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "ff64a0121276125d457d58cccad6d04930e2f51bd68b42036b776e50a22ce3ec"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-deposito-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "491a2e773629043bca1f7ab59e5e3314c379567c2506b92ab7cbda59b6d3ab53"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-deposito.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "fcba69b2b4eeffbf7bf40d8c21fef1bdb13296faba9b220ebd2236c76258ec0b"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-detalle-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "4a33ff59b40cbca0ef2d940fe33d02a49cf223699f505c9fedfa86aafe4299d2"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-detalle.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "180f7df18fa955e024bfafce991e6ce1ab52e7dbff03b166c55999465041451c"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-documentos-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "543093bbb5cf47ccc3a729e07c57a2e348a03e5d41a9ff56e379219ffa5e76b0"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-documentos.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "bd16a2e17185d09c66b8e0314b8421636b4a596fe98d515c07f048512ce8277e"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-historial-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "290468f752c1baf8e35a64af48570cfbb9d3c9d9c2876d57f0002b095f204c13"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-historial.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "cb4c2552bbd6fda486248627eca84ea6c6d4ac8a5fd30b4c624d969bfe777e6c"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-nuevo-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "56d973b8b26e07325ff4c401efd9b6758acb1e56b58d0618a63dda3126237785"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-nuevo.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "4e6a2d8cce9279bd1ba4552738f71e6be0ee397f666227b7520ba3327421bad5"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-panel-carga-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "136f6628623d96bd2e754bf99bab787da0b0e16c6ac44ea3cb0588f499f69f8e"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-panel-carga.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "efc1c0c45c0e1953396dffc730669fb7cbea197f62e80d9e5cdae26cc1554b95"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-viaje-texto200.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "3971abb4a4606da2ffa199cb4ecc39ee5da49ba25cff6a517c4b4de7f312d567"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/360-light-viaje.png",
+      "ancho": 360,
+      "alto": 900,
+      "sha256": "0db1baf63feef6fdf16b7dac82f212edcd8dade44d803509d830474f04a171f4"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-ajustes-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "857a840220aa7287b7ab2ae45e8591003873778c32d705be1123a5135e20fceb"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-ajustes.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "294cc0f3eac91ba7e3a1b13d151ba0c495173c2e7f24639febad2e1b16727c22"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-alquileres-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "cd414d408be12303a199391718110abd14c5e3160ee5ddc967decf4e32828fb3"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-alquileres.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "93a48e38ceb19c53175bf1dbb7e784da0812ace59d054e705921a70bb506e905"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-combos-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "a4e07104e848375200758902f74c62aa6d84f9d48c07d135faac8f4b053c44b4"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-combos.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "bcd5ca9379cf2a56b56e06f7e55034e2c68567e9a024652b29f0e2721b99e65f"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-deposito-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "b67d33c65ec861d4c4a01b1b8b7e4a4ee93a55c787d40891697730be5b5b94d5"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-deposito.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "5568cc25ea37a135c44a3d0e7399d2cf3c70328d9316c876e36af49047414ba6"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-detalle-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "147f5132f49f50cadbfa4914ca5c8b31dccb17966e3d9a47d9f35efe7bce856f"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-detalle.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "a4db97e97f12c5ae6ce9e84dcc29799de5d899dba3b3f2849f64609883de5cf7"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-documentos-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "ea123f4d9647ec41067696320d92671ee41f8ed1dcd6c58705b53b17ce3cc3aa"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-documentos.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "d78728b78a3d5b5a38d07c05bc2e40ccd25ea77167fb54c6ef2ebc3406e63f62"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-historial-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "78e380f78ecb868b77de983a7c68939b968d3766e6575d413521db4d43ae54b0"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-historial.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "54cae81069c1429c03d37aa312b3c78fd0821f7122db8a00d4ece94a6b94ea49"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-nuevo-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "265679d514e39aaf06b9b1935618a2d2a96aa473f506ea2c21f785198c1c43b5"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-nuevo.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "0143b3297a9e682010843184109ca70b6f4d146afb2fced53ac0a1f7ebab23c9"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-panel-carga-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "a20bfc5b074312ead3bb0453754d02eecd05dfcdc82483d0356c8b66021473c7"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-panel-carga.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "72c29d04a395b4a7c43ec558f4eecb6a9b4f877a3366a79b93c277c11f58d68c"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-viaje-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "634fdeb30c3b13419740ad1485014c1367843a16c3d50c534fa12cbf30233bec"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-dark-viaje.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "0cb400017e7332a9c4fd691d9c266a9e5106b40071b48ffd0c21be9008c778ec"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-ajustes-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "479d8c155d0241c51c1c4819d49c29582c0c38fc57268bac9cefe9a8d6ac61ea"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-ajustes.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "625d771eb316c80880a0cc71e983b8404839703a9f8f709b122e6da7d208a11c"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-alquileres-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "9acb443d70348c88c77b419c38ab92437f327d9a3beb87cd2725cfc2092505c1"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-alquileres.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "fd3640a5c6873643358c704da85a7157d123410458f51ceee9dc1ec357dc0d84"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-combos-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "a97ef45ffe1de168b6257ab9f11286d39ba772e881addf3ae213c98c90ffdc33"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-combos.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "4956aae3b3cacecf46922ebc846deb1be04c51a0e8fb258edc5615317f5ab0b0"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-deposito-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "e43f296e30ca54d2938563ef17156c48b07d893387f8611f7def7c4dfdc94db3"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-deposito.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "4053ed92482230d2f9c7924c30bad9c8fca404b4cb2e1df9d1e286ac1cf805b3"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-detalle-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "ba875479b39921d06278a8803e36f992a9b454ccb9bb29628254f21fb8448abd"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-detalle.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "b862b45e46914839a35a0991cf70ff237ff10b1f28000d6c5cf7a6a194496227"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-documentos-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "8aa343cc0a05191fd0c9245f0616036ab16555d54610f05a0a2a7189b5b8e636"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-documentos.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "9267aad2caa2bc5d6d22328670498683f98506cdb0cc0e482af4e4a67716c920"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-historial-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "3f4b268450eaf0f4b3f38f10b4a47acc35636f4c4689f2d025162a8687d7cc7e"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-historial.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "2b75811763bb2579dacd416dec48ebb9e4512197ef113b0f71c485e7ca4f5a63"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-nuevo-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "f6c2a8db4cad4e514d9e3663be7542bebb9da4836c82f82a57c41555506674b7"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-nuevo.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "eac8cdee4a9b56319b97520bbe35c83d5be9afa5eadf55192e27324a7d6ad2a1"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-panel-carga-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "9bf3df88a79db044b7fa4c5a8f07b033a12891fe2042302edc6de03926f91e4f"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-panel-carga.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "e2ade3903a08ded1b6f4a6da8c35d3980f10e9bfd00185194202199b2ec4c71b"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-viaje-texto200.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "dded38ab0c41ba2524316ecdd22ea8d1ba8b73b4b03bb981eeeb7efa53a976f0"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/390-light-viaje.png",
+      "ancho": 390,
+      "alto": 900,
+      "sha256": "b126eaa58b44503a4a3f2f1828819ae828411c29e293cb10159303ba916bef44"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-ajustes-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "bc6799347c348bd7b4739f950bc89bb2eb51efc69e02512933c7430927ee18f3"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-ajustes.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "688632234a13c7f33a0c493d27deec04119189f72a8507ffc0e17b830d529245"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-alquileres-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "d2a8ed678c0e696ab66b4118802b319a77df5f461e420666a16c15f31dd369f7"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-alquileres.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "dbd967a43338016543d451a503e26356a7904fbb7f4fee520110270ecbebcdb2"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-combos-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "0e778fd0580a862d61d1751c45fc0f2ef1b4c87becf6d62f0097cadbb0367598"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-combos.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "ca25a89e25e20e63b1b63dfd6a2facd1beef1b58d17d8131031df21dc9fc3394"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-deposito-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "f35ad84cd750795b0bc11b5e9264a57c8269881da44e4bff1c59ac453aeaa4ea"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-deposito.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "02c628cf254337ecde4f4c2139fe6bb4eaeb28ee71455640344ae729b44e81f6"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-detalle-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "ccea3c4320adbd3191e2e52fee718eb661db5b997da0db3cc59fbabffcce27a3"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-detalle.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "e357fa1581dabbecfa1ac0ee286ab913c0e18b84eccbd516d76f3e13d6c5d35b"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-documentos-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "c940506fa6a369195bd7bceb3839136042dfbc0097b0620396c453312fe97aaa"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-documentos.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "e69f75dc37191dba82cce30c54ba53a38ff59b902565018ee16493739a307100"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-historial-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "231e0b287af6fc1b059fedfb83712fe26c8e5c2a34348b15e6aaf266474857e7"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-historial.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "6fbc5bb177ab3026ee4e175220aec45f9a77d87b7efb13b579ad8f2cf4521da0"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-nuevo-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "e08b5713116bd186a9f7e3cd867c3de47fde5a5cd48db74f8da92afb8763f42e"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-nuevo.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "0166e2a86f17934f1a14be70d88c0ac194bb1fbe73a00fa7112f0dc6a8d41857"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-panel-carga-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "fc3c26443b8494bb4a4e4ab9559e02409d512f25900c5f8671e59df00b0f2e3e"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-panel-carga.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "8590bdcd243fdb7f907bd1693cae172cac632ba8b7df34fab2e391c1f10f5d56"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-viaje-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "b6b2ff5e3aecd309f9612aa9fec558f4adc34f14861912cfcc0c8e8f297b56c5"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-dark-viaje.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "3844a680b8079d2b289fd5f0ac2b24aeb122e479b9ac93685f1f58ad5ae07c85"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-ajustes-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "a9b42867ac2b827decf68d3c8da2b9699b1e52d764a28d81e2ff7af57c25e01f"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-ajustes.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "4bc450d14565346dedabeed009124bc5534a39a90ce031221132fe4285643b1f"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-alquileres-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "e8f0c5fbc8e9bae1e9c59b1807eea1ee72aa028d81ce96e7d9db0419ddf4f796"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-alquileres.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "b688a610e599b8895b8381d7750f146c4f6e8561df72737200df25d285433911"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-combos-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "a80fe6a31fd46d335898d0c0d5f68fce77c11039b2664a2121cb60afbc558846"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-combos.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "77551fc11b269f198c16f1a146e7449903ae5e1005cdaf0450d350d4da99ca97"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-deposito-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "b10fecb751a584d09968ae792639d9526ea4ccbf19b19bcf80a2a861a1888aa2"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-deposito.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "98a1bbd25d1045e6a285961a2f547124fbccf41f8e071cad26ca05e58dce9e63"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-detalle-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "ac9069a38bcf87af1c139adcde03ef1b00b7d0530b4f433ccfde8fe1075334d0"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-detalle.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "f685521b14a31b0a07b65cc7354aefee5be22e6db125ff591d2e4ced264e5b59"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-documentos-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "bd850f7acce5ee9cbf8ab651a824f624ca542443b74141c4167b908c913f0dd9"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-documentos.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "56392ca8b1fb3821963cc16a9917b38f2280fdbbf1ab3c25eea382a548013e0d"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-historial-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "7170c67768d9a878469d5d7feb13055cd11127213c3d0e0561ca539a85f6cfbc"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-historial.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "2485cff076566c758d3e27017551300d286786d82749582f213227175527be29"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-nuevo-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "36d6b0df53ce526e2e6641a9bde652aa7ef5cf9d9d278a60a18649e03ee76d37"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-nuevo.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "74d17f0f44408ffd096a41d33ce67334da5b3d29262494f67566fe59ada60156"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-panel-carga-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "fce79fec64a76e80699641ca9c7ccf449fecd924583597abd2eb53df0f128a90"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-panel-carga.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "ae3688be070c90e7fe5ce1a7b3c326f42edf124db36a192d27fd569940869a22"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-viaje-texto200.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "bcc8e8e2d3ed8e4f8685716422bd07b23967aa3a3257e6d1d072e049806478ab"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/matriz/412-light-viaje.png",
+      "ancho": 412,
+      "alto": 900,
+      "sha256": "ef37481b49f8221133d03ab9a6263f2bb88ff1e11e7c7366c42552933a3ef45e"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-ajustes-dark.png",
+      "ancho": 419,
+      "alto": 994,
+      "sha256": "edd8c5e3ca4c7f6d88a437d5485b8aa16080636e63d7d83b451efb2c2bc92ccf"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-ajustes-light.png",
+      "ancho": 419,
+      "alto": 994,
+      "sha256": "9450aef9aa5c64946adb74c362842995f4ca53a922cc4338ba5362dfaab1f1df"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-alquileres-dark.png",
+      "ancho": 444,
+      "alto": 862,
+      "sha256": "560db50aca3de6fdc0bdc7d46c3da180d1e915ecb204c46ad036d778f1e7852d"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-alquileres-light.png",
+      "ancho": 444,
+      "alto": 862,
+      "sha256": "77a19f8d3f4fb9945381414d3336836e87031479218010b435802e409821caae"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-carga-dark.png",
+      "ancho": 413,
+      "alto": 902,
+      "sha256": "3ad63aee49216e54814b267480d4f022a5044a59f2c8090372a0e88cf17ca070"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-carga-light.png",
+      "ancho": 413,
+      "alto": 902,
+      "sha256": "5b392eaf7fe3ba68e61952541d5c6a32a23fd8855571ced2afeaa4d88a4f3970"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-combos-dark.png",
+      "ancho": 420,
+      "alto": 994,
+      "sha256": "969766f800e8024bd28afc449c4ab2909ca36ad4c47312864560a4c78f89cfd3"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-combos-light.png",
+      "ancho": 420,
+      "alto": 994,
+      "sha256": "a159c6044ff458a84942dd175c45186256311e803b4c4e5b2ef93e0d57fe6f5b"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-deposito-dark.png",
+      "ancho": 446,
+      "alto": 881,
+      "sha256": "bd97b3d9efd5cb120667c721464ead9649fc22ee591663b1452ace863083a5ca"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-deposito-light.png",
+      "ancho": 446,
+      "alto": 881,
+      "sha256": "d02091a0fb9599ae24abcb6a0947258611068678b0f84655f153ccc2090a130e"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-detalle-dark.png",
+      "ancho": 413,
+      "alto": 934,
+      "sha256": "f9982933b6a712fb36c0f751c884d2cb10f28b258ea16ba19bbf0806185b2302"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-detalle-light.png",
+      "ancho": 413,
+      "alto": 934,
+      "sha256": "ab2e1ecbdb6560f2d01f9a61326745c0bddacd3f5e391c8d0d5750cceca85702"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-documentos-dark.png",
+      "ancho": 419,
+      "alto": 836,
+      "sha256": "9c81a869ebbee529b618a2654d92d5c670b106088dfc9563885dd2ba79ce650a"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-documentos-light.png",
+      "ancho": 419,
+      "alto": 836,
+      "sha256": "41275fe15a69e60cde6303b849e7ae4805571945ace37d37a5aedbda85c3e4b8"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-historial-dark.png",
+      "ancho": 446,
+      "alto": 795,
+      "sha256": "4c60fef40b114ec8ea31526fe949ccd97498d83c65006100bd881e8ec96d117b"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-historial-light.png",
+      "ancho": 446,
+      "alto": 795,
+      "sha256": "42c82ddf9770b6a8c4aec7c1bb40ec380c14b6b9cb13b2c097649258bfcb2245"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-nuevo-dark.png",
+      "ancho": 424,
+      "alto": 934,
+      "sha256": "79de9975b9745e96a070285bb347a3030d8810610c72b70533d83f61bd7871ae"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-nuevo-light.png",
+      "ancho": 424,
+      "alto": 934,
+      "sha256": "d57c223b239fbfd76a8e9e14def7b6028d747d9c007f0ed9de7118f0f0ec150f"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-retiro-dark.png",
+      "ancho": 424,
+      "alto": 902,
+      "sha256": "32846e58dd039a56045bf5c2b406e8b539dbaa90f6d8fa71dc96ae0ef89e570e"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-retiro-light.png",
+      "ancho": 424,
+      "alto": 902,
+      "sha256": "e91a8506ba389e9cb0bc06c2e79d24727cfeb97705005ec75ae3883b6a12d470"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-viaje-dark.png",
+      "ancho": 445,
+      "alto": 812,
+      "sha256": "5783cb7dcf00e1ecdab170089cab0acc0d4ec15d371e9fdb2ccbc1b1140a5358"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/referencia-app-viaje-light.png",
+      "ancho": 445,
+      "alto": 812,
+      "sha256": "33cd6cf7157a9e9ad9987b90ed4a0fcd73ce5ef593e113d2efa2f3d9fc99daad"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/responsable.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "b96b32e2f725ba910241b2e39d2b177347b136946c39e583aefa9a25ed17b1ae"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-dark-alquileres.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "15aaa7d56fa2cebfa32054bb2e5c246d4b0f4684c8907a29d4c1a84806f99a5b"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-dark-combos.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "067907cfe47452a6fc4c27914b804105f7c81d878f6403ff74ee5ce3e86d07e6"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-dark-configuracion.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "798280e5a7fe00081f69e88dd5ccf8269fda2868bf6d5f6d39bfe1ba6347f69d"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-dark-entrega.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "c4196b6eb619a81087a98169e62cf8b55a099834d7e15b7bdb178909ca7c2870"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-dark-exportar.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "6bfd049c053d9fcac32b85ec9ccf57471907cf6fdc9266ffed987bbfd0e6d69f"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-dark-galpon.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "9042e53ab3acd9ffa8a3d93fc74764a31c4c97d2d5bd619b1118fb3d61091d46"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-dark-historial.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "98446919acd17231f19f2d78a1bd6c877f4625048a3a8977d2d32963f5b00267"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-dark-login.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "a012555b0820fc6a1cd4ed234e1e78cc141aeb132c4c11ad52216bf5af8d8e07"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-dark-mapa.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "346b0a34a182ed5afdbf273058a4d4f97f3a6530af06c0d0830881859b049803"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-dark-obra-nueva.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "f85d089341608d83b66f3041239a6293a972ea7d53ab63569a5f26d6b9cc5473"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-dark-obra-obra_5.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "f38325d318834233a869db0c4dea74026c278bc55339ceeb8bf825bed18a4987"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-dark-obras.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "328dc2b5d5c6c34b6b85ac38aaf2eb1742d2f2d1100e760fa617afb49ba6643d"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-dark-retiro.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "22c5040c6a8d0e62de19bd4e8120b6027327dd3e3727aed50fd8831acde0b7ba"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-light-alquileres.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "dd1b0bc6cf6dde7696b84a6c2341333468a9d180f5f6a4e84bc82d8114d05aae"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-light-combos.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "98c693de5b399d209b07be511ebc382018613a1293a0358176fe1d391696d4d1"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-light-configuracion.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "d4c1861e952a7a7379bf2f5da6dd7a90f9e705c4c56f0dde0aea1011d97b83ce"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-light-entrega.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "de63ae9542a0bc49f28e7ba42e894df849c74ce68fe89d86ef5ba3c613519bf1"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-light-exportar.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "113044568b8f87f20ea6f63e8b1f108698877ae20fcdcc25d9ba36354902c929"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-light-galpon.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "479376b55686aaa8b7d01faee91b51b4c243f969a8c6bf661d25011a9e1c3a99"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-light-historial.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "00bcb225ed5520922682dda5809436eb7c48119db7ec510226b47c5d0aba9d0d"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-light-login.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "8bc856738c784afa7a29063443697cf6407fac69d65e4d0d65b4b4b47fcd1354"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-light-mapa.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "c798ff87fcdacc338c04b77b9d27b5abb4fcf5e1a3cc1467a0c24719dcda9253"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-light-obra-nueva.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "cec101619424c780f202e17279ccebc31c3e29337e2d11449767e59091db7bb6"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-light-obra-obra_5.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "1e1f049dd625150dd06f358da6c3da5c1eabac46fcdbc0ee22402c9acfc5ab71"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-light-obras.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "3553c94f40d4c514bf82fc815f4a40123cc125862386063f3289e433c7c20ae4"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-1440-light-retiro.png",
+      "ancho": 1440,
+      "alto": 1000,
+      "sha256": "566b41882b6b4aab170ee1098088468dbc7ba63a79b7cb770302029b1c3569c5"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-ajustes.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "496d3d0702672e7fce94bc027b7db58cd505d82127bbea5cf6c134b8bfb5bb19"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-alquileres.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "cc647f658d656752c85996216ffd4ee0e7119ccbba6715e8495bc1f1d8c354a6"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-combos.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "b0e8993db5676bf5be3e265e68cd6287ede2d0812b4c6932d8a59d9fce4028be"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-configuracion.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "cd285ac6128c52757b37e753f5ec076998840b91957cb7a855fdcd9a0e71d9e6"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-deposito.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "4849660c28b538aebbcbb2fb224434f8483b2cfad71c698a5695759fcac7e8ef"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-detalle.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "daeda9059961ab29861b04e0378d5fb78bd01e5950d65724298bf42a4d80779b"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-documentos.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "b2b7c8ba1c88d7b4f59bf4de292a00b23d39e485f3304f6e71466a8e00c721e0"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-entrega.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "aea6a38e7cc65c94caf35765d72008853f426e1662b09883e8ad3ab784710450"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-exportar.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "b2b7c8ba1c88d7b4f59bf4de292a00b23d39e485f3304f6e71466a8e00c721e0"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-galpon.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "4849660c28b538aebbcbb2fb224434f8483b2cfad71c698a5695759fcac7e8ef"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-historial.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "836bf5d9a0b1f894913e52bc7c653f9ae3369c7858f7ce724a437b735d7cb820"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-login.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "e5f48293aff22332cb61421511538e5e069cfed190853af6adde19045cabef32"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-mapa.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "b65894a2997dd99e32d9a64dc020adfeb00d26860e83ae42828e2c45f927a530"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-nuevo.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "0c1ddedfd542631ea0d55d6f35717bc0028a030c2242d346765e02dfd1d2d156"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-obra-nueva.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "0c1ddedfd542631ea0d55d6f35717bc0028a030c2242d346765e02dfd1d2d156"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-obra-obra_5.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "d6f023910fccacc755aef12611cb400806ea454f3c434bab258c7ab8f949d6f9"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-obras.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "4573b1b597a3daab8b80410b76cfed753c2ca19b9116d7fb87921f487de01163"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-retiro.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "e8faae63216e4e9e7b34cc35604a710e928823235cd26629a5788e0934c1bcd0"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-dark-viaje.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "caaeef2fe03eeb17ebb99906b90f12a3043aa5f959aea49b3d0a0e68c9b9baa0"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-error-gps.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "d79f946eb58a9d755c735df67b725ce16327bf58de7f90297842c4681df11348"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-ajustes.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "efba72a0db11999beff5f1889d727ae50b24d39f31b2ef0ae09bf7ff541c10eb"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-alquileres.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "72cde1c0176f2f1991bda09eccc2c9c7902d9de7aa7702db77580ce6097c263f"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-combos.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "94af1f8ef15683bfc6da689f9f88d2673a6b4a69ce21d8d2f0e71b32c47a803b"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-configuracion.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "5b9390b091bc12a433014c9049ca5c2723bc81c7ea6125147fa5aa42e0069ee8"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-deposito.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "fd784036e1b5c1f141146cd91d27ce5849ff10ff387be69f6dcbef2fb98de464"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-detalle.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "9989c3a424f31845bdc7b40d3f508b3eb7ce60660053daf095ac091f450447ea"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-documentos.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "18a6a97092ea74bcc7d6e76b0322d18e6052efd97ce6e81e49bfe2a7fd956d6f"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-entrega.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "15c38f23bf5714cbdffbb4fa07d2a99079387acd1cf250d53f6d1af1e96761ec"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-exportar.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "18a6a97092ea74bcc7d6e76b0322d18e6052efd97ce6e81e49bfe2a7fd956d6f"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-galpon.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "fd784036e1b5c1f141146cd91d27ce5849ff10ff387be69f6dcbef2fb98de464"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-historial.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "9504b20c706068583b76703310d427402a21a9f561a702cadeb3889c2df41131"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-login.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "77a1bc3220f85e73adf4e05c127ce6e04f67e941cf93f5c51f7b6cdcbeb4f844"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-mapa.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "d79af9203ab296d67f7c46a483410b20be455482954f9847fd408ae87225a662"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-nuevo.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "f64e771e99a0dac21b658d109935a652a3bd6fcc58cf681e62aea0b50911a7ba"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-obra-nueva.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "f64e771e99a0dac21b658d109935a652a3bd6fcc58cf681e62aea0b50911a7ba"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-obra-obra_5.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "53df2b907ddb78b2515a7c65c4040d0977f6984036deb8fb4173c2a487cd35ce"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-obras.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "20b5adbb7b1b571dcb29def3b7e7280699dd9be135afbfd84aa4f2192032621b"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-retiro.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "26e0d7706d00707774c0cc0a90af1b0dd96cfd0d0025833f4a547d0c9a2da831"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/rutas-390-light-viaje.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "8cb87755448933d0f96aed48664ad5f56e058ba5ca8844756576be09c81ef055"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-bienvenida-1.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "4636416106bace9d07758e777ec1d40416ffefcb1f1e6d4b1f4a99ed0a7d3f2d"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-bienvenida-2.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "300b04ea1b3486ac50dcb1df8540f63c3adba25154734f4417d50c86fdf41ade"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-bienvenida-3.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "ec0e0961e02314f11be1cc8423a5cd617115a2130ae72ed48cc00ba6b2e50d7e"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-bienvenida-4.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "b238e6aa24c4d34bf7b6a8dacfc0656d8e04fbe6d6c37edc79631ecd0833aa1f"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-combo-editor.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "8e405b0d9ce893f2dbd2a45ed0249a345e3619aa0a8d460fed47ad36813d0ffd"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-combo-selector-material.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "69aa33dc1d0c67aec7e8b74e95fc3c3a279c974fcfb39277677dcf6f9c0a335b"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-contador-directo.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "a8b3a70a1108745fcb869b0b7bcc35f97065cae5cd3b7d2a3663805f4401b172"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-detalle-fotos.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "3a3d60c7a866b2941a0454245c797085f996e07f88f98950cb9c2ac7aa051ccc"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-detalle-incidencias.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "f93888b4da8551ce4175870da3121ca851e405c87aa727a330c32914fd9b74ef"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-editar-cliente.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "ca53a8016cd8d81458c596e3b35b0905f0c5f4f53a57fc20d16c2e8e7652ba6d"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-filtros-historial.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "249c2572f86cb42362d59b5c4b9d8d4da7494143c4a14cc6d6d981053c31d796"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-incidencia-editor.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "dc995bf8a09849f8e7dc5b31903c3db4543761470b9214ff0837537cfe9cd2ea"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-json-revision-confirmacion.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "1db0f5c9fc28494fcd8fd75cda8913d4f269e3fc4b11149cc6a76e68798100ed"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-pieza-ajuste.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "8cd78e85f17de130d32539ad1dff5e9f648ced55a0d14ea5131b4b70c057dd22"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-pieza-editar.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "42cc865206d5980e1ef42076b46213a943a8894b43f65d1d12335b00a98f7e49"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-pieza-mover.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "b9b48c3e72d8db6dc56b953a3aad230a5a6d32ac749e357da3a9ea78babdba68"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-pieza-opciones.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "446af8a996ef9eece93079dcd378cf1957721d93e93a64bfd767b18d379d63c6"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-selector-historial-alquiler.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "59b6e8981c0cf17e3387c75ca8748c410556611e41a8ef0291b490d777811984"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-selector-historial-usuario.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "6465bbb4147b51d93537e2aa88b5c5ac801a84f2be1d0b32866c6c619d9c6469"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-selector-zona.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "9d46b5ce2578a49cebddeb4e4dd1b84c245fbfa894ef052f2c203be35ee0d5a9"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-ubicacion-editor.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "09f14d46b31a71fbcb83e1605dd7d5aba25cfb96d8f79a4760cf2652c252ce53"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-wizard-carga.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "ccf127d84aa8f36b7ab5bf75dd17efa6d02775bdf80f29e814544083d0d67d89"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-dark-wizard-revisar.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "96d7ad417445b908368ccad9c5b23c7e4cd13bb442d06071e6c3d0d01236daeb"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-bienvenida-1.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "70a28511fadc0b972e57b27e2b79c11ad65f3232c40d80165a005ba5483ebd58"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-bienvenida-2.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "61d7b96231c355deea6d2294af31e9ee4052230422b7400da7ad7490b2e40599"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-bienvenida-3.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "e091826453cad9ed72d4a75bc7b5f7810d694591466c40e2c26305d1800761c4"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-bienvenida-4.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "6b11b04ea480e023e8f8d5f928d699e4f327c8608581bf52e41da325657ea402"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-combo-editor.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "bcc042c69c86c68e688e46eec1f5df0e569e29d0bb70ee55bda79c6ea111c32e"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-combo-selector-material.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "d6503e1d0ffb32c577a9fb8493a0d571a1c1a9c3712c59076d83dc189ac1fd16"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-contador-directo.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "5f3496d2c4f60729918a8e205688dc86915b6fe314ad452aba688315338f6d42"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-detalle-fotos.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "8ff4e74821adff8cb80d82300055f00e2f74325bb922a82ce77365ba8ee635c5"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-detalle-incidencias.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "af0a0375fdacd7515c5edd04d258aea3baf88e0c70909af557467d2dc60131bf"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-editar-cliente.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "fdf154639abe342e3fc75533c0aaba0f77b13f54a7a342e3fd66502f17cf2e91"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-filtros-historial.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "92c297c7a43dfaf3f7f9ee90f9c6b45368bfb17132ceb904a583ba4e9ffbaa86"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-incidencia-editor.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "4f3d1ad0d6c1964fe65f00875f2e9990bebc47060fb420d117dfbe942767253d"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-json-revision-confirmacion.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "c052cd1dc16e9ce8ff388efdb1d7f5b03569993b40ba3478ce6a60650d5b7177"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-pieza-ajuste.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "116bd841b937c13d6672668860e5786f53fb25c954aca14a64caf311f97658cf"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-pieza-editar.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "23a5b154381fd2195374cd661d00591e2ee6d7857c291918599283f30a227bd2"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-pieza-mover.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "8d4d43a5263991507e17bbc672314e2a072c7fab6fd98f7cbc55095904861ee5"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-pieza-opciones.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "0cb01a1bdb8bcf9ea3f4d1cd92aa2a5ec0debbdea7de889e63a2f8928d181965"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-selector-historial-alquiler.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "d340675c4c309f873fb20c0bdfacf6db6acb024c982342a812d1bea19bd16943"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-selector-historial-usuario.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "94f698a83f8173bde1dd9b2c631669ffd9fa845f570d2646683da17c93e0bace"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-selector-zona.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "b007cb72be0d73787cf1b8ffe3ab3ede1b78f527e6e184a5650ad69d13e442a7"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-ubicacion-editor.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "349ac130a1bf6be91007619363015eaa75feb8d71b01e843fc22b42b5bea01eb"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-wizard-carga.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "022cd5ab3b3e32c590ec01dbeeee934485f6b6814a19aee28f8f31a1a88324c8"
+    },
+    {
+      "archivo": "artifacts/capturas/estructura-1.5/superficies/390-light-wizard-revisar.png",
+      "ancho": 390,
+      "alto": 844,
+      "sha256": "381470f6fb82e38f1307c016e08ab0e13b6eacb385cd7a23d269f07451bf515b"
+    }
+  ],
+  "axe": [
+    {
+      "archivo": "artifacts/validacion/avisos-axe-dark-ajustes.json",
+      "violaciones": 0,
+      "incompletas": 0,
+      "sha256": "7920e78f3beb9ee57b40b5edbd2ae423a17f39dc34fc1e92081fb532015f69a0"
+    },
+    {
+      "archivo": "artifacts/validacion/avisos-axe-dark-detalle.json",
+      "violaciones": 0,
+      "incompletas": 0,
+      "sha256": "7920e78f3beb9ee57b40b5edbd2ae423a17f39dc34fc1e92081fb532015f69a0"
+    },
+    {
+      "archivo": "artifacts/validacion/avisos-axe-dark-personalizado.json",
+      "violaciones": 0,
+      "incompletas": 0,
+      "sha256": "7920e78f3beb9ee57b40b5edbd2ae423a17f39dc34fc1e92081fb532015f69a0"
+    },
+    {
+      "archivo": "artifacts/validacion/avisos-axe-dark-principal.json",
+      "violaciones": 0,
+      "incompletas": 0,
+      "sha256": "7920e78f3beb9ee57b40b5edbd2ae423a17f39dc34fc1e92081fb532015f69a0"
+    },
+    {
+      "archivo": "artifacts/validacion/avisos-axe-light-ajustes.json",
+      "violaciones": 0,
+      "incompletas": 0,
+      "sha256": "7920e78f3beb9ee57b40b5edbd2ae423a17f39dc34fc1e92081fb532015f69a0"
+    },
+    {
+      "archivo": "artifacts/validacion/avisos-axe-light-detalle.json",
+      "violaciones": 0,
+      "incompletas": 0,
+      "sha256": "7920e78f3beb9ee57b40b5edbd2ae423a17f39dc34fc1e92081fb532015f69a0"
+    },
+    {
+      "archivo": "artifacts/validacion/avisos-axe-light-personalizado.json",
+      "violaciones": 0,
+      "incompletas": 0,
+      "sha256": "7920e78f3beb9ee57b40b5edbd2ae423a17f39dc34fc1e92081fb532015f69a0"
+    },
+    {
+      "archivo": "artifacts/validacion/avisos-axe-light-principal.json",
+      "violaciones": 0,
+      "incompletas": 0,
+      "sha256": "7920e78f3beb9ee57b40b5edbd2ae423a17f39dc34fc1e92081fb532015f69a0"
+    }
+  ]
+}
