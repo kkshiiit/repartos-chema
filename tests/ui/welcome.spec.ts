@@ -29,10 +29,15 @@ test('cambiar nombre local conserva inventario y autores sin cuentas ni invitaci
   await page.getByRole('button', { name: 'Cambiar nombre', exact: true }).click();
   await page.getByLabel('Tu nombre', { exact: true }).fill('Persona B');
   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible();
   await page.goto('/obra/obra_5');
   await page.getByRole('button', { name: 'Registrar entrega', exact: true }).last().click();
   await page.getByRole('button', { name: 'Fabián', exact: true }).click();
   await page.getByRole('button', { name: 'Confirmar entrega', exact: true }).click();
+  // A full document navigation must wait for the persisted operation's UI acknowledgement.
+  await expect(
+    page.getByRole('button', { name: 'Registrar retiro', exact: true }).last(),
+  ).toBeVisible();
   await page.goto('/historial');
   await expect(page.getByText(/Persona B/).first()).toBeVisible();
   await expect

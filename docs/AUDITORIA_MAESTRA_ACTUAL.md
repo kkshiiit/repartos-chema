@@ -2,6 +2,16 @@
 
 **Documento único para el usuario y otro asistente.** Fecha de apertura: 2026-10-24T17:55:41.358643+00:00. Base inicial: `dc69734fae42224fa380278ba9516cb75cadf8c6`. Este archivo se guarda al comenzar el cierre para no depender de los tokens/historial. Los anexos conservan evidencia histórica completa; el estado actual de esta primera parte prevalece sobre sus pendientes antiguos. No contiene claves privadas ni datos comerciales del teléfono.
 
+## Seguridad y pruebas actualizadas — 25/10/2026
+
+La revisión fresca del registro npm informa **21 entradas en raíz: 12 altas, 9 moderadas, 0 críticas**; Functions heredado conserva10 (1alta/9moderadas). Esto sustituye el recuento de9del24/10, que permanece como evidencia histórica. No son21 vulnerabilidades independientes: el informe propaga cadenas de dependencia.
+
+Los avisos nuevos analizados (`basic-ftp`, `fast-uri`, `ip-address`, `body-parser`, `undici`, `@opentelemetry/core`) se resuelven exclusivamente bajo `firebase-tools@15.33.0`, con `dev:true` en el lock y sin imports desde aplicación o generadores. No se identificó un camino de ejecución suyo en el APK local. Se conservan como mantenimiento de herramientas; no exponer sus servidores CLI/MCP/emuladores a entradas no confiables. La clasificación y cadenas/versiones están en `artifacts/validacion/cierre-2026-10-25-seguridad-clasificacion.md`; esto no demuestra ausencia total de vulnerabilidades. No se usó `audit fix` ni se alteró Expo/React Native para silenciar avisos.
+
+**Instalación reproducible final aprobada:** `npm ci --no-fund --no-audit`, 1565paquetes, scripts habilitados, Zod4.6.6, lock sin cambios. Decoder0.5.0 CommonJS directo y desde query-string, español/plus/entradas inválidas y largas correctos. Log `cierre-2026-10-25-npm-ci-final.txt`. Los intentos anteriores se conservan: primer verificador buscó index.js en lugar de index.cjs; una segunda instalación concurrente fue terminada por señal9. No son instalaciones exitosas presentadas como un verificador aprobado.
+
+**Recursos del entorno:** cgroup8GiB; dos instalaciones más Chromium ocasionaron cierres Page/Target crashed y eventosOOM. La tanda concurrente se interrumpió (19pasados,5fallidos,2interrumpidos,31sin ejecutar). Se redujo la concurrencia, sin cambiar aplicación, expectativas ni timeouts para ocultar fallos. La primera suite secuencial terminó56/57: sólo el cambio de nombre navegaba con page.goto antes del acuse visual de la entrega; el mismo caso pasó aislado sin cambiarlo. Se corrigió la sincronización de esa prueba para esperar login y «Registrar retiro», igual que los recorridos existentes. Se repite la suite completa; no se declara verde hasta que termine.
+
 ## Continuación comprobada — 25/10/2026 (Argentina)
 
 Este documento completo ya está en GitHub desde `1ef9be4`. Se retomó sobre ese commit, conservando la carpeta y el remoto privado. La revisión independiente aplicó los perfiles QA y entrega Android; encontró una contradicción documental sobre avisos, corregida en `docs/USO_LOCAL_ANDROID.md`. No se reinstalaron perfiles ni se activaron servicios.
