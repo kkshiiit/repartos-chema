@@ -1,3 +1,17 @@
+# CIERRE ENTREGADO — 25/10/2026 — próxima acción Android físico
+
+**No hay compilación ni publicación pendiente en esta ejecución.** Código funcional `f9f018d3d33d6d474babcc669b1144412802ad28`; fuente de cierre `f6648de`; los commits posteriores sólo agregan documentos/recibos. Consultar gitlog para el último commit documental, sin confundirlo con el runtime. Main y descargas están respaldados sin forcepush. APK1.6.1/code10/ARM64/Android7+, mismo paquete/certificado, SHA `03e42657ad62d9c39ddd3cc2060a8ebd1d11d861fd78c0da46bda2f311c578f1`. Descargas APK293e748c162a5518a02b9f91330779064beed6f5, recuperado con firma/SHA/CRC iguales y8anteriores intactos.
+
+**Fuente final comprobada:** respaldos/v1.6.1-local/repartos-chema-f6648de.zip, 1602archivos, SHA `c8487b31d7e07608c0609f3755fdb3ded36e21381cb4fcb12be5cd87174f7777`. Descargas 62208bcbf3695c22c67588864934c379c5aff705; recuperada de clon independiente y todos los hashes/CRC correctos. Fuente previa f9f018d y web también conservadas. Auditoría íntegra `docs/AUDITORIA_MAESTRA_ACTUAL.md` y copiaMarkdown independiente junto a los respaldos. No se incluyen secretos/clave/node_modules.
+
+**Verificado:**444unitarias/40archivos;57/57UI,0omitidas;348capturas/19comparativas/8Axe0violaciones; npmci limpio1565paquetes/Zod4.6.6/decoderdirecto-transitivo/lockintacto; tsc/Functions correctos; lint0errores/1advertencia. Gradlecompleto9m12s/701tareas; firma/v2/ABI/SQLite/3WAV/noAds/configFirebase/guardanuevaHermes. Fallosanteriores y mantenimiento21entradasraíz/10Functions explicados en auditoría, no ocultados.
+
+**Próxima acción exacta:** usuario guarda JSON externo e instala APK encima sin desinstalar/borrar almacenamiento. Comparar cantidades, alquileres, fotos, historial y temas; modoavión/cierre/reapertura; permisos/avisos/horariofuturo/cierre/reinicio/tap; WordExcelCompartir/cámara/selector/GPS. No hay teléfono/emulador: no afirmar aceptación física, puntualidad de avisos o rendimiento. Si reporta error, conservar original/mensaje y reproducir esa ruta; no rehacer auditoría ni APK por un cambio documental. Si sólo pide APK, entregar el existente.
+
+Integridad primero: no resetear datos, firma, fechas antiguas ni migraciones silenciosas. Clave externa /workspace/respaldos/firma-interna/chema-restaurada-1.3.keystore fueraGit; falta custodia privada externa confirmada. Sin gastos/Ads/backend obligatorio/Firebase/Cloudflare/EAS/hosting/PlayStore. No continuidad automática ni trabajo futuro prometidos. Leer este primer bloque antes de los registros históricos inferiores. Perfiles282/skills7 intactos, elegir sólo pertinentes. Cgroup8GiB: tareas pesadas secuenciales.
+
+---
+
 # Entrega 1.6.1 publicada y recuperada — 25/10/2026
 
 **Cerrado dentro del acceso disponible; pendiente aceptación en Android físico.** No iniciar otro rediseño/compilación por documentos. Código funcional `f9f018d3d33d6d474babcc669b1144412802ad28`,1.6.1/code10, paquete `com.grupochema.repartos`, 56176031bytes. APK en descargas `293e748c162a5518a02b9f91330779064beed6f5` ruta `android/v1.6.1-local.1/repartos-chema-local-1.6.1-arm64.apk`; SHA256 `03e42657ad62d9c39ddd3cc2060a8ebd1d11d861fd78c0da46bda2f311c578f1`. Certificado `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`, mismo anterior. Firma/CRC/ARM64/minSDK24/SQLite/3WAV/noAds/configFirebase y nueva guardaHermes comprobados. Recuperado desde clon independiente y8APKprevios intactos. Gradle9m12s/701tareas; no teléfono/emulador.
