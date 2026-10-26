@@ -6,7 +6,8 @@
     "sha256": "45528009025b8ad8487ccb73f7c769b66d4b0e7aa4560157047899dcb5b5a006",
     "bytes": 102641,
     "observadoUTC": "2026-10-26T20:10:05.876294+00:00",
-    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-changelog.txt"
+    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-changelog.txt",
+    "extractoSHA256": "45528009025b8ad8487ccb73f7c769b66d4b0e7aa4560157047899dcb5b5a006"
   },
   {
     "id": "supabase-pricing",
@@ -15,7 +16,8 @@
     "sha256": "ccb22f1ba8b07a093300a34b96cae86d08630995bbfe8bd62a6935d733121cdd",
     "bytes": 387495,
     "observadoUTC": "2026-10-26T20:10:05.929504+00:00",
-    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-pricing.txt"
+    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-pricing.txt",
+    "extractoSHA256": "af9ae557fe4ed55f52a1d80a3006cb646ab83a3b8090ffedc07d6fcdb27c92fb"
   },
   {
     "id": "supabase-backups",
@@ -24,7 +26,8 @@
     "sha256": "0f50a040cd8b7c12b347662915919768fc396894b29a6f614abd35c20d87ff1b",
     "bytes": 9135,
     "observadoUTC": "2026-10-26T20:10:05.991379+00:00",
-    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-backups.txt"
+    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-backups.txt",
+    "extractoSHA256": "0f50a040cd8b7c12b347662915919768fc396894b29a6f614abd35c20d87ff1b"
   },
   {
     "id": "supabase-prod",
@@ -33,7 +36,8 @@
     "sha256": "89975dea9f4f89dbaad18983af87652942dc8b26122584f97a81d49dc0816b6c",
     "bytes": 14017,
     "observadoUTC": "2026-10-26T20:10:06.102704+00:00",
-    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-prod.txt"
+    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-prod.txt",
+    "extractoSHA256": "89975dea9f4f89dbaad18983af87652942dc8b26122584f97a81d49dc0816b6c"
   },
   {
     "id": "supabase-smtp",
@@ -42,7 +46,8 @@
     "sha256": "cb31bd2806f46eef4682ec68cda91795ca297ed2c02968de778ebab4cc896968",
     "bytes": 12395,
     "observadoUTC": "2026-10-26T20:10:06.086173+00:00",
-    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-smtp.txt"
+    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-smtp.txt",
+    "extractoSHA256": "cb31bd2806f46eef4682ec68cda91795ca297ed2c02968de778ebab4cc896968"
   },
   {
     "id": "supabase-password",
@@ -51,7 +56,8 @@
     "sha256": "f910e0dc1af1ac43b384c310c0897ef276930f8a34542efec36fb169f13b749b",
     "bytes": 36574,
     "observadoUTC": "2026-10-26T20:10:06.242587+00:00",
-    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-password.txt"
+    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-password.txt",
+    "extractoSHA256": "f910e0dc1af1ac43b384c310c0897ef276930f8a34542efec36fb169f13b749b"
   },
   {
     "id": "supabase-function-limits",
@@ -60,7 +66,8 @@
     "sha256": "a9983e4b942bddc77e668a68d39cc78b4d8a02bd146e2fae9be0822ab1f23092",
     "bytes": 2290,
     "observadoUTC": "2026-10-26T20:10:06.313981+00:00",
-    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-function-limits.txt"
+    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-function-limits.txt",
+    "extractoSHA256": "a9983e4b942bddc77e668a68d39cc78b4d8a02bd146e2fae9be0822ab1f23092"
   },
   {
     "id": "supabase-rls",
@@ -69,7 +76,8 @@
     "sha256": "b0b81f8b7f72e8fbd9e83314b9e4d1b658827754bfe9d469e0ec3a243a0029c0",
     "bytes": 30599,
     "observadoUTC": "2026-10-26T20:10:06.248299+00:00",
-    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-rls.txt"
+    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-rls.txt",
+    "extractoSHA256": "b0b81f8b7f72e8fbd9e83314b9e4d1b658827754bfe9d469e0ec3a243a0029c0"
   },
   {
     "id": "appwrite-pricing",
@@ -78,7 +86,8 @@
     "sha256": "50fb45697b936e15d684b2a7ad16f3e66fc7a96c2ea962f72629df8af13df5c2",
     "bytes": 124094,
     "observadoUTC": "2026-10-26T20:10:07.209037+00:00",
-    "extractoLocal": "/tmp/chema-fuentes-plan/appwrite-pricing.txt"
+    "extractoLocal": "/tmp/chema-fuentes-plan/appwrite-pricing.txt",
+    "extractoSHA256": "10d85fb51c1aa34bdeb27832dd38e1d933021bccdf48b4b0d2e4f6b234e101db"
   },
   {
     "id": "appwrite-transactions",
@@ -87,7 +96,8 @@
     "sha256": "0876818ea5043bc1265cf80c094cd871717d488f8ed2d624eb80498530950e34",
     "bytes": 320920,
     "observadoUTC": "2026-10-26T20:10:08.649676+00:00",
-    "extractoLocal": "/tmp/chema-fuentes-plan/appwrite-transactions.txt"
+    "extractoLocal": "/tmp/chema-fuentes-plan/appwrite-transactions.txt",
+    "extractoSHA256": "49effe890ff820db4ed51f0bf1f71b56c61ec2775d28010907a8f1e581819488"
   },
   {
     "id": "appwrite-pausing",
@@ -96,7 +106,8 @@
     "sha256": "e774d0bab8763399717f17aa7e27cb05d15332aad560312fa872bcb1e25d6bc5",
     "bytes": 219241,
     "observadoUTC": "2026-10-26T20:10:08.222456+00:00",
-    "extractoLocal": "/tmp/chema-fuentes-plan/appwrite-pausing.txt"
+    "extractoLocal": "/tmp/chema-fuentes-plan/appwrite-pausing.txt",
+    "extractoSHA256": "f522226b490b84f663a23301ea04cc5a857037353c7d39c540c1780571657ff6"
   },
   {
     "id": "appwrite-auth",
@@ -105,6 +116,17 @@
     "sha256": "648aac3d46e426311a53e8091ec7de4f229060ba7f582887bc656bff283bf757",
     "bytes": 298304,
     "observadoUTC": "2026-10-26T20:10:07.848274+00:00",
-    "extractoLocal": "/tmp/chema-fuentes-plan/appwrite-auth.txt"
+    "extractoLocal": "/tmp/chema-fuentes-plan/appwrite-auth.txt",
+    "extractoSHA256": "4f8b6d9fe20fcbd68394932204bf727992d6f8fe29b57cfe69c20ad57eff7597"
+  },
+  {
+    "id": "supabase-free-policy",
+    "url": "https://supabase.com/docs/guides/platform/billing-on-supabase.md",
+    "status": 200,
+    "sha256": "908f4a4c64e62d0bf4c7d892aaf24ac07350f64745caad7b6f3aa3a1380b45ea",
+    "bytes": 6949,
+    "observadoUTC": "2026-10-26T20:48:22.021842+00:00",
+    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-free-policy.txt",
+    "extractoSHA256": "908f4a4c64e62d0bf4c7d892aaf24ac07350f64745caad7b6f3aa3a1380b45ea"
   }
 ]

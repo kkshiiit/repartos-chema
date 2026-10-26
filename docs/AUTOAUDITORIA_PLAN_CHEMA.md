@@ -2,7 +2,7 @@
 
 ## Veredicto y límites
 
-**La etapa 1 entrega un plan ejecutable; no entrega el rediseño ni la colaboración implementados.** Los seis documentos solicitados están preparados, el contrato original está conservado y cada uno de sus **94 subrequisitos** tiene estado inicial, evidencia, prueba propuesta y brecha en la matriz. Ese número mide cobertura documental, no avance del producto.
+**La etapa 1 entrega un plan ejecutable; no entrega el rediseño ni la colaboración implementados.** Los cinco documentos maestros solicitados están preparados, el contrato original está conservado y cada uno de sus **94 subrequisitos** tiene estado inicial, evidencia, prueba propuesta y brecha en la matriz. Ese número mide cobertura documental, no avance del producto.
 
 Base de aplicación: `81cd39afb97d8df6626572ce95886039fd421fd5`, funcionalmente igual a `f9f018d3d33d6d474babcc669b1144412802ad28`. Rama de preparación: `plan/chema-maestro-2026-10-26`. No se afirma que la instalada «2.0» sea esta compilación. Los commits de esta etapa sólo contienen documentos, guías y evidencia; no cambian pantallas, reglas de negocio, dependencias, migraciones o APK.
 
