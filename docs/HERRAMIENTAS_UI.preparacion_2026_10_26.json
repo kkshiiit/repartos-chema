@@ -1,6 +1,6 @@
 {
   "revision": "2026-10-26",
-  "metodo": "copias completas verificadas desde commits; no actualiza los siete perfiles hist\u00f3ricos ni package/lock",
+  "metodo": "copias completas verificadas desde commits; no actualiza los siete perfiles históricos ni package/lock",
   "skills": [
     {
       "name": "impeccable",
@@ -9,7 +9,7 @@
       "sourceSubpath": ".agents/skills/impeccable",
       "destination": ".agents/skills/impeccable",
       "originalSkillSHA256": "c26d6963fe2278f570930ea083ec89609ba094ee93b1ae825719ff5d29b9ac3c",
-      "adaptacion": "Nota final local, original \u00edntegro conservado; overrides de \u00e1mbito/nativo/especificaci\u00f3n",
+      "adaptacion": "Nota final local, original íntegro conservado; overrides de ámbito/nativo/especificación",
       "files": {
         "SKILL.md": "06b3b35644fc2c41879ce67dedbf865793141e97a616cd89eebe2942cdad44f5",
         "NOTICE.md": "c60a093c2845fd9fb82f9c6f742ece31f379f8190b535309d32d66c45ccffdcb",
@@ -85,12 +85,13 @@
       "sourceSubpath": "skills/visual-eyes",
       "destination": ".agents/skills/visual-eyes",
       "originalSkillSHA256": "9bd08be4da52e54891ab3428e2a7d3e9f50e7da581ad963413a7d8f499433c88",
-      "adaptacion": "Nota final local, original \u00edntegro conservado; overrides de \u00e1mbito/nativo/especificaci\u00f3n",
+      "adaptacion": "Nota final local, original íntegro conservado; overrides de ámbito/nativo/especificación",
       "files": {
         "SKILL.md": "63278d6b1fa65ebfbdda17a322ae5f586bdbaec2bdbc69daa336704057314afa",
         "LICENSE.upstream": "5d26779c58355aef4a3338ed9cbdf0077f76bf5bb7d00dd2f5e85aa73037e6fc",
         "scripts/screenshot.sh": "c6cb81c653f2c804cecdd0c4b25ee638f4cd888f34bfc06d8e6e30bfdb3edecd",
-        "scripts/compare.sh": "5e7329a48ba9bb8cb2719382e362fe2e17984e4c3e98d631efc5ebf1df63e8ad"
+        "scripts/compare.sh": "5e7329a48ba9bb8cb2719382e362fe2e17984e4c3e98d631efc5ebf1df63e8ad",
+        "docs/ci-comparison.md": "bbffc5fa34671d92a93d9e26471f7452f5de0af40a517accb0b52c7a04462247"
       }
     },
     {
@@ -100,7 +101,7 @@
       "sourceSubpath": ".",
       "destination": ".agents/skills/ux-designer",
       "originalSkillSHA256": "da23126b3af8e25e36f245ae3098b1322285a5618d96795f7460c92550de34bd",
-      "adaptacion": "Nota final local, original \u00edntegro conservado; overrides de \u00e1mbito/nativo/especificaci\u00f3n",
+      "adaptacion": "Nota final local, original íntegro conservado; overrides de ámbito/nativo/especificación",
       "files": {
         "README.md": "13703b712384a4d09c4e451196b905b4d14e14e2bae8fc0ec0be9c3f5ab97695",
         "SKILL.md": "740f6f4eb86d491875354dd654c75e02dcd37d0b0a64c1529a58810f4f4329fb",
