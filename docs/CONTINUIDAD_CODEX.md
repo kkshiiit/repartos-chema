@@ -1,3 +1,11 @@
+# ETAPA 2 AUTORIZADA Y EN CURSO — 26/10/2026
+
+Se recibió el archivo02 completo; autorización conservada en docs/ENCARGO_ETAPA_2_CHEMA.md. Los bloques inferiores que dicen esperar02 son históricos. Base e133ae4 limpia, remotos main81cd39a/plan-e133 verificados; rama feat/chema-maestro-etapa2. Copia íntegra restaurada antes de editar en /workspace/respaldos/etapa2-base-2026-10-26. Plan/contrato/matriz continúan vigentes. Registro vivo: docs/EJECUCION_MAESTRA_CHEMA.md.
+
+Fase actual H0: preview JSON conservando motor y datos. En paralelo se prepara UI nativa/Viaje y se comprueba acceso Supabase/stack local; no afirmar servicios conectados sin prueba. No hay Android ADB ni APK exacto llamado2.0 ni JSONexacto5. Seguir trabajo independiente y marcar esos gates. Próximaacción: leer registro/estadoGit, completar bloque activo con pruebas reales, commit/push antes de compilar. No pagos, no Firebase obligatorio, no rotar firma ni resetear inventario.
+
+---
+
 # ETAPA 1 MAESTRA CERRADA — 26/10/2026 — esperar archivo 02
 
 **Encargo vigente:** `docs/ESPECIFICACION_MAESTRA_CHEMA.md`, copia íntegra del adjunto `01-Codex-plan-maestro-Chema.txt`, SHA original `fb484a28c27dfbd0afd4f333b207f19dee738b7d1b72b7a926ef5bb96837c0f7`. Esta ejecución sólo autoriza auditoría, plan, guías y respaldo documental. La colaboración jefe/operario y Modern Dark reemplazan el alcance visual/individual restrictivo de registros anteriores, pero **no se implementan hasta recibir `02-Codex-implementar-y-entregar-Chema.txt`**. No repetir una auditoría general ni compilar por documentación.
