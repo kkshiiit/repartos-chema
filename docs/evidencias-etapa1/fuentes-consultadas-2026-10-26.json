@@ -1,0 +1,110 @@
+[
+  {
+    "id": "supabase-changelog",
+    "url": "https://supabase.com/changelog.md",
+    "status": 200,
+    "sha256": "45528009025b8ad8487ccb73f7c769b66d4b0e7aa4560157047899dcb5b5a006",
+    "bytes": 102641,
+    "observadoUTC": "2026-10-26T20:10:05.876294+00:00",
+    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-changelog.txt"
+  },
+  {
+    "id": "supabase-pricing",
+    "url": "https://supabase.com/pricing",
+    "status": 200,
+    "sha256": "ccb22f1ba8b07a093300a34b96cae86d08630995bbfe8bd62a6935d733121cdd",
+    "bytes": 387495,
+    "observadoUTC": "2026-10-26T20:10:05.929504+00:00",
+    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-pricing.txt"
+  },
+  {
+    "id": "supabase-backups",
+    "url": "https://supabase.com/docs/guides/platform/backups.md",
+    "status": 200,
+    "sha256": "0f50a040cd8b7c12b347662915919768fc396894b29a6f614abd35c20d87ff1b",
+    "bytes": 9135,
+    "observadoUTC": "2026-10-26T20:10:05.991379+00:00",
+    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-backups.txt"
+  },
+  {
+    "id": "supabase-prod",
+    "url": "https://supabase.com/docs/guides/platform/going-into-prod.md",
+    "status": 200,
+    "sha256": "89975dea9f4f89dbaad18983af87652942dc8b26122584f97a81d49dc0816b6c",
+    "bytes": 14017,
+    "observadoUTC": "2026-10-26T20:10:06.102704+00:00",
+    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-prod.txt"
+  },
+  {
+    "id": "supabase-smtp",
+    "url": "https://supabase.com/docs/guides/auth/auth-smtp.md",
+    "status": 200,
+    "sha256": "cb31bd2806f46eef4682ec68cda91795ca297ed2c02968de778ebab4cc896968",
+    "bytes": 12395,
+    "observadoUTC": "2026-10-26T20:10:06.086173+00:00",
+    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-smtp.txt"
+  },
+  {
+    "id": "supabase-password",
+    "url": "https://supabase.com/docs/guides/auth/passwords.md",
+    "status": 200,
+    "sha256": "f910e0dc1af1ac43b384c310c0897ef276930f8a34542efec36fb169f13b749b",
+    "bytes": 36574,
+    "observadoUTC": "2026-10-26T20:10:06.242587+00:00",
+    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-password.txt"
+  },
+  {
+    "id": "supabase-function-limits",
+    "url": "https://supabase.com/docs/guides/functions/limits.md",
+    "status": 200,
+    "sha256": "a9983e4b942bddc77e668a68d39cc78b4d8a02bd146e2fae9be0822ab1f23092",
+    "bytes": 2290,
+    "observadoUTC": "2026-10-26T20:10:06.313981+00:00",
+    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-function-limits.txt"
+  },
+  {
+    "id": "supabase-rls",
+    "url": "https://supabase.com/docs/guides/database/postgres/row-level-security.md",
+    "status": 200,
+    "sha256": "b0b81f8b7f72e8fbd9e83314b9e4d1b658827754bfe9d469e0ec3a243a0029c0",
+    "bytes": 30599,
+    "observadoUTC": "2026-10-26T20:10:06.248299+00:00",
+    "extractoLocal": "/tmp/chema-fuentes-plan/supabase-rls.txt"
+  },
+  {
+    "id": "appwrite-pricing",
+    "url": "https://appwrite.io/pricing",
+    "status": 200,
+    "sha256": "50fb45697b936e15d684b2a7ad16f3e66fc7a96c2ea962f72629df8af13df5c2",
+    "bytes": 124094,
+    "observadoUTC": "2026-10-26T20:10:07.209037+00:00",
+    "extractoLocal": "/tmp/chema-fuentes-plan/appwrite-pricing.txt"
+  },
+  {
+    "id": "appwrite-transactions",
+    "url": "https://appwrite.io/docs/products/databases/transactions",
+    "status": 200,
+    "sha256": "0876818ea5043bc1265cf80c094cd871717d488f8ed2d624eb80498530950e34",
+    "bytes": 320920,
+    "observadoUTC": "2026-10-26T20:10:08.649676+00:00",
+    "extractoLocal": "/tmp/chema-fuentes-plan/appwrite-transactions.txt"
+  },
+  {
+    "id": "appwrite-pausing",
+    "url": "https://appwrite.io/docs/advanced/platform/project-pausing",
+    "status": 200,
+    "sha256": "e774d0bab8763399717f17aa7e27cb05d15332aad560312fa872bcb1e25d6bc5",
+    "bytes": 219241,
+    "observadoUTC": "2026-10-26T20:10:08.222456+00:00",
+    "extractoLocal": "/tmp/chema-fuentes-plan/appwrite-pausing.txt"
+  },
+  {
+    "id": "appwrite-auth",
+    "url": "https://appwrite.io/docs/products/auth/email-password",
+    "status": 200,
+    "sha256": "648aac3d46e426311a53e8091ec7de4f229060ba7f582887bc656bff283bf757",
+    "bytes": 298304,
+    "observadoUTC": "2026-10-26T20:10:07.848274+00:00",
+    "extractoLocal": "/tmp/chema-fuentes-plan/appwrite-auth.txt"
+  }
+]

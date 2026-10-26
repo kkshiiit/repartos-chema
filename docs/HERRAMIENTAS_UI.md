@@ -1,3 +1,25 @@
+# Preparación maestra vigente — 26/10/2026
+
+Etapa1 de docs/ESPECIFICACION_MAESTRA_CHEMA.md: auditoría/plan, sin implementación. Se conservan íntegros los83archivos de las7skills históricas y sus adaptaciones/licencias/skills-lock. El texto inferior sobre esperar referencias1.3 es histórico; la nueva referencia Modern Dark ya está definida, pero escribir UI requiere etapa2.
+
+Se agregaron sólo3skills documentales completas en .agents/skills, sin bibliotecas de app ni cambios a package/lock: **impeccable**, **visual-eyes**, **ux-designer**. Copia manual desde clones públicos, no add/update ciego ni symlinks; revisión y hashes en HERRAMIENTAS_UI.preparacion_2026_10_26.json. Ninguna carpeta previa existía con esos nombres. Notas al final de cada SKILL.md adaptan ámbito, Codex y Android preservando el original completo.
+
+|Skill|Origen/commit|Licencia|Uso|
+|---|---|---|---|
+|impeccable|pbakaus/impeccable@989c484c091d26f10fa102767eefc0da2e62ec67, .agents/skills/impeccable|Apache2.0 + LICENSE.upstream y NOTICE.md|Operate/Android, auditoría/shape; revisión actual distinta a3671d50 histórico, registrada y no asumida idéntica|
+|visual-eyes|DeHor-Labs/visual-eyes@c2ff5067353c6dbbcd09a4f0630147a042ba51e7, skills/visual-eyes|MIT + LICENSE.upstream|Abrir PNG con view_image; no simular Android a partir de web|
+|ux-designer|szilu/ux-designer-skill@c869d32fd8df7bd7fcd1db68e93bd3e89eed5161, raíz + references/README|MIT + LICENSE.upstream|Formularios/mobile, notificaciones y conflictos; ejemplos HTML/CRDT no se trasladan al inventario|
+
+`npx --yes skills@1.7.2 list --agent codex --json` reconoce10skills con alcance proyecto. Se verificaron todos los hashes nuevos y la integridad de los7directorios previos. No se afirma recarga automática del catálogo de esta sesión: lectura explícita desde .agents/skills/<nombre>/SKILL.md es alternativa. No se instalaron HeroUI, Foonto, otra UI, polyfills, MCP, SDK Supabase o Vercel skillpack. Callstack/Expo cubren sus casos; Taste/Interface/Emil no son sistemas paralelos necesarios.
+
+Impeccable context se ejecutó una vez con target app/(tabs)/mapa.tsx y terminó0. Detectó ausencia de PRODUCT/DESIGN y pidió capturar contexto; se usa el encargo completo como fuente de verdad, sin inventar una entrevista ni dirección alternativa y sin crear duplicados de especificación. Plataforma confirmada manualmente por Expo/RN/Android; motor devolvió platform:null, no certificación. No se activaron hooks/detect web ni corregidores; no hay UI modificada para comparar después. Launcher gratuito descargado en caché de herramienta fuera de Git. Contexto y listado guardados en docs/evidencias-etapa1.
+
+Para aplicar después: leer estosSKILL y sus referencias pertinentes, más la especificación/plan. Android conserva componentes actuales salvo necesidad demostrada. Prioridad del usuario: cuatro pestañas inferiores incluso en ancho grande, fuentes Geist locales, sin gradientes/glass generales ni pagos. No seguir la recomendación genérica de rail lateral si contradiceD1. No ejecutar bucles Fix de Visual Eyes antes de autorizar etapa2. No ejecutar APIs pagas ni fallback de OPENAI_API_KEY al analizar videos; no hubo video nuevo ni transcripción aquí.
+
+---
+
+## Registro histórico de instalación anterior
+
 # Skills para el futuro rediseño
 
 Estado: **solo preparación documental; esperar referencias y especificación visual**. Las skills no autorizan instalar bibliotecas, actualizar Expo/RN/Reanimated, migrar datos, activar servicios o iniciar el rediseño. Los comandos de implementación que contienen no se ejecutaron. La app y su APK1.3.0 permanecen intactos.

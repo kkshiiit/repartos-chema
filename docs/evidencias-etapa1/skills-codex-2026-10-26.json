@@ -1,0 +1,112 @@
+[
+  {
+    "name": "expo-animation",
+    "path": "/workspace/repartos-chema/.agents/skills/expo-animation",
+    "scope": "project",
+    "agents": [
+      "Codex"
+    ],
+    "source": "expo/skills",
+    "sourceUrl": null,
+    "sourceType": "github"
+  },
+  {
+    "name": "expo-design-system",
+    "path": "/workspace/repartos-chema/.agents/skills/expo-design-system",
+    "scope": "project",
+    "agents": [
+      "Codex"
+    ],
+    "source": "expo/skills",
+    "sourceUrl": null,
+    "sourceType": "github"
+  },
+  {
+    "name": "expo-native-ui",
+    "path": "/workspace/repartos-chema/.agents/skills/expo-native-ui",
+    "scope": "project",
+    "agents": [
+      "Codex"
+    ],
+    "source": "expo/skills",
+    "sourceUrl": null,
+    "sourceType": "github"
+  },
+  {
+    "name": "expo-overview",
+    "path": "/workspace/repartos-chema/.agents/skills/expo-overview",
+    "scope": "project",
+    "agents": [
+      "Codex"
+    ],
+    "source": "expo/skills",
+    "sourceUrl": null,
+    "sourceType": "github"
+  },
+  {
+    "name": "expo-router",
+    "path": "/workspace/repartos-chema/.agents/skills/expo-router",
+    "scope": "project",
+    "agents": [
+      "Codex"
+    ],
+    "source": "expo/skills",
+    "sourceUrl": null,
+    "sourceType": "github"
+  },
+  {
+    "name": "heroui-native",
+    "path": "/workspace/repartos-chema/.agents/skills/heroui-native",
+    "scope": "project",
+    "agents": [
+      "Codex"
+    ],
+    "source": "heroui-inc/heroui",
+    "sourceUrl": null,
+    "sourceType": "github"
+  },
+  {
+    "name": "impeccable",
+    "path": "/workspace/repartos-chema/.agents/skills/impeccable",
+    "scope": "project",
+    "agents": [
+      "Codex"
+    ],
+    "source": null,
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "react-native-best-practices",
+    "path": "/workspace/repartos-chema/.agents/skills/react-native-best-practices",
+    "scope": "project",
+    "agents": [
+      "Codex"
+    ],
+    "source": "callstackincubator/agent-skills",
+    "sourceUrl": null,
+    "sourceType": "github"
+  },
+  {
+    "name": "ux-designer",
+    "path": "/workspace/repartos-chema/.agents/skills/ux-designer",
+    "scope": "project",
+    "agents": [
+      "Codex"
+    ],
+    "source": null,
+    "sourceUrl": null,
+    "sourceType": null
+  },
+  {
+    "name": "visual-eyes",
+    "path": "/workspace/repartos-chema/.agents/skills/visual-eyes",
+    "scope": "project",
+    "agents": [
+      "Codex"
+    ],
+    "source": null,
+    "sourceUrl": null,
+    "sourceType": null
+  }
+]
