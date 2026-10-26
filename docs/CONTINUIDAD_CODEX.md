@@ -1,3 +1,41 @@
+# ETAPA 1 MAESTRA CERRADA — 26/10/2026 — esperar archivo 02
+
+**Encargo vigente:** `docs/ESPECIFICACION_MAESTRA_CHEMA.md`, copia íntegra del adjunto `01-Codex-plan-maestro-Chema.txt`, SHA original `fb484a28c27dfbd0afd4f333b207f19dee738b7d1b72b7a926ef5bb96837c0f7`. Esta ejecución sólo autoriza auditoría, plan, guías y respaldo documental. La colaboración jefe/operario y Modern Dark reemplazan el alcance visual/individual restrictivo de registros anteriores, pero **no se implementan hasta recibir `02-Codex-implementar-y-entregar-Chema.txt`**. No repetir una auditoría general ni compilar por documentación.
+
+## Punto recuperable
+
+- Repositorio privado autorizado: `kkshiiit/repartos-chema`, origin HTTPS; rama de preparación `plan/chema-maestro-2026-10-26`. Base main `81cd39afb97d8df6626572ce95886039fd421fd5`; main no modificado. No AGENTS.md aplicables encontrados al inspeccionar.
+- Puntos ya confirmados y enviados: `3af1c2c` contrato íntegro; `80f0126` guías/evidencia base; `d86aaf1ffaf91f2465ea06a1884531e489d1a704` auditoría/plan/matriz/autoauditoría. El commit que contiene este checkpoint añade el cierre editorial, referencias y comprobación de hashes; obtener su ID con `git log -1 --format=fuller` y verificar remoto antes de actuar. No confundir commit documental con fuente del APK.
+- Cinco documentos maestros: ESPECIFICACION_MAESTRA_CHEMA, AUDITORIA_BASE_CHEMA, PLAN_MAESTRO_CHEMA, MATRIZ_ACEPTACION_CHEMA y AUTOAUDITORIA_PLAN_CHEMA. La matriz cubre **94/94 IDs** con estado/prueba/brecha/hito; cobertura documental no significa implementación.
+- La app sigue en **1.6.1/code10**, paquete `com.grupochema.repartos`, fuente funcional `f9f018d3d33d6d474babcc669b1144412802ad28`. Esta etapa NO modificó app, reglas de stock, datos, migraciones, fotos, JSON, package/lock ni APK.
+- APK conocido: `descargas:android/v1.6.1-local.1/repartos-chema-local-1.6.1-arm64.apk`, 56176031 bytes, SHA `03e42657ad62d9c39ddd3cc2060a8ebd1d11d861fd78c0da46bda2f311c578f1`; certificado `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`. Firma nuevamente comprobada, sin build nuevo. **La instalada llamada «2.0» no está identificada**: no equipararla al publicado. ADB sin dispositivo.
+
+## Comprobaciones frescas y guías
+
+`npm run check` del 26/10: 444/444 unitarias, 40 archivos, tipos y build TS Functions correctos; lint 0 errores/1 advertencia Axe. Fixtures Word/Excel restauradas byte por byte. Playwright de importación: 1/1, 5.6 s, datos sintéticos, cancelación/JSON roto/restauración/reapertura/deshacer. Registros en `docs/evidencias-etapa1/`; no son pruebas Android físicas ni del backend nuevo. 57/57 UI, 348 capturas/19 comparativas y Gradle del 25/10 son históricos, no corridos de nuevo.
+
+Tres guías documentales nuevas completas: Impeccable @989c484c091d26f10fa102767eefc0da2e62ec67, Visual Eyes @c2ff5067353c6dbbcd09a4f0630147a042ba51e7 y UX Designer @c869d32fd8df7bd7fcd1db68e93bd3e89eed5161. Licencias, referencias, scripts, hashes y adaptaciones en HERRAMIENTAS_UI y su manifiesto2026_10_26. CLI reconoce10; las7 anteriores/83 archivos y282 perfiles se conservan. No recarga nativa de catálogo afirmada. No nuevas bibliotecas de app ni MCP. Impeccable context terminó0, platform:null/PRODUCT-DESIGN ausentes; se utiliza el contrato de producto, no otra entrevista. Tres PNG web existentes abiertos; no nuevo «después» Modern Dark ni vídeo/física.
+
+Verificación de cierre: `docs/evidencias-etapa1/CIERRE_DOCUMENTAL_2026_10_26.json`: contrato byte por byte, 94 IDs únicos, hashes de1603 originales protegidos (sólo cambios permitidos en HERRAMIENTAS_UI y este checkpoint), skills nuevas/referencias completas y APK idéntico. Guardar evidencia de remoto/árbol limpio después del commit. La clave privada permanece fuera de Git; custodia externa segura aún no comprobada.
+
+## Plan y decisiones conservadas
+
+H0 recuperación/preview JSON e identidad instalada → H1 tokens/componentes/UX principal → H2 Viaje completo → H3 corte real de servidor+dos clientes+misma devolución/última unidad → H4A entidades/bootstrap/restauración → H4B fotos/ruta publicada → H5 resto de UI/avisos/accesibilidad → H6 validación/APK. H1/H2 no dependen de crear backend. Cada hito tiene archivos, pruebas, riesgo/reversión y push; no dos motores.
+
+Supabase Free recomendado para revisión, no creado ni configurado; Appwrite único alternativo evaluado. Cuotas/pausa/SMTP/backups/Edge verificadas en fuentes oficiales26/10, con extractos persistentes. No costo ilimitado garantizado. Individual sin cuenta/red sigue aislado; shared namespace por espacio+usuario, SQLite/outbox atómica, mismo applyOperation autoritativo, recibos/cursor/ACL/CAS y tareas comerciales únicas. UNDO/REACTIVATE crean tarea sucesora; restore equipo abre copia local aislada; bootstrap una vez evita sumar el mismo JSON dos veces. Ruta borrador personal vs publicación explícita versionada. Avisos personales por dispositivo; sin sync instantánea cerrada prometida.
+
+Bloqueos mínimos futuros: confirmar material/medida que representa cuerpo (fallback literal sin marcos/2); acceso autorizado a proyecto Free y política ADMIN/OPERADOR; APK exacto instalado y archivo exacto `repartos-chema-5-pedidos-whatsapp.json` para sus pruebas. **Este JSON no se encontró**; fixture whatsapp-five es sintética. No solicitar secretos, contraseñas ni hacer programar al usuario. No Firebase/pagos/hosting/EAS/keepalive, publicación pública o migración irreversible.
+
+Descarga reportada: raw/ficha sin sesión devuelve404 porque el repo es privado; API autenticada encuentra APK. Abrir Chrome con kkshiiit y ficha de archivo en rama descargas, Download raw file. Mensaje exacto del fallo Android aún no obtenido; no afirmar que ya descargó o instaló. No cambiar privacidad como solución.
+
+## Próxima acción exacta
+
+**En esta ejecución: entregar plan y hallazgos, y esperar revisión/archivo02. No iniciar H0 de implementación por iniciativa propia.** Al recibir continuación autorizada: comprobar workspace/rama/status/log/remoto, leer este bloque y los cinco documentos, preservar cambios, identificar si hay avances posteriores y ejecutar el primer pendiente H0. Verificar APK existente antes de decidir recompilar. Mantener commits/push por corte y fuente recuperada antes de Gradle. Sin hardware, informar pendientes físicos; nunca pedir desinstalar/borrar almacenamiento.
+
+No hay automatización de continuidad confirmada; no prometer trabajo fuera de una ejecución activa. Si el entorno se interrumpe, esta rama y documentos son el punto recuperable.
+
+---
+
 # CIERRE ENTREGADO — 25/10/2026 — próxima acción Android físico
 
 **No hay compilación ni publicación pendiente en esta ejecución.** Código funcional `f9f018d3d33d6d474babcc669b1144412802ad28`; fuente de cierre `f6648de`; los commits posteriores sólo agregan documentos/recibos. Consultar gitlog para el último commit documental, sin confundirlo con el runtime. Main y descargas están respaldados sin forcepush. APK1.6.1/code10/ARM64/Android7+, mismo paquete/certificado, SHA `03e42657ad62d9c39ddd3cc2060a8ebd1d11d861fd78c0da46bda2f311c578f1`. Descargas APK293e748c162a5518a02b9f91330779064beed6f5, recuperado con firma/SHA/CRC iguales y8anteriores intactos.

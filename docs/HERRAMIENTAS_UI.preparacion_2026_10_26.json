@@ -91,7 +91,8 @@
         "LICENSE.upstream": "5d26779c58355aef4a3338ed9cbdf0077f76bf5bb7d00dd2f5e85aa73037e6fc",
         "scripts/screenshot.sh": "c6cb81c653f2c804cecdd0c4b25ee638f4cd888f34bfc06d8e6e30bfdb3edecd",
         "scripts/compare.sh": "5e7329a48ba9bb8cb2719382e362fe2e17984e4c3e98d631efc5ebf1df63e8ad",
-        "docs/ci-comparison.md": "bbffc5fa34671d92a93d9e26471f7452f5de0af40a517accb0b52c7a04462247"
+        "docs/ci-comparison.md": "bbffc5fa34671d92a93d9e26471f7452f5de0af40a517accb0b52c7a04462247",
+        "tests/compare.cjs": "da8afa6d6eb21ddecafb98d8b60c2adb50650d0cb2a9f171f875f33a8d75d25b"
       }
     },
     {
@@ -134,7 +135,8 @@
         "references/22-performance-ux.md": "8f9cfdc92398bb33b00720ab9be6199b1ad542706017bb8bb18f5bd3cf12655c",
         "references/17-notifications.md": "d1bd3d109d3f8a3d16d77149c12cba3bc7032b417c1eea7f279159a49a332265",
         "references/21-data-tables.md": "84613ad183fa8fdb68389e2f0cce9b62296be18683ee82b5c9c23fc1dc111225",
-        "references/10-user-research.md": "83c1a817a02aa977659bb3c0526db0747f320c204b3e24e33629939e1760544f"
+        "references/10-user-research.md": "83c1a817a02aa977659bb3c0526db0747f320c204b3e24e33629939e1760544f",
+        "LICENSE": "311bce427930791e38cee5f4e81b83240e8ae2b57629e5fec57e1283769f0912"
       }
     }
   ]
