@@ -1,0 +1,37 @@
+
+ RUN  v5.0.3 /workspace/repartos-chema
+
+ ❯ tests/trip-order.test.ts (0 test)
+ ❯ tests/trip-preferences.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/trip-order.test.ts [ tests/trip-order.test.ts ]
+Error: Cannot find module '../src/domain/tripOrder' imported from /workspace/repartos-chema/tests/trip-order.test.ts
+ ❯ tests/trip-order.test.ts:3:1
+      1| import { describe, expect, it } from 'vitest';
+      2| import type { ObraCard } from '../src/types';
+      3| import { eligibleTripStops, materialQuantity, permuteVisibleTripIds, r…
+       | ^
+      4| const stop = (id: string, status: ObraCard['estadoProceso'] = 'ENTREGA…
+      5|   id, clienteNombre: id, clienteTelefono: '', direccion: `Dirección ${…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/trip-preferences.test.ts [ tests/trip-preferences.test.ts ]
+Error: Cannot find module '../src/services/tripPreferences' imported from /workspace/repartos-chema/tests/trip-preferences.test.ts
+ ❯ tests/trip-preferences.test.ts:2:1
+      1| import { expect, it } from 'vitest';
+      2| import { TripPreferencesStore, parseTripPreferences, initialTripPrefer…
+       | ^
+      3| class Storage {
+      4|   values = new Map<string, string>();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  no tests
+   Start at  01:55:16
+   Duration  263ms (worker 96%, environment 4%)
+

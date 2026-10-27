@@ -5,7 +5,7 @@ test('viaje vuelve al depósito fijo y recupera el cambio de Ajustes sin alterar
 }) => {
   await login(page);
   await page.goto('/mapa');
-  await expect(page.getByText('Primero, los retiros', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Solo retiros', exact: true })).toBeVisible();
   const inventory = await page.evaluate(() => localStorage.getItem('chema:demo:v1'));
   await page.evaluate(() => {
     (window as unknown as { chemaLinks: string[] }).chemaLinks = [];

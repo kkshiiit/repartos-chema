@@ -23,7 +23,7 @@ test('depósito: filas y menú conservan las operaciones y el inventario al canc
   expect(await page.evaluate(() => localStorage.getItem('chema:demo:v1'))).toBe(before);
 });
 
-test('viaje: secuencia, orden manual, tramos y regreso siguen accesibles desde los detalles', async ({
+test('viaje: borrador, posición directa, persistencia, deshacer y regreso sin mover stock', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -33,21 +33,33 @@ test('viaje: secuencia, orden manual, tramos y regreso siguen accesibles desde l
   await expect(page.getByRole('button', { name: 'Abrir recorrido', exact: true })).toBeVisible();
   const stops = page.getByRole('button', { name: /^Parada \d+: / });
   const first = await stops.first().getAttribute('aria-label');
-  await stops.first().click();
-  await expect(page.getByRole('button', { name: 'Subir parada 1', exact: true })).toBeDisabled();
-  await page.getByRole('button', { name: 'Bajar parada 1', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Parada 2', exact: true })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Cómo llegar', exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Cerrar', exact: true }).last().click();
-  expect(await stops.first().getAttribute('aria-label')).not.toBe(first);
+  const originalName = first!.split(': ')[1]!.split('. Ver detalles')[0]!;
+  const edit = async () => {
+    await page.getByRole('button', { name: 'Cambiar orden', exact: true }).first().click();
+    await page
+      .getByRole('button', { name: `Elegir posición de ${originalName}`, exact: true })
+      .click();
+    await page.getByLabel('Nueva posición', { exact: true }).fill('2');
+    await page.getByRole('button', { name: 'Aplicar posición', exact: true }).click();
+  };
+  await edit();
+  await page.getByRole('button', { name: 'Cancelar', exact: true }).last().click();
+  await expect(stops.first()).toHaveAttribute('aria-label', first!);
+  await edit();
+  await page.getByRole('button', { name: 'Guardar orden', exact: true }).click();
+  await expect(page.getByText('Orden guardado en este teléfono.', { exact: true })).toBeVisible();
+  await expect(stops.first()).not.toHaveAttribute('aria-label', first!);
+  const changed = await stops.first().getAttribute('aria-label');
+  await page.reload();
+  await expect(stops.first()).toHaveAttribute('aria-label', changed!);
   await page.getByRole('button', { name: 'Opciones del viaje', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Usar mi ubicación', exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Restablecer orden', exact: true }).click();
+  await page.getByRole('button', { name: 'Deshacer último orden', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Volver al depósito', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Ver tramos del recorrido', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Abrir tramo 1', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Cerrar', exact: true }).last().click();
-  expect(await stops.first().getAttribute('aria-label')).toBe(first);
+  await expect(stops.first()).toHaveAttribute('aria-label', first!);
   await page.getByRole('button', { name: 'Depósito: ver regreso', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Volver al depósito', exact: true })).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem('chema:demo:v1'))).toBe(before);

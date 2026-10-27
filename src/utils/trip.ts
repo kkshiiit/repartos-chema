@@ -78,8 +78,6 @@ export function sortTripStops(
         };
         return pos(a.id) - pos(b.id) || rank(a) - rank(b);
       }
-      const priority = rank(a) - rank(b);
-      if (priority) return priority;
       if (options.origin) {
         const dist = (o: ObraCard) =>
           o.coordenadas ? distanceKm(options.origin!, o.coordenadas) : Infinity;
@@ -88,6 +86,9 @@ export function sortTripStops(
         if (!a.coordenadas && b.coordenadas) return 1;
         if (a.coordenadas && !b.coordenadas) return -1;
       }
+      if (options.origin) return 0; // distancia: empates estables, sin prioridad oculta
+      const priority = rank(a) - rank(b);
+      if (priority) return priority;
       return (
         sortDate(a).localeCompare(sortDate(b)) || a.clienteNombre.localeCompare(b.clienteNombre)
       );
