@@ -23,7 +23,7 @@ const Context = InventoryDataContext;
 export function InventoryProvider({ children }: { children: React.ReactNode }) {
   const shared = useSharedSession();
   return shared?.active ? (
-    <SharedInventoryProvider key={`${shared.spaceId}:${shared.actor?.uid}`}>
+    <SharedInventoryProvider key={`${shared.spaceId}:${shared.actor?.uid}:${shared.actor?.role}`}>
       {children}
     </SharedInventoryProvider>
   ) : (

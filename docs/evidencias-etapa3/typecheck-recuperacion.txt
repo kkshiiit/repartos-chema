@@ -1,0 +1,3 @@
+
+> repartos-chema@1.7.0 typecheck
+> tsc --noEmit

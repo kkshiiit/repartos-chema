@@ -1,0 +1,31 @@
+
+> repartos-chema@1.7.0 check
+> npm run typecheck && npm run lint && npm test && npm --prefix functions run build
+
+
+> repartos-chema@1.7.0 typecheck
+> tsc --noEmit
+
+
+> repartos-chema@1.7.0 lint
+> eslint app src tests functions/src
+
+
+/workspace/repartos-chema/tests/shared-provider-recovery.test.ts
+  44:3  error  Error: Cannot reassign variables declared outside of the component/hook
+
+Variable `value` is declared outside of the component/hook. Reassigning this value during render is a form of side effect, which can cause unpredictable behavior depending on when the component happens to re-render. If this variable is used in rendering, use useState instead. Otherwise, consider updating it in an effect. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#side-effects-must-run-outside-of-render).
+
+/workspace/repartos-chema/tests/shared-provider-recovery.test.ts:44:3
+  42 | let value: InventoryValue;
+  43 | function Probe() {
+> 44 |   value = useContext(InventoryDataContext)!;
+     |   ^^^^^ `value` cannot be reassigned
+  45 |   return null;
+  46 | }
+  47 | const render = () => React.createElement(SharedInventoryProvider, null, React.createElement(Probe));  react-hooks/globals
+
+/workspace/repartos-chema/tests/ui/reminders.spec.ts
+  3:8  warning  Using exported name 'AxeBuilder' as identifier for default import  import/no-named-as-default
+
+✖ 2 problems (1 error, 1 warning)

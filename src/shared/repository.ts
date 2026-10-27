@@ -17,6 +17,17 @@ export interface SharedQueued {
   attempts: number;
   uncertain?: boolean;
 }
+export interface ConflictArchive {
+  schema: 1;
+  id: string;
+  spaceId: string;
+  userId: string;
+  archivedAt: string;
+  reason: string;
+  proposals: SharedQueued[];
+  context: AppState;
+}
+export type ConflictArchiveSummary = Pick<ConflictArchive, 'id' | 'archivedAt' | 'reason'>;
 export interface SharedEnvelope {
   schema: 1;
   spaceId: string;
@@ -303,24 +314,84 @@ export class SharedRepository {
       const row = value.outbox[index]!;
       if (row.status !== 'CONFLICT' || row.uncertain)
         throw new Error('Primero debemos confirmar si el servidor recibió esta operación.');
-      if (index < value.outbox.length - 1)
-        throw new Error(
-          'Hay cambios dependientes. Exportá la propuesta y revisala antes de descartarla.',
-        );
-      // Preserve rejected proposal as an immutable recovery record before removing it from the queue.
+      const proposals = value.outbox.slice(index);
+      if (
+        proposals
+          .slice(1)
+          .some(
+            (dependent) =>
+              dependent.status !== 'PENDING' || dependent.attempts !== 0 || dependent.uncertain,
+          )
+      )
+        throw new Error('Primero debemos confirmar los recibos de los cambios dependientes.');
       if (!this.storage.atomicSet)
         throw new Error('Este almacenamiento no permite archivar la propuesta de forma segura.');
       const remaining = clone(value);
-      remaining.outbox.splice(index, 1);
+      remaining.outbox.splice(index);
+      delete remaining.error;
       this.projection(remaining);
+      const archive: ConflictArchive = {
+        schema: 1,
+        id: operationId,
+        spaceId: this.spaceId,
+        userId: this.actor.uid,
+        archivedAt: new Date().toISOString(),
+        reason: row.error || 'Rechazo confirmado',
+        proposals: clone(proposals),
+        context: clone(value.state),
+      };
+      const summaries = await this.listConflictArchives();
+      if (summaries.some((entry) => entry.id === operationId))
+        throw new Error('Esta propuesta ya tiene un archivo. Se conserva la cola para revisión.');
       await this.storage.atomicSet([
-        [this.key + ':conflict:' + encodeURIComponent(operationId), JSON.stringify(row)],
+        [this.key + ':archive:' + encodeURIComponent(operationId), JSON.stringify(archive)],
+        [
+          this.key + ':archives',
+          JSON.stringify([
+            ...summaries,
+            {
+              id: archive.id,
+              archivedAt: archive.archivedAt,
+              reason: archive.reason,
+            },
+          ]),
+        ],
         [this.key, JSON.stringify(remaining)],
       ]);
       this.value = remaining;
       for (const listener of this.listeners) listener(this.current());
       return this.current();
     });
+  }
+  async listConflictArchives(): Promise<ConflictArchiveSummary[]> {
+    const raw = await this.storage.getItem(this.key + ':archives');
+    if (raw === null) return [];
+    const entries = JSON.parse(raw) as ConflictArchiveSummary[];
+    if (
+      !Array.isArray(entries) ||
+      entries.some(
+        (entry) =>
+          typeof entry.id !== 'string' ||
+          typeof entry.archivedAt !== 'string' ||
+          typeof entry.reason !== 'string',
+      )
+    )
+      throw new Error('No se pudo leer el índice de propuestas archivadas.');
+    return entries;
+  }
+  async readConflictArchive(id: string): Promise<ConflictArchive | null> {
+    const raw = await this.storage.getItem(this.key + ':archive:' + encodeURIComponent(id));
+    if (raw === null) return null;
+    const archive = JSON.parse(raw) as ConflictArchive;
+    if (
+      archive.schema !== 1 ||
+      archive.id !== id ||
+      archive.spaceId !== this.spaceId ||
+      archive.userId !== this.actor.uid ||
+      !Array.isArray(archive.proposals)
+    )
+      throw new Error('No se pudo leer la propuesta de este usuario y equipo.');
+    return archive;
   }
   exportRaw() {
     return this.storage.getItem(this.key);

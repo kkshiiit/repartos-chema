@@ -3,7 +3,11 @@ import NetInfo from '@react-native-community/netinfo';
 import { AppState as NativeState, Platform } from 'react-native';
 import { SharedMediaQueue, sharedPhotoCacheId, downloadSharedPhoto } from '../shared/media';
 import { photoBytes, storePhoto } from '../services/photoCache';
-import { SharedRepository, type SharedEnvelope } from '../shared/repository';
+import {
+  SharedRepository,
+  type SharedEnvelope,
+  type ConflictArchiveSummary,
+} from '../shared/repository';
 import type { SharedSnapshot } from '../shared/protocol';
 import { inventoryStorage } from '../data/localStorage';
 import { emptyState } from '../data/seed';
@@ -24,10 +28,11 @@ export function SharedInventoryProvider({ children }: { children: React.ReactNod
     [syncing, setSyncing] = useState(false);
   const [history, setHistory] = useState<ActivityLog[]>([]);
   const historyCursor = useRef(Number.MAX_SAFE_INTEGER);
+  const historyTop = useRef<number | null>(null);
+  const [proposalArchives, setProposalArchives] = useState<ConflictArchiveSummary[]>([]);
   const repoRef = useRef<SharedRepository | null>(null);
   const initFlight = useRef<Promise<SharedRepository> | null>(null);
   const syncFlight = useRef<Promise<void> | null>(null);
-  const unsubscribe = useRef<(() => void) | null>(null);
   const mounted = useRef(true);
   const remote = shared?.remote,
     initialSnapshot = shared?.initial;
@@ -56,14 +61,8 @@ export function SharedInventoryProvider({ children }: { children: React.ReactNod
       const initial: SharedSnapshot =
         initialSnapshot || (raw ? JSON.parse(raw).confirmed : await remote.snapshot());
       const repo = new SharedRepository(inventoryStorage, spaceId, actor, initial, remote);
-      const loaded = await repo.init();
-      if (mounted.current) {
-        repoRef.current = repo;
-        setEnv(loaded);
-        unsubscribe.current = repo.subscribe((value) => {
-          if (mounted.current) setEnv(value);
-        });
-      }
+      await repo.init();
+      repoRef.current = repo;
       return repo;
     })().catch((e) => {
       initFlight.current = null;
@@ -104,11 +103,19 @@ export function SharedInventoryProvider({ children }: { children: React.ReactNod
             [...prev, ...page.map((row) => row.event)].map((log) => [log.id, log]),
           ).values(),
         ]);
-        if (page.length)
-          historyCursor.current = Math.min(
-            historyCursor.current,
-            ...page.map((row) => row.sequence),
-          );
+        if (page.length) {
+          const oldest = Math.min(...page.map((row) => row.sequence));
+          const newest = Math.max(...page.map((row) => row.sequence));
+          // A fresh head may leave an unread interval above older pages already seen.
+          // Restart pagination at that boundary, rather than skipping straight to the oldest cache.
+          if (
+            before === Number.MAX_SAFE_INTEGER &&
+            (historyTop.current === null || oldest > historyTop.current + 1)
+          )
+            historyCursor.current = oldest;
+          else historyCursor.current = Math.min(historyCursor.current, oldest);
+          historyTop.current = Math.max(historyTop.current ?? newest, newest);
+        }
       }
       return page.length >= 100;
     },
@@ -177,12 +184,26 @@ export function SharedInventoryProvider({ children }: { children: React.ReactNod
       .catch((e) => {
         if (mounted.current) setMediaError(userError(e));
       });
-    void getRepo().catch((e) => {
-      if (mounted.current) setError(userError(e));
-    });
+    let active = true;
+    let stop: (() => void) | undefined;
+    void getRepo()
+      .then(async (repo) => {
+        if (!active) return;
+        // Subscription belongs to this effect, including when the repository already exists.
+        stop = repo.subscribe((value) => {
+          if (active) setEnv(value);
+        });
+        setEnv(repo.current());
+        const archives = await repo.listConflictArchives();
+        if (active) setProposalArchives(archives);
+      })
+      .catch((e) => {
+        if (active) setError(userError(e));
+      });
     return () => {
+      active = false;
       mounted.current = false;
-      unsubscribe.current?.();
+      stop?.();
     };
   }, [getRepo, media]);
   useEffect(
@@ -340,7 +361,10 @@ export function SharedInventoryProvider({ children }: { children: React.ReactNod
           'No hay un rechazo confirmado para archivar. Reintentá para verificar los envíos inciertos.',
         );
       await repo.dismissConflict(row.command.operationId);
+      setProposalArchives(await repo.listConflictArchives());
     },
+    proposalArchives,
+    readProposalArchive: async (id) => (await getRepo()).readConflictArchive(id),
     loadMoreHistory: () => loadHistory(historyCursor.current),
   };
   return <InventoryDataContext.Provider value={value}>{children}</InventoryDataContext.Provider>;

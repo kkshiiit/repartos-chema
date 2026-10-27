@@ -10,6 +10,7 @@ import { sharedPhotoCacheId } from '../shared/media';
 import type { AppState } from '../types';
 import { userError } from '../services/errors';
 import { Button, ConfirmButton, Field, Notice, useUI } from './ui';
+import { ProposalArchivesPanel } from './ProposalArchivesPanel';
 export function SharedTeamSettings({ invitation = '' }: { invitation?: string }) {
   const shared = useSharedSession(),
     inventory = useInventory(),
@@ -192,14 +193,20 @@ export function SharedTeamSettings({ invitation = '' }: { invitation?: string })
           ))}
           {inventory.queue.some((row) => row.status === 'CONFLICT') ? (
             <>
-              <Button label="Guardar propuesta" variant="secondary" onPress={inventory.backup} />
               <ConfirmButton
-                label="Archivar rechazo"
-                title="Conservar propuesta rechazada"
-                description="Sólo se archiva un rechazo confirmado, conservando una copia interna. Los envíos inciertos deben verificarse y los cambios dependientes no se descartan. Luego podés corregir el alquiler con los datos actuales."
+                label="Archivar rechazo y dependientes sin enviar"
+                title="Archivar esta rama de propuestas"
+                description="Se conservan el rechazo confirmado y sus cambios dependientes que nunca se enviaron en un archivo consultable y exportable. Salen de la cola sin modificar el stock del equipo. Los envíos inciertos requieren verificar sus recibos. El archivo no se reenvía; luego podés registrar una corrección con los datos actuales."
                 onConfirm={inventory.discard}
               />
             </>
+          ) : null}
+          {inventory.readProposalArchive ? (
+            <ProposalArchivesPanel
+              key={`${shared.spaceId}:${shared.actor?.uid}`}
+              archives={inventory.proposalArchives || []}
+              readArchive={inventory.readProposalArchive}
+            />
           ) : null}
           {members
             .filter((m) => m.active)

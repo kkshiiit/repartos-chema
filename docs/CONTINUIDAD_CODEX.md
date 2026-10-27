@@ -1,3 +1,15 @@
+# Auditoría etapa3 activa — 27/10/2026 20:00UTC
+
+Entorno recuperado y documentos remotos integrados por fast-forward desdeFETCH_HEAD (refspec no crea origin/branch). WIP previo conservado en /workspace/respaldos/cierre-2026-10-27/wip-antes-auditoria.zip con manifiesto y Gitstash scoped; no borrar stash ni original. Encargo03 íntegro en ENCARGO_ETAPA_3_CHEMA.md.
+
+Tres hallazgos reproducidos/corregidos: listener perdido al revalidar (efecto suscribe repositorio reutilizado); conflicto+dependientes (archivo atómico consultable/exportable, sin reenviar ni descartar inciertos); hueco de historial tras salto >1página (cursor conserva frontera nueva). RED2 provider/history y REDcola, GREEN8focales. Check actual519/519/58archivos, tipos y Functions pasan, lint0errores/1warningAxe. Errorprevio de lint en Probe deltest corregido usandoeffect; evidencia conservada. Auth remoto NUEVO8/8 con identidades sintéticas, no físicas. NoAPK1.7.0 todavía.
+
+PrivadoQA anterior /tmp se perdió al reiniciar entorno. NuevoQA en /workspace/privados-chema/qa-cierre03.json0600, nunca imprimir ni versionar; tag8ae85d7a0ee7, controlar limpieza sólo datos QA. Las credenciales no van en ZIP. Probar media/rutas/UI; B termina revocado en Auth8, media usa nueva invitación explícita para reincorporarlo. Log ruta anterior recuperado FALLÓ timeout antes de409; no presentarlo como éxito. Suite515 anterior sícerró correctamente; buildweb anterior también, ambos previos a estas correcciones.
+
+Próximoexacto: commit/push de recuperación, buildweb nuevo → regresiónUI completa/capturas/rutasremotas → informe/matriz94PASA/FALLA/NOEJECUTADO → fuenteZIP restaurada/push → Gradle1.7.0code11 mismafirma, verificación/publicación nueva en descargas. Toolchain/JDK/SDK/firma previa presentes; sinADBfísico niAPK2.0/JSONexactos. No repetir auditoría de partida ni asumir todo terminado. SupabaseFreev4 sin cambiosservidor enetapa3hastaahora. No promesaautomática.
+
+---
+
 # Último cierre documental remoto — 27/10/2026
 
 Fuente conservada `1a9355aa24ed3a7e38769bfdd3220be88addee53`. Informes corregidos y matriz de **94 IDs únicos** respaldados en commits `750a7f2`, `1e85ea9`, `dd9780b` y `5e23dfc`, sobre esta misma rama. No se modificó la aplicación durante el bloqueo ni se generó APK.
