@@ -1,3 +1,13 @@
+# Fuente de release en cierre — 27/10/2026
+
+Código fdee1cf respaldado; mejoras posteriores de historial continuado/errores en español/alcance de copia local en validación final. J7 delta yaoperativo enproyectoFree: Edgev5 y7migraciones. Prueba remota delta3/3 +ruta4/4 +media5/5 +Auth8/8, SQL15/15. No APKnuevo todavía. Dos dispositivosfísicos yAPK2.0/JSONexactossiguenpendientes.
+
+Primera UI64:53/64 y11fallos conservados; UIafectadas27 está repitiéndose sobrebuildcorregido y corrige desbordes/selector/textos sin cambiarcomportamiento. Checkgeneralactual vercheck-final.txt; no sumarejecuciones. Al final fuente se congela, último buildweb sobrecódigo final → UI64+equipo real → ZIP/push → GradleARM64/cert existente, verify/publicacióndescargas. No aceptar cierre sólo documental.
+
+Precisiónbackup: JSONcompartido protege estadolocal/propuestas e historialdisponible enelteléfono, incluyehistoryCoverageLOCAL_CACHE_ONLY. No se anuncia backupcompletodeservidor; SQL/objetos/Auth requieren procedimientooperativo separado. La app individual ycopiaspropias siguenfuncionalesoffline. CancelacionesOS/persistencia/cámara física noprobadas. PrivadoQA fueraGit /workspace/privados-chema; limpiar sóloidentidadesexample.invalid yobjetos1px conocidos despuésQA, nunca comerciales.
+
+---
+
 # Cierre03 — delta integrado y validación web final pendiente — 27/10/2026
 
 Último código guardado53a30d1 sobre documentoscdeaf79. Nuevos cambios cierranJ7 condelta paginado porentidad, cursor/watermark/outbox atómicos, máximocinco páginas/sync, currentLog deúltimoUNDOdesdeagregado ysin inversos enhistórico. SupabaseFree autorizado: migraciones terminal_conflicts ydurable_delta aplicadas (total7), Edgechema-api v5ACTIVE hash1d9bf75e4b3f18aa4bb362e90695d5c31c909679b4dad37ed94a0d6a18b8929e. No estado/stockcomercial migrado. Informes yevidenciaetapa3. SQLreal15/15 ycheckgeneralnuevo registrarlogactual (no asumir519siagregótests). Delta realAuth/SQLite enejecución, revisarresultadoantesdaréxito.

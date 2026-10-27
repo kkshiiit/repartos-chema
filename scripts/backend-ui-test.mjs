@@ -10,7 +10,7 @@ const browser = await chromium.launch({
   executablePath: '/usr/bin/chromium',
   args: ['--no-sandbox'],
 });
-const evidence = 'artifacts/capturas/maestro-etapa2/equipo';
+const evidence = process.env.CHEMA_QA_CAPTURE_DIR || 'artifacts/capturas/maestro-etapa2/equipo';
 mkdirSync(evidence, { recursive: true });
 let stage = 'inicio',
   passed = 0;

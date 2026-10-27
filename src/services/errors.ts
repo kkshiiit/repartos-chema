@@ -2,6 +2,10 @@ export function userError(
   error: unknown,
   fallback = 'No se pudo completar la operación. Reintenta.',
 ) {
+  if (error instanceof SyntaxError)
+    return 'No se pudieron leer los datos guardados. Conservamos el original; revisá la copia antes de continuar.';
+  if (error instanceof Error && /^DELTA_/.test(error.message))
+    return 'La lectura de cambios del equipo está incompleta. Conservamos la copia y los pendientes; reintentá.';
   const code = String((error as { code?: unknown })?.code || '');
   if (/quota|QuotaExceeded|SQLITE_FULL/i.test(code + ' ' + String(error)))
     return 'No hay espacio para guardar. El cambio no se confirmó. Guarda una copia y libera espacio sin borrar los datos de la aplicación.';

@@ -1,0 +1,35 @@
+
+ RUN  v5.0.3 /workspace/repartos-chema
+
+stderr | tests/shared-provider-recovery.test.ts > historial tras salto de más de una página no omite el intervalo nuevo intermedio
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+
+ ❯ tests/shared-provider-recovery.test.ts (2 tests | 1 failed) 45ms
+   × historial tras salto de más de una página no omite el intervalo nuevo intermedio 9ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/shared-provider-recovery.test.ts > historial tras salto de más de una página no omite el intervalo nuevo intermedio
+AssertionError: expected undefined to be false // Object.is equality
+
+- Expected:
+false
+
++ Received:
+undefined
+
+ ❯ tests/shared-provider-recovery.test.ts:142:32
+    140|   expect(value.state.logs.some((l) => l.id === 'history_1')).toBe(true…
+    141|   await act(async () => { await value.loadMoreHistory!(); });
+    142|   expect(value.historyHasMore).toBe(false);
+       |                                ^
+    143|   server.grow();
+    144|   await server.remote.commit(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  20:18:37
+   Duration  430ms (transform 52%, import 33%, tests 14%, worker 1%)

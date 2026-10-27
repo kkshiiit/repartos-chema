@@ -138,6 +138,10 @@ it('historial tras salto de más de una página no omite el intervalo nuevo inte
     await value.loadMoreHistory!();
   });
   expect(value.state.logs.some((l) => l.id === 'history_1')).toBe(true);
+  await act(async () => {
+    await value.loadMoreHistory!();
+  });
+  expect(value.historyHasMore).toBe(false);
   server.grow();
   await server.remote.commit(
     createCommand(
@@ -151,6 +155,7 @@ it('historial tras salto de más de una página no omite el intervalo nuevo inte
     await value.retry();
   });
   expect(value.state.logs.some((l) => l.id === 'history_500')).toBe(true);
+  expect(value.historyHasMore).toBe(true);
   await act(async () => {
     await value.loadMoreHistory!();
   });

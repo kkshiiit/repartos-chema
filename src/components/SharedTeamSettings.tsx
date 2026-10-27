@@ -159,6 +159,10 @@ export function SharedTeamSettings({ invitation = '' }: { invitation?: string })
         <>
           <Text style={s.body}>{shared.actor?.nombre}</Text>
           <Notice text={inventory.syncSummary || 'Copia local del equipo.'} />
+          <Text style={s.muted}>
+            La copia JSON protege los datos e historial disponibles en este teléfono y sus
+            propuestas. No sustituye un respaldo completo del equipo.
+          </Text>
           {inventory.lastSyncedAt ? (
             <Text style={s.muted}>
               Última sincronización:{' '}
