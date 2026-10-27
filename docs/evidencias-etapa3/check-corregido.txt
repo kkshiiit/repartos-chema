@@ -1,0 +1,38 @@
+
+> repartos-chema@1.7.0 check
+> npm run typecheck && npm run lint && npm test && npm --prefix functions run build
+
+
+> repartos-chema@1.7.0 typecheck
+> tsc --noEmit
+
+
+> repartos-chema@1.7.0 lint
+> eslint app src tests functions/src
+
+
+/workspace/repartos-chema/tests/ui/reminders.spec.ts
+  3:8  warning  Using exported name 'AxeBuilder' as identifier for default import  import/no-named-as-default
+
+✖ 1 problem (0 errors, 1 warning)
+
+
+> repartos-chema@1.7.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /workspace/repartos-chema
+
+
+ Test Files  58 passed (58)
+      Tests  519 passed (519)
+   Start at  19:58:20
+   Duration  12.29s (import 46%, tests 37%, transform 14%, worker 3%)
+
+     Import  146 modules were evaluated 201 times · 3.08s total, 46% of tracked time
+             ~844ms faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation
+
+
+> repartos-chema-functions@1.0.0 build
+> tsc

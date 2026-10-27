@@ -7,7 +7,9 @@ import { createSharedClient } from '../src/shared/client';
 import { createCommand } from '../src/shared/protocol';
 import { validateJpeg, downloadSharedPhoto } from '../src/shared/media';
 import { SHARED_CONFIG } from '../src/services/sharedConfig';
-const qa = JSON.parse(readFileSync('/tmp/chema-remote-qa-private.json', 'utf8'));
+const qa = JSON.parse(
+  readFileSync(process.env.CHEMA_REMOTE_QA_FILE || '/tmp/chema-remote-qa-private.json', 'utf8'),
+);
 if (!/^chema-qa-[a-f0-9]+@example\.invalid$/.test(qa.email) || !qa.completed)
   throw Error('QA no validada');
 const auth = () => {
@@ -32,6 +34,9 @@ const client = (identity: SharedAuth, uid: string) =>
   );
 const ra = client(a, qa.userId),
   rb = client(b, qa.userId2);
+// Previous QA ends with revocation; a new private invitation explicitly restores this synthetic member.
+const rejoin = await ra.request<{ token: string }>('invite');
+await b.enroll(rejoin.token, 'Persona QA operativa', qa.email2, qa.password);
 const bytes = new Uint8Array(readFileSync('tests/fixtures/media-synthetic.jpg'));
 const hash = await validateJpeg(bytes);
 const photoId = 'qa_photo_' + randomUUID().replaceAll('-', '');
@@ -83,7 +88,7 @@ await run('bucket no entrega el objeto por URL pública anónima', async () => {
   assert.notEqual(result.status, 200);
 });
 writeFileSync(
-  'docs/evidencias-etapa2/media-remota-real.json',
+  `${process.env.CHEMA_QA_EVIDENCE_DIR || 'docs/evidencias-etapa2'}/media-remota-real.json`,
   JSON.stringify(
     {
       dateUTC: new Date().toISOString(),

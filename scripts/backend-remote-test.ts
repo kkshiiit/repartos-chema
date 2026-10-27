@@ -216,7 +216,7 @@ const report = {
   cleanup: 'PENDIENTE: borrar sólo los datos/usuarios QA conocidos mediante control autorizado',
 };
 writeFileSync(
-  'docs/evidencias-etapa2/backend-remoto-autenticado.json',
+  `${process.env.CHEMA_QA_EVIDENCE_DIR || 'docs/evidencias-etapa2'}/backend-remoto-autenticado.json`,
   JSON.stringify(report, null, 2) + '\n',
 );
 console.log(JSON.stringify({ passed, failed: 0, cleanup: 'pendiente', physicalAndroid: false }));

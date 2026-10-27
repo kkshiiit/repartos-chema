@@ -1,5 +1,6 @@
 import { createContext } from 'react';
 import type { Action, AppState, Envelope } from '../types';
+import type { ConflictArchive, ConflictArchiveSummary } from '../shared/repository';
 import type { BackupDestination } from '../services/files';
 export interface InventoryValue {
   accessBlocked?: boolean;
@@ -8,6 +9,8 @@ export interface InventoryValue {
   syncSummary?: string;
   lastSyncedAt?: string;
   loadMoreHistory?: () => Promise<boolean>;
+  proposalArchives?: ConflictArchiveSummary[];
+  readProposalArchive?: (id: string) => Promise<ConflictArchive | null>;
   state: AppState;
   ready: boolean;
   error: string;

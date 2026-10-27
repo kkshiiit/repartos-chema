@@ -142,3 +142,85 @@ it('una respuesta atrasada no hace retroceder cursor, datos ni revisión confirm
   expect(repo.current().state.responsables).toEqual(['Nombre actualizado']);
   expect(repo.current().error).toMatch(/anterior|atrasada/);
 });
+it('archiva rechazo y dos dependientes sin enviar y permite reabrir sin reenviarlos', async () => {
+  const backend = server(),
+    storage = new SqliteStorage(sqliteDb());
+  const repo = new SharedRepository(storage, 'space_test', actor, backend.initial, backend.remote);
+  await repo.init();
+  await repo.dispatch({ type: 'RESPONSABLES', nombres: ['Uno'] }, 'branch_one');
+  await repo.dispatch({ type: 'RESPONSABLES', nombres: ['Dos'] }, 'branch_two');
+  await repo.dispatch({ type: 'RESPONSABLES', nombres: ['Tres'] }, 'branch_three');
+  let submissions = 0;
+  backend.remote.commit = async () => {
+    submissions++;
+    return { kind: 'CONFLICT', message: 'Revisión modificada', snapshot: backend.initial };
+  };
+  await repo.sync();
+  const original = repo.current().outbox;
+  await repo.dismissConflict('branch_one');
+  expect(repo.current().outbox).toEqual([]);
+  const reopened = new SharedRepository(
+    storage,
+    'space_test',
+    actor,
+    backend.initial,
+    backend.remote,
+  );
+  await reopened.init();
+  expect(reopened.current().outbox).toEqual([]);
+  await reopened.sync();
+  expect(submissions).toBe(1);
+  const archives = await reopened.listConflictArchives();
+  expect(archives).toHaveLength(1);
+  expect((await reopened.readConflictArchive(archives[0]!.id))?.proposals).toEqual(original);
+});
+it('archivo y cola revierten juntos ante fallo SQLite; preserva prefijo y bloquea inciertos', async () => {
+  const backend = server(),
+    control = { failRoot: false, failAt: 0, runs: 0 };
+  const storage = new SqliteStorage(sqliteDb(control));
+  const repo = new SharedRepository(storage, 'space_test', actor, backend.initial, backend.remote);
+  await repo.init();
+  for (const id of ['prefix', 'rejected', 'dependent'])
+    await repo.dispatch({ type: 'RESPONSABLES', nombres: [id] }, id);
+  const fixture = repo.current();
+  fixture.outbox[1]!.status = 'CONFLICT';
+  fixture.outbox[1]!.uncertain = false;
+  fixture.outbox[1]!.error = 'Rechazado';
+  await storage.setItem(repo.key, JSON.stringify(fixture));
+  const reopen = () =>
+    new SharedRepository(storage, 'space_test', actor, backend.initial, backend.remote);
+  const loaded = reopen();
+  await loaded.init();
+  control.failAt = control.runs + 3;
+  await expect(loaded.dismissConflict('rejected')).rejects.toThrow('Disco lleno');
+  expect(loaded.current()).toEqual(fixture);
+  const afterFailure = reopen();
+  await afterFailure.init();
+  expect(afterFailure.current()).toEqual(fixture);
+  expect(await afterFailure.listConflictArchives()).toEqual([]);
+  expect(await afterFailure.readConflictArchive('rejected')).toBeNull();
+  await afterFailure.dismissConflict('rejected');
+  expect(afterFailure.current().outbox.map((r) => r.command.operationId)).toEqual(['prefix']);
+  expect(afterFailure.current().state.responsables).toEqual(['prefix']);
+  const other = new SharedRepository(
+    storage,
+    'space_test',
+    { ...actor, uid: 'other' },
+    backend.initial,
+    backend.remote,
+  );
+  await other.init();
+  expect(await other.listConflictArchives()).toEqual([]);
+  expect(await other.readConflictArchive('rejected')).toBeNull();
+  for (const status of ['SENDING', 'ERROR', 'PENDING'] as const) {
+    const unsafe = structuredClone(fixture);
+    unsafe.outbox[2]!.status = status;
+    unsafe.outbox[2]!.attempts = 1;
+    unsafe.outbox[2]!.uncertain = true;
+    await storage.setItem(repo.key, JSON.stringify(unsafe));
+    const uncertain = reopen();
+    await uncertain.init();
+    await expect(uncertain.dismissConflict('rejected')).rejects.toThrow(/recibos/);
+    expect(uncertain.current()).toEqual(unsafe);
+  }
+});

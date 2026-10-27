@@ -1,7 +1,9 @@
 // Sólo identidades sintéticas ya creadas por backend-remote-test; nunca registrar credenciales ni trazas.
 import { chromium } from '@playwright/test';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-const qa = JSON.parse(readFileSync('/tmp/chema-remote-qa-private.json', 'utf8'));
+const qa = JSON.parse(
+  readFileSync(process.env.CHEMA_REMOTE_QA_FILE || '/tmp/chema-remote-qa-private.json', 'utf8'),
+);
 if (!/^chema-qa-[a-f0-9]+@example\.invalid$/.test(qa.email) || !qa.completed)
   throw Error('QA no validada');
 const browser = await chromium.launch({
@@ -47,7 +49,7 @@ try {
     await context.close();
   }
   writeFileSync(
-    'docs/evidencias-etapa2/ui-equipo-real.json',
+    `${process.env.CHEMA_QA_EVIDENCE_DIR || 'docs/evidencias-etapa2'}/ui-equipo-real.json`,
     JSON.stringify(
       {
         dateUTC: new Date().toISOString(),
