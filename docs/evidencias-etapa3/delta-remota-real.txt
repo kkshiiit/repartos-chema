@@ -1,0 +1,3 @@
+PASS tres cambios recibidos por delta real y SQLite sin pedir snapshot ni mover stock
+PASS cursor confirmado repetido no vuelve a entregar cambios
+PASS historia previa sin delta requiere RESET explícito

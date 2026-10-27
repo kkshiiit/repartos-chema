@@ -9,7 +9,7 @@ for (const mode of ['light', 'dark'] as const)
     await page.goto('/');
     await expect(page.getByLabel('Tu nombre', { exact: true })).toBeVisible();
     await page.screenshot({
-      path: `artifacts/capturas/estructura-1.5/rutas-390-${mode}-login.png`,
+      path: `artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-${mode}-login.png`,
       fullPage: true,
     });
     await loginSynthetic(page);
@@ -30,7 +30,7 @@ for (const mode of ['light', 'dark'] as const)
         await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
       ).toBe(true);
       await page.screenshot({
-        path: `artifacts/capturas/estructura-1.5/rutas-390-${mode}-${name}.png`,
+        path: `artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-${mode}-${name}.png`,
         fullPage: true,
       });
     }
@@ -48,7 +48,7 @@ for (const mode of ['light', 'dark'] as const)
       ).toBeVisible();
       await expect(page.getByRole('button', { name: /Activar modo/ })).toHaveCount(0);
       await page.screenshot({
-        path: `artifacts/capturas/estructura-1.5/rutas-390-${mode}-${name}.png`,
+        path: `artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-${mode}-${name}.png`,
         fullPage: true,
       });
     }
@@ -64,7 +64,7 @@ for (const mode of ['light', 'dark'] as const)
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto('/');
     await page.screenshot({
-      path: `artifacts/capturas/estructura-1.5/rutas-1440-${mode}-alquileres.png`,
+      path: `artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-${mode}-alquileres.png`,
       fullPage: true,
     });
   });
@@ -95,7 +95,7 @@ test('un error de GPS queda visible dentro de la ventana y conserva coordenadas 
   ).toBeVisible();
   await expect(page.getByLabel('Latitud', { exact: true })).toHaveValue('-34.5');
   await page.screenshot({
-    path: 'artifacts/capturas/estructura-1.5/rutas-390-error-gps.png',
+    path: 'artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-error-gps.png',
     fullPage: true,
   });
 });

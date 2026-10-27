@@ -1,0 +1,4 @@
+PASS dos autores sobre misma versión no sobrescriben plan y no alteran stock
+PASS historia conserva versiones/autor y asignación real bajo revisión
+PASS revocación con JWT vigente bloquea snapshot y fotografía privada
+PASS invitación nueva reincorpora misma identidad con rol OPERADOR y mismo stock

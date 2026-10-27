@@ -7,7 +7,7 @@ import type { FeedbackState, Reminder } from '../../src/services/feedback/remind
 import { login } from './helpers';
 
 const fixedNow = new Date('2026-10-23T15:00:00.000Z');
-const captureDirectory = 'artifacts/capturas/avisos-1.6';
+const captureDirectory = 'artifacts/capturas/cierre-1.7/avisos-1.6';
 const feedbackKey = 'chema:local-feedback:v1';
 const names = [
   'Cliente hoy',
@@ -119,7 +119,7 @@ test('contador civil muestra hoy, mañana, vencido y cierre sin cuenta activa', 
   const rows = [
     ['Cliente hoy', 'Retirar hoy'],
     ['Cliente mañana', 'Retirar mañana'],
-    ['Cliente vencido', 'Retiro vencido hace 2 días'],
+    ['Cliente vencido', 'Retiro atrasado · 2 días'],
     ['Cliente futuro', 'Retirar en 5 días'],
   ];
   for (const [name, countdown] of rows) {
@@ -159,7 +159,7 @@ test('Alquilado hasta usa calendario, admite escritura y persiste al crear y edi
   await page.getByRole('button', { name: 'Continuar a carga', exact: true }).click();
   await page.getByRole('button', { name: 'Revisar alquiler', exact: true }).click();
   await expect(
-    page.getByText('Entrega: 23/10/2026 · Alquilado hasta: 29/10/2026', { exact: true }),
+    page.getByText('Entrega prevista: 23/10/2026 · Alquilado hasta: 29/10/2026', { exact: true }),
   ).toBeVisible();
   await page.getByRole('button', { name: 'Guardar alquiler', exact: true }).click();
   await expect(
@@ -345,7 +345,7 @@ test('capturas reales de principal, detalle, ajustes y personalización en claro
     const capture = async (screen: string) => {
       const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
       await writeFile(
-        `artifacts/validacion/avisos-axe-${theme}-${screen}.json`,
+        `artifacts/validacion/cierre-1.7/avisos-axe-${theme}-${screen}.json`,
         JSON.stringify({ violations: result.violations, incomplete: result.incomplete }, null, 2) +
           '\n',
       );

@@ -1,3 +1,15 @@
+# Cierre03 — delta integrado y validación web final pendiente — 27/10/2026
+
+Último código guardado53a30d1 sobre documentoscdeaf79. Nuevos cambios cierranJ7 condelta paginado porentidad, cursor/watermark/outbox atómicos, máximocinco páginas/sync, currentLog deúltimoUNDOdesdeagregado ysin inversos enhistórico. SupabaseFree autorizado: migraciones terminal_conflicts ydurable_delta aplicadas (total7), Edgechema-api v5ACTIVE hash1d9bf75e4b3f18aa4bb362e90695d5c31c909679b4dad37ed94a0d6a18b8929e. No estado/stockcomercial migrado. Informes yevidenciaetapa3. SQLreal15/15 ycheckgeneralnuevo registrarlogactual (no asumir519siagregótests). Delta realAuth/SQLite enejecución, revisarresultadoantesdaréxito.
+
+UI primera completa64:53PASS/11FAIL; todosconservados enui-completa.txt. Confirmados4grupos: selectorviejoConfirmarimportación→Restaurarestacopia; textoactualRetiroatrasado/Entregaprevista; header341pxcontraumbral340 (compactagrupar), vacíoHistorial320texto200desborda3px (maxWidth). Se mantienenasercionessemánticas/stock/umbral yfuenteescala, no sesilencian tests. Nuevascapturasenartifacts/capturas/cierre-1.7 para no sobrescribirhistóricos. **Falta buildwebnuevo yrepeticióncompleta64**, contraste yabrircapturas. NoAPKnuevo.
+
+Ruta real fallaba por40001 empresarial tratado como retry; logs12ROUTE_CHANGED, migrationP0001hace409rápido,4/4remotasrutas+revocación/rejoin pasaron,15PG preservan14previas. Media5/5/Auth8/8nuevosyaPASS. PrivadoQA8ae85d7a0ee7 en/workspace/privados-chema/qa-cierre03.json, fueraGit; /tmpseperdió. Todavía limpiarQAoldb371 ynew8ae85conguardas/StorageAPI; no comerciales. No repetirUserSetup ni pedirprogramar.
+
+Próximo: commit/pushnuevo→buildwebestable→UI64yrecorridoscompartidos→cerrardocs/matriz94/PASA-FALLA-NOEJECUTADO→ZIPrestaurado/push→GradleARM64samekey→verify/publicarAPK1.7.0code11descargasnuevaruta+hash+preservaranteriores. SinADBfísico,APKinstalado2.0/JSONexacto desconocidos. SharedCSV/backupreadhistoriacompletaoperativa aexplicar, leakedpasswordWARNnoactivarPro. No continuidadautomáticaprometida.
+
+---
+
 # Auditoría etapa3 activa — 27/10/2026 20:00UTC
 
 Entorno recuperado y documentos remotos integrados por fast-forward desdeFETCH_HEAD (refspec no crea origin/branch). WIP previo conservado en /workspace/respaldos/cierre-2026-10-27/wip-antes-auditoria.zip con manifiesto y Gitstash scoped; no borrar stash ni original. Encargo03 íntegro en ENCARGO_ETAPA_3_CHEMA.md.

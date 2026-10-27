@@ -3,8 +3,8 @@ import { AxeBuilder } from '@axe-core/playwright';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { loginSynthetic } from './helpers';
 
-const captureDirectory = 'artifacts/capturas/estructura-1.5/matriz';
-const reportDirectory = 'artifacts/validacion';
+const captureDirectory = 'artifacts/capturas/cierre-1.7/estructura-1.5/matriz';
+const reportDirectory = 'artifacts/validacion/cierre-1.7';
 const routes = [
   ['/', 'alquileres'],
   ['/galpon', 'deposito'],

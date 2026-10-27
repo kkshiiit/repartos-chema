@@ -32,6 +32,7 @@ export interface SyncCommand {
 export type CommitResult =
   | {
       kind: 'CONFIRMED';
+      delta?: SharedDelta;
       operationId: string;
       snapshot: SharedSnapshot;
       serverTimestamp: string;
@@ -40,6 +41,7 @@ export type CommitResult =
     }
   | { kind: 'CONFLICT'; operationId: string; message: string; snapshot?: SharedSnapshot };
 export interface SharedRemote {
+  deltaPull?(cursor: number, epoch: string, watermark?: number): Promise<DeltaPage>;
   snapshot(): Promise<SharedSnapshot>;
   commit(command: SyncCommand): Promise<CommitResult>;
   receipt(operationId: string): Promise<CommitResult | null>;
@@ -192,5 +194,102 @@ export function prepareCommit(
     serverTimestamp: now.toISOString(),
     payloadHash: command.payloadHash,
     snapshot: { ...base, cursor: base.cursor + 1, state: next, versions, tasks },
+  };
+}
+
+/** A generation-bound, contiguous state transition; entity arrays retain explicit order. */
+export interface SharedDelta {
+  protocol: 1;
+  spaceId: string;
+  epoch: string;
+  from: number;
+  cursor: number;
+  entities: {
+    [K in 'obras' | 'materiales' | 'combos']: {
+      upserts: AppState[K];
+      removals: string[];
+      order: string[];
+    };
+  };
+  rest: Omit<AppState, 'obras' | 'materiales' | 'combos'>;
+  versions: SharedSnapshot['versions'];
+  tasks: SharedSnapshot['tasks'];
+}
+export type DeltaPage =
+  | { kind: 'RESET'; snapshot: SharedSnapshot; watermark: number; epoch: string }
+  | {
+      kind: 'DELTA';
+      changes: SharedDelta[];
+      watermark: number;
+      epoch: string;
+      hasMore: boolean;
+      currentLog?: AppState['logs'][number];
+    };
+export function makeDelta(base: SharedSnapshot, next: SharedSnapshot): SharedDelta {
+  if (base.spaceId !== next.spaceId || base.epoch !== next.epoch || next.cursor !== base.cursor + 1)
+    throw new Error('DELTA_ORDER');
+  const patches = {} as SharedDelta['entities'];
+  for (const key of ['obras', 'materiales', 'combos'] as const) {
+    const before = new Map(base.state[key].map((item) => [item.id, canonical(item)]));
+    const ids = new Set(next.state[key].map((item) => item.id));
+    Object.assign(patches, {
+      [key]: {
+        upserts: clone(next.state[key].filter((item) => before.get(item.id) !== canonical(item))),
+        removals: base.state[key].filter((item) => !ids.has(item.id)).map((item) => item.id),
+        order: next.state[key].map((item) => item.id),
+      },
+    });
+  }
+  const rest = Object.fromEntries(
+    Object.entries(next.state).filter(([key]) => !['obras', 'materiales', 'combos'].includes(key)),
+  ) as SharedDelta['rest'];
+  const historicalRest = clone(rest);
+  historicalRest.logs.forEach((log) => {
+    delete log.payloadInverso;
+  });
+  return clone({
+    protocol: 1,
+    spaceId: next.spaceId,
+    epoch: next.epoch,
+    from: base.cursor,
+    cursor: next.cursor,
+    entities: patches,
+    rest: historicalRest,
+    versions: next.versions,
+    tasks: next.tasks,
+  });
+}
+export function applyDelta(base: SharedSnapshot, delta: SharedDelta): SharedSnapshot {
+  if (
+    delta.protocol !== 1 ||
+    delta.spaceId !== base.spaceId ||
+    delta.epoch !== base.epoch ||
+    delta.from !== base.cursor ||
+    delta.cursor !== base.cursor + 1
+  )
+    throw new Error('DELTA_ORDER');
+  const state = clone(delta.rest) as AppState;
+  for (const key of ['obras', 'materiales', 'combos'] as const) {
+    const patch = delta.entities[key];
+    const items = new Map<string, AppState[typeof key][number]>(
+      base.state[key].map((item) => [item.id, item]),
+    );
+    for (const id of patch.removals) items.delete(id);
+    for (const item of patch.upserts) items.set(item.id, clone(item));
+    if (
+      new Set(patch.order).size !== patch.order.length ||
+      patch.order.length !== items.size ||
+      patch.order.some((id) => !items.has(id))
+    )
+      throw new Error('DELTA_ENTITIES');
+    Object.assign(state, { [key]: patch.order.map((id) => items.get(id)!) });
+  }
+  assertState(state);
+  return {
+    ...base,
+    cursor: delta.cursor,
+    state,
+    versions: clone(delta.versions),
+    tasks: clone(delta.tasks),
   };
 }

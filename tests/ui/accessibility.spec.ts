@@ -30,9 +30,9 @@ for (const theme of ['light', 'dark'] as const) {
         incomplete: result.incomplete.map((i) => ({ id: i.id, nodes: i.nodes.length })),
       });
     }
-    await mkdir('artifacts/validacion', { recursive: true });
+    await mkdir('artifacts/validacion/cierre-1.7', { recursive: true });
     await writeFile(
-      `artifacts/validacion/estructura-axe-${theme}.json`,
+      `artifacts/validacion/cierre-1.7/estructura-axe-${theme}.json`,
       JSON.stringify(reports, null, 2),
     );
     expect(

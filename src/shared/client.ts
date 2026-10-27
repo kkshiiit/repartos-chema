@@ -65,6 +65,7 @@ export function createSharedClient(
   };
   return {
     request,
+    deltaPull: (cursor, epoch, watermark) => request('delta-pull', { cursor, epoch, watermark }),
     snapshot: () => request<SharedSnapshot>('snapshot'),
     receipt: (operationId) => request<CommitResult | null>('receipt', { operationId }),
     commit: (command: SyncCommand) => request<CommitResult>('commit', { command }),

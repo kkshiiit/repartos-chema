@@ -734,8 +734,12 @@ export function Empty({ title, detail }: { title: string; detail: string }) {
   return (
     <View style={[s.card, { padding: 34, alignItems: 'center' }]}>
       <Package size={36} color={C.subtle} />
-      <Text style={s.h2}>{title}</Text>
-      <Text style={[s.muted, { textAlign: 'center' }]}>{detail}</Text>
+      <Text style={[s.h2, { maxWidth: '100%', alignSelf: 'stretch', textAlign: 'center' }]}>
+        {title}
+      </Text>
+      <Text style={[s.muted, { maxWidth: '100%', alignSelf: 'stretch', textAlign: 'center' }]}>
+        {detail}
+      </Text>
     </View>
   );
 }

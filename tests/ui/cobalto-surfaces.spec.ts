@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { loginSynthetic } from './helpers';
 
-const directory = 'artifacts/capturas/estructura-1.5/superficies';
+const directory = 'artifacts/capturas/cierre-1.7/estructura-1.5/superficies';
 
 for (const theme of ['light', 'dark'] as const) {
   test(`Cobalto superficies secundarias ${theme}: formularios, selectores y revisiones con fixture sintético`, async ({
@@ -10,7 +10,7 @@ for (const theme of ['light', 'dark'] as const) {
   }) => {
     test.setTimeout(180000);
     await mkdir(directory, { recursive: true });
-    await mkdir('artifacts/validacion', { recursive: true });
+    await mkdir('artifacts/validacion/cierre-1.7', { recursive: true });
     await page.setViewportSize({ width: 390, height: 844 });
     await page.emulateMedia({ colorScheme: theme, reducedMotion: 'reduce' });
     await loginSynthetic(page, 'Persona sintética de capturas');
@@ -164,7 +164,7 @@ for (const theme of ['light', 'dark'] as const) {
         page.getByText('Archivo validado: 5 alquileres y 10 materiales.', { exact: true }),
       ).toBeVisible();
       await expect(
-        page.getByRole('button', { name: 'Confirmar importación', exact: true }),
+        page.getByRole('button', { name: 'Restaurar esta copia', exact: true }),
       ).toBeVisible();
       await capture('json-revision-confirmacion');
       await page.getByRole('button', { name: 'Cancelar importación', exact: true }).click();
@@ -191,7 +191,7 @@ for (const theme of ['light', 'dark'] as const) {
       }
     });
     await writeFile(
-      `artifacts/validacion/estructura-superficies-${theme}.json`,
+      `artifacts/validacion/cierre-1.7/estructura-superficies-${theme}.json`,
       JSON.stringify(
         {
           environment:

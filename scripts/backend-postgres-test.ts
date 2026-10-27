@@ -138,6 +138,8 @@ sql(readFileSync('supabase/migrations/20261027020847_chema_shared_bootstrap_medi
 sql(readFileSync('supabase/migrations/20261027120000_chema_private_media.sql', 'utf8'));
 sql(readFileSync('supabase/migrations/20261027150000_chema_route_plans.sql', 'utf8'));
 sql(readFileSync('supabase/migrations/20261027160000_chema_rejoin.sql', 'utf8'));
+sql(readFileSync('supabase/migrations/20261027201000_chema_terminal_conflicts.sql', 'utf8'));
+sql(readFileSync('supabase/migrations/20261027213000_chema_durable_delta.sql', 'utf8'));
 async function createSpace(id: string, snapshot: SharedSnapshot) {
   sql(
     `insert into public.chema_spaces(id,nombre,epoch,snapshot) values(${lit(id)},'Sintético',${lit(snapshot.epoch)},${lit(snapshot)});insert into public.chema_members(space_id,user_id,nombre,role) values(${lit(id)},'${uid}','Prueba 1','ADMIN'),(${lit(id)},'${uid2}','Prueba 2','ADMIN');`,
@@ -504,6 +506,112 @@ await test('revocar y reincorporar con invitación nueva conserva identidad/rol 
   assert.equal((await store.snapshot('rejoin_test', uid2)).member?.role, 'OPERADOR');
   assert.equal(sql("select count(*) from public.chema_members where space_id='rejoin_test'"), '2');
   assert.deepEqual((await store.snapshot('rejoin_test', uid)).state, initial.state);
+});
+await test('delta paginado watermark fijo, gaps RESET, aislamiento y permisos', async () => {
+  const initial = bootstrapShared('delta_rpc', seed(now), 'delta_epoch');
+  await createSpace(initial.spaceId, initial);
+  for (let i = 0; i < 3; i++) {
+    const base = await store.snapshot(initial.spaceId, uid);
+    await commitOnServer(
+      store,
+      { id: uid },
+      createCommand(base, { type: 'RESPONSABLES', nombres: ['Persona ' + i] }, 'delta_' + i),
+    );
+  }
+  const args = {
+    p_space: initial.spaceId,
+    p_user: uid,
+    p_cursor: 0,
+    p_epoch: initial.epoch,
+    p_limit: 1,
+  };
+  const page = await rpc('chema_delta_pull', args);
+  assert.equal(page.kind, 'DELTA');
+  assert.equal(page.watermark, 3);
+  assert.equal(page.changes[0].cursor, 1);
+  assert.equal(page.hasMore, true);
+  const base = await store.snapshot(initial.spaceId, uid);
+  await commitOnServer(
+    store,
+    { id: uid },
+    createCommand(base, { type: 'RESPONSABLES', nombres: ['Más reciente'] }, 'delta_3'),
+  );
+  const last = await rpc('chema_delta_pull', {
+    ...args,
+    p_cursor: 1,
+    p_watermark: 3,
+    p_limit: 100,
+  });
+  assert.deepEqual(
+    last.changes.map((d: { cursor: number }) => d.cursor),
+    [2, 3],
+  );
+  assert.equal(last.watermark, 3);
+  assert.equal(last.hasMore, false);
+  assert.equal(
+    sql(
+      "select count(*) from public.chema_changes where space_id='delta_rpc' and delta::text like '%payloadInverso%'",
+    ),
+    '0',
+  );
+  assert.equal(
+    sql(
+      "select count(*) from public.chema_receipts where space_id='delta_rpc' and result::text like '%payloadInverso%'",
+    ),
+    '0',
+  );
+  assert.equal(last.currentLog, undefined); // Fixed older watermark never borrows a newer undo.
+  const latest = await rpc('chema_delta_pull', { ...args, p_cursor: 3 });
+  assert.equal(latest.currentLog.id, 'delta_3');
+  assert(latest.currentLog.payloadInverso);
+  assert(!JSON.stringify(latest.changes).includes('payloadInverso'));
+  const receiver = new SharedRepository(
+    new SqliteStorage(sqliteDb()),
+    initial.spaceId,
+    { ...demoProfile('ADMIN'), uid },
+    initial,
+    {
+      snapshot: () => store.snapshot(initial.spaceId, uid),
+      receipt: () => Promise.resolve(null),
+      commit: (command) => commitOnServer(store, { id: uid }, command),
+      pull: async () => ({ changes: [], watermark: 4, epoch: initial.epoch }),
+      deltaPull: (cursor, epoch, watermark) =>
+        rpc('chema_delta_pull', {
+          ...args,
+          p_cursor: cursor,
+          p_epoch: epoch,
+          p_watermark: watermark ?? null,
+          p_limit: 2,
+        }),
+    },
+  );
+  await receiver.init();
+  await receiver.sync();
+  assert.equal(receiver.current().confirmed.cursor, 4);
+  assert(receiver.current().confirmed.state.logs[0]?.payloadInverso);
+  await receiver.dispatch({ type: 'UNDO', logId: 'delta_3' }, 'delta_undo');
+  assert.equal(receiver.current().outbox.length, 1);
+
+  await assert.rejects(
+    () => rpc('chema_delta_pull', { ...args, p_user: outsider }),
+    /MEMBERSHIP_REQUIRED/,
+  );
+  assert.throws(
+    () =>
+      sql(
+        "select public.chema_delta_pull('delta_rpc','" + uid + "',0,'delta_epoch')",
+        'authenticated',
+      ),
+    /permission denied/,
+  );
+  sql("update public.chema_changes set delta=null where space_id='delta_rpc' and sequence=2");
+  const reset = await rpc('chema_delta_pull', { ...args, p_cursor: 1 });
+  assert.equal(reset.kind, 'RESET');
+  assert.equal(reset.snapshot.cursor, 4);
+  const epoch = await rpc('chema_delta_pull', { ...args, p_epoch: 'old' });
+  assert.equal(epoch.kind, 'RESET');
+  const other = await rpc('chema_delta_pull', { ...args, p_space: 'return_test', p_epoch: 'old' });
+  assert.equal(other.snapshot.spaceId, 'return_test');
 });
 console.log(
   JSON.stringify({
