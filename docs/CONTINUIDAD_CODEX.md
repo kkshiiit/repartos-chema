@@ -2,7 +2,7 @@
 
 Se recibió el archivo02 completo; autorización conservada en docs/ENCARGO_ETAPA_2_CHEMA.md. Los bloques inferiores que dicen esperar02 son históricos. Base e133ae4 limpia, remotos main81cd39a/plan-e133 verificados; rama feat/chema-maestro-etapa2. Copia íntegra restaurada antes de editar en /workspace/respaldos/etapa2-base-2026-10-26. Plan/contrato/matriz continúan vigentes. Registro vivo: docs/EJECUCION_MAESTRA_CHEMA.md.
 
-Fase actual H0: preview JSON conservando motor y datos. En paralelo se prepara UI nativa/Viaje y se comprueba acceso Supabase/stack local; no afirmar servicios conectados sin prueba. No hay Android ADB ni APK exacto llamado2.0 ni JSONexacto5. Seguir trabajo independiente y marcar esos gates. Próximaacción: leer registro/estadoGit, completar bloque activo con pruebas reales, commit/push antes de compilar. No pagos, no Firebase obligatorio, no rotar firma ni resetear inventario.
+Fase actual H0/H1 implementados en base común y preview JSON con 53pruebas focalizadas y tema14verdes; suite general y capturas pendientes. En paralelo agentes etapa2_viaje/etapa2_alquileres/etapa2_servidor trabajan sus módulos sin commits. Usuario confirmóorgkkshiiit y proyectoSupabaseFree lttfkynkhveomntejqhc creado sin tarjeta/cotización0 mensual; autoridad/RLS/sync todavía no operativas. No afirmar integración antes de las pruebas. No hay Android ADB ni APK exacto llamado2.0 ni JSONexacto5. Seguir trabajo independiente y marcar esos gates. Próximaacción: leer registro/estadoGit, completar bloque activo con pruebas reales, commit/push antes de compilar. No pagos, no Firebase obligatorio, no rotar firma ni resetear inventario.
 
 ---
 

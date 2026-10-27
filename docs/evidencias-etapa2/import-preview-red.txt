@@ -1,0 +1,52 @@
+
+ RUN  v5.0.3 /workspace/repartos-chema
+
+stderr | tests/import-screen.test.ts > al elegir copia abre revisión con cinco alquileres, sin anunciar guardado ni restaurar antes de confirmar
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+The current testing environment is not configured to support act(...)
+
+stderr | tests/import-screen.test.ts > al elegir copia abre revisión con cinco alquileres, sin anunciar guardado ni restaurar antes de confirmar
+The current testing environment is not configured to support act(...)
+
+stderr | tests/import-screen.test.ts > al elegir copia abre revisión con cinco alquileres, sin anunciar guardado ni restaurar antes de confirmar
+The current testing environment is not configured to support act(...)
+The current testing environment is not configured to support act(...)
+The current testing environment is not configured to support act(...)
+
+stderr | tests/import-screen.test.ts > al elegir copia abre revisión con cinco alquileres, sin anunciar guardado ni restaurar antes de confirmar
+The current testing environment is not configured to support act(...)
+
+stderr | tests/import-screen.test.ts > al elegir copia abre revisión con cinco alquileres, sin anunciar guardado ni restaurar antes de confirmar
+The current testing environment is not configured to support act(...)
+
+stderr | tests/import-screen.test.ts > al elegir copia abre revisión con cinco alquileres, sin anunciar guardado ni restaurar antes de confirmar
+The current testing environment is not configured to support act(...)
+The current testing environment is not configured to support act(...)
+
+ ❯ tests/import-screen.test.ts (2 tests | 1 failed) 51ms
+   × al elegir copia abre revisión con cinco alquileres, sin anunciar guardado ni restaurar antes de confirmar 38ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/import-screen.test.ts > al elegir copia abre revisión con cinco alquileres, sin anunciar guardado ni restaurar antes de confirmar
+AssertionError: expected 'Identidad local Uso individual · En e…' to contain 'copia-sintetica.json'
+
+Expected: "copia-sintetica.json"
+Received: "Identidad local Uso individual · En este celular Preferencias Apariencia Sistema Movimiento Estático Avisos y sonidos Datos y herramientas Copias y restauración Documentos Combos de carga Responsables 0 configurados Entorno de trabajo Depósito Depósito de prueba Dirección de prueba Ver bienvenida Sin cuenta ni suscripción. Elegí el archivo JSON y revisá su contenido antes de confirmar. Elegirlo todavía no cambia tus datos. Se reemplazarán los  0  alquileres y  0   materiales actuales por los de esta copia. No se combinan inventarios. Se archivarán tus datos actuales antes del cambio; podés recuperarlos con «Deshacer última importación»."
+
+ ❯ tests/import-screen.test.ts:106:16
+    104|   expect(mocks.restore).not.toHaveBeenCalled();
+    105|   const text = view!.root.findAllByType('Text' as never).map((n) => n.…
+    106|   expect(text).toContain('copia-sintetica.json');
+       |                ^
+    107|   expect(text).toContain('Cliente sintético 5');
+    108|   expect(text).toContain('Material sintético 10');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  01:56:53
+   Duration  460ms (transform 55%, import 30%, tests 14%, worker 1%)
+

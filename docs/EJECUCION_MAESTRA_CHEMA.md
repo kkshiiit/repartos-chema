@@ -22,3 +22,11 @@ Base e133ae45a59ef14d4301f6731765954de8eb121a; aplicación 1.6.1/code10. Etapa2 
 |H6 regresión/APK|Pendiente|APK instalado2.0 exacto sigue faltando; no desinstalar|
 
 Actualizar este registro y CONTINUIDAD_CODEX por bloque con comandos/resultados y próximo paso. No considerar propuestas como pruebas físicas.
+
+## Corte 27/10 — base visual e importación
+
+Common UI: Geist/GeistMono TTF local+SIL OFL con manifiesto, tokens ModernDark/claro, contraste distingue onPrimary/onDanger y borde de campo vs separador decorativo. Cuatro pestañas SIEMPRE abajo; safeareas/indicador/gestosroot, Sheet scroll=false permite lista virtualizada sin ScrollView padre. Combos accesible desde Depósito. Sin lock/deps/stock/migración. Tema/animación/paneles14pruebas verdes; typecheck correcto en corte inicial. Capturas y suite completa pendientes al integrar módulos.
+
+H0: preservados cambios parciales del agente cortado (files.ts), metadata real sin alterar wrapper pickBackup. Test de preview RED por nombre ausente; GREEN 53/53 (import-screen/files/backup/import-integrity). Preview virtualizada incluye todos los alquileres/cargas/materiales/medidas y comparación, reemplazo explícito, copia automática/recuperación, cancelar sin mutación. Nombre/cantidad de fixture sintéticos, no JSONexacto. Selector físico/contentURI real sigue pendiente. UI Playwright actualizada al botón Restaurar esta copia; aún no ejecutada sobre nuevo dist.
+
+Backend gratuito provisionado con confirmación expresa: proyecto lttfkynkhveomntejqhc, orgkkshiiit Free, sa-east-1, cotización0 mensual; no tarjeta ni planpago. No significa syncoperativa. Evidencia en docs/evidencias-etapa2/backend-provisionado.md.
