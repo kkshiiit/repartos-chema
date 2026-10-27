@@ -25,7 +25,7 @@ import type { ActivityLog } from '../../src/types';
 import { DataList } from '../../src/components/DataList';
 export default function HistoryPage() {
   const { C, s } = useUI();
-  const { state, dispatch, loadMoreHistory, workspaceId } = useInventory(),
+  const { state, dispatch, loadMoreHistory, historyHasMore, workspaceId } = useInventory(),
     { user } = useAuth();
   const [filtersOpen, setFiltersOpen] = useState(false),
     [selectedId, setSelectedId] = useState<string | null>(null);
@@ -102,8 +102,8 @@ export default function HistoryPage() {
             <View style={{ gap: 10 }}>
               {error ? <Notice text={error} tone="error" /> : null}
               <Button
-                label={more ? 'Cargar historial' : 'Historial completo'}
-                disabled={!more}
+                label={(historyHasMore ?? more) ? 'Cargar historial' : 'Historial completo'}
+                disabled={!(historyHasMore ?? more)}
                 loading={busy}
                 variant="secondary"
                 onPress={async () => {

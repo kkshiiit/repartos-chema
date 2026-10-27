@@ -29,6 +29,8 @@ export function SharedInventoryProvider({ children }: { children: React.ReactNod
   const [history, setHistory] = useState<ActivityLog[]>([]);
   const historyCursor = useRef(Number.MAX_SAFE_INTEGER);
   const historyTop = useRef<number | null>(null);
+  const historyComplete = useRef(false);
+  const [historyHasMore, setHistoryHasMore] = useState(true);
   const [proposalArchives, setProposalArchives] = useState<ConflictArchiveSummary[]>([]);
   const repoRef = useRef<SharedRepository | null>(null);
   const initFlight = useRef<Promise<SharedRepository> | null>(null);
@@ -111,13 +113,16 @@ export function SharedInventoryProvider({ children }: { children: React.ReactNod
           if (
             before === Number.MAX_SAFE_INTEGER &&
             (historyTop.current === null || oldest > historyTop.current + 1)
-          )
+          ) {
             historyCursor.current = oldest;
-          else historyCursor.current = Math.min(historyCursor.current, oldest);
+            historyComplete.current = false;
+          } else historyCursor.current = Math.min(historyCursor.current, oldest);
           historyTop.current = Math.max(historyTop.current ?? newest, newest);
         }
       }
-      return page.length >= 100;
+      if (page.length < 100) historyComplete.current = true;
+      if (mounted.current) setHistoryHasMore(!historyComplete.current);
+      return !historyComplete.current;
     },
     [remote, key, online],
   );
@@ -274,8 +279,9 @@ export function SharedInventoryProvider({ children }: { children: React.ReactNod
     const parsed = JSON.parse(new TextDecoder().decode(result.bytes));
     parsed.teamRecovery = {
       ...value,
+      historyCoverage: 'LOCAL_CACHE_ONLY',
       warning:
-        'La copia contiene una proyección local y sus propuestas. Restaurarla abre un espacio individual; no reemplaza al equipo ni reenvía operaciones.',
+        'El historial contiene lo disponible en este teléfono. La copia contiene una proyección local y sus propuestas. Restaurarla abre un espacio individual; no reemplaza al equipo ni reenvía operaciones.',
     };
     return new TextEncoder().encode(JSON.stringify(parsed));
   };
@@ -321,7 +327,11 @@ export function SharedInventoryProvider({ children }: { children: React.ReactNod
                   : env?.lastSyncedAt
                     ? 'Confirmado por el equipo'
                     : 'Copia local · Aún sin confirmar',
-    error: env?.outbox.find((row) => row.error)?.error || env?.error || mediaError || error,
+    error: (() => {
+      const message =
+        env?.outbox.find((row) => row.error)?.error || env?.error || mediaError || error;
+      return message ? userError(new Error(message)) : '';
+    })(),
     retry,
     dispatch: async (action) => {
       const repo = await getRepo();
@@ -366,6 +376,7 @@ export function SharedInventoryProvider({ children }: { children: React.ReactNod
       setProposalArchives(await repo.listConflictArchives());
     },
     proposalArchives,
+    historyHasMore,
     readProposalArchive: async (id) => (await getRepo()).readConflictArchive(id),
     loadMoreHistory: () => loadHistory(historyCursor.current),
   };

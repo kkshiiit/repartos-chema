@@ -9,6 +9,7 @@ export interface InventoryValue {
   syncSummary?: string;
   lastSyncedAt?: string;
   loadMoreHistory?: () => Promise<boolean>;
+  historyHasMore?: boolean;
   proposalArchives?: ConflictArchiveSummary[];
   readProposalArchive?: (id: string) => Promise<ConflictArchive | null>;
   state: AppState;
