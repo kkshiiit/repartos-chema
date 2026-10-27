@@ -16,6 +16,7 @@ export function SharedTeamSettings({ invitation = '' }: { invitation?: string })
     [name, setName] = useState('');
   const [email, setEmail] = useState(''),
     [password, setPassword] = useState('');
+  const [reauth, setReauth] = useState(false);
   const [enrolling, setEnrolling] = useState(!!invitation),
     [busy, setBusy] = useState(false);
   const [error, setError] = useState(''),
@@ -80,7 +81,7 @@ export function SharedTeamSettings({ invitation = '' }: { invitation?: string })
       </Text>
       {error || shared.error ? <Notice text={error || shared.error} tone="error" /> : null}
       {success ? <Notice text={success} tone="success" /> : null}
-      {!shared.active ? (
+      {!shared.active || reauth ? (
         <>
           <View style={s.wrap}>
             <Button
@@ -163,6 +164,14 @@ export function SharedTeamSettings({ invitation = '' }: { invitation?: string })
               })}
             </Text>
           ) : null}
+          <Button
+            label="Validar acceso"
+            variant="ghost"
+            onPress={() => {
+              setReauth(true);
+              setEnrolling(false);
+            }}
+          />
           <Button
             label="Reintentar sincronización"
             variant="secondary"

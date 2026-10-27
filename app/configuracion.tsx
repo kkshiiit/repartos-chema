@@ -212,7 +212,15 @@ export default function Settings() {
       ) : null}
       <Sheet
         visible={panel !== null}
-        title={panel ? titles[panel] : 'Ajustes'}
+        title={
+          panel === 'identity'
+            ? workspaceId
+              ? 'Equipo compartido'
+              : 'Uso individual'
+            : panel
+              ? titles[panel]
+              : 'Ajustes'
+        }
         onClose={close}
         busy={busy}
         protectChanges={panel === 'depot' || panel === 'responsables' || panel === 'feedback'}
@@ -337,11 +345,13 @@ export default function Settings() {
           <>
             <Notice
               text={
-                LOCAL_ONLY
-                  ? 'Uso individual sin conexión. Los datos se guardan en este celular; no se envían a Firebase ni a otros servicios. Conserva copias JSON fuera del dispositivo.'
-                  : DATA_MODE === 'demo'
-                    ? 'Demostración local. Datos ficticios persistidos en este dispositivo. No hay sincronización cloud ni push enviados.'
-                    : 'Firebase configurado. Las operaciones se confirman con el servidor y los conflictos requieren revisión.'
+                workspaceId
+                  ? 'Equipo privado con guardado local y confirmación remota. Sin conexión los cambios son provisionales; revisá los pendientes antes de cerrar una jornada. Sin servicios pagos ni Firebase.'
+                  : LOCAL_ONLY
+                    ? 'Uso individual sin conexión. Los datos se guardan en este celular; no se envían a Firebase ni a otros servicios. Conserva copias JSON fuera del dispositivo.'
+                    : DATA_MODE === 'demo'
+                      ? 'Demostración local. Datos ficticios persistidos en este dispositivo. No hay sincronización cloud ni push enviados.'
+                      : 'Firebase configurado. Las operaciones se confirman con el servidor y los conflictos requieren revisión.'
               }
             />
             <Text style={s.muted}>

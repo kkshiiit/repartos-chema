@@ -89,7 +89,7 @@ export function createRestStore(config: ServerConfig): ServerStore {
       },
       body: JSON.stringify(args),
     });
-    const data = await response.json();
+    const data = response.status === 204 ? null : await response.json();
     if (!response.ok)
       throw new Error(typeof data.message === 'string' ? data.message : 'SERVER_ERROR');
     return data;
