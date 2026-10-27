@@ -1,0 +1,33 @@
+
+ RUN  v5.0.3 /workspace/repartos-chema
+
+stderr | tests/shared-access-gate.test.ts > oculta datos comerciales tras revocación conocida, permite validar acceso y preserva hijos al recuperar
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+The current testing environment is not configured to support act(...)
+
+ ❯ tests/shared-access-gate.test.ts (1 test | 1 failed) 16ms
+   × oculta datos comerciales tras revocación conocida, permite validar acceso y preserva hijos al recuperar 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/shared-access-gate.test.ts > oculta datos comerciales tras revocación conocida, permite validar acceso y preserva hijos al recuperar
+AssertionError: expected '{"type":"span","props":{},"children":…' not to contain 'Datos privados del alquiler'
+
+Expected: "Datos privados del alquiler"
+Received: "{"type":"span","props":{},"children":["Datos privados del alquiler"]}"
+
+ ❯ tests/shared-access-gate.test.ts:14:45
+     12|   let tree!: ReactTestRenderer;
+     13|   await act(async () => { tree = create(React.createElement(SharedAcce…
+     14|   expect(JSON.stringify(tree.toJSON())).not.toContain('Datos privados …
+       |                                             ^
+     15|   expect(JSON.stringify(tree.toJSON())).toContain('Validar acceso');
+     16|   testState.route = 'equipo';
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  11:57:29
+   Duration  209ms (transform 40%, import 39%, tests 16%, worker 5%)

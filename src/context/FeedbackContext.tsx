@@ -58,7 +58,7 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
   );
 }
 function WorkspaceFeedback({ children, scope }: { children: React.ReactNode; scope: string }) {
-  const { state: inventory, ready: inventoryReady } = useInventory();
+  const { state: inventory, ready: inventoryReady, accessBlocked } = useInventory();
   const { colors } = useTheme();
   const { user, loading: authLoading } = useAuth();
   const navigation = useRootNavigationState();
@@ -120,8 +120,11 @@ function WorkspaceFeedback({ children, scope }: { children: React.ReactNode; sco
     [service],
   );
   const retry = useCallback(
-    () => run(() => service.reconcile(inventory.obras)),
-    [run, service, inventory.obras],
+    () => run(async () => {
+      if (accessBlocked) { await service.suspend(); return service.snapshot(); }
+      return service.reconcile(inventory.obras);
+    }),
+    [run, service, inventory.obras, accessBlocked],
   );
   useEffect(() => {
     let active = true;

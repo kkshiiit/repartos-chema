@@ -8,6 +8,8 @@ import {
 /** Preferences and durable notification intents deliberately live outside the stock database. */
 export const FEEDBACK_KEY = 'chema:local-feedback:v1';
 export const REMINDER_PREFIX = 'chema-local-reminder:';
+const SUSPENDED_SCOPES_KEY = 'chema:reminder-suspensions:v1';
+const storageQueues = new WeakMap<PreferenceStorage, Promise<unknown>>();
 export interface RentalReference {
   id: string;
   clienteNombre: string;
@@ -180,7 +182,6 @@ export class ReminderService {
   private readonly scope?: string;
   private value = initialFeedbackState();
   private loaded = false;
-  private queue: Promise<unknown> = Promise.resolve();
   constructor(
     private storage: PreferenceStorage,
     readonly adapter: ReminderAdapter,
@@ -191,13 +192,41 @@ export class ReminderService {
     this.prefix = options?.identifierPrefix || REMINDER_PREFIX;
     this.scope = options?.scope;
   }
-  /** Cancel only this workspace's OS entries; durable policies/manual intentions remain for reopening. */
+  /** Journal before touching the OS: another account/restart must finish failed cancellations. */
   suspend() {
     return this.serial(async () => {
       if (!this.adapter.supported) return;
-      for (const id of await this.adapter.scheduled())
-        if (id.startsWith(this.prefix)) await this.adapter.cancel(id);
+      const prefixes = await this.suspendedPrefixes();
+      if (!prefixes.includes(this.prefix)) {
+        prefixes.push(this.prefix);
+        await this.storage.setItem(SUSPENDED_SCOPES_KEY, JSON.stringify(prefixes));
+      }
+      await this.finishSuspensions();
     });
+  }
+  private async suspendedPrefixes(): Promise<string[]> {
+    const raw = await this.storage.getItem(SUSPENDED_SCOPES_KEY);
+    if (raw === null) return [];
+    try {
+      const data: unknown = JSON.parse(raw);
+      if (!Array.isArray(data) || data.length > 1000 ||
+          !data.every((v) => typeof v === 'string' && v.length > 0 && v.length <= 1000))
+        throw new Error('FORMAT');
+      return [...new Set(data)] as string[];
+    } catch {
+      throw new Error('No pudimos leer las cancelaciones pendientes. Se conservan; reintentá antes de activar avisos.');
+    }
+  }
+  private async finishSuspensions() {
+    if (!this.adapter.supported) return;
+    const prefixes = await this.suspendedPrefixes();
+    if (!prefixes.length) return;
+    const scheduled = await this.adapter.scheduled();
+    for (const prefix of prefixes) {
+      for (const id of scheduled)
+        if (id.startsWith(prefix)) await this.adapter.cancel(id);
+    }
+    await this.storage.setItem(SUSPENDED_SCOPES_KEY, '[]');
   }
   private scoped(reminder: Reminder): Reminder {
     return this.scope ? { ...reminder, scope: this.scope } : reminder;
@@ -206,8 +235,8 @@ export class ReminderService {
     return this.value;
   }
   private serial<T>(operation: () => Promise<T>): Promise<T> {
-    const result = this.queue.catch(() => undefined).then(operation);
-    this.queue = result;
+    const result = (storageQueues.get(this.storage) || Promise.resolve()).catch(() => undefined).then(operation);
+    storageQueues.set(this.storage, result);
     return result;
   }
   private async load() {
@@ -298,6 +327,7 @@ export class ReminderService {
   }
   initialize() {
     return this.serial(async () => {
+      await this.finishSuspensions();
       await this.load();
       return this.value;
     });
@@ -462,6 +492,7 @@ export class ReminderService {
     });
   }
   private async applyNative(requestPermission: boolean, explicitActivation: boolean) {
+    await this.finishSuspensions();
     if (!this.adapter.supported) {
       if (explicitActivation) throw new Error(webMessage);
       return this.value;
