@@ -14,7 +14,7 @@ test('individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y o
     cloudRequests: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('request', (r) => {
-    if (/googleapis|firebaseio|cloudfunctions|workers\.dev/.test(r.url()))
+    if (/googleapis|firebaseio|cloudfunctions|workers\.dev|supabase\.co/.test(r.url()))
       cloudRequests.push(r.url());
   });
   await page.setViewportSize({ width: 390, height: 844 });

@@ -1,0 +1,9 @@
+
+Running 2 tests using 1 worker
+
+(node:31540) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/ui/estructura.spec.ts:110:7 › comparación estructural light (8.6s)
+  ✓  2 tests/ui/estructura.spec.ts:110:7 › comparación estructural dark (8.7s)
+
+  2 passed (18.2s)

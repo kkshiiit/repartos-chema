@@ -42,9 +42,9 @@ export function CardObra({
         borderTopRightRadius: first ? 12 : 0,
         borderBottomLeftRadius: last ? 12 : 0,
         borderBottomRightRadius: last ? 12 : 0,
-        paddingVertical: 12,
+        paddingVertical: 10,
         paddingHorizontal: 14,
-        gap: 4,
+        gap: 3,
       })}
     >
       <View style={[s.row, { alignItems: 'flex-start', gap: 8 }]}>
