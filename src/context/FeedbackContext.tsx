@@ -120,10 +120,14 @@ function WorkspaceFeedback({ children, scope }: { children: React.ReactNode; sco
     [service],
   );
   const retry = useCallback(
-    () => run(async () => {
-      if (accessBlocked) { await service.suspend(); return service.snapshot(); }
-      return service.reconcile(inventory.obras);
-    }),
+    () =>
+      run(async () => {
+        if (accessBlocked) {
+          await service.suspend();
+          return service.snapshot();
+        }
+        return service.reconcile(inventory.obras);
+      }),
     [run, service, inventory.obras, accessBlocked],
   );
   useEffect(() => {

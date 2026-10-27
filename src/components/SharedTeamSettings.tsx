@@ -5,6 +5,8 @@ import { useSharedSession } from '../context/SharedContext';
 import { useInventory } from '../context/InventoryContext';
 import { inventoryStorage } from '../data/localStorage';
 import { parseEnvelope } from '../data/validation';
+import { photoBytes, storePhoto } from '../services/photoCache';
+import { sharedPhotoCacheId } from '../shared/media';
 import type { AppState } from '../types';
 import { userError } from '../services/errors';
 import { Button, ConfirmButton, Field, Notice, useUI } from './ui';
@@ -294,7 +296,26 @@ export function SharedTeamSettings({ invitation = '' }: { invitation?: string })
                     title="Incorporar una sola vez"
                     description="El equipo debe estar vacío. El segundo teléfono sólo se vincula y descarga; nunca vuelve a incorporar esta copia."
                     onConfirm={async () => {
-                      await shared.remote!.request('bootstrap', { state: source });
+                      if (!shared.spaceId || !shared.actor) throw new Error('Iniciá sesión.');
+                      const portable = JSON.parse(JSON.stringify(source)) as AppState;
+                      for (const obra of portable.obras) {
+                        for (const photo of obra.fotos || []) {
+                          const bytes = await photoBytes(photo.id);
+                          if (bytes)
+                            await storePhoto(
+                              sharedPhotoCacheId(shared.spaceId, shared.actor.uid, photo.id),
+                              bytes,
+                            );
+                          photo.uri = 'chema-photo:' + photo.id;
+                          photo.status = 'PENDING';
+                          delete photo.storagePath;
+                        }
+                        obra.fotosUrls = obra.fotos?.map((photo) => photo.uri) || [];
+                      }
+                      portable.logs.forEach((log) => {
+                        delete log.payloadInverso;
+                      });
+                      await shared.remote!.request('bootstrap', { state: portable });
                       setSource(null);
                       await inventory.retry();
                     }}

@@ -32,4 +32,3 @@ React refs are values that are not needed for rendering. Refs should only be acc
   3:8  warning  Using exported name 'AxeBuilder' as identifier for default import  import/no-named-as-default
 
 ✖ 3 problems (1 error, 2 warnings)
-

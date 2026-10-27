@@ -5,7 +5,10 @@ import { saveFile, saveBackupToDestination } from './files';
 import { Buffer } from 'buffer';
 import { localId } from './localId';
 import { validJpeg } from './jpegValidation';
-export async function backupData(raw: string | null) {
+export async function backupData(
+  raw: string | null,
+  readPhoto: (id: string) => Promise<Uint8Array | null> = photoBytes,
+) {
   if (raw === null) throw new Error('Todavía no hay datos locales.');
   let envelope: Envelope;
   try {
@@ -16,7 +19,7 @@ export async function backupData(raw: string | null) {
   const photos: Record<string, string> = {};
   for (const o of envelope.state.obras)
     for (const p of o.fotos || []) {
-      const bytes = await photoBytes(p.id);
+      const bytes = await readPhoto(p.id);
       if (bytes) photos[p.id] = Buffer.from(bytes).toString('base64');
       else if (p.uri.startsWith('data:image/jpeg;base64,'))
         photos[p.id] = p.uri.slice('data:image/jpeg;base64,'.length);

@@ -20,6 +20,7 @@ import {
 } from 'lucide-react-native';
 import * as Location from 'expo-location';
 import { useInventory, makeId } from '../../src/context/InventoryContext';
+import { useSharedSession } from '../../src/context/SharedContext';
 import { useAuth } from '../../src/context/AuthContext';
 import {
   Button,
@@ -50,6 +51,7 @@ import { formatDate } from '../../src/utils/formatters';
 export default function Detail() {
   const { C, s } = useUI();
   const now = useBusinessClock();
+  const shared = useSharedSession();
   const { id, accion } = useLocalSearchParams<{ id: string; accion?: string }>(),
     { state, dispatch } = useInventory(),
     { user } = useAuth();
@@ -373,24 +375,26 @@ export default function Detail() {
               <View key={p.id} style={{ width: 150, gap: 8 }}>
                 <PhotoImage photo={p} />
                 <Text style={s.muted}>
-                  {DATA_MODE === 'demo'
-                    ? 'Foto local'
-                    : p.status === 'PENDING'
-                      ? 'Subida pendiente'
-                      : 'Foto en nube'}
+                  {shared?.active
+                    ? 'Foto del equipo'
+                    : DATA_MODE === 'demo'
+                      ? 'Foto local'
+                      : p.status === 'PENDING'
+                        ? 'Subida pendiente'
+                        : 'Foto en nube'}
                 </Text>
                 {user?.role === 'ADMIN' || p.usuarioUid === user?.uid ? (
                   <ConfirmButton
                     label="Borrar foto"
                     title="Eliminar foto"
                     description={
-                      DATA_MODE === 'demo'
+                      shared?.active || DATA_MODE === 'demo'
                         ? 'Se quitará del alquiler. El archivo se conserva para recuperar copias anteriores.'
                         : 'Se quitará del registro. La limpieza remota se procesa por el servidor.'
                     }
                     onConfirm={async () => {
                       await dispatch({ type: 'DELETE_PHOTO', obraId: o.id, photoId: p.id });
-                      if (DATA_MODE === 'firebase' && p.status === 'SYNCED')
+                      if (!shared?.active && DATA_MODE === 'firebase' && p.status === 'SYNCED')
                         await deleteLocalPhoto(p.id);
                     }}
                   />

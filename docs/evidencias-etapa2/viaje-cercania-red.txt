@@ -37,4 +37,3 @@ AssertionError: expected [ 'vencido', 'hoy', 'entrega', …(1) ] to deeply equal
       Tests  1 failed | 7 passed (8)
    Start at  01:54:38
    Duration  188ms (transform 63%, import 17%, tests 16%, worker 4%)
-

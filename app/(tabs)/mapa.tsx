@@ -27,6 +27,7 @@ import {
 import { DataList } from '../../src/components/DataList';
 import { Segmented } from '../../src/components/ListStructure';
 import { StatusChip } from '../../src/components/StatusChip';
+import { PublishedRoutePanel } from '../../src/components/PublishedRoutePanel';
 import { TripOrderEditor } from '../../src/components/TripOrderEditor';
 import {
   buildTripRoutes,
@@ -74,7 +75,7 @@ const dateLabel = (date: string) =>
 type SortKind = 'DISTANCE' | 'ASC' | 'DESC';
 export default function Trip() {
   const { C, s } = useUI(),
-    { state, ready: inventoryReady, workspaceId, workspaceKey } = useInventory(),
+    { state, ready: inventoryReady, workspaceId, workspaceKey, queue } = useInventory(),
     { user } = useAuth();
   const now = useBusinessClock(),
     today = businessDate(now);
@@ -99,6 +100,7 @@ export default function Trip() {
     [panel, setPanel] = useState<
       'options' | 'routes' | 'stop' | 'depot' | 'confirmSort' | 'locationReview' | null
     >(null),
+    [published, setPublished] = useState(false),
     [editor, setEditor] = useState(false),
     [selectedId, setSelectedId] = useState<string | null>(null),
     [pendingSort, setPendingSort] = useState<SortKind | null>(null),
@@ -266,7 +268,8 @@ export default function Trip() {
   }
   const eligibleKey = stops.map((s) => s.id).join('|');
   useEffect(() => {
-    if (!ready || !inventoryReady || busy || JSON.stringify(allIds) === JSON.stringify(prefs.ids)) return;
+    if (!ready || !inventoryReady || busy || JSON.stringify(allIds) === JSON.stringify(prefs.ids))
+      return;
     const key = `${prefs.revision}:${eligibleKey}`;
     if (reconciliationAttempt.current === key) return;
     reconciliationAttempt.current = key;
@@ -625,6 +628,15 @@ export default function Trip() {
       >
         {panel === 'options' ? (
           <>
+            <Button
+              label="Plan publicado del equipo"
+              variant="secondary"
+              disabled={!ready || !inventoryReady}
+              onPress={() => {
+                setPanel(null);
+                setPublished(true);
+              }}
+            />
             <Text style={s.label}>Ordenar las paradas visibles</Text>
             <Text style={s.muted}>{originLabel}</Text>
             <Button
@@ -846,6 +858,28 @@ export default function Trip() {
         ) : null}
         {error || routes.error ? <Notice text={error || routes.error} tone="error" /> : null}
       </Sheet>
+      {published ? (
+        <PublishedRoutePanel
+          key={`${workspaceId}:${user?.uid}`}
+          visible={published}
+          stops={stops}
+          ids={allIds}
+          pending={queue.length > 0}
+          ready={ready && inventoryReady}
+          onClose={() => setPublished(false)}
+          onLoad={async (ids) => {
+            await commit((value) => ({
+              ...value,
+              previousIds: value.ids,
+              ids: reconcileTripSequence(
+                ids,
+                eligibleTripStops(worksRef.current).map((stop) => stop.id),
+              ),
+              criterion: { kind: 'MANUAL', label: 'Copia del plan publicado' },
+            }));
+          }}
+        />
+      ) : null}
       <TripOrderEditor
         visible={editor}
         stops={visible}

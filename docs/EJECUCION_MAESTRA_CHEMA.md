@@ -62,3 +62,11 @@ AúnpendienteH4:subida/cachefotos, publicaciónderutaUI, recuperaciónadministra
 Base dff2864 y remoto comprobados. UIlocal inicial5/7, dos fallos en Viaje: selector ambiguo depósito (corregido acotando panel) y orden al recargar (reproducido incluso seleccionando Parada1, pendiente repetir tras guardia inventoryReady y bundle estable). Buildweb durante edición H4B falló por mediaHash aún ausente; no build distribuido, repetir sólo con fuente estable.
 
 Final: fixed cancelación de scope perdida tras fallo OS — reminder-workspace RED→GREEN, 67/67 focales junto a avisos/auth. Diario durable antes cancelación, recuperado por siguiente espacio/reinicio; serialización por storage. Fixed refresh401 sin bloqueo — shared-auth RED→GREEN sin borrar sesión/cache. Gate acceso rechazado conserva datos y permite ruta reautenticación; RED real/verde en evidencia separada (primer intento .tsx no coincidía include.ts). Falta general tras integrar media; no Android físico.
+
+## Fotos y plan de equipo — corte integrado 27/10
+
+Agentes stage2_media_finish y stage2_route_finish entregaron fuentes. Informes conservados en evidencias-etapa2/H4B_FOTOS y H4B_PLAN_PUBLICADO. Root revisó referencias privadas, cola, caché y SQL; corrigió escritura de foto nativa incompleta con provisional verificado (RED→GREEN), y snapshot fuera de orden que reducía cursor (RED→GREEN). No stockengine alternativo. Plan público explícito con CAS, autores, asignaciones y50versiones; filtros no publican.
+
+Rollout autorizado Free: migraciones media, rutas y reincorporación aplicadas, Edgev3media yv4rutas ACTIVE. MediaAuth/Storage real5/5, UI dos contextos Auth real2/2, UIlocal7/7. General514/514 antes de último guardcursor; PostgreSQL14/14 trasREDreincorporación (nueva invitación reabre misma membresía/rol; usada no reactiva). Versionmetadata1.7.0/code11 sin cambio deps/package/cert. Native no probado. QA sigue hasta últimos recorridos, no dejar datoscomerciales falsos al entregar.
+
+Ruling: intercambio usa snapshot comercial completo con cursor monotónico y ledger histórico paginado separado; no se anuncia recepción incremental/paginada de entidades. Simplifica consistencia en equipo pequeño; coste: transferencia/tamaño/contención si crece, J7 permanece parcial hasta delta pull duradero completo. No ocultar esta limitación en matriz.

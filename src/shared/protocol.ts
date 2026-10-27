@@ -96,6 +96,16 @@ export function createCommand(
   operationId: string,
   expectedUserId = base.member?.uid || '',
 ): SyncCommand {
+  if (action.type === 'PHOTO')
+    action = {
+      ...action,
+      photo: {
+        id: action.photo.id,
+        usuarioUid: action.photo.usuarioUid,
+        uri: 'chema-photo:' + action.photo.id,
+        status: 'PENDING',
+      },
+    };
   commandSchema.parse({ id: operationId, action });
   const obraId = 'obraId' in action ? action.obraId : undefined;
   return {

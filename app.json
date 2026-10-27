@@ -3,7 +3,7 @@
     "name": "Repartos Chema",
     "slug": "repartos-chema",
     "scheme": "repartoschema",
-    "version": "1.6.1",
+    "version": "1.7.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "ios": {
@@ -16,7 +16,7 @@
         "android.permission.RECORD_AUDIO",
         "android.permission.SYSTEM_ALERT_WINDOW"
       ],
-      "versionCode": 10
+      "versionCode": 11
     },
     "web": {
       "bundler": "metro",

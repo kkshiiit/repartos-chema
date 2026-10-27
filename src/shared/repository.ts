@@ -49,6 +49,14 @@ export function validateSnapshot(value: unknown, spaceId: string): SharedSnapsho
     if (!Number.isSafeInteger(n) || n < 0) throw new Error('Revisiones de equipo inválidas.');
   return v;
 }
+function receiveSnapshot(value: unknown, previous: SharedSnapshot, spaceId: string) {
+  const next = validateSnapshot(value, spaceId);
+  if (next.epoch === previous.epoch && next.cursor < previous.cursor)
+    throw new Error(
+      'Recibimos una respuesta anterior del equipo. Conservamos la revisión más reciente; reintentá.',
+    );
+  return next;
+}
 export class SharedRepository {
   readonly key: string;
   private value: SharedEnvelope | null = null;
@@ -196,7 +204,11 @@ export class SharedRepository {
       let value = this.current();
       try {
         if (value.accessBlocked) {
-          const verified = validateSnapshot(await this.remote.snapshot(), this.spaceId);
+          const verified = receiveSnapshot(
+            await this.remote.snapshot(),
+            value.confirmed,
+            this.spaceId,
+          );
           if (verified.epoch !== value.confirmed.epoch) return value;
           value.accessBlocked = false;
         }
@@ -216,14 +228,16 @@ export class SharedRepository {
               row.uncertain = false;
               row.error = result.message;
               if (result.snapshot)
-                value.confirmed = clone(validateSnapshot(result.snapshot, this.spaceId));
+                value.confirmed = clone(
+                  receiveSnapshot(result.snapshot, value.confirmed, this.spaceId),
+                );
               break;
             }
             if (result.payloadHash !== row.command.payloadHash)
               throw new Error(
                 'El identificador ya fue usado para otro contenido. Conservamos tu propuesta.',
               );
-            const snapshot = validateSnapshot(result.snapshot, this.spaceId);
+            const snapshot = receiveSnapshot(result.snapshot, value.confirmed, this.spaceId);
             if (snapshot.epoch !== value.confirmed.epoch) {
               row.status = 'CONFLICT';
               row.error =
@@ -255,7 +269,7 @@ export class SharedRepository {
           }
         }
         if (!value.outbox.some((row) => row.status === 'ERROR')) {
-          const next = validateSnapshot(await this.remote.snapshot(), this.spaceId);
+          const next = receiveSnapshot(await this.remote.snapshot(), value.confirmed, this.spaceId);
           if (next.epoch !== value.confirmed.epoch) {
             value.error =
               'La generación del equipo cambió. Conservamos la copia local para revisión.';
