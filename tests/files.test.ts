@@ -1,5 +1,5 @@
 import { beforeEach, expect, it, vi } from 'vitest';
-import { pickBackup } from '../src/services/files';
+import { pickBackup, pickBackupSelection } from '../src/services/files';
 const native = vi.hoisted(() => ({
   picker: vi.fn(),
   read: vi.fn(),
@@ -64,5 +64,30 @@ it('rechaza tamaño declarado excesivo antes de leer', async () => {
     assets: [{ uri: 'content://provider/copia', name: 'copia.json', size: 52428801 }],
   });
   await expect(pickBackup()).rejects.toThrow(/50 MB/);
+  expect(native.read).not.toHaveBeenCalled();
+});
+
+it('conserva nombre y tamaño reales de la selección para revisar la copia sin restaurarla', async () => {
+  native.picker.mockResolvedValue({
+    canceled: false,
+    assets: [{ uri: 'content://documents/copia', name: 'Mi depósito octubre.json', size: 145 }],
+  });
+  const selection = await pickBackupSelection();
+  expect(selection).toEqual({
+    raw: '{"format":"chema-backup-v1"}',
+    name: 'Mi depósito octubre.json',
+    size: 145,
+  });
+});
+it('no inventa nombre ni tamaño si el proveedor no los informa', async () => {
+  native.picker.mockResolvedValue({
+    canceled: false,
+    assets: [{ uri: 'content://documents/copia' }],
+  });
+  expect(await pickBackupSelection()).toEqual({ raw: '{"format":"chema-backup-v1"}' });
+});
+it('la selección cancelada no conserva metadatos ni lee contenido', async () => {
+  native.picker.mockResolvedValue({ canceled: true, assets: null });
+  expect(await pickBackupSelection()).toBeNull();
   expect(native.read).not.toHaveBeenCalled();
 });

@@ -31,7 +31,13 @@ export async function saveFile(
     );
   await Sharing.shareAsync(file.uri, { mimeType: mime, dialogTitle });
 }
-export async function pickBackup(): Promise<string | null> {
+export interface BackupSelection {
+  raw: string;
+  name?: string;
+  size?: number;
+}
+/** Selección y lectura únicamente: no valida ni modifica el inventario. */
+export async function pickBackupSelection(): Promise<BackupSelection | null> {
   let result: DocumentPicker.DocumentPickerResult;
   try {
     result = await DocumentPicker.getDocumentAsync({
@@ -66,7 +72,17 @@ export async function pickBackup(): Promise<string | null> {
   if (!raw.trim()) throw new Error('El archivo está vacío. Elegí una copia JSON completa.');
   if (raw.length > 50 * 1024 * 1024)
     throw new Error('La copia supera 50 MB. No se modificaron datos.');
-  return raw;
+  return {
+    raw,
+    ...(typeof asset.name === 'string' && asset.name.trim() ? { name: asset.name } : {}),
+    ...(typeof asset.size === 'number' && Number.isFinite(asset.size) && asset.size >= 0
+      ? { size: asset.size }
+      : {}),
+  };
+}
+/** Contrato histórico de recuperación: conserva la lectura sin metadatos. */
+export async function pickBackup(): Promise<string | null> {
+  return (await pickBackupSelection())?.raw ?? null;
 }
 
 export interface BackupDestination {

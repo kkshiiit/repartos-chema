@@ -86,7 +86,7 @@ Superficies opacas, botones48×48dp mínimo/primaria≈52dp, labels reales y foc
 
 ## Backend gratuito evaluado y fecha de fuentes
 
-Fuentes oficiales consultadas 26/10/2026 por HTTP público, sin crear cuenta; URLs y hashes en `docs/evidencias-etapa 1/fuentes-consultadas-2026-10-26.json`.
+Fuentes oficiales consultadas 26/10/2026 por HTTP público, sin crear cuenta; URLs y hashes en `docs/evidencias-etapa1/fuentes-consultadas-2026-10-26.json`.
 
 |Opción|Lo verificado|Decisión|
 |---|---|---|

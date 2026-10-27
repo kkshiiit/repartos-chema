@@ -49,7 +49,35 @@ vi.mock('../src/context/InventoryContext', () => ({
 }));
 vi.mock('../src/services/firebase', () => ({ DATA_MODE: 'demo' }));
 vi.mock('../src/services/localMode', () => ({ LOCAL_ONLY: true }));
-vi.mock('../src/services/files', () => ({ pickBackup: mocks.pick }));
+vi.mock('../src/services/files', () => ({
+  pickBackup: mocks.pick,
+  pickBackupSelection: async () => {
+    const raw = await mocks.pick();
+    return raw === null ? null : { raw, name: 'copia-sintetica.json', size: raw.length };
+  },
+}));
+vi.mock('../src/components/DataList', () => ({
+  DataList: ({
+    data,
+    renderItem,
+    ListHeaderComponent,
+    ListFooterComponent,
+  }: {
+    data: unknown[];
+    renderItem: (arg: { item: unknown }) => React.ReactNode;
+    ListHeaderComponent: React.ReactNode;
+    ListFooterComponent: React.ReactNode;
+  }) =>
+    React.createElement(
+      React.Fragment,
+      null,
+      ListHeaderComponent,
+      ...data.map((item, index) =>
+        React.createElement(React.Fragment, { key: index }, renderItem({ item })),
+      ),
+      ListFooterComponent,
+    ),
+}));
 vi.mock('../src/services/photoCache', () => ({ photoBytes: vi.fn(), storePhoto: vi.fn() }));
 vi.mock('../src/services/notifications', () => ({ enableNotifications: vi.fn() }));
 vi.mock('../src/components/ui', () => ({
@@ -88,9 +116,20 @@ it('al elegir copia abre revisión con cinco alquileres, sin anunciar guardado n
     'Archivo validado: 5 alquileres y 10 materiales.',
   );
   expect(mocks.restore).not.toHaveBeenCalled();
-  expect(button('Confirmar importación')).toBeDefined();
+  const text = view!.root
+    .findAllByType('Text' as never)
+    .map((n) => n.props.children)
+    .flat()
+    .join(' ');
+  expect(text).toContain('copia-sintetica.json');
+  expect(text).toContain('Cliente sintético 5');
+  expect(text).toContain('Tablón');
+  expect(text).toContain(
+    'El archivo reemplazará el inventario actual. No se suman ni se combinan los alquileres.',
+  );
+  expect(button('Restaurar esta copia')).toBeDefined();
   await act(async () => {
-    await button('Confirmar importación').props.onPress();
+    await button('Restaurar esta copia').props.onPress();
   });
   expect(mocks.restore).toHaveBeenCalledOnce();
   expect(mocks.restore).toHaveBeenCalledWith(raw);
@@ -117,13 +156,13 @@ it('cancelar no restaura; una selección inválida posterior no permite importar
   await act(async () => {
     await button('Cancelar importación')!.props.onPress();
   });
-  expect(button('Confirmar importación')).toBeUndefined();
+  expect(button('Restaurar esta copia')).toBeUndefined();
   expect(mocks.restore).not.toHaveBeenCalled();
   mocks.pick.mockResolvedValue('{"format":');
   await act(async () => {
     await button('Elegir copia')!.props.onPress();
   });
-  expect(button('Confirmar importación')).toBeUndefined();
+  expect(button('Restaurar esta copia')).toBeUndefined();
   expect(mocks.restore).not.toHaveBeenCalled();
   expect(
     view!.root

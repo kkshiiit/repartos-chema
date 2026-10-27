@@ -19,19 +19,19 @@ test('seleccionar JSON abre revisión, cancelar conserva datos, confirmar persis
     page.getByText('Archivo validado: 5 alquileres y 10 materiales.', { exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByRole('button', { name: 'Confirmar importación', exact: true }),
+    page.getByRole('button', { name: 'Restaurar esta copia', exact: true }),
   ).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem('chema:demo:v1'))).toBe(before);
   await page.getByRole('button', { name: 'Cancelar importación', exact: true }).click();
   expect(await page.evaluate(() => localStorage.getItem('chema:demo:v1'))).toBe(before);
   await select(Buffer.from('{"format":'));
   await expect(page.getByText(/El archivo JSON está incompleto/)).toBeVisible();
-  await expect(
-    page.getByRole('button', { name: 'Confirmar importación', exact: true }),
-  ).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Restaurar esta copia', exact: true })).toHaveCount(
+    0,
+  );
   expect(await page.evaluate(() => localStorage.getItem('chema:demo:v1'))).toBe(before);
   await select(raw);
-  await page.getByRole('button', { name: 'Confirmar importación', exact: true }).click();
+  await page.getByRole('button', { name: 'Restaurar esta copia', exact: true }).click();
   await expect(
     page.getByText('Importación completada: 5 alquileres guardados en este celular.', {
       exact: true,
