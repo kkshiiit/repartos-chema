@@ -1,3 +1,13 @@
+# Último cierre documental remoto — 27/10/2026
+
+Fuente conservada `1a9355aa24ed3a7e38769bfdd3220be88addee53`. Informes corregidos y matriz de **94 IDs únicos** respaldados en commits `750a7f2`, `1e85ea9`, `dd9780b` y `5e23dfc`, sobre esta misma rama. No se modificó la aplicación durante el bloqueo ni se generó APK.
+
+Se realizaron dos esperas acotadas del arranque y una comprobación mínima de ejecución: el entorno siguió pendiente/fuera de línea y rechazó comandos. GitHub funciona mediante la conexión kkshiiit, por eso se conservaron los documentos sin depender del workspace. No se programó una reanudación automática.
+
+**Al volver:** conservar los archivos locales, integrar estos commits documentales sin resetear, inspeccionar logs/procesos pendientes y reproducir/corregir los dos hallazgos de recuperación detallados debajo. La matriz local posterior al corte fuente puede diferir de la nueva versión remota: comparar y conservar la trazabilidad de94IDs al integrar; no sobrescribir trabajo silenciosamente. Después corresponde validar y compilar con la firma existente.
+
+---
+
 # Recuperación bloqueada por entorno remoto — 27/10/2026
 
 **Estado vigente:** GitHub verificado con la conexión de **kkshiiit**; repositorio privado y permisos de escritura comprobados. Último commit fuente confirmado: `1a9355aa24ed3a7e38769bfdd3220be88addee53`, rama `feat/chema-maestro-etapa2`. Main conserva la base anterior. Este checkpoint se guardó directamente mediante el conector GitHub porque el workspace no permite ejecutar comandos.
