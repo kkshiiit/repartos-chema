@@ -1,0 +1,24 @@
+
+ RUN  v5.0.3 /workspace/repartos-chema
+
+ ❯ tests/trip-location.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/trip-location.test.ts [ tests/trip-location.test.ts ]
+Error: Cannot find module '../src/services/tripLocation' imported from /workspace/repartos-chema/tests/trip-location.test.ts
+ ❯ tests/trip-location.test.ts:2:1
+      1| import { afterEach, expect, it, vi } from 'vitest';
+      2| import { captureTripOrigin, needsTripLocationReview, TripLocationError…
+       | ^
+      3| const now = Date.parse('2026-10-27T12:00:00Z');
+      4| function provider(overrides: Partial<TripLocationProvider> = {}): Trip…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  02:06:21
+   Duration  126ms (worker 97%, environment 3%)
+

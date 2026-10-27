@@ -31,7 +31,7 @@ const stop = (
 });
 
 describe('Viaje y depósito', () => {
-  it('prioriza vencidos y retiros de hoy antes de entregas incluso si están más lejos', () => {
+  it('la cercanía estricta pone una entrega cercana antes de un retiro vencido lejano', () => {
     const items = [
       stop('entrega', 'PENDIENTE_ENTREGA', '2026-10-16'),
       stop('hoy', 'ENTREGADO', '2026-10-15', -58.7),
@@ -43,9 +43,9 @@ describe('Viaje y depósito', () => {
       sortTripStops(items, { today: '2026-10-15', origin: { lat: -34.55, lng: -58.57 } }).map(
         (o) => o.id,
       ),
-    ).toEqual(['vencido', 'hoy', 'entrega', 'futuro']);
+    ).toEqual(['entrega', 'futuro', 'hoy', 'vencido']);
   });
-  it('dentro de cada prioridad utiliza coordenadas reales y no inventa las faltantes', () => {
+  it('utiliza coordenadas reales y deja ubicaciones desconocidas al final', () => {
     const noCoordinates = { ...stop('sin', 'ENTREGADO', '2026-10-15'), coordenadas: undefined };
     const ordered = sortTripStops(
       [
