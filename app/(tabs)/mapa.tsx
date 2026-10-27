@@ -74,14 +74,18 @@ const dateLabel = (date: string) =>
 type SortKind = 'DISTANCE' | 'ASC' | 'DESC';
 export default function Trip() {
   const { C, s } = useUI(),
-    { state } = useInventory(),
+    { state, workspaceId, workspaceKey } = useInventory(),
     { user } = useAuth();
   const now = useBusinessClock(),
     today = businessDate(now);
   // UI preferences are separate from inventory. Team integration supplies a workspace namespace.
   const store = useMemo(
-    () => new TripPreferencesStore(AsyncStorage, `individual:${user?.uid || 'local'}`),
-    [user?.uid],
+    () =>
+      new TripPreferencesStore(
+        AsyncStorage,
+        `${workspaceId || workspaceKey || 'individual'}:${user?.uid || 'local'}`,
+      ),
+    [user?.uid, workspaceId, workspaceKey],
   );
   const [prefs, setPrefs] = useState<TripPreferences>(initialTripPreferences),
     [ready, setReady] = useState(false),

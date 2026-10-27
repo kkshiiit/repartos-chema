@@ -1,0 +1,71 @@
+
+ RUN  v5.0.3 /workspace/repartos-chema
+
+ ❯ tests/shared-auth.test.ts (5 tests | 3 failed) 5022ms
+   × dos peticiones simultáneas renuevan una sola vez el token del mismo usuario 5007ms
+   × cerrar sesión durante una renovación impide que la respuesta tardía vuelva a guardarla 6ms
+   × una renovación de A no pisa la cuenta B ni permite enviar la cola de A con el token B 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/shared-auth.test.ts > dos peticiones simultáneas renuevan una sola vez el token del mismo usuario
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/shared-auth.test.ts:55:1
+     53| }
+     54| afterEach(() => { vi.unstubAllGlobals(); vi.useRealTimers(); });
+     55| it('dos peticiones simultáneas renuevan una sola vez el token del mism…
+       | ^
+     56|   const { auth } = await expiredAuth();
+     57|   let complete!: (response: Response) => void;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/shared-auth.test.ts > cerrar sesión durante una renovación impide que la respuesta tardía vuelva a guardarla
+AssertionError: promise resolved "'access_late'" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+"access_late"
+
+ ❯ tests/shared-auth.test.ts:71:33
+     69|   vi.stubGlobal('fetch', (url: string) => String(url).includes('refres…
+     70|   const pending=auth.accessToken('A');
+     71|   const rejected=expect(pending).rejects.toThrow(/sesión|cuenta/);
+       |                                 ^
+     72|   await new Promise(resolve=>setTimeout(resolve,0));
+     73|   await auth.signOut(); complete(Response.json(credentials('A','late')…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/shared-auth.test.ts > una renovación de A no pisa la cuenta B ni permite enviar la cola de A con el token B
+AssertionError: promise resolved "'access_late'" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+"access_late"
+
+ ❯ tests/shared-auth.test.ts:82:33
+     80|   vi.stubGlobal('fetch', (url: string) => String(url).includes('refres…
+     81|   const pending=auth.accessToken('A');
+     82|   const rejected=expect(pending).rejects.toThrow(/sesión|cuenta/);
+       |                                 ^
+     83|   await new Promise(resolve=>setTimeout(resolve,0));
+     84|   await auth.signIn('b@example.invalid','password_only_for_test');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 2 passed (5)
+   Start at  10:56:11
+   Duration  5.18s (tests 99%, transform 1%)
+

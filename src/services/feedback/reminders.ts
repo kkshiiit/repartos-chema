@@ -35,6 +35,7 @@ export interface Reminder {
   notificationTitle?: string;
   notificationBody?: string;
   direccion?: string;
+  scope?: string;
   /** Kept until native cancellation succeeds, including across process restarts. */
   cancellationPending?: boolean;
 }
@@ -174,6 +175,9 @@ const active = (reminder: Reminder) => ['pending', 'scheduled'].includes(reminde
 const same = (left: unknown, right: unknown) => JSON.stringify(left) === JSON.stringify(right);
 /** One serialized service owns policies, manual reminders and native notification identifiers. */
 export class ReminderService {
+  private readonly storageKey: string;
+  private readonly prefix: string;
+  private readonly scope?: string;
   private value = initialFeedbackState();
   private loaded = false;
   private queue: Promise<unknown> = Promise.resolve();
@@ -181,7 +185,23 @@ export class ReminderService {
     private storage: PreferenceStorage,
     readonly adapter: ReminderAdapter,
     private now = () => Date.now(),
-  ) {}
+    options?: { storageKey?: string; identifierPrefix?: string; scope?: string },
+  ) {
+    this.storageKey = options?.storageKey || FEEDBACK_KEY;
+    this.prefix = options?.identifierPrefix || REMINDER_PREFIX;
+    this.scope = options?.scope;
+  }
+  /** Cancel only this workspace's OS entries; durable policies/manual intentions remain for reopening. */
+  suspend() {
+    return this.serial(async () => {
+      if (!this.adapter.supported) return;
+      for (const id of await this.adapter.scheduled())
+        if (id.startsWith(this.prefix)) await this.adapter.cancel(id);
+    });
+  }
+  private scoped(reminder: Reminder): Reminder {
+    return this.scope ? { ...reminder, scope: this.scope } : reminder;
+  }
   snapshot() {
     return this.value;
   }
@@ -192,12 +212,12 @@ export class ReminderService {
   }
   private async load() {
     if (!this.loaded) {
-      this.value = parseFeedback(await this.storage.getItem(FEEDBACK_KEY));
+      this.value = parseFeedback(await this.storage.getItem(this.storageKey));
       this.loaded = true;
     }
   }
   private async save(next: FeedbackState) {
-    await this.storage.setItem(FEEDBACK_KEY, JSON.stringify(next));
+    await this.storage.setItem(this.storageKey, JSON.stringify(next));
     this.value = next;
   }
   private async put(id: string, reminder: Reminder) {
@@ -360,12 +380,12 @@ export class ReminderService {
       });
       for (const [key, item] of Object.entries(reminders)) {
         if (item.obraId === obra.id && item.offset !== undefined && item.cancellationPending) {
-          await this.adapter.cancel(REMINDER_PREFIX + key);
+          await this.adapter.cancel(this.prefix + key);
           await this.put(key, { ...item, cancellationPending: false });
         }
       }
-      await this.adapter.cancel(REMINDER_PREFIX + obra.id);
-      await this.adapter.schedule(REMINDER_PREFIX + obra.id, reminder);
+      await this.adapter.cancel(this.prefix + obra.id);
+      await this.adapter.schedule(this.prefix + obra.id, this.scoped(reminder));
       await this.put(obra.id, { ...reminder, status: 'scheduled' });
       return this.value;
     });
@@ -399,7 +419,7 @@ export class ReminderService {
       const errors: unknown[] = [];
       for (const [key] of targets) {
         try {
-          await this.adapter.cancel(REMINDER_PREFIX + key);
+          await this.adapter.cancel(this.prefix + key);
           await this.put(key, { ...this.value.reminders[key]!, cancellationPending: false });
         } catch (error) {
           errors.push(error);
@@ -428,7 +448,7 @@ export class ReminderService {
                 )
               ) {
                 try {
-                  await this.adapter.cancel(REMINDER_PREFIX + key);
+                  await this.adapter.cancel(this.prefix + key);
                 } catch {
                   /* Retry on the next reconciliation. */
                 }
@@ -449,13 +469,13 @@ export class ReminderService {
     const scheduled = new Set(await this.adapter.scheduled());
     const orphans = [...scheduled].filter(
       (identifier) =>
-        identifier.startsWith(REMINDER_PREFIX) &&
-        !this.value.reminders[identifier.slice(REMINDER_PREFIX.length)],
+        identifier.startsWith(this.prefix) &&
+        !this.value.reminders[identifier.slice(this.prefix.length)],
     );
     if (orphans.length) {
       const reminders = { ...this.value.reminders };
       for (const identifier of orphans) {
-        const key = identifier.slice(REMINDER_PREFIX.length);
+        const key = identifier.slice(this.prefix.length);
         const automatic = /^(.+):d([0-3])$/.exec(key);
         reminders[key] = {
           obraId: automatic?.[1] ?? key,
@@ -479,7 +499,7 @@ export class ReminderService {
     // automatic alarms for that rental, avoiding legacy + automatic duplicates.
     for (const [key, reminder] of Object.entries(this.value.reminders)) {
       if (active(reminder)) continue;
-      const identifier = REMINDER_PREFIX + key;
+      const identifier = this.prefix + key;
       if (!reminder.cancellationPending && !scheduled.has(identifier)) continue;
       try {
         await this.adapter.cancel(identifier);
@@ -496,7 +516,7 @@ export class ReminderService {
     let deniedAutomatic = explicitActivation && !allowed;
     for (const [key, original] of Object.entries(this.value.reminders)) {
       if (!active(original)) continue;
-      const identifier = REMINDER_PREFIX + key;
+      const identifier = this.prefix + key;
       let reminder = original;
       try {
         if (
@@ -555,7 +575,7 @@ export class ReminderService {
             });
             continue;
           }
-          await this.adapter.schedule(identifier, reminder);
+          await this.adapter.schedule(identifier, this.scoped(reminder));
           scheduled.add(identifier);
           await this.put(key, { ...reminder, status: 'scheduled', cancellationPending: false });
         }

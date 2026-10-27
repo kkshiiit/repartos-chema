@@ -1,6 +1,8 @@
+import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Text, View, Share } from 'react-native';
 import { Users, Link, LogOut } from 'lucide-react-native';
+import { useInventory } from '../context/InventoryContext';
 import { useAuth } from '../context/AuthContext';
 import { listTeam, createInvitation, removeMember } from '../services/teamService';
 import type { TeamMember } from '../domain/team';
@@ -10,17 +12,18 @@ import { userError } from '../services/errors';
 import { Button, ConfirmButton, Notice, Field, useUI } from './ui';
 export function TeamSettings() {
   const { s } = useUI();
+  const { workspaceId } = useInventory();
   const { membership, canManageTeam, logout } = useAuth();
   const [members, setMembers] = useState<TeamMember[]>([]),
     [link, setLink] = useState(''),
     [error, setError] = useState(''),
     [busy, setBusy] = useState(false);
   useEffect(() => {
-    if (membership)
+    if (membership && !workspaceId)
       void listTeam(membership)
         .then(setMembers)
         .catch((e) => setError(userError(e)));
-  }, [membership]);
+  }, [membership, workspaceId]);
   async function invite() {
     if (!membership) return;
     setBusy(true);
@@ -34,6 +37,18 @@ export function TeamSettings() {
       setBusy(false);
     }
   }
+  if (workspaceId)
+    return (
+      <View style={s.section}>
+        <Text style={s.h2}>Equipo compartido</Text>
+        <Text style={s.body}>{membership?.nombre}</Text>
+        <Button
+          label="Gestionar equipo"
+          variant="secondary"
+          onPress={() => router.push('/equipo/conectar')}
+        />
+      </View>
+    );
   if (LOCAL_ONLY)
     return (
       <View style={s.card}>
@@ -46,9 +61,14 @@ export function TeamSettings() {
   return (
     <View style={s.card}>
       <Text style={s.h2}>Equipo Chema</Text>
+      <Button
+        label="Abrir equipo compartido"
+        variant="secondary"
+        onPress={() => router.push('/equipo/conectar')}
+      />
       <Text style={s.body}>{membership?.nombre}</Text>
       {DATA_MODE === 'demo' ? (
-        <Notice text="Equipo de prueba en este dispositivo. Para compartir alquileres entre celulares hay que conectar Firebase." />
+        <Notice text="Equipo de prueba en este dispositivo. La colaboración se gestiona desde Equipo compartido." />
       ) : null}
       {members
         .filter((m) => m.active)

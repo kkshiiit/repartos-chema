@@ -1,6 +1,7 @@
 export interface ReminderOpen {
   obraId: string;
   responseKey: string;
+  scope?: string;
 }
 
 const record = (value: unknown): value is Record<string, unknown> =>
@@ -16,6 +17,8 @@ export function reminderOpenFromResponse(response: unknown): ReminderOpen | null
   if (
     !record(data) ||
     data.kind !== 'reminder' ||
+    (data.scope !== undefined &&
+      (typeof data.scope !== 'string' || !/^[a-zA-Z0-9:_%-]{1,250}$/.test(data.scope))) ||
     typeof data.obraId !== 'string' ||
     !/^[a-zA-Z0-9_-]{1,100}$/.test(data.obraId) ||
     typeof request.identifier !== 'string' ||
@@ -29,6 +32,7 @@ export function reminderOpenFromResponse(response: unknown): ReminderOpen | null
     return null;
   return {
     obraId: data.obraId,
+    ...(typeof data.scope === 'string' ? { scope: data.scope } : {}),
     responseKey: JSON.stringify([request.identifier, notification.date, response.actionIdentifier]),
   };
 }

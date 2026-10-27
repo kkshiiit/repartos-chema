@@ -45,13 +45,46 @@ interface FeedbackValue {
 }
 const Context = createContext<FeedbackValue | null>(null);
 export function FeedbackProvider({ children }: { children: React.ReactNode }) {
+  const { workspaceKey } = useInventory();
+  const { user } = useAuth();
+  const scope =
+    !workspaceKey || workspaceKey === 'local'
+      ? 'local'
+      : `${workspaceKey}:${user?.uid || 'anonymous'}`;
+  return (
+    <WorkspaceFeedback key={scope} scope={scope}>
+      {children}
+    </WorkspaceFeedback>
+  );
+}
+function WorkspaceFeedback({ children, scope }: { children: React.ReactNode; scope: string }) {
   const { state: inventory, ready: inventoryReady } = useInventory();
   const { colors } = useTheme();
   const { user, loading: authLoading } = useAuth();
   const navigation = useRootNavigationState();
   const [pendingOpen, setPendingOpen] = useState<ReminderOpen | null>(null);
   const handledOpen = useRef<string | null>(null);
-  const [service] = useState(() => new ReminderService(AsyncStorage, notificationAdapter));
+  const [service] = useState(
+    () =>
+      new ReminderService(
+        AsyncStorage,
+        notificationAdapter,
+        () => Date.now(),
+        scope === 'local'
+          ? undefined
+          : {
+              storageKey: `chema:local-feedback:v1:scope:${encodeURIComponent(scope)}`,
+              identifierPrefix: `chema-scoped-reminder:${encodeURIComponent(scope)}:`,
+              scope,
+            },
+      ),
+  );
+  useEffect(
+    () => () => {
+      void service.suspend().catch(() => undefined);
+    },
+    [service],
+  );
   const [state, setState] = useState(initialFeedbackState),
     [ready, setReady] = useState(false),
     [busy, setBusy] = useState(false),
@@ -122,7 +155,13 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
     void Promise.resolve().then(() => {
       if (!active || handledOpen.current === pendingOpen.responseKey) return;
       handledOpen.current = pendingOpen.responseKey;
-      if (inventory.obras.some((obra) => obra.id === pendingOpen.obraId)) {
+      if ((pendingOpen.scope || 'local') !== scope) {
+        setNotice({
+          message:
+            'Este aviso pertenece a otro espacio o cuenta. Abrí ese espacio para consultar el alquiler.',
+          error: true,
+        });
+      } else if (inventory.obras.some((obra) => obra.id === pendingOpen.obraId)) {
         router.push({ pathname: '/obra/[id]', params: { id: pendingOpen.obraId } });
       } else {
         setNotice({
@@ -143,7 +182,7 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
     return () => {
       active = false;
     };
-  }, [pendingOpen, authLoading, user, inventoryReady, inventory.obras, navigation?.key]);
+  }, [pendingOpen, authLoading, user, inventoryReady, inventory.obras, navigation?.key, scope]);
   useEffect(() => () => clearTimeout(timer.current), []);
   const notify = (message: string, isError: boolean, retryAction?: () => void | Promise<void>) => {
     clearTimeout(timer.current);

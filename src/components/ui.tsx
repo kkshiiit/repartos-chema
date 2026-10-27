@@ -757,7 +757,7 @@ export function Screen({
   scroll?: boolean;
 }) {
   const { C, s } = useUI();
-  const { user } = useAuth(),
+  const { user, error: authError } = useAuth(),
     inv = useInventory(),
     { width } = useWindowDimensions();
   const [recovery, setRecovery] = useState<string | null>(null),
@@ -780,9 +780,13 @@ export function Screen({
               <Text style={[s.label, { fontSize: 12 }]}>Repartos Chema</Text>
               <Text style={[s.muted, { fontSize: 12 }]}>
                 {DATA_MODE === 'demo'
-                  ? LOCAL_ONLY
-                    ? 'Local · En este celular'
-                    : 'Demo · En este dispositivo'
+                  ? inv.workspaceId
+                    ? inv.syncSummary || 'Copia local del equipo'
+                    : LOCAL_ONLY
+                      ? inv.workspaceKey && inv.workspaceKey !== 'local'
+                        ? 'Copia individual recuperada'
+                        : 'Local · En este celular'
+                      : 'Demo · En este dispositivo'
                   : !inv.online
                     ? 'Sin conexión'
                     : inv.syncing
@@ -815,6 +819,7 @@ export function Screen({
         </View>
         {subtitle ? <Text style={s.muted}>{subtitle}</Text> : null}
       </View>
+      {authError ? <Notice text={authError} tone="error" /> : null}
       {inv.error || inv.queue.some((q) => q.status === 'CONFLICT') ? (
         <View style={{ gap: 8 }}>
           <Notice text={inv.error || 'Conflicto pendiente de revisión.'} tone="error" />
@@ -847,7 +852,7 @@ export function Screen({
                 <ConfirmButton
                   label="Restaurar datos"
                   title="Recuperar desde copia"
-                  description="Se conservará el original antes de reemplazar los datos demo por la copia validada."
+                  description="Se conservará el original. En equipo, la copia se abre en un espacio individual; no reemplaza al equipo."
                   onConfirm={async () => {
                     await inv.restore(recovery);
                     setRecovery(null);

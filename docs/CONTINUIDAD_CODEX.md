@@ -1,3 +1,13 @@
+# Integración maestra en curso — 27/10/2026 11:23UTC
+
+Rama feat/chema-maestro-etapa2, main81cd39a intacto. Commitsguardados13399f2/d456ade/a8fdd39/6018528/f7348bd. Nuevo commit integraSharedProvider/SharedInventory/Auth/avisosscope yservidor. Checkfresco493/493(50archivos), tipos+Functions0,lint0errores/1warningAxe. Postgres17+SQLiteNode11/11; Authclassrace5/5, scopedavisos90casosfocales yrestoreaislado2/2. Evidencias docs/evidencias-etapa2. Actuales pruebasremotas sólo401/403sinidentidad; faltaAuthreal2cuentassintéticas.
+
+BackendFreeautorizadolttfkynkhveomntejqhc:2migraciones aplicadas,chema-api v1ACTIVE,verify_jwt=false porqueenrollprivadotoken64hex; todootrogetUser+ACLporSQL. NoBillingtarjeta niFirebase. NOseedusuariosreales: próximaQAremota temporal usa/tmp/chema-remote-qa-private.json generadoporroot concredencialessintéticas, nuncaGit/log. InvitaciónQAADMINhash ya insertada víaMCP; archivoscripts/backend-remote-test.ts próximo, completarQAyclenupantesderepetir nuevascuentas. Noimprimirprivatefile. Proyecto aúnsinusuariosequipocomercial. No firma/APIsecretprivadaencliente; src/services/sharedConfig.ts sóloURL/publishable.
+
+Pendientesreales: UI2clientes/Authrealbootstrap, fotosprivadasyupload/retry, ruta publicada, cancelaciónfallidaavisosguardada, regresiónbrowser/capturasambostemas, matriz/informe/manual yAPKfirmadonuevo. NoAPK nuevoaún; actual1.6.1anteriornoincluyerediseño. GateAPKinstalado2.0/JSONexacto noidentificados; no asumir/desinstalar/reset. Subagentesinterrumpidosporlímite ya noactivos. Continuarrootdesdecheckpointsinrehacerauditoría. Siinterrupción, hacerpush+ZIP antesdecerrar; no prometer continuidadautomática.
+
+---
+
 # Reanudación e integración activa — 27/10/2026 10:53UTC
 
 Continuar en feat/chema-maestro-etapa2; main sigue81cd39a. Fuente base/UI/import yarespaldados13399f2/d456ade/a8fdd39. H1/H2fuentes guardadas y preparadas para commit; registrodocs/EJECUCION_MAESTRA_CHEMA.md explica pruebas y revisión. Subagentes se interrumpieron por límite, no asumirlosactivos. NoAPK nuevo. BackendFreecreado lttfkynkhveomntejqhc, pero migraciones/Edge NO aplicados/desplegados.
