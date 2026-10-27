@@ -1,3 +1,43 @@
+# Recuperación bloqueada por entorno remoto — 27/10/2026
+
+**Estado vigente:** GitHub verificado con la conexión de **kkshiiit**; repositorio privado y permisos de escritura comprobados. Último commit fuente confirmado: `1a9355aa24ed3a7e38769bfdd3220be88addee53`, rama `feat/chema-maestro-etapa2`. Main conserva la base anterior. Este checkpoint se guardó directamente mediante el conector GitHub porque el workspace no permite ejecutar comandos.
+
+## Bloqueo comprobado
+
+- El entorno `ccarenv_b64_Y2NhcmVudl9mODRhNzJiNGMzYjg4MTkxYTlmMzIxYjUwNDUyZjAyNg` informa `observed_phase: pending`, `desired_phase: running`, `connectivity: offline`, observación actual y sin causa adicional informada.
+- Se esperó el arranque durante varios minutos. Después, un comando mínimo `pwd` devolvió: **No usable execution environment is available**. No confundir esta interrupción con un error de compilación de la aplicación.
+- No fue posible inspeccionar el cierre de los procesos pendientes, guardar archivos locales adicionales, ejecutar nuevas pruebas ni compilar otro APK. No afirmar que el build final, el push de archivos posteriores o la publicación ya terminaron.
+- Se conserva el trabajo fuente en GitHub. Todavía hay cambios locales posteriores potenciales que deben inspeccionarse al volver: matriz94IDs, `scripts/backend-route-test.ts`, logs `check-final-pre-apk.txt`, `build-web-final.txt`, `ruta-remota-real.*`. Su existencia/finalización NO se volvió a comprobar desde el workspace.
+
+## Revisión antes de compilar: dos hallazgos abiertos
+
+La revisión independiente se interrumpió por límite de uso; no constituye una revisión final aprobada. Se verificaron las siguientes rutas de código en el commit fuente de GitHub. Falta reproducirlas con pruebas y corregirlas:
+
+1. **Alta — suscripción perdida al revalidar la misma cuenta.** En `src/context/SharedInventoryProvider.tsx`, `getRepo` devuelve temprano si `repoRef.current` existe; la suscripción se instala solamente durante la creación inicial. El efecto dependiente de `getRepo/media` cancela la suscripción al cambiar actor, remote o initialSnapshot. Al revalidar puede reutilizar el repositorio sin reinstalar su listener: persistencia y red continúan, pero la pantalla puede quedar atrasada. Separar creación y suscripción del efecto, con limpieza de cada instancia. Verificar además que cambiar de espacio con el mismo uid no reutilice repo/caché del espacio anterior. Prueba: montar → revalidar mismo uid → operación local/sync → UI recibe estado nuevo; cambio de espacio conserva ambas colas aisladas.
+2. **Alta — conflicto con propuestas dependientes sin salida práctica.** `src/shared/repository.ts::dismissConflict` rechaza descartar un conflicto si quedan operaciones posteriores; `sync` se detiene en el primero. La UI sólo ofrece esa acción y exportación. No eliminar la guardia ni reenviar dependientes automáticamente. Implementar una salida explícita que archive de forma atómica el rechazo y las propuestas dependientes **definitivamente no enviadas**, preserve originales legibles/exportables y permita corregir desde el estado confirmado. Nunca archivar como no enviados los intentos inciertos: consultar recibos primero. Pruebas: conflicto + dos pendientes → archivo durable/reapertura sin duplicar stock; fallo atomicSet no pierde cola; un intento incierto impide descarte; UI explica alcance y permite consultar lo archivado.
+
+Observación adicional para revisar, sin afirmar reproducción: `loadHistory` mantiene el cursor mínimo global al mezclar páginas. Comprobar si un salto grande de eventos después de una desconexión deja un hueco entre el nuevo primer lote y páginas antiguas; no dar por completa una cronología con huecos.
+
+## Resultados que sí están guardados
+
+- Suite general integrada anterior: **514/514**,57archivos; tipos/Functions correctos; lint0errores y1advertencia histórica. La ejecución posterior al guardcursor estaba en curso: comprobar su log antes de dar otro total.
+- PostgreSQL17 real + SQLiteNode: **14/14**, incluido retiro/última unidad concurrentes, bootstrap común, rutas CAS y reincorporación mediante invitación nueva.
+- Auth/Edge/SQL reales:8/8; Storage/Auth privados:5/5 con JPEG sintético; Chromium local:7/7; dos contextos de equipo:2/2. Los logs y reportes correspondientes están versionados en `docs/evidencias-etapa2/`.
+- Candidato fuente1.7.0/code11; **ningún APK1.7.0 comprobado o publicado**. APK1.6.1 anterior no contiene estos cambios.
+- Supabase Free autorizado con5migraciones y Edgechema-api v4; sin cuenta comercial aprovisionada. Persisten usuarios/espacio/JPEG de QA sintéticos hasta finalizar pruebas y limpieza controlada; no tratarlos como inventario comercial.
+- Sin pruebas en Android físico, sin identificación del APK instalado llamado2.0 y sin JSONexacto de5pedidos. No pedir desinstalar ni borrar almacenamiento.
+
+## Próxima acción exacta
+
+1. Esperar/comprobar disponibilidad del entorno. Al recuperarlo: leer este checkpoint y `git status/log/remote`; preservar cambios locales, ejecutar `git fetch origin` e integrar este commit documental mediante avance rápido cuando sea compatible. Si hay cambios locales en este mismo documento, conservar ambos bloques; nunca resetear el checkout.
+2. Revisar procesos/logs pendientes antes de repetir suites o builds. Inspeccionar `/tmp/chema-stage2/review-final.md` si existe; la revisión puede no haberlo escrito por su interrupción.
+3. Reproducir y corregir los dos hallazgos anteriores con pruebas de comportamiento. Validar el posible hueco de historial. Actualizar autoauditoría/matriz y hacer commit/push del bloque.
+4. Completar QA remota de rutas/revocación/reincorporación y UI general/visual en ambos temas; distinguir logs nuevos de históricos. Limpiar únicamente QA sintética con guardas y API adecuada para objetos, preservando evidencia.
+5. Cerrar documentación y provisión privada del primer responsable/recuperación operativa; preparar ZIP restaurado/SHA y respaldar fuente antes de Gradle. Build firmado con el paquete/certificado existentes, verificar APK y publicar archivo nuevo en descargas conservando versiones anteriores, recuperar bytes de GitHub y comprobar SHA.
+6. No prometer continuidad automática fuera de una ejecución activa ni solicitar planes pagos para superar esta interrupción.
+
+---
+
 # Corte integrado previo a APK — 27/10/2026
 
 Rama `feat/chema-maestro-etapa2`; main sigue `81cd39a`. Base publicada `0f4f5a6`. Fotos privadas y plan compartido/asignaciones implementados; informes H4B en docs/evidencias-etapa2. General integrado **514/514**, tipos y Functions pasan, lint0errores/1warning histórico. PostgreSQL17+SQLite **14/14** después de corregir reincorporación por invitación nueva (RED unique-key → GREEN). Auth/Edge/SQL remoto8/8 anteriores; **Storage remoto5/5** nuevos; Chromium equipo2/2 y local7/7. Se corrigió respuesta atrasada que retrocedía cursor confirmado: RED→GREEN, pruebas focales guardadas. Falta repetir general después de ese fix y ejecutar regresiónUI completa/visual final.
