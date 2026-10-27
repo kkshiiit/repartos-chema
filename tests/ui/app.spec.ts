@@ -57,7 +57,7 @@ test('nombre identifica a la persona sin selector de roles; sesión persiste', a
   await expect(page.getByRole('button', { name: 'Nuevo alquiler', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Cerradas', exact: true })).toHaveCount(0);
   await page.getByRole('button', { name: 'Filtros', exact: true }).click();
-  await page.getByRole('button', { name: 'Estado', exact: true }).click();
+  await page.getByRole('button', { name: 'Tarea o estado', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Cerradas', exact: true })).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Retirados', exact: true })).toHaveCount(1);
   await page.getByRole('button', { name: 'Retirados', exact: true }).click();

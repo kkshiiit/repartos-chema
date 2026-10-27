@@ -1,3 +1,13 @@
+# Reanudación e integración activa — 27/10/2026 10:53UTC
+
+Continuar en feat/chema-maestro-etapa2; main sigue81cd39a. Fuente base/UI/import yarespaldados13399f2/d456ade/a8fdd39. H1/H2fuentes guardadas y preparadas para commit; registrodocs/EJECUCION_MAESTRA_CHEMA.md explica pruebas y revisión. Subagentes se interrumpieron por límite, no asumirlosactivos. NoAPK nuevo. BackendFreecreado lttfkynkhveomntejqhc, pero migraciones/Edge NO aplicados/desplegados.
+
+Activo: integrar SharedInventoryProvider/SharedContext/Auth (archivos nuevos ymodificados), completar accesodeequipo/UI, namespaceavisos/fotos/ruta yvalidarservidor. Critical revisado: expectedUserId impidecolaAconJWTB; Important Authrefresh tardíoreviveA corregido porrootcon5testsverdesRED→GREEN. AntesdeployrepetirPostgresreal yAuthremotosintético. Mantenerfirma/datos; noresetear. H0copialocalaislada probada2tests, no tocaoriginal/equipo. Nuevoinventarioindividualrecovery namespacewiredup enprovider; no afirmar todofuncionalhastaUI/suite.
+
+Próximaacciónexacta: ejecutarcheckcompleto(sinparaleloheavy), guardarcommitsH1/H2/herramientasbackendporbloques, finalizarfuncionalidadconservandopendientes; despuésbuild/capturas yAPKcuando verificadocompatible. APK instalado2.0/JSONexacto aúnfaltan, Androidfísico no disponible. Si límite, primero respaldar todoslosarchivosWIPconcheckpoint claro, sinasociarlosAPK1.6.1.
+
+---
+
 # ETAPA 2 AUTORIZADA Y EN CURSO — 26/10/2026
 
 Se recibió el archivo02 completo; autorización conservada en docs/ENCARGO_ETAPA_2_CHEMA.md. Los bloques inferiores que dicen esperar02 son históricos. Base e133ae4 limpia, remotos main81cd39a/plan-e133 verificados; rama feat/chema-maestro-etapa2. Copia íntegra restaurada antes de editar en /workspace/respaldos/etapa2-base-2026-10-26. Plan/contrato/matriz continúan vigentes. Registro vivo: docs/EJECUCION_MAESTRA_CHEMA.md.

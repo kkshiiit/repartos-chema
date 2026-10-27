@@ -1,78 +1,85 @@
 import React from 'react';
-import { View, Text, Pressable, useWindowDimensions } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { router } from 'expo-router';
-import { Building2, ChevronRight } from 'lucide-react-native';
-import type { ObraCard } from '../types';
+import { ChevronRight } from 'lucide-react-native';
+import type { ObraCard, MaterialItem } from '../types';
 import { useUI } from './ui';
 import { StatusChip } from './StatusChip';
-import { rentalSummary } from '../utils/listPresentation';
+import { rentalSummary, rentalTaskForDate, rentalMaterialPreview } from '../utils/listPresentation';
 import { businessDate } from '../domain/rules';
-import { retirementCountdown, isCalendarDate } from '../utils/retirementCalendar';
 import { formatDate } from '../utils/formatters';
-/** A rental is a row. Secondary actions and complete information belong in its detail. */
+import { isCalendarDate } from '../utils/retirementCalendar';
+/** A visible address and one task per rental; all commercial actions live in detail. */
 export function CardObra({
   obra: o,
   first = false,
   last = false,
   now = new Date(),
+  materials = [],
 }: {
   obra: ObraCard;
   first?: boolean;
   last?: boolean;
   now?: Date;
+  materials?: MaterialItem[];
 }) {
   const { C, s } = useUI();
-  const { fontScale } = useWindowDimensions();
-  const countdown = retirementCountdown(o, now);
-  const rowDate = o.estadoProceso === 'PENDIENTE_ENTREGA' ? o.fechaEntrega : o.fechaRetiroEstimada;
+  const today = businessDate(now);
+  const task = rentalTaskForDate(o, today);
+  const taskColor =
+    task.group === 'overdue' ? C.danger : task.group === 'today' ? C.warning : C.muted;
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={`Abrir ${o.clienteNombre}`}
-      accessibilityHint={`${o.direccion}, ${o.localidadBarrio}. ${rentalSummary(o)}. ${countdown.label}. Abrir detalle y operaciones.`}
+      accessibilityHint={`${o.direccion}, ${o.localidadBarrio}. ${rentalSummary(o)}. ${task.label}. Abrir detalle y operaciones.`}
       onPress={() => router.push(`/obra/${o.id}`)}
       style={({ pressed }) => ({
         backgroundColor: pressed ? C.selection : C.panel,
         borderBottomWidth: last ? 0 : 1,
-        borderTopLeftRadius: first ? 16 : 0,
-        borderTopRightRadius: first ? 16 : 0,
-        borderBottomLeftRadius: last ? 16 : 0,
-        borderBottomRightRadius: last ? 16 : 0,
         borderColor: C.hairline,
-        paddingVertical: 14,
-        paddingHorizontal: 12,
-        minHeight: 96,
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 10,
+        borderTopLeftRadius: first ? 12 : 0,
+        borderTopRightRadius: first ? 12 : 0,
+        borderBottomLeftRadius: last ? 12 : 0,
+        borderBottomRightRadius: last ? 12 : 0,
+        paddingVertical: 12,
+        paddingHorizontal: 14,
+        gap: 4,
       })}
     >
-      {fontScale <= 1.3 ? <Building2 size={22} color={C.muted} /> : null}
-      <View style={[s.grow, { gap: 2 }]}>
-        <Text style={[s.label, { fontSize: 16, lineHeight: 22, fontWeight: '700' }]}>
+      <View style={[s.row, { alignItems: 'flex-start', gap: 8 }]}>
+        <Text style={[s.label, s.grow, { fontSize: 16, lineHeight: 22, fontWeight: '700' }]}>
           {o.clienteNombre}
         </Text>
-        <Text numberOfLines={1} style={[s.muted, { fontSize: 13, lineHeight: 19 }]}>
-          {o.localidadBarrio}
-        </Text>
-        <Text numberOfLines={1} style={[s.muted, { fontSize: 13, lineHeight: 19 }]}>
-          {rentalSummary(o)}
-        </Text>
-        {!countdown.finished &&
-        (countdown.days !== null || o.estadoProceso === 'PENDIENTE_ENTREGA') ? (
-          <Text style={[s.muted, { fontSize: 12, lineHeight: 17 }]}>{countdown.label}</Text>
-        ) : null}
+        <ChevronRight size={18} color={C.muted} />
       </View>
-      <View style={{ alignItems: 'flex-end', gap: 5, maxWidth: '39%' }}>
-        <StatusChip obra={o} compact today={businessDate(now)} />
-        {isCalendarDate(rowDate) ? (
-          <Text style={[s.muted, { fontSize: 12, lineHeight: 17, fontVariant: ['tabular-nums'] }]}>
-            {o.estadoProceso === 'PENDIENTE_ENTREGA' ? 'Entrega ' : 'Hasta '}
-            {formatDate(rowDate, true)}
+      <Text style={[s.body, { fontSize: 14, lineHeight: 20 }]}>
+        {o.direccion} <Text style={{ color: C.muted }}>· {o.localidadBarrio}</Text>
+      </Text>
+      <Text style={[s.muted, { fontSize: 13, lineHeight: 19 }]}>
+        {rentalMaterialPreview(o, materials)}
+      </Text>
+      <View style={[s.row, { flexWrap: 'wrap', gap: 6, marginTop: 3 }]}>
+        <StatusChip obra={o} compact today={today} />
+        {task.kind !== 'FINISHED' ? (
+          <Text style={[s.muted, { color: taskColor, fontSize: 13, lineHeight: 19 }]}>
+            {task.label}
+          </Text>
+        ) : null}
+        {task.date ? (
+          <Text style={[s.muted, { fontSize: 13, lineHeight: 19, fontVariant: ['tabular-nums'] }]}>
+            {task.kind === 'DELIVER' ? 'Entrega ' : 'Hasta '}
+            {formatDate(task.date, true)}
+          </Text>
+        ) : null}
+        {task.kind === 'DELIVER' ? (
+          <Text style={[s.muted, { fontSize: 13, lineHeight: 19, fontVariant: ['tabular-nums'] }]}>
+            {isCalendarDate(o.fechaRetiroEstimada)
+              ? `Hasta ${formatDate(o.fechaRetiroEstimada, true)}`
+              : 'Sin fecha de retiro'}
           </Text>
         ) : null}
       </View>
-      <ChevronRight size={16} color={C.muted} />
     </Pressable>
   );
 }

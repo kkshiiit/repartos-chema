@@ -1,0 +1,11 @@
+
+Running 4 tests using 1 worker
+
+(node:15657) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/ui/maestro-alquileres-visual.spec.ts:21:9 › comparación nativa-web etiquetada antes light (3.0s)
+  ✓  2 tests/ui/maestro-alquileres-visual.spec.ts:21:9 › comparación nativa-web etiquetada antes dark (2.9s)
+  ✓  3 tests/ui/maestro-alquileres-visual.spec.ts:21:9 › comparación nativa-web etiquetada despues light (2.8s)
+  ✓  4 tests/ui/maestro-alquileres-visual.spec.ts:21:9 › comparación nativa-web etiquetada despues dark (3.0s)
+
+  4 passed (12.6s)
