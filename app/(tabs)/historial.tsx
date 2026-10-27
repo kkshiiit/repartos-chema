@@ -25,7 +25,7 @@ import type { ActivityLog } from '../../src/types';
 import { DataList } from '../../src/components/DataList';
 export default function HistoryPage() {
   const { C, s } = useUI();
-  const { state, dispatch } = useInventory(),
+  const { state, dispatch, loadMoreHistory, workspaceId } = useInventory(),
     { user } = useAuth();
   const [filtersOpen, setFiltersOpen] = useState(false),
     [selectedId, setSelectedId] = useState<string | null>(null);
@@ -98,7 +98,7 @@ export default function HistoryPage() {
           />
         }
         ListFooterComponent={
-          DATA_MODE === 'firebase' && user?.role === 'ADMIN' ? (
+          (workspaceId || DATA_MODE === 'firebase') && user?.role === 'ADMIN' ? (
             <View style={{ gap: 10 }}>
               {error ? <Notice text={error} tone="error" /> : null}
               <Button
@@ -109,6 +109,11 @@ export default function HistoryPage() {
                 onPress={async () => {
                   setBusy(true);
                   try {
+                    if (loadMoreHistory) {
+                      setMore(await loadMoreHistory());
+                      setError('');
+                      return;
+                    }
                     const result = await loadHistory(cursor);
                     setOlder([...older, ...result.items]);
                     setCursor(result.cursor);

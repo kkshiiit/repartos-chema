@@ -16,7 +16,7 @@ type PreviewRow =
 
 export function BackupImport() {
   const { s, C } = useUI();
-  const { state, restore, undoRestore, backup } = useInventory();
+  const { state, restore, undoRestore, backup, workspaceId } = useInventory();
   const [selection, setSelection] = useState<Selection | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -166,7 +166,7 @@ export function BackupImport() {
             ListFooterComponent={
               <View style={{ gap: 12, paddingTop: 16 }}>
                 <Button
-                  label="Restaurar esta copia"
+                  label={workspaceId ? 'Abrir copia individual' : 'Restaurar esta copia'}
                   variant="danger"
                   loading={busy}
                   onPress={confirm}
@@ -195,16 +195,18 @@ export function BackupImport() {
           />
         ) : null}
       </Sheet>
-      <ConfirmButton
-        label="Deshacer última importación"
-        title="Recuperar datos anteriores"
-        description="Volverás a los datos anteriores a la última importación. Los datos activos también se archivarán antes del cambio."
-        onConfirm={async () => {
-          await undoRestore();
-          setError('');
-          setSuccess('Se recuperaron los datos anteriores a la importación.');
-        }}
-      />
+      {!workspaceId ? (
+        <ConfirmButton
+          label="Deshacer última importación"
+          title="Recuperar datos anteriores"
+          description="Volverás a los datos anteriores a la última importación. Los datos activos también se archivarán antes del cambio."
+          onConfirm={async () => {
+            await undoRestore();
+            setError('');
+            setSuccess('Se recuperaron los datos anteriores a la importación.');
+          }}
+        />
+      ) : null}
     </View>
   );
 }

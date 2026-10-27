@@ -16,7 +16,7 @@ import { Button, Field, Notice, useUI } from '../../src/components/ui';
 import { DATA_MODE } from '../../src/services/firebase';
 import { LOCAL_ONLY } from '../../src/services/localMode';
 import { userError } from '../../src/services/errors';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { AuroraBackground } from '../../src/components/AuroraBackground';
 import { ThemeToggle } from '../../src/components/ThemeToggle';
 import { MotionView } from '../../src/components/MotionView';
@@ -140,6 +140,11 @@ export default function Login() {
                 </Text>
               )}
             </View>
+            <Button
+              label="Conectar equipo"
+              variant="secondary"
+              onPress={() => router.push('/equipo/conectar')}
+            />
             <Button label="Cómo se usa" icon={BookOpen} variant="ghost" onPress={openWelcome} />
           </MotionView>
         </ScrollView>

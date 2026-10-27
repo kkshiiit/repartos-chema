@@ -1,11 +1,12 @@
+import { SharedInventoryProvider } from './SharedInventoryProvider';
+import { useSharedSession } from './SharedContext';
 import { userError } from '../services/errors';
-import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
+import React, { useContext, useEffect, useMemo, useState, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 import { AppState as NativeState, Platform } from 'react-native';
 import * as Crypto from 'expo-crypto';
-import type { BackupDestination } from '../services/files';
-import type { Action, AppState, Envelope } from '../types';
+import type { Envelope } from '../types';
 import { Repository } from '../data/repository';
 import { inventoryStorage } from '../data/localStorage';
 import { seed, emptyState } from '../data/seed';
@@ -14,28 +15,23 @@ import { LOCAL_ONLY } from '../services/localMode';
 import { DATA_MODE, cloudAdapter } from '../services/firebase';
 import { haptic } from '../hooks/useHaptics';
 import { useAuth } from './AuthContext';
+import { InventoryDataContext, type InventoryValue } from './InventoryState';
 export const makeId = () => Crypto.randomUUID();
-interface Value {
-  state: AppState;
-  ready: boolean;
-  error: string;
-  online: boolean;
-  syncing: boolean;
-  queue: Envelope['queue'];
-  dispatch: (a: Action) => Promise<void>;
-  retry: () => Promise<void>;
-  discard: () => Promise<void>;
-  backup: () => Promise<void>;
-  backupToDestination: () => Promise<BackupDestination>;
-  archives: () => Promise<{ key: string; createdAt: string; reason: string }[]>;
-  recoverArchive: (key: string) => Promise<void>;
-  restore: (raw: string) => Promise<void>;
-  undoRestore: () => Promise<void>;
-  startEmpty: () => Promise<void>;
-  recoverPrevious: () => Promise<void>;
-}
-const Context = createContext<Value | null>(null);
+export { InventoryDataContext } from './InventoryState';
+export type { InventoryValue } from './InventoryState';
+const Context = InventoryDataContext;
 export function InventoryProvider({ children }: { children: React.ReactNode }) {
+  const shared = useSharedSession();
+  return shared?.active ? (
+    <SharedInventoryProvider key={`${shared.spaceId}:${shared.actor?.uid}`}>
+      {children}
+    </SharedInventoryProvider>
+  ) : (
+    <LocalInventoryProvider key={shared?.localKey || 'local'}>{children}</LocalInventoryProvider>
+  );
+}
+function LocalInventoryProvider({ children }: { children: React.ReactNode }) {
+  const shared = useSharedSession();
   const { user } = useAuth();
   const [env, setEnv] = useState<Envelope | null>(null),
     [error, setError] = useState(''),
@@ -46,12 +42,12 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
       new Repository(
         LOCAL_ONLY ? inventoryStorage : AsyncStorage,
         DATA_MODE === 'demo'
-          ? 'chema:demo:v1'
+          ? shared?.localKey || 'chema:demo:v1'
           : `chema:cloud:${process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID}:${user?.uid}:v1`,
         DATA_MODE === 'demo' ? (LOCAL_ONLY ? emptyLocalState : seed) : emptyState,
         DATA_MODE === 'firebase' ? cloudAdapter : undefined,
       ),
-    [user?.uid],
+    [user?.uid, shared?.localKey],
   );
   const retry = useCallback(async () => {
     setSyncing(true);
@@ -132,7 +128,8 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
     const timer = setInterval(() => setMinute((n) => n + 1), 60000);
     return () => clearInterval(timer);
   }, []);
-  const value: Value = {
+  const value: InventoryValue = {
+    workspaceKey: shared?.localKey || 'local',
     state: env?.state || emptyState(),
     ready: !!env,
     error: env?.queue.find((q) => q.status === 'CONFLICT')?.error || error,

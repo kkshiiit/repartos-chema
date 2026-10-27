@@ -1,0 +1,31 @@
+{
+  "fechaUTC": "2026-10-27T11:18:54.807246+00:00",
+  "entorno": "Supabase Free remoto real",
+  "resultado": [
+    {
+      "caso": "función sin sesión",
+      "status": 401,
+      "respuesta": {
+        "error": "Iniciá sesión para usar el equipo."
+      }
+    },
+    {
+      "caso": "invitación inválida",
+      "status": 403,
+      "respuesta": {
+        "error": "No tenés acceso a este equipo. Tus cambios locales se conservan.",
+        "code": "ACCESS_DENIED"
+      }
+    },
+    {
+      "caso": "RPC anónima",
+      "status": 401,
+      "respuesta": {
+        "code": "42501",
+        "details": null,
+        "hint": null,
+        "message": "permission denied for function chema_snapshot"
+      }
+    }
+  ]
+}

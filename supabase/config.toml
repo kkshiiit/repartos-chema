@@ -1,0 +1,4 @@
+project_id = "repartos-chema"
+[functions.chema-api]
+# Enrollment uses a private single-use invitation. All other methods call Auth getUser explicitly.
+verify_jwt = false

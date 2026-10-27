@@ -1,0 +1,49 @@
+
+> repartos-chema@1.6.1 check
+> npm run typecheck && npm run lint && npm test && npm --prefix functions run build
+
+
+> repartos-chema@1.6.1 typecheck
+> tsc --noEmit
+
+
+> repartos-chema@1.6.1 lint
+> eslint app src tests functions/src
+
+
+/workspace/repartos-chema/src/context/InventoryContext.tsx
+  19:1  warning  Import in body of module; reorder to top  import/first
+
+/workspace/repartos-chema/tests/ui/reminders.spec.ts
+  3:8  warning  Using exported name 'AxeBuilder' as identifier for default import  import/no-named-as-default
+
+✖ 2 problems (0 errors, 2 warnings)
+  0 errors and 1 warning potentially fixable with the `--fix` option.
+
+
+> repartos-chema@1.6.1 test
+> vitest run
+
+
+ RUN  v5.0.3 /workspace/repartos-chema
+
+ ❯ tests/legacy-query.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/legacy-query.test.ts [ tests/legacy-query.test.ts ]
+SyntaxError: Unexpected token 'typeof'
+ ❯ Object.<anonymous> node_modules/@shopify/flash-list/src/isNewArch.ts:1:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 49 passed (50)
+      Tests  485 passed (485)
+   Start at  11:16:06
+   Duration  10.59s (import 42%, tests 40%, transform 13%, worker 4%)
+
+     Import  125 modules were evaluated 170 times · 2.31s total, 42% of tracked time
+             ~612ms faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation
+

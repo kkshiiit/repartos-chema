@@ -33,7 +33,7 @@ export default function Home() {
   const workspace =
     'workspaceId' in inventory && typeof inventory.workspaceId === 'string'
       ? inventory.workspaceId
-      : 'local';
+      : inventory.workspaceKey || 'local';
   const scope = `${workspace}:${user?.uid || 'anonymous'}`;
   return <RentalList key={scope} scope={scope} />;
 }

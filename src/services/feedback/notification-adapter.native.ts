@@ -80,7 +80,12 @@ export const notificationAdapter: ReminderAdapter = {
           `${reminder.title} · Revisá el retiro previsto en Repartos Chema.`,
         sound: reminder.sound ? sounds.reminder : false,
         vibrate: reminder.vibrate ? [0, 100] : [0],
-        data: { obraId: reminder.obraId, kind: 'reminder', sound: reminder.sound },
+        data: {
+          obraId: reminder.obraId,
+          kind: 'reminder',
+          sound: reminder.sound,
+          ...(reminder.scope ? { scope: reminder.scope } : {}),
+        },
       },
       trigger: {
         type: Notifications.SchedulableTriggerInputTypes.DATE,

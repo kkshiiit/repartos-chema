@@ -1,0 +1,35 @@
+
+> repartos-chema@1.6.1 check
+> npm run typecheck && npm run lint && npm test && npm --prefix functions run build
+
+
+> repartos-chema@1.6.1 typecheck
+> tsc --noEmit
+
+
+> repartos-chema@1.6.1 lint
+> eslint app src tests functions/src
+
+
+/workspace/repartos-chema/app/_layout.tsx
+  23:6  warning  React Hook useEffect has a missing dependency: 'segments'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/workspace/repartos-chema/src/context/SharedContext.tsx
+  25:37  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+/workspace/repartos-chema/src/context/SharedContext.tsx:25:37
+  23 |   const [loading, setLoading] = useState(true), [error, setError] = useState('');
+  24 |   const [initial, setInitial] = useState<SharedSnapshot | null>(null);
+> 25 |   const choiceRef = useRef(choice); choiceRef.current = choice;
+     |                                     ^^^^^^^^^^^^^^^^^ Cannot update ref during render
+  26 |   const setDurable = useCallback(async (value: WorkspaceChoice) => {
+  27 |     const raw = JSON.stringify(value);
+  28 |     await AsyncStorage.setItem(CHOICE_KEY, raw);  react-hooks/refs
+
+/workspace/repartos-chema/tests/ui/reminders.spec.ts
+  3:8  warning  Using exported name 'AxeBuilder' as identifier for default import  import/no-named-as-default
+
+✖ 3 problems (1 error, 2 warnings)
+

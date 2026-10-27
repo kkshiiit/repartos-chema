@@ -100,7 +100,7 @@ export default function Settings() {
   const theme = useTheme();
   const { openWelcome } = useWelcome();
   const { user, membership } = useAuth();
-  const { state, dispatch, backup, recoverPrevious } = useInventory();
+  const { state, dispatch, backup, recoverPrevious, workspaceId } = useInventory();
   const [panel, setPanel] = useState<Panel | null>(null);
   const [depot, setDepot] = useState(DEFAULT_DEPOT);
   const [names, setNames] = useState<string | null>(null);
@@ -141,7 +141,7 @@ export default function Settings() {
       <ToolGroup>
         <ToolRow
           label={membership?.nombre || user?.nombre || 'Identidad local'}
-          detail={LOCAL_ONLY ? 'Uso individual · En este celular' : 'Equipo de trabajo'}
+          detail={workspaceId ? 'Equipo compartido' : 'Uso individual · En este celular'}
           icon={UserRound}
           onPress={() => open('identity')}
           last
@@ -182,6 +182,19 @@ export default function Settings() {
         ) : null}
         <ToolRow label="Entorno de trabajo" icon={Info} onPress={() => open('environment')} last />
       </ToolGroup>
+      <ToolGroup title="Colaboración">
+        <ToolRow
+          label="Equipo compartido"
+          detail={
+            workspaceId
+              ? 'Acceso vinculado · Cambios pendientes y miembros'
+              : 'Opcional · El uso individual se conserva'
+          }
+          icon={UsersRound}
+          onPress={() => router.push('/equipo/conectar')}
+          last
+        />
+      </ToolGroup>
       <ToolGroup title="Depósito">
         <ToolRow
           label={depot.nombre}
@@ -194,7 +207,7 @@ export default function Settings() {
       <ToolGroup>
         <ToolRow label="Ver bienvenida" icon={BookOpen} onPress={openWelcome} last />
       </ToolGroup>
-      {LOCAL_ONLY ? (
+      {LOCAL_ONLY && !workspaceId ? (
         <Text style={[s.muted, { textAlign: 'center' }]}>Sin cuenta ni suscripción.</Text>
       ) : null}
       <Sheet
@@ -293,7 +306,7 @@ export default function Settings() {
         {panel === 'copies' && admin ? (
           <>
             <Notice text="Guarda la copia en un lugar privado. Contiene alquileres, historial y fotos locales; no incluye contraseñas. Los archivos Excel y Word no reemplazan esta copia." />
-            {LOCAL_ONLY ? (
+            {LOCAL_ONLY && !workspaceId ? (
               <LocalBackupActions />
             ) : (
               <Button
@@ -306,7 +319,7 @@ export default function Settings() {
               />
             )}
             {DATA_MODE === 'demo' ? <BackupImport /> : null}
-            {LOCAL_ONLY ? (
+            {LOCAL_ONLY && !workspaceId ? (
               <ConfirmButton
                 label="Recuperar anterior"
                 title="Recuperar inventario anterior"

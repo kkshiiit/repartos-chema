@@ -3,7 +3,7 @@ import { act, create, type ReactTestRenderer } from 'react-test-renderer';
 import ExcelJS from 'exceljs';
 import JSZip from 'jszip';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { seed } from '../src/data/seed';
+import { seed, emptyState } from '../src/data/seed';
 import { sortTripStops } from '../src/utils/trip';
 import { localDocument } from '../src/services/localDocuments';
 import { validDate } from '../src/domain/rules';
@@ -52,9 +52,18 @@ vi.mock('lucide-react-native', () => ({
   Download: 'Download',
   FileText: 'FileText',
 }));
+vi.mock('../src/components/TripOrderEditor', () => ({ TripOrderEditor: () => null }));
+vi.mock('../src/components/DataList', () => ({
+  DataList: ({ data, renderItem, ListHeaderComponent }: { data: unknown[]; renderItem: (arg: {item: unknown}) => React.ReactNode; ListHeaderComponent?: React.ReactNode }) =>
+    React.createElement(React.Fragment, null, ListHeaderComponent, ...data.map((item, index) => React.createElement(React.Fragment, {key:index}, renderItem({item})))),
+}));
+vi.mock('@react-native-async-storage/async-storage', () => {
+  const values = new Map<string,string>();
+  return {default:{ getItem:async(key:string)=>values.get(key)??null, setItem:async(key:string,value:string)=>{values.set(key,value);} }};
+});
 vi.mock('expo-location', () => ({}));
 vi.mock('../src/context/InventoryContext', () => ({
-  useInventory: () => ({ state: { obras: mocks.obras } }),
+  useInventory: () => ({ state: { ...emptyState(), obras: mocks.obras } }),
 }));
 vi.mock('../src/context/AuthContext', () => ({
   useAuth: () => ({ user: { uid: 'query_admin', role: 'ADMIN' } }),
@@ -83,7 +92,7 @@ vi.mock('../src/components/ui', () => {
 });
 vi.mock('../src/services/exportService', () => ({ exportDocument: mocks.exportDocument }));
 vi.mock('../src/services/firebase', () => ({ DATA_MODE: 'demo' }));
-vi.mock('../src/services/depotSettings', () => ({ loadDepot: vi.fn() }));
+vi.mock('../src/services/depotSettings', () => ({ loadDepot: vi.fn(async () => ({ nombre: 'Depósito sintético', direccion: 'Dirección sintética', coordenadas: { lat: -34.5, lng: -58.5 } })) }));
 vi.mock('../src/services/links', () => ({ openLink: vi.fn() }));
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
 

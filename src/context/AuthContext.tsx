@@ -1,3 +1,4 @@
+import { useSharedSession } from './SharedContext';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, signInAnonymously, signOut } from 'firebase/auth';
 import { doc, onSnapshot } from 'firebase/firestore';
@@ -19,6 +20,7 @@ interface AuthValue {
 }
 const Context = createContext<AuthValue | null>(null);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const shared = useSharedSession();
   const [user, setUser] = useState<UserProfile | null>(null),
     [membership, setMember] = useState<TeamMember | null>(null),
     [loading, setLoading] = useState(true),
@@ -116,11 +118,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
   const value: AuthValue = {
-    user,
-    membership,
-    canManageTeam: membership?.owner === true,
-    loading,
-    error,
+    user: shared?.active ? shared.actor : user,
+    membership:
+      shared?.active && shared.actor
+        ? {
+            uid: shared.actor.uid,
+            nombre: shared.actor.nombre,
+            createdAt: shared.actor.createdAt,
+            active: true,
+            owner: shared.actor.role === 'ADMIN',
+          }
+        : membership,
+    canManageTeam: shared?.active ? shared.actor?.role === 'ADMIN' : membership?.owner === true,
+    loading: loading || !!shared?.loading,
+    error: shared?.error || error,
     enterTeam: async (nombre, input = '') => {
       const name = teamName(nombre);
       setError('');
@@ -147,6 +158,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     },
     logout: async () => {
+      if (shared?.active) {
+        await shared.useLocal();
+        return;
+      }
       if (DATA_MODE === 'demo') await clearLocalSession();
       else await signOut(firebase().auth);
       apply(null);
