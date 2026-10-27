@@ -3,6 +3,7 @@ import { WelcomeProvider } from '../src/components/WelcomeProvider';
 import { Stack, router, useSegments } from 'expo-router';
 import { ThemeProvider } from '../src/context/ThemeContext';
 import React, { useEffect } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { View, ActivityIndicator, Text } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider, useAuth } from '../src/context/AuthContext';
@@ -36,14 +37,16 @@ function Navigation() {
 }
 export default function Root() {
   return (
-    <SafeAreaProvider>
-      <ThemeProvider>
-        <AuthProvider>
-          <WelcomeProvider>
-            <Navigation />
-          </WelcomeProvider>
-        </AuthProvider>
-      </ThemeProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <WelcomeProvider>
+              <Navigation />
+            </WelcomeProvider>
+          </AuthProvider>
+        </ThemeProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }

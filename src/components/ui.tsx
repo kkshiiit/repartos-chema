@@ -46,7 +46,7 @@ import { useInventory } from '../context/InventoryContext';
 import { DATA_MODE } from '../services/firebase';
 import { LOCAL_ONLY } from '../services/localMode';
 import { useTheme } from '../context/ThemeContext';
-import { dark, light, Colors, radius, typography, motionMs, spacing } from '../theme/tokens';
+import { dark, light, Colors, radius, typography, motionMs, spacing, fonts } from '../theme/tokens';
 import { pickBackup } from '../services/files';
 import { ThemeToggle } from './ThemeToggle';
 import { AuroraBackground } from './AuroraBackground';
@@ -63,7 +63,7 @@ const makeStyles = (C: Colors) =>
     title: {
       color: C.text,
       ...typography.title,
-      fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
+      fontFamily: fonts.semibold,
       fontWeight: '700',
     },
     h2: { color: C.text, ...typography.section, fontWeight: '700' },
@@ -73,7 +73,7 @@ const makeStyles = (C: Colors) =>
     input: {
       backgroundColor: C.panel,
       borderWidth: 1,
-      borderColor: C.line,
+      borderColor: C.controlBorder,
       borderRadius: radius.input,
       color: C.text,
       paddingHorizontal: 14,
@@ -143,7 +143,8 @@ export function Button({
     setPanelBusy(isBusy);
     return () => setPanelBusy(false);
   }, [isBusy, setPanelBusy]);
-  const foreground = variant === 'primary' || variant === 'danger' ? C.onPrimary : C.text;
+  const foreground =
+    variant === 'danger' ? C.onDanger : variant === 'primary' ? C.onPrimary : C.text;
   const [scale] = useState(() => new Animated.Value(1));
   const layout = StyleSheet.flatten(style) || {};
   const press = (value: number) => {
@@ -187,7 +188,7 @@ export function Button({
         onPressOut={() => press(1)}
         style={({ pressed }) => [
           {
-            minHeight: 48,
+            minHeight: variant === 'primary' ? 52 : 48,
             borderRadius: radius.input,
             paddingHorizontal: 16,
             paddingVertical: 11,
@@ -219,8 +220,9 @@ export function Button({
         <Text
           style={{
             color: foreground,
-            fontSize: 16,
-            lineHeight: 23,
+            fontFamily: fonts.semibold,
+            fontSize: 15,
+            lineHeight: 22,
             fontWeight: '700',
             flexShrink: 1,
             textAlign: 'center',
@@ -311,8 +313,8 @@ export function Chip({
         paddingVertical: onPress ? 10 : 5,
         borderRadius: radius.input,
         borderWidth: 1,
-        borderColor: selected ? color : C.hairline,
-        backgroundColor: selected ? `${color}16` : C.panel,
+        borderColor: selected ? C.accent : C.controlBorder,
+        backgroundColor: selected ? C.selection : C.panel,
         flexDirection: 'row',
         alignItems: 'center',
         gap: 6,
@@ -321,7 +323,8 @@ export function Chip({
       {selected && onPress ? <Check size={13} color={color} /> : null}
       <Text
         style={{
-          color: selected ? color : C.muted,
+          color: selected ? C.selectionText : C.muted,
+          fontFamily: fonts.medium,
           flexShrink: 1,
           fontSize: 14,
           lineHeight: 20,
@@ -369,6 +372,7 @@ export function Sheet({
   protectChanges = false,
   hasChanges = false,
   busy: externalBusy = false,
+  scroll = true,
 }: {
   visible: boolean;
   title: string;
@@ -377,6 +381,7 @@ export function Sheet({
   protectChanges?: boolean;
   hasChanges?: boolean;
   busy?: boolean;
+  scroll?: boolean;
 }) {
   const { C, s } = useUI();
   const { width, fontScale } = useWindowDimensions();
@@ -522,6 +527,7 @@ export function Sheet({
               maxWidth: 640,
               maxHeight: '100%',
               flex: fullHeight ? 1 : undefined,
+              height: !scroll && !fullHeight ? '90%' : undefined,
               backgroundColor: C.panel,
               borderTopLeftRadius: radius.sheet,
               borderTopRightRadius: radius.sheet,
@@ -578,13 +584,17 @@ export function Sheet({
                 <X size={22} color={C.text} />
               </Pressable>
             </View>
-            <ScrollView
-              keyboardShouldPersistTaps="handled"
-              contentInsetAdjustmentBehavior="automatic"
-              contentContainerStyle={{ padding: 20, gap: 16, paddingBottom: 24 }}
-            >
-              {children}
-            </ScrollView>
+            {scroll ? (
+              <ScrollView
+                keyboardShouldPersistTaps="handled"
+                contentInsetAdjustmentBehavior="automatic"
+                contentContainerStyle={{ padding: 20, gap: 16, paddingBottom: 24 }}
+              >
+                {children}
+              </ScrollView>
+            ) : (
+              <View style={{ flex: 1, minHeight: 0, padding: 20, gap: 16 }}>{children}</View>
+            )}
             {confirmDiscard ? (
               <View
                 style={[

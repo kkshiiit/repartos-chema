@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { userError } from '../../src/services/errors';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, useWindowDimensions } from 'react-native';
@@ -86,6 +87,11 @@ export default function WarehousePage() {
     <Screen
       title="Depósito"
       scroll={false}
+      action={
+        user?.role === 'ADMIN' ? (
+          <Button label="Combos" variant="ghost" onPress={() => router.push('/combos')} />
+        ) : undefined
+      }
       footer={
         user?.role === 'ADMIN' ? (
           <Button label="Agregar material" icon={Plus} onPress={() => open(null, 'material')} />
