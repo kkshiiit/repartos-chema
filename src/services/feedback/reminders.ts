@@ -209,12 +209,17 @@ export class ReminderService {
     if (raw === null) return [];
     try {
       const data: unknown = JSON.parse(raw);
-      if (!Array.isArray(data) || data.length > 1000 ||
-          !data.every((v) => typeof v === 'string' && v.length > 0 && v.length <= 1000))
+      if (
+        !Array.isArray(data) ||
+        data.length > 1000 ||
+        !data.every((v) => typeof v === 'string' && v.length > 0 && v.length <= 1000)
+      )
         throw new Error('FORMAT');
       return [...new Set(data)] as string[];
     } catch {
-      throw new Error('No pudimos leer las cancelaciones pendientes. Se conservan; reintentá antes de activar avisos.');
+      throw new Error(
+        'No pudimos leer las cancelaciones pendientes. Se conservan; reintentá antes de activar avisos.',
+      );
     }
   }
   private async finishSuspensions() {
@@ -223,8 +228,7 @@ export class ReminderService {
     if (!prefixes.length) return;
     const scheduled = await this.adapter.scheduled();
     for (const prefix of prefixes) {
-      for (const id of scheduled)
-        if (id.startsWith(prefix)) await this.adapter.cancel(id);
+      for (const id of scheduled) if (id.startsWith(prefix)) await this.adapter.cancel(id);
     }
     await this.storage.setItem(SUSPENDED_SCOPES_KEY, '[]');
   }
@@ -235,7 +239,9 @@ export class ReminderService {
     return this.value;
   }
   private serial<T>(operation: () => Promise<T>): Promise<T> {
-    const result = (storageQueues.get(this.storage) || Promise.resolve()).catch(() => undefined).then(operation);
+    const result = (storageQueues.get(this.storage) || Promise.resolve())
+      .catch(() => undefined)
+      .then(operation);
     storageQueues.set(this.storage, result);
     return result;
   }

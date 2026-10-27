@@ -26,4 +26,3 @@ Caused by: SyntaxError: Unexpected end of JSON input
       Tests  1 failed (1)
    Start at  11:29:37
    Duration  411ms (transform 47%, import 37%, tests 15%, worker 1%)
-

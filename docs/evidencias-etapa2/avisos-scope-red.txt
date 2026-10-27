@@ -30,4 +30,3 @@ AssertionError: expected 1 to be 5 // Object.is equality
       Tests  1 failed (1)
    Start at  11:11:07
    Duration  216ms (transform 63%, tests 21%, import 12%, worker 3%)
-

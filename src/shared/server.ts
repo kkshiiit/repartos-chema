@@ -1,3 +1,6 @@
+import { Buffer } from 'buffer';
+import { validateJpeg } from './media';
+import { validateRoutePlan } from '../services/publishedRoute';
 import type { AppState, UserProfile } from '../types';
 import { parseEnvelope } from '../data/validation';
 import { emptyLocalState } from '../data/localInitialState';
@@ -33,6 +36,13 @@ export async function commitOnServer(
   user: { id: string; email?: string },
   command: SyncCommand,
 ): Promise<CommitResult> {
+  if (
+    command.action?.type === 'PHOTO' &&
+    (command.action.photo.uri !== 'chema-photo:' + command.action.photo.id ||
+      command.action.photo.storagePath ||
+      command.action.photo.status !== 'PENDING')
+  )
+    throw new Error('PHOTO_INVALID_REFERENCE');
   if (command.expectedUserId !== user.id) throw new Error('SESSION_CHANGED');
   const old = await store.receipt(command.spaceId, user.id, command.operationId);
   if (old) {
@@ -126,7 +136,7 @@ export function createSharedHandler(config: ServerConfig) {
     if (req.method !== 'POST') return reply({ error: 'Método no permitido.' }, 405);
     try {
       const text = await req.text();
-      if (text.length > 2 * 1024 * 1024)
+      if (text.length > 3 * 1024 * 1024)
         return reply({ error: 'La operación supera el límite permitido.' }, 413);
       const body = JSON.parse(text) as Record<string, unknown>;
       if (body.type === 'enroll') {
@@ -209,11 +219,80 @@ export function createSharedHandler(config: ServerConfig) {
       if (typeof user.id !== 'string') return reply({ error: 'Sesión inválida.' }, 401);
       const spaceId = typeof body.spaceId === 'string' ? body.spaceId : '';
       switch (body.type) {
+        case 'photo-upload':
+        case 'photo-download': {
+          const uploading = body.type === 'photo-upload';
+          const obraId = String(body.obraId || ''),
+            photoId = String(body.photoId || '');
+          if (!/^[a-zA-Z0-9_-]{1,128}$/.test(obraId) || !/^[a-zA-Z0-9_-]{1,128}$/.test(photoId))
+            throw Error('PHOTO_INVALID');
+          let bytes: Uint8Array | undefined;
+          if (uploading) {
+            if (
+              typeof body.data !== 'string' ||
+              body.data.length > 2796204 ||
+              !/^[A-Za-z0-9+/]*={0,2}$/.test(body.data) ||
+              typeof body.hash !== 'string' ||
+              !/^[a-f0-9]{64}$/.test(body.hash)
+            )
+              throw Error('PHOTO_INVALID');
+            bytes = new Uint8Array(Buffer.from(body.data, 'base64'));
+            await validateJpeg(bytes, body.hash);
+          }
+          const accessArgs = {
+            p_space: spaceId,
+            p_user: user.id,
+            p_obra: obraId,
+            p_photo: photoId,
+            p_hash: uploading ? body.hash : null,
+          };
+          const access = (await store.rpc('chema_photo_access', accessArgs)) as {
+            path: string;
+            hash: string;
+          };
+          const objectUrl = `${config.url}/storage/v1/object/chema-photos/${access.path}`;
+          const headers = {
+            apikey: config.serviceKey,
+            Authorization: `Bearer ${config.serviceKey}`,
+          };
+          if (uploading) {
+            const upload = await fetch(objectUrl, {
+              method: 'POST',
+              headers: { ...headers, 'Content-Type': 'image/jpeg', 'x-upsert': 'false' },
+              body: new Uint8Array(bytes!),
+            });
+            if (!upload.ok) {
+              // Lost-response retries read immutable existing object and compare its bytes.
+              const existing = await fetch(objectUrl, { headers });
+              if (!existing.ok) throw Error('PHOTO_UPLOAD_PENDING');
+              await validateJpeg(new Uint8Array(await existing.arrayBuffer()), access.hash);
+            }
+            await store.rpc('chema_photo_access', accessArgs);
+            return reply({ hash: access.hash });
+          }
+          const download = await fetch(objectUrl, { headers });
+          if (!download.ok) throw Error('PHOTO_PENDING');
+          const data = new Uint8Array(await download.arrayBuffer());
+          await validateJpeg(data, access.hash);
+          await store.rpc('chema_photo_access', accessArgs);
+          return reply({ hash: access.hash, data: Buffer.from(data).toString('base64') });
+        }
         case 'spaces':
           return reply(await store.rpc('chema_spaces_for_user', { p_user: user.id }));
         case 'members':
           return reply(
             await store.rpc('chema_members_for_space', { p_space: spaceId, p_user: user.id }),
+          );
+        case 'route-history':
+          return reply(
+            await store.rpc('chema_route_versions', {
+              p_space: spaceId,
+              p_user: user.id,
+              p_before:
+                Number.isSafeInteger(body.before) && Number(body.before) > 0
+                  ? body.before
+                  : Number.MAX_SAFE_INTEGER,
+            }),
           );
         case 'get-route':
           return reply(await store.rpc('chema_get_route', { p_space: spaceId, p_user: user.id }));
@@ -320,11 +399,14 @@ export function createSharedHandler(config: ServerConfig) {
             }),
           );
         case 'route':
+          if (!Number.isSafeInteger(body.expected) || Number(body.expected) < 0)
+            throw Error('ROUTE_INVALID');
+          validateRoutePlan(body.route);
           return reply(
             await store.rpc('chema_publish_route', {
               p_space: spaceId,
               p_user: user.id,
-              p_expected: Number(body.expected) || 0,
+              p_expected: body.expected,
               p_route: body.route,
             }),
           );
@@ -334,7 +416,7 @@ export function createSharedHandler(config: ServerConfig) {
     } catch (error) {
       const message = error instanceof Error ? error.message : '';
       const denied = /MEMBERSHIP|INVITATION|PERMISSION|SESSION/.test(message);
-      const conflict = /REVISION|EPOCH|OPERATION_ID|ROUTE_CHANGED/.test(message);
+      const conflict = /REVISION|EPOCH|OPERATION_ID|ROUTE_CHANGED|ROUTE_TASK_CHANGED/.test(message);
       return reply(
         {
           error: denied

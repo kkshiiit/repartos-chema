@@ -9,3 +9,94 @@ Running 3 tests using 1 worker
   ✘  2 tests/ui/deposito-viaje-estructura.spec.ts:26:5 › viaje: borrador, posición directa, persistencia, deshacer y regreso sin mover stock (1.0m)
 (node:7579) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/ui/trip.spec.ts:3:5 › viaje vuelve al depósito fijo y recupera el cambio de Ajustes sin alterar inventario (1.0m)
+
+
+  1) tests/ui/deposito-viaje-estructura.spec.ts:4:5 › depósito: filas y menú conservan las operaciones y el inventario al cancelar
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.fill: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Tu nombre', { exact: true })
+
+
+       at helpers.ts:5
+
+      3 |   await page.addInitScript(() => localStorage.setItem('chema:welcome:v2', 'done'));
+      4 |   await page.goto('/');
+    > 5 |   await page.getByLabel('Tu nombre', { exact: true }).fill(name);
+        |                                                       ^
+      6 |   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+      7 |   await expect(page.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible();
+      8 | }
+        at login (/workspace/repartos-chema/tests/ui/helpers.ts:5:55)
+        at loginSynthetic (/workspace/repartos-chema/tests/ui/helpers.ts:27:3)
+        at /workspace/repartos-chema/tests/ui/deposito-viaje-estructura.spec.ts:8:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/deposito-viaje-estructura--f690c-y-el-inventario-al-cancelar/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/deposito-viaje-estructura--f690c-y-el-inventario-al-cancelar/error-context.md
+
+  2) tests/ui/deposito-viaje-estructura.spec.ts:26:5 › viaje: borrador, posición directa, persistencia, deshacer y regreso sin mover stock
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.fill: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Tu nombre', { exact: true })
+
+
+       at helpers.ts:5
+
+      3 |   await page.addInitScript(() => localStorage.setItem('chema:welcome:v2', 'done'));
+      4 |   await page.goto('/');
+    > 5 |   await page.getByLabel('Tu nombre', { exact: true }).fill(name);
+        |                                                       ^
+      6 |   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+      7 |   await expect(page.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible();
+      8 | }
+        at login (/workspace/repartos-chema/tests/ui/helpers.ts:5:55)
+        at loginSynthetic (/workspace/repartos-chema/tests/ui/helpers.ts:27:3)
+        at /workspace/repartos-chema/tests/ui/deposito-viaje-estructura.spec.ts:30:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/deposito-viaje-estructura--be75e-r-y-regreso-sin-mover-stock/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/deposito-viaje-estructura--be75e-r-y-regreso-sin-mover-stock/error-context.md
+
+  3) tests/ui/trip.spec.ts:3:5 › viaje vuelve al depósito fijo y recupera el cambio de Ajustes sin alterar inventario
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.fill: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Tu nombre', { exact: true })
+
+
+       at helpers.ts:5
+
+      3 |   await page.addInitScript(() => localStorage.setItem('chema:welcome:v2', 'done'));
+      4 |   await page.goto('/');
+    > 5 |   await page.getByLabel('Tu nombre', { exact: true }).fill(name);
+        |                                                       ^
+      6 |   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+      7 |   await expect(page.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible();
+      8 | }
+        at login (/workspace/repartos-chema/tests/ui/helpers.ts:5:55)
+        at loginSynthetic (/workspace/repartos-chema/tests/ui/helpers.ts:27:3)
+        at /workspace/repartos-chema/tests/ui/trip.spec.ts:6:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/trip-viaje-vuelve-al-depós-c747e-stes-sin-alterar-inventario/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/trip-viaje-vuelve-al-depós-c747e-stes-sin-alterar-inventario/error-context.md
+
+  3 failed
+    tests/ui/deposito-viaje-estructura.spec.ts:4:5 › depósito: filas y menú conservan las operaciones y el inventario al cancelar
+    tests/ui/deposito-viaje-estructura.spec.ts:26:5 › viaje: borrador, posición directa, persistencia, deshacer y regreso sin mover stock
+    tests/ui/trip.spec.ts:3:5 › viaje vuelve al depósito fijo y recupera el cambio de Ajustes sin alterar inventario

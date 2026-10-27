@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import NetInfo from '@react-native-community/netinfo';
 import { AppState as NativeState, Platform } from 'react-native';
+import { SharedMediaQueue, sharedPhotoCacheId, downloadSharedPhoto } from '../shared/media';
+import { photoBytes, storePhoto } from '../services/photoCache';
 import { SharedRepository, type SharedEnvelope } from '../shared/repository';
 import type { SharedSnapshot } from '../shared/protocol';
 import { inventoryStorage } from '../data/localStorage';
@@ -32,6 +34,17 @@ export function SharedInventoryProvider({ children }: { children: React.ReactNod
   const spaceId = shared?.spaceId || '',
     actor = user;
   const key = `chema:shared:v1:${encodeURIComponent(spaceId)}:${encodeURIComponent(actor?.uid || '')}`;
+  const media = useMemo(
+    () =>
+      actor && remote && spaceId
+        ? new SharedMediaQueue(inventoryStorage, spaceId, actor.uid, remote, (id) =>
+            photoBytes(sharedPhotoCacheId(spaceId, actor.uid, id)),
+          )
+        : null,
+    [actor, remote, spaceId],
+  );
+  const [photoPending, setPhotoPending] = useState(0);
+  const [mediaError, setMediaError] = useState('');
   const getRepo = useCallback((): Promise<SharedRepository> => {
     if (repoRef.current) return Promise.resolve(repoRef.current);
     if (initFlight.current) return initFlight.current;
@@ -109,6 +122,20 @@ export function SharedInventoryProvider({ children }: { children: React.ReactNod
         const repo = await getRepo();
         const before = repo.current().confirmed.cursor;
         const result = await repo.sync();
+        if (media && actor) {
+          for (const obra of result.confirmed.state.obras)
+            for (const photo of obra.fotos || []) {
+              if (photo.usuarioUid !== actor.uid && actor.role !== 'ADMIN') continue;
+              const id = sharedPhotoCacheId(spaceId, actor.uid, photo.id);
+              if (!(await photoBytes(id))) continue;
+              await media.enqueue(obra.id, photo.id);
+            }
+          const pending = await media.sync();
+          if (mounted.current) {
+            setPhotoPending(pending.length);
+            setMediaError(pending.find((row) => row.error)?.error || '');
+          }
+        }
         if (mounted.current) {
           setEnv(result);
           setError('');
@@ -136,9 +163,20 @@ export function SharedInventoryProvider({ children }: { children: React.ReactNod
     });
     syncFlight.current = run;
     return run;
-  }, [getRepo, loadHistory]);
+  }, [getRepo, loadHistory, media, actor, spaceId]);
   useEffect(() => {
     mounted.current = true;
+    void media
+      ?.pending()
+      .then((rows) => {
+        if (mounted.current) {
+          setPhotoPending(rows.length);
+          setMediaError(rows.find((row) => row.error)?.error || '');
+        }
+      })
+      .catch((e) => {
+        if (mounted.current) setMediaError(userError(e));
+      });
     void getRepo().catch((e) => {
       if (mounted.current) setError(userError(e));
     });
@@ -146,7 +184,7 @@ export function SharedInventoryProvider({ children }: { children: React.ReactNod
       mounted.current = false;
       unsubscribe.current?.();
     };
-  }, [getRepo]);
+  }, [getRepo, media]);
   useEffect(
     () =>
       NetInfo.addEventListener((s) =>
@@ -199,6 +237,18 @@ export function SharedInventoryProvider({ children }: { children: React.ReactNod
     const { backupData } = await import('../services/backupService');
     const result = await backupData(
       JSON.stringify({ schema: 1, state, confirmed: state, queue: [] }),
+      async (id) => {
+        const scoped = sharedPhotoCacheId(spaceId, actor.uid, id);
+        let bytes = await photoBytes(scoped);
+        if (!bytes && remote) {
+          const obra = state.obras.find((o) => o.fotos?.some((p) => p.id === id));
+          if (obra) {
+            bytes = await downloadSharedPhoto(remote, obra.id, id);
+            await storePhoto(scoped, bytes);
+          }
+        }
+        return bytes;
+      },
     );
     const parsed = JSON.parse(new TextDecoder().decode(result.bytes));
     parsed.teamRecovery = {
@@ -228,27 +278,36 @@ export function SharedInventoryProvider({ children }: { children: React.ReactNod
     workspaceId: spaceId,
     workspaceKey: spaceId,
     ready: !!env,
+    accessBlocked: !!env?.accessBlocked,
     online,
     syncing,
     queue,
     lastSyncedAt: env?.lastSyncedAt,
-    syncSummary: env?.accessBlocked
-      ? 'Acceso pendiente de revisión'
-      : env?.outbox.some((row) => row.status === 'CONFLICT')
-        ? 'Conflicto pendiente'
-        : syncing
-          ? 'Sincronizando…'
-          : !online
-            ? 'Sin conexión · Guardado en este teléfono'
-            : env?.outbox.length
-              ? `${env.outbox.length} cambios pendientes`
-              : env?.lastSyncedAt
-                ? 'Confirmado por el equipo'
-                : 'Copia local · Aún sin confirmar',
-    error: env?.outbox.find((row) => row.error)?.error || env?.error || error,
+    syncSummary: photoPending
+      ? `${photoPending} fotos pendientes · Inventario guardado`
+      : env?.accessBlocked
+        ? 'Acceso pendiente de revisión'
+        : env?.outbox.some((row) => row.status === 'CONFLICT')
+          ? 'Conflicto pendiente'
+          : syncing
+            ? 'Sincronizando…'
+            : !online
+              ? 'Sin conexión · Guardado en este teléfono'
+              : env?.outbox.length
+                ? `${env.outbox.length} cambios pendientes`
+                : env?.lastSyncedAt
+                  ? 'Confirmado por el equipo'
+                  : 'Copia local · Aún sin confirmar',
+    error: env?.outbox.find((row) => row.error)?.error || env?.error || mediaError || error,
     retry,
     dispatch: async (action) => {
       const repo = await getRepo();
+      if (action.type === 'PHOTO' && actor && media) {
+        const bytes = await photoBytes(action.photo.id);
+        if (bytes) await storePhoto(sharedPhotoCacheId(spaceId, actor.uid, action.photo.id), bytes);
+        await media.enqueue(action.obraId, action.photo.id);
+        setPhotoPending((await media.pending()).length);
+      }
       await repo.dispatch(action, localId());
       haptic();
       if (online && NativeState.currentState === 'active') void retry();

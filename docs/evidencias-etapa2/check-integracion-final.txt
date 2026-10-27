@@ -50,4 +50,3 @@ React Compiler has skipped optimizing this component because the existing manual
 
 ✖ 9 problems (1 error, 8 warnings)
   0 errors and 4 warnings potentially fixable with the `--fix` option.
-

@@ -58,24 +58,41 @@ it('preferencias y programaciones de dos espacios no se pisan ni se cancelan ent
 });
 
 it('recupera la cancelación fallida de otro espacio tras cerrar y bloquea nuevos avisos hasta cancelarlo', async () => {
-  const data = new Map<string, string>(), scheduled = new Set<string>();
+  const data = new Map<string, string>(),
+    scheduled = new Set<string>();
   let fail = false;
   const storage = {
     getItem: async (k: string) => data.get(k) ?? null,
-    setItem: async (k: string, v: string) => { data.set(k, v); },
+    setItem: async (k: string, v: string) => {
+      data.set(k, v);
+    },
   };
   const adapter: ReminderAdapter = {
-    supported: true, permission: async () => true,
+    supported: true,
+    permission: async () => true,
     scheduled: async () => [...scheduled],
-    schedule: async (k) => { scheduled.add(k); },
-    cancel: async (k) => { if (fail) throw new Error('Cancelación no confirmada'); scheduled.delete(k); },
+    schedule: async (k) => {
+      scheduled.add(k);
+    },
+    cancel: async (k) => {
+      if (fail) throw new Error('Cancelación no confirmada');
+      scheduled.delete(k);
+    },
   };
   const clock = () => Date.parse('2032-02-01T12:00:00Z');
-  const a = new ReminderService(storage, adapter, clock, { storageKey: 'prefs_a', identifierPrefix: 'scope-a:', scope: 'a' });
+  const a = new ReminderService(storage, adapter, clock, {
+    storageKey: 'prefs_a',
+    identifierPrefix: 'scope-a:',
+    scope: 'a',
+  });
   await a.configureGeneral({ enabled: true, time: '08:00', offsets: [0] }, [rental]);
   fail = true;
   await expect(a.suspend()).rejects.toThrow('Cancelación no confirmada');
-  const b = new ReminderService(storage, adapter, clock, { storageKey: 'prefs_b', identifierPrefix: 'scope-b:', scope: 'b' });
+  const b = new ReminderService(storage, adapter, clock, {
+    storageKey: 'prefs_b',
+    identifierPrefix: 'scope-b:',
+    scope: 'b',
+  });
   await expect(b.initialize()).rejects.toThrow('Cancelación no confirmada');
   expect([...scheduled]).toEqual(['scope-a:same_rental:d0']);
   fail = false;
@@ -83,7 +100,11 @@ it('recupera la cancelación fallida de otro espacio tras cerrar y bloquea nuevo
   expect(scheduled.size).toBe(0);
   await b.configureGeneral({ enabled: true, time: '09:00', offsets: [0] }, [rental]);
   expect([...scheduled]).toEqual(['scope-b:same_rental:d0']);
-  const reopened = new ReminderService(storage, adapter, clock, { storageKey: 'prefs_a', identifierPrefix: 'scope-a:', scope: 'a' });
+  const reopened = new ReminderService(storage, adapter, clock, {
+    storageKey: 'prefs_a',
+    identifierPrefix: 'scope-a:',
+    scope: 'a',
+  });
   await reopened.initialize();
   expect(reopened.snapshot().globalPolicy.enabled).toBe(true);
 });

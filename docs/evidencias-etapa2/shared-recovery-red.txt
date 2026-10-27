@@ -44,4 +44,3 @@ AssertionError: expected [Function] to throw error matching /aislado|recuperaci√
       Tests  2 failed (2)
    Start at  02:09:42
    Duration  167ms (transform 64%, import 19%, tests 12%, worker 5%)
-

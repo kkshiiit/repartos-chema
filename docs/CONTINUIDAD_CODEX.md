@@ -1,3 +1,13 @@
+# Corte integrado previo a APK — 27/10/2026
+
+Rama `feat/chema-maestro-etapa2`; main sigue `81cd39a`. Base publicada `0f4f5a6`. Fotos privadas y plan compartido/asignaciones implementados; informes H4B en docs/evidencias-etapa2. General integrado **514/514**, tipos y Functions pasan, lint0errores/1warning histórico. PostgreSQL17+SQLite **14/14** después de corregir reincorporación por invitación nueva (RED unique-key → GREEN). Auth/Edge/SQL remoto8/8 anteriores; **Storage remoto5/5** nuevos; Chromium equipo2/2 y local7/7. Se corrigió respuesta atrasada que retrocedía cursor confirmado: RED→GREEN, pruebas focales guardadas. Falta repetir general después de ese fix y ejecutar regresiónUI completa/visual final.
+
+Versión candidata fuente **1.7.0/code11**, mismo paquete y firma conocidos. **Todavía no APK1.7.0**. Supabase Free autorizado: migrations5 aplicadas (base, bootstrap, media, rutas, rejoin); Edge `chema-api` **v4 ACTIVE**, hashbundle `ec5fe8b175a9256fe7ecc829e3af8ada457761b3e03a6947c6a535e3478db45d`. No billing ni tarjeta. No cuenta comercial aún: sóloQA desechable, limpiar al final. PrivadoQA /tmp/chema-remote-qa-private.json0600, no imprimir ni versionar. QAspace84c73873-eea9-441d-b671-a7786d2b08a7; dos usuarios de prueba + JPEG1px, nunca datos reales.
+
+Próximo exacto: guardar commit/push de fuente integrada, hacer QA remota de ruta/reincorporación/revocación, nuevo buildweb y suiteUI/capturas ambos temas; cerrar revisión/guías/matriz94IDs; ZIP restaurado y push ANTES de Gradle. Compilar candidato con firma existente, verificar identidad/SHA/ABI/minSDK y publicar nuevo archivo en descargas preservando anteriores. No asociar APK1.6.1 con cambios nuevos. Instalación llamada2.0 y JSONexacto5pedidos siguen no identificados; no borrar ni pedir desinstalar. SinAndroidfísico, no acreditar cámara/GPS/alarmas/fluidez/actualización sólo por web. Sin promesa de continuidad automática.
+
+---
+
 # Reanudación activa — 27/10/2026
 
 Base publicada dff2864, rama feat/chema-maestro-etapa2, main81cd39a intacto. Sin APK nuevo todavía. Root corrige Viaje (reconciliar sólo tras inventario listo) y selectores de pruebas; primero RED real conserva fallo después de corregir selector DOM virtualizado. La nueva ejecución UI esperó bundle viejo porque Metro estaba editándose: NO acreditarla como corrección hasta nuevo build estable. Agente stage2_media_finish desarrolla H4B fotos; archivos sin commit aún, no aplicar/desplegar hasta informe/revisión.

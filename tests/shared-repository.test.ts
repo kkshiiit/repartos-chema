@@ -118,3 +118,27 @@ describe('cola compartida durable', () => {
     expect(reopened.current().outbox[0]?.status).toBe('CONFLICT');
   });
 });
+it('una respuesta atrasada no hace retroceder cursor, datos ni revisión confirmada', async () => {
+  const backend = server(),
+    storage = new SqliteStorage(sqliteDb());
+  const base = backend.initial;
+  const { createCommand } = await import('../src/shared/protocol');
+  const result = await backend.remote.commit(
+    createCommand(
+      base,
+      { type: 'RESPONSABLES', nombres: ['Nombre actualizado'] },
+      'remote_new',
+      actor.uid,
+    ),
+  );
+  if (result.kind !== 'CONFIRMED') throw Error('fixture');
+  const repo = new SharedRepository(storage, 'space_test', actor, base, backend.remote);
+  await repo.init();
+  await repo.sync();
+  expect(repo.current().confirmed.cursor).toBe(1);
+  backend.remote.snapshot = async () => base;
+  await repo.sync();
+  expect(repo.current().confirmed.cursor).toBe(1);
+  expect(repo.current().state.responsables).toEqual(['Nombre actualizado']);
+  expect(repo.current().error).toMatch(/anterior|atrasada/);
+});

@@ -33,7 +33,9 @@ function Navigation() {
   return (
     <InventoryProvider key={user?.uid || 'anonymous'}>
       <FeedbackProvider>
-        <SharedAccessGate><Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: C.bg } }} /></SharedAccessGate>
+        <SharedAccessGate>
+          <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: C.bg } }} />
+        </SharedAccessGate>
       </FeedbackProvider>
     </InventoryProvider>
   );

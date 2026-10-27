@@ -130,7 +130,12 @@ it('una renovación de A no pisa la cuenta B ni permite enviar la cola de A con 
 });
 it('renovación rechazada por Auth señala sesión bloqueada sin borrar la cola ni fingir fallo de red', async () => {
   const { auth, vault } = await expiredAuth();
-  vi.stubGlobal('fetch', () => Promise.resolve(Response.json({ error: 'invalid_grant' }, { status: 401 })));
-  await expect(auth.accessToken('A')).rejects.toMatchObject({ status: 401, code: 'SESSION_CHANGED' });
+  vi.stubGlobal('fetch', () =>
+    Promise.resolve(Response.json({ error: 'invalid_grant' }, { status: 401 })),
+  );
+  await expect(auth.accessToken('A')).rejects.toMatchObject({
+    status: 401,
+    code: 'SESSION_CHANGED',
+  });
   expect((await vault.read())?.userId).toBe('A');
 });

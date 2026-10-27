@@ -135,6 +135,9 @@ sql(`create schema if not exists auth; create table if not exists auth.users(id 
  grant usage on schema auth to authenticated; insert into auth.users values('${uid}'),('${uid2}'),('${outsider}') on conflict do nothing;`);
 sql(readFileSync('supabase/migrations/20261027015319_chema_shared.sql', 'utf8'));
 sql(readFileSync('supabase/migrations/20261027020847_chema_shared_bootstrap_media.sql', 'utf8'));
+sql(readFileSync('supabase/migrations/20261027120000_chema_private_media.sql', 'utf8'));
+sql(readFileSync('supabase/migrations/20261027150000_chema_route_plans.sql', 'utf8'));
+sql(readFileSync('supabase/migrations/20261027160000_chema_rejoin.sql', 'utf8'));
 async function createSpace(id: string, snapshot: SharedSnapshot) {
   sql(
     `insert into public.chema_spaces(id,nombre,epoch,snapshot) values(${lit(id)},'Sintético',${lit(snapshot.epoch)},${lit(snapshot)});insert into public.chema_members(space_id,user_id,nombre,role) values(${lit(id)},'${uid}','Prueba 1','ADMIN'),(${lit(id)},'${uid2}','Prueba 2','ADMIN');`,
@@ -389,6 +392,118 @@ await test('invitación de un uso conserva rol y no habilita otra identidad', as
   await assert.rejects(() => rpc('chema_join', { ...args, p_user: uid2 }), /INVITATION_USED/);
   const snapshot = await store.snapshot('bootstrap_test', outsider);
   assert.equal(snapshot.member?.role, 'OPERADOR');
+});
+await test('ruta publicada CAS conserva ambas versiones y no modifica stock', async () => {
+  const initial = bootstrapShared('route_test', seed(now), 'epoch_route');
+  await createSpace(initial.spaceId, initial);
+  const ids = Object.keys(initial.tasks);
+  const route = {
+    schema: 1,
+    ids,
+    tasks: Object.fromEntries(ids.map((id) => [id, initial.tasks[id].id])),
+    assignments: { [ids[0]]: uid2 },
+  };
+  const args = { p_space: initial.spaceId, p_user: uid, p_expected: 0, p_route: route };
+  const first = await rpc('chema_publish_route', args);
+  assert.equal(first.revision, 1);
+  assert.equal(first.userId, uid);
+  await assert.rejects(
+    () => rpc('chema_publish_route', { ...args, p_user: uid2 }),
+    /ROUTE_CHANGED/,
+  );
+  await rpc('chema_publish_route', {
+    ...args,
+    p_expected: 1,
+    p_user: uid2,
+    p_route: { ...route, ids: [...ids].reverse() },
+  });
+  const history = await rpc('chema_route_versions', { p_space: initial.spaceId, p_user: uid });
+  assert.deepEqual(
+    history.map((r: { revision: number }) => r.revision),
+    [2, 1],
+  );
+  assert.equal(history[0].userId, uid2);
+  assert.deepEqual((await store.snapshot(initial.spaceId, uid)).state, initial.state);
+});
+await test('ruta rechaza IDs duplicados, tareas viejas, miembros revocados y forma inválida', async () => {
+  const snap = await store.snapshot('route_test', uid),
+    ids = Object.keys(snap.tasks);
+  const route = {
+    schema: 1,
+    ids,
+    tasks: Object.fromEntries(ids.map((id) => [id, snap.tasks[id].id])),
+    assignments: {},
+  };
+  const args = { p_space: 'route_test', p_user: uid, p_expected: 2, p_route: route };
+  for (const bad of [
+    { ...route, ids: [ids[0], ids[0]] },
+    { ...route, ids: [123], tasks: { '123': 'task-numeric' } },
+    { ...route, tasks: { ...route.tasks, [ids[0]]: 'completed-task' } },
+    { ...route, userId: uid2 },
+    { ...route, assignments: { missing: uid } },
+    { ...route, tasks: {} },
+  ]) {
+    await assert.rejects(() => rpc('chema_publish_route', { ...args, p_route: bad }), /ROUTE_/);
+  }
+  sql(
+    `update public.chema_members set active=false where space_id='route_test' and user_id='${uid2}'`,
+  );
+  await assert.rejects(
+    () =>
+      rpc('chema_publish_route', {
+        ...args,
+        p_route: { ...route, assignments: { [ids[0]]: uid2 } },
+      }),
+    /ROUTE_ASSIGNMENT_INVALID/,
+  );
+  await assert.rejects(
+    () => rpc('chema_get_route', { p_space: 'route_test', p_user: uid2 }),
+    /MEMBERSHIP_REQUIRED/,
+  );
+  await assert.rejects(
+    () => rpc('chema_route_versions', { p_space: 'route_test', p_user: uid2 }),
+    /MEMBERSHIP_REQUIRED/,
+  );
+  await assert.rejects(
+    () => rpc('chema_publish_route', { ...args, p_user: uid2 }),
+    /MEMBERSHIP_REQUIRED/,
+  );
+  assert.throws(
+    () => sql('select * from public.chema_route_history', 'authenticated'),
+    /permission denied/,
+  );
+  assert.throws(
+    () =>
+      sql(
+        "select public.chema_route_versions('route_test','11111111-1111-4111-8111-111111111111')",
+        'authenticated',
+      ),
+    /permission denied/,
+  );
+});
+await test('revocar y reincorporar con invitación nueva conserva identidad/rol e inventario', async () => {
+  const initial = bootstrapShared('rejoin_test', seed(now), 'rejoin_epoch');
+  await createSpace(initial.spaceId, initial);
+  sql(
+    `update public.chema_members set role='OPERADOR' where space_id='rejoin_test' and user_id='${uid2}'`,
+  );
+  const first = 'e'.repeat(64),
+    fresh = 'f'.repeat(64);
+  await rpc('chema_invite', { p_space: 'rejoin_test', p_user: uid, p_hash: first });
+  await rpc('chema_revoke', { p_space: 'rejoin_test', p_user: uid, p_target: uid2 });
+  assert.equal(
+    await rpc('chema_join', { p_hash: first, p_user: uid2, p_name: 'Persona reincorporada' }),
+    'rejoin_test',
+  );
+  assert.equal((await store.snapshot('rejoin_test', uid2)).member?.role, 'OPERADOR');
+  await rpc('chema_revoke', { p_space: 'rejoin_test', p_user: uid, p_target: uid2 });
+  await rpc('chema_join', { p_hash: first, p_user: uid2, p_name: 'No debe reactivar' });
+  await assert.rejects(() => store.snapshot('rejoin_test', uid2), /MEMBERSHIP_REQUIRED/);
+  await rpc('chema_invite', { p_space: 'rejoin_test', p_user: uid, p_hash: fresh });
+  await rpc('chema_join', { p_hash: fresh, p_user: uid2, p_name: 'Persona reincorporada' });
+  assert.equal((await store.snapshot('rejoin_test', uid2)).member?.role, 'OPERADOR');
+  assert.equal(sql("select count(*) from public.chema_members where space_id='rejoin_test'"), '2');
+  assert.deepEqual((await store.snapshot('rejoin_test', uid)).state, initial.state);
 });
 console.log(
   JSON.stringify({

@@ -21,4 +21,3 @@ Error: Cannot find module '../src/services/tripLocation' imported from /workspac
       Tests  no tests
    Start at  02:06:21
    Duration  126ms (worker 97%, environment 3%)
-

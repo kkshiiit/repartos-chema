@@ -32,7 +32,11 @@ test('viaje vuelve al depósito fijo y recupera el cambio de Ajustes sin alterar
   await page.getByRole('button', { name: 'Cerrar', exact: true }).last().click();
   await page.getByRole('button', { name: 'Volver', exact: true }).click();
   await page.getByRole('button', { name: 'Opciones del viaje', exact: true }).click();
-  await expect(page.getByRole('group', { name: 'Opciones del viaje', exact: true }).getByText(address, { exact: true })).toBeVisible();
+  await expect(
+    page
+      .getByRole('group', { name: 'Opciones del viaje', exact: true })
+      .getByText(address, { exact: true }),
+  ).toBeVisible();
   await page.getByRole('button', { name: 'Volver al depósito', exact: true }).click();
   const changed = await page.evaluate(() =>
     (window as unknown as { chemaLinks: string[] }).chemaLinks.at(-1)!,
