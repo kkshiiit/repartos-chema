@@ -316,9 +316,11 @@ export function SharedInventoryProvider({ children }: { children: React.ReactNod
               ? 'Sin conexión · Guardado en este teléfono'
               : env?.outbox.length
                 ? `${env.outbox.length} cambios pendientes`
-                : env?.lastSyncedAt
-                  ? 'Confirmado por el equipo'
-                  : 'Copia local · Aún sin confirmar',
+                : env?.receivingPending
+                  ? 'Recibiendo cambios · Reintentar'
+                  : env?.lastSyncedAt
+                    ? 'Confirmado por el equipo'
+                    : 'Copia local · Aún sin confirmar',
     error: env?.outbox.find((row) => row.error)?.error || env?.error || mediaError || error,
     retry,
     dispatch: async (action) => {

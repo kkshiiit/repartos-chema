@@ -4,7 +4,7 @@ import { seed } from '../../src/data/seed';
 import { login } from './helpers';
 
 const now = new Date('2026-10-18T15:00:00Z');
-const output = 'artifacts/capturas/estructura-1.5';
+const output = 'artifacts/capturas/cierre-1.7/estructura-1.5';
 async function fixture(page: Page, theme: string, reference = false) {
   const state = seed(now);
   const clients = [
@@ -164,7 +164,7 @@ for (const theme of ['light', 'dark'])
     }
     if (!baseline)
       await writeFile(
-        `artifacts/validacion/estructura-${theme}.json`,
+        `artifacts/validacion/cierre-1.7/estructura-${theme}.json`,
         JSON.stringify(measurements, null, 2),
       );
   });

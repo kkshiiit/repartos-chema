@@ -7,7 +7,7 @@ test('equipo crea, entrega, deshace y descarga documentos', async ({ page }) => 
   await login(page);
   await expect(page.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible();
   await page.screenshot({
-    path: 'artifacts/capturas/estructura-1.5/dashboard-desktop.png',
+    path: 'artifacts/capturas/cierre-1.7/estructura-1.5/dashboard-desktop.png',
     fullPage: true,
   });
   await page.getByRole('button', { name: 'Nuevo alquiler', exact: true }).click();
@@ -66,7 +66,7 @@ test('nombre identifica a la persona sin selector de roles; sesión persiste', a
   await expect(page.getByRole('heading', { name: 'Depósito', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Agregar material', exact: true })).toBeVisible();
   await page.screenshot({
-    path: 'artifacts/capturas/estructura-1.5/dashboard-mobile.png',
+    path: 'artifacts/capturas/cierre-1.7/estructura-1.5/dashboard-mobile.png',
     fullPage: true,
   });
   await page.reload();

@@ -1,0 +1,8 @@
+{
+  "dateUTC": "2026-10-27T20:15:10.064Z",
+  "passed": 3,
+  "failed": 0,
+  "environment": "Auth/Edge v5/PostgreSQL reales + SQLiteNode, dos identidades sintéticas",
+  "physicalAndroid": false,
+  "source": "post53a30d1, diff delta etapa3"
+}

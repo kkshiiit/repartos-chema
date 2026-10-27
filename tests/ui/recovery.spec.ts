@@ -30,7 +30,7 @@ test('foto local, copia descargada y restauración sobreviven al reinicio', asyn
   await (
     await choose
   ).setFiles({ name: 'copia.json', mimeType: 'application/json', buffer: await readFile(path) });
-  await page.getByRole('button', { name: 'Confirmar importación', exact: true }).click();
+  await page.getByRole('button', { name: 'Restaurar esta copia', exact: true }).click();
   await expect(page.getByText(/Importación completada/)).toBeVisible();
   await page.goto('/obra/obra_1');
   await page.reload();
@@ -60,7 +60,7 @@ test('borrar foto activa no rompe una recuperación interna retenida', async ({ 
   const choose = page.waitForEvent('filechooser');
   await page.getByRole('button', { name: 'Elegir copia', exact: true }).click();
   await (await choose).setFiles({ name: 'copia.json', mimeType: 'application/json', buffer: raw });
-  await page.getByRole('button', { name: 'Confirmar importación', exact: true }).click();
+  await page.getByRole('button', { name: 'Restaurar esta copia', exact: true }).click();
   await page.getByRole('button', { name: 'Deshacer última importación', exact: true }).click();
   await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
   await page.goto('/obra/obra_1');

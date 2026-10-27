@@ -4,6 +4,7 @@ import { parseEnvelope } from '../data/validation';
 import { applyOperation, clone } from '../domain/engine';
 import {
   canonical,
+  applyDelta,
   createCommand,
   prepareCommit,
   type SharedRemote,
@@ -38,6 +39,8 @@ export interface SharedEnvelope {
   lastSyncedAt?: string;
   error?: string;
   accessBlocked?: boolean;
+  pullWatermark?: number;
+  receivingPending?: boolean;
 }
 export function validateSnapshot(value: unknown, spaceId: string): SharedSnapshot {
   if (!value || typeof value !== 'object')
@@ -238,10 +241,12 @@ export class SharedRepository {
               row.status = 'CONFLICT';
               row.uncertain = false;
               row.error = result.message;
-              if (result.snapshot)
+              if (result.snapshot) {
                 value.confirmed = clone(
                   receiveSnapshot(result.snapshot, value.confirmed, this.spaceId),
                 );
+                delete value.pullWatermark;
+              }
               break;
             }
             if (result.payloadHash !== row.command.payloadHash)
@@ -256,6 +261,7 @@ export class SharedRepository {
               break;
             }
             value.confirmed = clone(snapshot);
+            delete value.pullWatermark;
             value.outbox.splice(i, 1);
             await this.save(this.projection(value));
           } catch (error) {
@@ -280,15 +286,80 @@ export class SharedRepository {
           }
         }
         if (!value.outbox.some((row) => row.status === 'ERROR')) {
-          const next = receiveSnapshot(await this.remote.snapshot(), value.confirmed, this.spaceId);
-          if (next.epoch !== value.confirmed.epoch) {
-            value.error =
-              'La generación del equipo cambió. Conservamos la copia local para revisión.';
-            value.accessBlocked = true;
+          if (this.remote.deltaPull) {
+            // Persist each complete page with the outbox before requesting another page.
+            for (let pageNumber = 0; pageNumber < 5; pageNumber++) {
+              const page = await this.remote.deltaPull(
+                value.confirmed.cursor,
+                value.confirmed.epoch,
+                value.pullWatermark,
+              );
+              if (!Number.isSafeInteger(page.watermark) || page.watermark < 0)
+                throw Error('DELTA_WATERMARK');
+              if (page.epoch !== value.confirmed.epoch) {
+                value.error =
+                  'La generación del equipo cambió. Conservamos la copia local para revisión.';
+                value.accessBlocked = true;
+                break;
+              }
+              if (page.kind === 'RESET') {
+                const next = receiveSnapshot(page.snapshot, value.confirmed, this.spaceId);
+                if (next.epoch !== page.epoch || next.cursor !== page.watermark)
+                  throw Error('DELTA_RESET');
+                value.confirmed = clone(next);
+                delete value.pullWatermark;
+                value.receivingPending = false;
+              } else {
+                if (
+                  (value.pullWatermark !== undefined && page.watermark !== value.pullWatermark) ||
+                  page.watermark < value.confirmed.cursor
+                )
+                  throw Error('DELTA_WATERMARK');
+                let next = value.confirmed;
+                for (const delta of page.changes)
+                  next = validateSnapshot(applyDelta(next, delta), this.spaceId);
+                if (
+                  next.cursor > page.watermark ||
+                  page.hasMore !== next.cursor < page.watermark ||
+                  (page.hasMore && next.cursor === value.confirmed.cursor)
+                )
+                  throw Error('DELTA_PAGE');
+                if (page.currentLog) {
+                  if (page.hasMore || page.currentLog.id !== next.state.logs[0]?.id)
+                    throw Error('DELTA_LOG');
+                  next.state.logs[0] = clone(page.currentLog);
+                  validateSnapshot(next, this.spaceId);
+                }
+                value.confirmed = next;
+                value.receivingPending = page.hasMore;
+                if (page.hasMore) value.pullWatermark = page.watermark;
+                else delete value.pullWatermark;
+              }
+              value.lastSyncedAt = new Date().toISOString();
+              delete value.error;
+              try {
+                await this.save(this.projection(value));
+              } catch (error) {
+                value = this.current();
+                throw error;
+              }
+              if (!value.receivingPending) break;
+            }
           } else {
-            value.confirmed = clone(next);
-            value.lastSyncedAt = new Date().toISOString();
-            delete value.error;
+            const next = receiveSnapshot(
+              await this.remote.snapshot(),
+              value.confirmed,
+              this.spaceId,
+            );
+            if (next.epoch !== value.confirmed.epoch) {
+              value.error =
+                'La generación del equipo cambió. Conservamos la copia local para revisión.';
+              value.accessBlocked = true;
+            } else {
+              value.confirmed = clone(next);
+              value.lastSyncedAt = new Date().toISOString();
+              delete value.error;
+            }
           }
         }
       } catch (error) {

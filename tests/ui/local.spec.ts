@@ -61,7 +61,7 @@ test('individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y o
   await page.getByRole('button', { name: 'Agregar responsable', exact: true }).click();
   await page.getByLabel('Nombre del responsable', { exact: true }).fill('Persona local');
   await page.screenshot({
-    path: 'artifacts/capturas/estructura-1.5/responsable.png',
+    path: 'artifacts/capturas/cierre-1.7/estructura-1.5/responsable.png',
     fullPage: true,
   });
   await page.getByRole('button', { name: 'Guardar responsable', exact: true }).click();
@@ -133,7 +133,7 @@ test('individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y o
   const picker = page.waitForEvent('filechooser');
   await page.getByRole('button', { name: 'Elegir copia', exact: true }).click();
   await (await picker).setFiles({ name: 'copia.json', mimeType: 'application/json', buffer: raw });
-  await page.getByRole('button', { name: 'Confirmar importación', exact: true }).click();
+  await page.getByRole('button', { name: 'Restaurar esta copia', exact: true }).click();
   await expect(
     page.getByText('Importación completada: 1 alquiler guardado en este celular.', {
       exact: true,
@@ -150,7 +150,7 @@ test('individual: vacío, stock, alquiler, entrega, retiro, JSON, documentos y o
   expect((await state()).materiales[0]?.cantidadGalpon).toBe(20);
   await context.setOffline(false);
   await page.screenshot({
-    path: 'artifacts/capturas/estructura-1.5/local-alquileres.png',
+    path: 'artifacts/capturas/cierre-1.7/estructura-1.5/local-alquileres.png',
     fullPage: true,
   });
   expect(errors).toEqual([]);
@@ -195,7 +195,7 @@ test('temas locales persisten y conservan el formulario', async ({ page }) => {
     .poll(() => page.evaluate(() => document.documentElement.style.colorScheme))
     .toBe('light');
   await page.screenshot({
-    path: 'artifacts/capturas/estructura-1.5/local-ajustes-claro.png',
+    path: 'artifacts/capturas/cierre-1.7/estructura-1.5/local-ajustes-claro.png',
     fullPage: true,
   });
   await page.getByRole('button', { name: 'Apariencia', exact: true }).click();

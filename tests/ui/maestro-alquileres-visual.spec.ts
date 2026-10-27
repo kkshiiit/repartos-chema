@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { seed } from '../../src/data/seed';
 
-const folder = 'artifacts/capturas/maestro-etapa2';
+const folder = 'artifacts/capturas/cierre-1.7/maestro-etapa2';
 const fixedNow = new Date('2026-12-31T15:00:00Z');
 for (const version of [
   {
@@ -14,11 +14,11 @@ for (const version of [
   {
     label: 'despues',
     origin: 'http://127.0.0.1:8081',
-    source: 'Etapa2, árbol de implementación; hashes y commit registrados en evidencia alquileres',
+    source: 'Cierre etapa3, fuente53a30d1 más cambios documentados; web, no Android',
   },
 ])
   for (const theme of ['light', 'dark'])
-    test(`comparación nativa-web etiquetada ${version.label} ${theme}`, async ({ page }) => {
+    test(`comparación web etiquetada ${version.label} ${theme}`, async ({ page }) => {
       const s = seed(fixedNow);
       s.obras.forEach((o, i) => {
         o.clienteNombre = `Cliente sintético ${i + 1}`;

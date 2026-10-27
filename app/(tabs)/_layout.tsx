@@ -74,6 +74,8 @@ function TabItem({ link, active }: { link: (typeof links)[number]; active: boole
           fontSize: 12,
           lineHeight: 17,
           textAlign: 'center',
+          maxWidth: '100%',
+          alignSelf: 'stretch',
           flexShrink: 1,
         }}
       >

@@ -40,7 +40,7 @@ export function SearchToolbar({
 export function SectionHeading({ title, count }: { title: string; count?: number }) {
   const { s, C } = useUI();
   return (
-    <View style={[s.row, { paddingTop: 16, paddingBottom: 8, justifyContent: 'space-between' }]}>
+    <View style={[s.row, { paddingTop: 8, paddingBottom: 8, justifyContent: 'space-between' }]}>
       <Text accessibilityRole="header" style={[s.label, s.grow]}>
         {title}
       </Text>
@@ -71,7 +71,7 @@ export function Segmented({
           style={({ pressed }) => ({
             flex: 1,
             minWidth: 0,
-            minHeight: 44,
+            minHeight: 48,
             paddingVertical: 10,
             paddingHorizontal: 4,
             borderRadius: 8,
@@ -84,7 +84,12 @@ export function Segmented({
           <Text
             style={[
               s.label,
-              { textAlign: 'center', color: value === option.value ? C.link : C.text },
+              {
+                maxWidth: '100%',
+                alignSelf: 'stretch',
+                textAlign: 'center',
+                color: value === option.value ? C.link : C.text,
+              },
             ]}
           >
             {option.label}

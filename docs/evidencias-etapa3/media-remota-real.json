@@ -1,0 +1,11 @@
+{
+  "dateUTC": "2026-10-27T20:01:15.660Z",
+  "environment": "Supabase Auth/Edge v3/Storage/Postgres reales; JPEG sintético1px",
+  "passed": 5,
+  "failed": 0,
+  "photoId": "qa_photo_4329ef4f752e4fce80826a56cd8e44d5",
+  "spaceId": "2c41f2f2-0024-4a85-8161-8c1a25b95997",
+  "hash": "79f25915466ba642009ee344e26e096155679a9ce50d2ae0e04e4c7a0079413f",
+  "physicalAndroid": false,
+  "cleanup": "pendiente con QA de rutas"
+}

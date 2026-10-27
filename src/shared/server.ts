@@ -6,6 +6,7 @@ import { parseEnvelope } from '../data/validation';
 import { emptyLocalState } from '../data/localInitialState';
 import {
   bootstrapShared,
+  makeDelta,
   canonical,
   prepareCommit,
   type CommitResult,
@@ -74,6 +75,7 @@ export async function commitOnServer(
     result.snapshot.state.obras.forEach((obra) => {
       obra.syncStatus = 'SYNCED';
     });
+    result.delta = makeDelta(base, result.snapshot);
     try {
       return await store.commit(command.spaceId, user.id, base, command, result, fulfilled);
     } catch (error) {
@@ -337,6 +339,17 @@ export function createSharedHandler(config: ServerConfig) {
           return reply(await commitOnServer(store, user, body.command as SyncCommand));
         case 'receipt':
           return reply(await store.receipt(spaceId, user.id, String(body.operationId)));
+        case 'delta-pull':
+          return reply(
+            await store.rpc('chema_delta_pull', {
+              p_space: spaceId,
+              p_user: user.id,
+              p_cursor: body.cursor,
+              p_epoch: body.epoch,
+              p_watermark: body.watermark ?? null,
+              p_limit: 100,
+            }),
+          );
         case 'pull':
           return reply(
             await store.rpc('chema_pull', {
