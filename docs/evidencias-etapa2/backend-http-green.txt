@@ -1,0 +1,12 @@
+
+ RUN  v5.0.3 /workspace/repartos-chema
+
+
+ Test Files  4 passed (4)
+      Tests  13 passed (13)
+   Start at  11:30:12
+   Duration  1.13s (import 42%, tests 30%, transform 26%, worker 2%)
+
+    Isolate  4 workers spawned · ~101ms startup each (spawn + environment, per file)
+             at least ~304ms faster with isolate: false — reuses workers across files instead of one per file
+

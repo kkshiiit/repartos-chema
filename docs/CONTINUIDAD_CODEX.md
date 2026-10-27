@@ -1,3 +1,13 @@
+# Corte backend remoto verificado — 27/10/2026
+
+Últimos fuentes branchfeat/chema-maestro-etapa2:94bd97d integra backend/contextos sobreH1/H2. CambiosposteriorescorrigenRPCvoidHTTP204 ydiagnóstico safe de respuesta incierta; funciónremotav2 yaactiva. 8/8Authrealdoscuentas sintéticas PASARON;493generalprevias+13focalesdespuésHTTPfix. Fuenteclienteactualrequierebuildwebnuevo/recorridos UI; aúnNOAPK nuevo.
+
+IMPORTANTE QA: /tmp/chema-remote-qa-private.json (0600, noGit) contiene ÚNICAMENTEcredencialessintéticasautogeneradas; logsegundo/bundleScriptremoto/proofJSON guardados. Tagactualb371981330a6, primerQA b07999935941 ya limpiado. QA2finalizado8pasosperodejarvivo sólohasta pruebasUI reales; limpiar usuarios/miembros/espaciocon SQLrestringidoaemailschema-qa[-2]-tag@example.invalid,nuncacomerciales. Se reactivóoperadorQApararecorridoUI. Noimprimirarchivoprivado ni tokens. OwnercomercialaúnNOcreado.
+
+Próximoexacto: comprobar cierrebuild-web-integrado.txt yservidorpreview/8081; ejecutarrecorridos locales y2contextosbackendreal conprivadoQA; completarH4media/rutapublicada/H5cancelación durable; depurarfallos; actualizar matriz/informe/manual; respaldarantesGradleAPK nuevo conmismafirma,código creciente conocido; noasumirinstalación2.0. Fuente/tokensrealesniFirebasepagos noplataformasextra. Capturas existentesWeb390 dos temas; físico siguependiente. No cerrarconAPKanteriorasociadoafuentenueva.
+
+---
+
 # Integración maestra en curso — 27/10/2026 11:23UTC
 
 Rama feat/chema-maestro-etapa2, main81cd39a intacto. Commitsguardados13399f2/d456ade/a8fdd39/6018528/f7348bd. Nuevo commit integraSharedProvider/SharedInventory/Auth/avisosscope yservidor. Checkfresco493/493(50archivos), tipos+Functions0,lint0errores/1warningAxe. Postgres17+SQLiteNode11/11; Authclassrace5/5, scopedavisos90casosfocales yrestoreaislado2/2. Evidencias docs/evidencias-etapa2. Actuales pruebasremotas sólo401/403sinidentidad; faltaAuthreal2cuentassintéticas.

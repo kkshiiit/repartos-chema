@@ -48,3 +48,11 @@ Seaplicaron2migraciones enproyectoFreevacíoautorizado ydesplegóchema-api v1, A
 Integracióncontextos: SharedAuthTokenvaultnativoSecureStoregeneracional, UIDguard+refreshsingleflight/generación; SharedProvideropcional, individualkeyintacta; SharedInventoryProvider conestado/cola namespaced, persistencia+retryactivo, historialpaginado yrestoreenespaciolocalnuevo. Recuperaciónaislada2/2 prueba originales intactos. Avisos scope90pruebasfocalizadasverdes(incluidauna nueva): prefs/IDs separados, legado intacto, tapnoabreotrospace, suspendOS conserva intenciones; fallodecancelaciónalsalir todavía requieredocumentar/reintento más fuerte.
 
 NoAPK nuevo niAndroidfísico. FuentesH1/H2respaldadas6018528/f7348bd; éstecheckpoint acompaña commitintegración. Próximo:Authremotosintético+cleanup, completarmedia/ruta/avisosfailures yregresiónUI/capturasfrescas antesdeAPKyentrega.
+
+## Backend real autenticado — 27/10
+
+Función v2ACTIVE. Primerenrollremotofalló porRPCvoidHTTP204interpretadocomoJSON: reproducido testRED ycorregido;13pruebasAuth/HTTP/protocolo/repositorio verdes. Segundo intentologróAuth2cuentas+bootstrap pero tuvorespuesta incierta durantecompetencia; SQLconfirmó1recibo ydepósito1(una únicadevolución). Se preservanlogs, se limpiaron sóloesas identidades/espacioQA yseensayó aisladamenteotra vezconconsulta de recibo antesretry.
+
+**8/8casosremotosconAuth/Edge/PostgresrealesPASARON**, dosJWTsintéticos:provisiónprivadaADMIN,OPERADORsin elevación, bootstrapunavez, RETIREduplicada/UUIDdistintos, últimaunidadconcurrente, recibotrasacuseperdido(inyecciónsobrecommitreal), JWTBcontraUIDA,revoqueconJWTvigente. Evidenciasbackend-remoto-autenticado.json/txt. DatosQAactuales requierenlimpiezaalterminar recorridosweb compartidos: tag b371981330a6, archivo/tmp/chema-remote-qa-private.json FUERAGit,noimprimir. Segundo miembroreactivado sólomediantecontrolQApara seguir pruebasUI; noreadmisiónproductivacertificada.
+
+AúnpendienteH4:subida/cachefotos, publicaciónderutaUI, recuperaciónadministrativa yprocedimientobackupservidor; H5cancelaciónfallidaOSal salirno tiene reintentopersistente todavía; TODOnoocultar. Buildwebintegrado encursoantesdeUI. Cache CLIquedóversionadoporerror(sólocli-latest, sinsecretos), se quitódelíndiceyseañadióignoretemp; originalregenerablelocalconservado.

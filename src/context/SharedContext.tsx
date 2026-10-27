@@ -74,6 +74,10 @@ export function SharedProvider({ children }: { children: React.ReactNode }) {
         const raw = await AsyncStorage.getItem(CHOICE_KEY);
         if (!raw) return;
         const value = JSON.parse(raw) as WorkspaceChoice;
+        if (value.localKey && !/^chema:recovery:[a-zA-Z0-9_-]+:v1$/.test(value.localKey))
+          throw new Error(
+            'La recuperación elegida requiere revisión. No se reemplazaron inventarios.',
+          );
         if (
           value.version !== 1 ||
           !['local', 'shared'].includes(value.mode) ||

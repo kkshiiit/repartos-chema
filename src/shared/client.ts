@@ -10,6 +10,7 @@ export class SharedAccessError extends Error {
     message: string,
     readonly status: number,
     readonly code?: string,
+    readonly diagnostic?: { phase: string; httpStatus: number; cause: string },
   ) {
     super(message);
     this.name = 'SharedAccessError';
@@ -27,6 +28,8 @@ export function createSharedClient(
       throw new SharedAccessError('Iniciá sesión para enviar cambios del equipo.', 401);
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 20000);
+    let phase = 'CONNECT',
+      httpStatus = 0;
     try {
       const response = await fetch(`${config.url}/functions/v1/chema-api`, {
         method: 'POST',
@@ -38,6 +41,8 @@ export function createSharedClient(
         body: JSON.stringify({ type, spaceId: config.spaceId, ...args }),
         signal: controller.signal,
       });
+      phase = 'READ_RESPONSE';
+      httpStatus = response.status;
       const value = await response.json();
       if (!response.ok)
         throw new SharedAccessError(
@@ -52,6 +57,7 @@ export function createSharedClient(
         'No pudimos confirmar la respuesta del equipo. Tu cambio sigue pendiente; reintentaremos sin duplicarlo.',
         0,
         'UNCERTAIN',
+        { phase, httpStatus, cause: error instanceof Error ? error.name : 'UnknownError' },
       );
     } finally {
       clearTimeout(timer);

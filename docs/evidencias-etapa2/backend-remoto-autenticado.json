@@ -1,0 +1,14 @@
+{
+  "dateUTC": "2026-10-27T11:36:15.572Z",
+  "environment": "Supabase Free remoto real: Auth/Edge/PostgreSQL, dos JWT reales sintéticos",
+  "passed": 8,
+  "failed": 0,
+  "spaceId": "84c73873-eea9-441d-b671-a7786d2b08a7",
+  "syntheticUserIds": [
+    "150f8462-404a-4746-9b3e-ebee947f7b05",
+    "82f3ff3d-be3c-413c-a3dc-d7ee8de17f90"
+  ],
+  "responseLoss": "inyectada después de commit remoto real",
+  "physicalAndroid": false,
+  "cleanup": "PENDIENTE: borrar sólo los datos/usuarios QA conocidos mediante control autorizado"
+}
