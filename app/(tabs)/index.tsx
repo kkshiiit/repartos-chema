@@ -168,7 +168,7 @@ function RentalList({ scope }: { scope: string }) {
   return (
     <Screen
       title="Alquileres"
-      subtitle={workingDate}
+      subtitle={`${workingDate} · ${filtered.length} ${filtered.length === 1 ? 'alquiler' : 'alquileres'}${zone !== 'TODAS' ? ` · ${zone}` : ''}`}
       scroll={false}
       footer={
         user?.role === 'ADMIN' ? (
@@ -193,15 +193,11 @@ function RentalList({ scope }: { scope: string }) {
           ]}
           onChange={(value) => changeView({ status: value })}
         />
-        <View style={[s.row, { justifyContent: 'space-between', flexWrap: 'wrap', gap: 4 }]}>
-          <Text style={s.muted}>
-            {filtered.length} {filtered.length === 1 ? 'alquiler' : 'alquileres'}
-            {zone !== 'TODAS' ? ` · ${zone}` : ''}
-          </Text>
-          {hasFilters ? (
+        {hasFilters ? (
+          <View style={{ alignItems: 'flex-start' }}>
             <Button label="Limpiar filtros" variant="ghost" onPress={clearFilters} />
-          ) : null}
-        </View>
+          </View>
+        ) : null}
       </View>
       {viewError ? (
         <View style={{ gap: 4 }}>

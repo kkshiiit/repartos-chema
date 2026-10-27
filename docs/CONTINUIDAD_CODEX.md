@@ -1,3 +1,11 @@
+# Cierre03 — distribución compacta comprobada — 27/10/2026
+
+Base 1553166 y corrección de composición actual: contador integrado en fecha de cabecera, filas más compactas. Estructura light/dark 2/2 pasa sin cambiar umbrales; medidas guardadas (primera fila308CSSpx, altura117). General nuevo check-release:524/524 en60archivos, tipos/Functions pasan; lint0errores/3warnings (dos imports sin uso y una advertencia histórica). SQL real nuevo postgres-release:15/15. UI completa64 sobre build-web-release actual está en curso; revisar ui-release antes de afirmar éxito. Ningún APK1.7.0 todavía.
+
+Responsables documentales actualizan sólo matriz/manual/autoauditoría. No tocar sus archivos al integrar. QA sintética4cuentas/2espacios y2JPEG631bytes todavía presentes; limpiar sólo casos conocidos con API Storage y guardas, no datos comerciales. Próximo: concluir UI64/equipo2, revisar capturas finales, cerrar docs, fuente ZIP restaurada y push; luego GradleARM64 mismafirma y publicación nueva en descargas. No Androidfísico ni APK2.0/JSONexacto disponibles. Sin servicios pagos ni automatización futura prometida.
+
+---
+
 # Fuente de release en cierre — 27/10/2026
 
 Código fdee1cf respaldado; mejoras posteriores de historial continuado/errores en español/alcance de copia local en validación final. J7 delta yaoperativo enproyectoFree: Edgev5 y7migraciones. Prueba remota delta3/3 +ruta4/4 +media5/5 +Auth8/8, SQL15/15. No APKnuevo todavía. Dos dispositivosfísicos yAPK2.0/JSONexactossiguenpendientes.

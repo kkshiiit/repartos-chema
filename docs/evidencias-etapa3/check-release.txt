@@ -11,10 +11,14 @@
 > eslint app src tests functions/src
 
 
+/workspace/repartos-chema/app/(tabs)/index.tsx
+   2:16  warning  'Text' is defined but never used        @typescript-eslint/no-unused-vars
+  41:14  warning  's' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
 /workspace/repartos-chema/tests/ui/reminders.spec.ts
   3:8  warning  Using exported name 'AxeBuilder' as identifier for default import  import/no-named-as-default
 
-✖ 1 problem (0 errors, 1 warning)
+✖ 3 problems (0 errors, 3 warnings)
 
 
 > repartos-chema@1.7.0 test
@@ -24,15 +28,16 @@
  RUN  v5.0.3 /workspace/repartos-chema
 
 
- Test Files  59 passed (59)
-      Tests  522 passed (522)
-   Start at  20:19:42
-   Duration  19.07s (import 40%, tests 39%, transform 17%, worker 4%)
+ Test Files  60 passed (60)
+      Tests  524 passed (524)
+   Start at  20:32:49
+   Duration  12.60s (import 44%, tests 38%, transform 14%, worker 3%)
 
-     Import  147 modules were evaluated 202 times · 4.26s total, 40% of tracked time
-             ~1.16s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+     Import  148 modules were evaluated 202 times · 3.02s total, 44% of tracked time
+             ~808ms faster with isolate: false — shared modules are evaluated once per worker instead of once per file
              learn more: https://vitest.dev/guide/improving-performance#test-isolation
 
 
 > repartos-chema-functions@1.0.0 build
 > tsc
+
