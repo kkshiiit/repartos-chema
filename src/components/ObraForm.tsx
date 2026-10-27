@@ -248,7 +248,7 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
     >
       <View style={{ maxWidth: 700, width: '100%', alignSelf: 'center', gap: 20 }}>
         {user?.role !== 'ADMIN' ? (
-          <Notice text="Solo administración puede gestionar obras." tone="error" />
+          <Notice text="Solo administración puede gestionar alquileres." tone="error" />
         ) : (
           <>
             <View
@@ -317,7 +317,7 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
                 <View style={[s.row, { alignItems: 'flex-start', flexWrap: 'wrap' }]}>
                   <View style={{ flex: 1, minWidth: 140 }}>
                     <CalendarField
-                      label="Entrega"
+                      label="Entrega prevista"
                       value={entrega}
                       onChange={setEntrega}
                       error={errors.entrega}
@@ -352,6 +352,7 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
             ) : step === 1 ? (
               <>
                 <Text style={s.h2}>{nombre}</Text>
+                <Text style={s.body}>{direccion}</Text>
                 <Text style={s.muted}>{zona}</Text>
                 {editableLoad ? (
                   <LoadDraft items={items} onChange={setItems} />
@@ -379,7 +380,7 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
                 </Text>
                 <Text style={s.body}>Teléfono: {tel || 'Sin teléfono'}</Text>
                 <Text style={s.body}>
-                  Entrega: {displayDate(entrega)} · Alquilado hasta: {displayDate(retiro)}
+                  Entrega prevista: {displayDate(entrega)} · Alquilado hasta: {displayDate(retiro)}
                 </Text>
                 {observaciones ? <Text style={s.body}>Observaciones: {observaciones}</Text> : null}
                 {obra?.coordenadas ? (

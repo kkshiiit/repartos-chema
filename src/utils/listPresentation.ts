@@ -1,4 +1,4 @@
-import type { ObraCard, ActivityLog } from '../types';
+import type { ObraCard, ActivityLog, MaterialItem } from '../types';
 import { businessDate, obraStatus } from '../domain/rules';
 import { isCalendarDate } from './retirementCalendar';
 
@@ -9,51 +9,130 @@ export function obraPresentationStatus(obra: ObraCard, today = businessDate()) {
   return obraStatus(obra, today);
 }
 
+export type RentalTaskGroup =
+  'overdue' | 'today' | 'upcoming' | 'unprepared' | 'undated' | 'finished';
+export interface RentalTask {
+  kind: 'DELIVER' | 'RETIRE' | 'FINISHED';
+  date: string | null;
+  group: RentalTaskGroup;
+  label: string;
+}
+/** Calendar ordinals are civil date labels, never elapsed 24-hour business days. */
+export function rentalTaskForDate(obra: ObraCard, today = businessDate()): RentalTask {
+  if (obra.estadoProceso === 'RETIRADO' || obra.estadoProceso === 'REINGRESADO')
+    return {
+      kind: 'FINISHED',
+      date: null,
+      group: 'finished',
+      label: obra.estadoProceso === 'REINGRESADO' ? 'Reingresado' : 'Retirado',
+    };
+  const delivery = obra.estadoProceso === 'PENDIENTE_ENTREGA';
+  const kind = delivery ? 'DELIVER' : 'RETIRE';
+  const value = delivery ? obra.fechaEntrega : obra.fechaRetiroEstimada;
+  if (!isCalendarDate(value) || !isCalendarDate(today))
+    return {
+      kind,
+      date: null,
+      group: delivery ? 'unprepared' : 'undated',
+      label: delivery ? 'Sin fecha de entrega' : 'Sin fecha de retiro',
+    };
+  const days = (Date.parse(`${value}T00:00:00Z`) - Date.parse(`${today}T00:00:00Z`)) / 86_400_000;
+  const verb = delivery ? 'Entregar' : 'Retirar';
+  return {
+    kind,
+    date: value,
+    group: days < 0 ? 'overdue' : days === 0 ? 'today' : 'upcoming',
+    label:
+      days < 0
+        ? `${delivery ? 'Entrega atrasada' : 'Retiro atrasado'} · ${-days} ${days === -1 ? 'día' : 'días'}`
+        : days === 0
+          ? `${verb} hoy`
+          : days === 1
+            ? `${verb} mañana`
+            : `${verb} en ${days} días`,
+  };
+}
+function normalizeQuery(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLocaleLowerCase('es-AR')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+export function matchesRentalSearch(obra: ObraCard, query: string): boolean {
+  const haystack = normalizeQuery(
+    `${obra.clienteNombre} ${obra.direccion} ${obra.localidadBarrio}`,
+  );
+  return normalizeQuery(query)
+    .split(' ')
+    .every((term) => haystack.includes(term));
+}
 export function matchesPresentationStatusFilter(
   obra: ObraCard,
   filter: string,
   today = businessDate(),
 ): boolean {
-  return (
-    filter === 'TODAS' ||
-    (filter === 'RETIRADO'
-      ? ['RETIRADO', 'REINGRESADO'].includes(obra.estadoProceso)
-      : obraPresentationStatus(obra, today).key === filter)
-  );
+  if (filter === 'TODAS') return true;
+  const task = rentalTaskForDate(obra, today);
+  if (filter === 'HOY') return task.group === 'today';
+  if (filter === 'ATRASADOS') return task.group === 'overdue';
+  if (filter === 'PROXIMOS') return task.group === 'upcoming';
+  if (filter === 'RETIRADO') return task.kind === 'FINISHED';
+  return obraPresentationStatus(obra, today).key === filter;
 }
-
-function rentalSortDate(obra: ObraCard): string {
-  const date =
-    obra.estadoProceso === 'PENDIENTE_ENTREGA' ? obra.fechaEntrega : obra.fechaRetiroEstimada;
-  return isCalendarDate(date) ? date : '';
-}
-
 export type RentalRow =
   | { kind: 'section'; id: string; title: string; count: number }
   | { kind: 'rental'; id: string; obra: ObraCard };
-/** Presentation only: never changes commercial dates, stock or technical states. */
+/** Presentation only: one task per rental, no writes to dates, stock or technical states. */
 export function rentalRows(obras: ObraCard[], today = businessDate()): RentalRow[] {
-  const groups = [
-    { keys: ['ROJO'], title: 'Vencidos' },
-    { keys: ['AMARILLO'], title: 'Retiros de hoy' },
-    { keys: ['PENDIENTE'], title: 'Por entregar' },
-    { keys: ['VERDE'], title: 'Próximos retiros' },
-    { keys: ['SIN_FECHA'], title: 'Sin fecha de retiro' },
-    { keys: ['RETIRADO', 'REINGRESADO'], title: 'Retirados' },
+  const groups: { key: RentalTaskGroup; title: string }[] = [
+    { key: 'overdue', title: 'Atrasados' },
+    { key: 'today', title: 'Tareas de hoy' },
+    { key: 'upcoming', title: 'Próximos' },
+    { key: 'unprepared', title: 'Por preparar' },
+    { key: 'undated', title: 'Sin fecha de retiro' },
+    { key: 'finished', title: 'Retirados' },
   ];
-  return groups.flatMap(({ keys, title }, index): RentalRow[] => {
+  return groups.flatMap(({ key, title }): RentalRow[] => {
     const items = obras
-      .filter((o) => keys.includes(obraPresentationStatus(o, today).key))
+      .filter((o) => rentalTaskForDate(o, today).group === key)
       .sort(
-        (a, b) => rentalSortDate(a).localeCompare(rentalSortDate(b)) || a.id.localeCompare(b.id),
+        (a, b) =>
+          (rentalTaskForDate(a, today).date || '').localeCompare(
+            rentalTaskForDate(b, today).date || '',
+          ) || a.id.localeCompare(b.id),
       );
     return items.length
       ? [
-          { kind: 'section', id: `group_${index}`, title, count: items.length },
+          { kind: 'section', id: `group_${key}`, title, count: items.length },
           ...items.map((obra): RentalRow => ({ kind: 'rental', id: obra.id, obra })),
         ]
       : [];
   });
+}
+/** One material preview, including current triangulated balances; full list lives in detail. */
+export function rentalMaterialPreview(o: ObraCard, materials: MaterialItem[] = []): string {
+  const loads =
+    o.estadoProceso === 'ENTREGADO'
+      ? Object.entries(o.saldosEnObra)
+          .filter(([, quantity]) => quantity > 0)
+          .map(([id, cantidad]) => {
+            const reference =
+              o.materialesCargados.find((m) => m.materialId === id) ||
+              materials.find((m) => m.id === id);
+            return {
+              cantidad,
+              nombre: reference?.nombre || 'Material sin referencia',
+              medida: reference?.medida,
+            };
+          })
+      : o.materialesCargados.filter((m) => m.cantidad > 0);
+  const first = loads[0];
+  if (!first)
+    return o.estadoProceso === 'ENTREGADO' ? 'Sin material pendiente' : 'Carga por preparar';
+  const more = loads.length - 1;
+  return `${first.cantidad} × ${first.nombre}${first.medida ? ` · ${first.medida}` : ''}${more ? ` · +${more} ${more === 1 ? 'material' : 'materiales'}` : ''}`;
 }
 export function rentalSummary(o: ObraCard): string {
   const loads =

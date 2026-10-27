@@ -102,6 +102,16 @@ export default function Detail() {
           <Button label="Registrar entrega" icon={Truck} onPress={() => setModal('entrega')} />
         ) : o.estadoProceso === 'ENTREGADO' ? (
           <Button label="Registrar retiro" icon={Truck} onPress={() => setModal('retiro')} />
+        ) : o.estadoProceso === 'RETIRADO' ? (
+          <ConfirmButton
+            label="Cerrar reingreso"
+            variant="primary"
+            title="Cerrar revisión del retiro"
+            description="El retiro ya distribuyó el inventario. Cerrar la revisión no vuelve a sumar materiales."
+            onConfirm={async () => {
+              await dispatch({ type: 'REENTER', obraId: o.id });
+            }}
+          />
         ) : undefined
       }
     >
@@ -117,7 +127,52 @@ export default function Detail() {
             </View>
             <StatusChip obra={o} today={businessDate(now)} />
           </View>
-          <Text style={s.muted}>{o.direccion}</Text>
+          <Text style={s.body}>{o.direccion}</Text>
+          <View style={[s.row, { alignItems: 'stretch', gap: 8, flexWrap: 'wrap' }]}>
+            <Button
+              label="GPS"
+              icon={Navigation}
+              variant="secondary"
+              disabled={busy}
+              style={{
+                flex: 1,
+                minWidth: 80,
+                minHeight: 48,
+                paddingHorizontal: 10,
+                gap: 6,
+              }}
+              onPress={() => run(() => openLink(mapsUrl(o)))}
+            />
+            <Button
+              label="Remito"
+              icon={MessageCircle}
+              variant="secondary"
+              disabled={busy}
+              style={{
+                flex: 1,
+                minWidth: 80,
+                minHeight: 48,
+                paddingHorizontal: 10,
+                gap: 6,
+              }}
+              onPress={() => run(() => openLink(whatsappUrl(o)))}
+            />
+            {user?.role === 'ADMIN' ? (
+              <Button
+                label="Documento"
+                icon={Download}
+                variant="secondary"
+                style={{
+                  flex: 1,
+                  minWidth: 90,
+                  minHeight: 48,
+                  paddingHorizontal: 10,
+                  gap: 6,
+                }}
+                onPress={() => router.push(`/exportar?obraId=${o.id}`)}
+              />
+            ) : null}
+          </View>
         </View>
         <View
           style={[
@@ -142,9 +197,7 @@ export default function Detail() {
               paddingLeft: 16,
             }}
           >
-            <Text style={s.muted}>
-              {o.estadoProceso === 'PENDIENTE_ENTREGA' ? 'Retiro previsto' : 'Alquilado hasta'}
-            </Text>
+            <Text style={s.muted}>Alquilado hasta</Text>
             <Text style={[s.label, { fontVariant: ['tabular-nums'] }]}>
               {formatDate(o.fechaRetiroEstimada, false, 'Sin fecha de retiro')}
             </Text>
@@ -155,12 +208,19 @@ export default function Detail() {
             ) : null}
           </View>
         </View>
+        {o.fechaEntregaEfectiva ? (
+          <Text style={s.muted}>Entrega efectiva: {formatDate(o.fechaEntregaEfectiva)}</Text>
+        ) : null}
         {o.fechaRetiroEfectiva ? (
           <Text style={s.muted}>Retiro efectivo: {formatDate(o.fechaRetiroEfectiva)}</Text>
         ) : null}
         <View style={{ gap: 12 }}>
           <Text accessibilityRole="header" style={s.h2}>
-            {o.estadoProceso === 'PENDIENTE_ENTREGA' ? 'Carga preparada' : 'Materiales en obra'}
+            {o.estadoProceso === 'PENDIENTE_ENTREGA'
+              ? 'Carga preparada'
+              : ['RETIRADO', 'REINGRESADO'].includes(o.estadoProceso)
+                ? 'Saldo retirado'
+                : 'Materiales alquilados'}
           </Text>
           {materialIds.length ? (
             materialIds.map((materialId) => {
@@ -182,7 +242,9 @@ export default function Detail() {
                 >
                   <Package size={24} color={C.muted} />
                   <View style={[s.grow, { gap: 4 }]}>
-                    <Text style={s.label}>{load?.nombre || master?.nombre || materialId}</Text>
+                    <Text style={s.label}>
+                      {load?.nombre || master?.nombre || 'Material sin referencia'}
+                    </Text>
                     <Text style={s.muted}>
                       {load?.medida || master?.medida || 'Sin medida'}
                       {load?.apodo ? ` · ${load.apodo}` : ''}
@@ -192,7 +254,13 @@ export default function Detail() {
                     <Text style={[s.h2, { fontVariant: ['tabular-nums'] }]}>
                       {pending ? load?.cantidad || 0 : o.saldosEnObra[materialId] || 0}
                     </Text>
-                    <Text style={s.muted}>{pending ? 'Preparadas' : 'Alquiladas'}</Text>
+                    <Text style={s.muted}>
+                      {pending
+                        ? 'Preparadas'
+                        : ['RETIRADO', 'REINGRESADO'].includes(o.estadoProceso)
+                          ? 'Pendientes'
+                          : 'Alquiladas'}
+                    </Text>
                   </View>
                 </View>
               );
@@ -213,54 +281,6 @@ export default function Detail() {
           <Text accessibilityRole="header" style={s.h2}>
             Acciones
           </Text>
-          <View style={[s.row, { alignItems: 'stretch', gap: 8, flexWrap: 'wrap' }]}>
-            <Button
-              label="GPS"
-              icon={Navigation}
-              variant="secondary"
-              disabled={busy}
-              style={{
-                flex: 1,
-                minWidth: 80,
-                flexDirection: 'column',
-                minHeight: 64,
-                paddingVertical: 8,
-                gap: 4,
-              }}
-              onPress={() => run(() => openLink(mapsUrl(o)))}
-            />
-            <Button
-              label="Remito"
-              icon={MessageCircle}
-              variant="secondary"
-              disabled={busy}
-              style={{
-                flex: 1,
-                minWidth: 80,
-                flexDirection: 'column',
-                minHeight: 64,
-                paddingVertical: 8,
-                gap: 4,
-              }}
-              onPress={() => run(() => openLink(whatsappUrl(o)))}
-            />
-            {user?.role === 'ADMIN' ? (
-              <Button
-                label="Documento"
-                icon={Download}
-                variant="secondary"
-                style={{
-                  flex: 1,
-                  minWidth: 90,
-                  flexDirection: 'column',
-                  minHeight: 64,
-                  paddingVertical: 8,
-                  gap: 4,
-                }}
-                onPress={() => router.push(`/exportar?obraId=${o.id}`)}
-              />
-            ) : null}
-          </View>
           <Button
             label="Más acciones"
             icon={MoreHorizontal}

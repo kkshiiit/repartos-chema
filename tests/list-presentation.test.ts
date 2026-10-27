@@ -14,10 +14,9 @@ describe('agrupación operativa de listas', () => {
     const before = JSON.stringify(state);
     const rows = rentalRows(state.obras, today);
     expect(rows.filter((r) => r.kind === 'section').map((r) => r.title)).toEqual([
-      'Vencidos',
-      'Retiros de hoy',
-      'Por entregar',
-      'Próximos retiros',
+      'Atrasados',
+      'Tareas de hoy',
+      'Próximos',
     ]);
     expect(rows.filter((r) => r.kind === 'rental').map((r) => r.id)).toEqual([
       'obra_1',
@@ -65,9 +64,9 @@ describe('agrupación operativa de listas', () => {
     const obra = seed(new Date(`${today}T15:00:00Z`)).obras[1];
     obra.fechaRetiroEstimada = '2026-10-19';
     const before = JSON.stringify(obra);
-    expect(rentalRows([obra], '2026-10-18')[0]).toMatchObject({ title: 'Próximos retiros' });
-    expect(rentalRows([obra], '2026-10-19')[0]).toMatchObject({ title: 'Retiros de hoy' });
-    expect(rentalRows([obra], '2026-10-20')[0]).toMatchObject({ title: 'Vencidos' });
+    expect(rentalRows([obra], '2026-10-18')[0]).toMatchObject({ title: 'Próximos' });
+    expect(rentalRows([obra], '2026-10-19')[0]).toMatchObject({ title: 'Tareas de hoy' });
+    expect(rentalRows([obra], '2026-10-20')[0]).toMatchObject({ title: 'Atrasados' });
     expect(JSON.stringify(obra)).toBe(before);
   });
   it('resumen usa saldo actual incluido lo triangulado y conserva carga histórica', () => {

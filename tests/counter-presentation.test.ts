@@ -8,6 +8,7 @@ import { validDate } from '../src/domain/rules';
 import Detail from '../app/obra/[id]';
 import Home from '../app/(tabs)/index';
 import { formatDate } from '../src/utils/formatters';
+import { rememberedRentalList } from '../src/services/rentalListPreferences';
 import type { DomainSnapshot } from '../src/types';
 
 const mocks = vi.hoisted(() => ({
@@ -15,8 +16,14 @@ const mocks = vi.hoisted(() => ({
   dispatch: vi.fn(),
   state: {} as DomainSnapshot,
   role: 'ADMIN',
+  uid: 'test_admin',
+  preferenceGet: vi.fn(async (_key: string): Promise<string | null> => null),
+  preferenceSet: vi.fn(async (_key: string, _raw: string): Promise<void> => undefined),
   id: 'obra_1',
   listeners: new Set<(state: string) => void>(),
+}));
+vi.mock('@react-native-async-storage/async-storage', () => ({
+  default: { getItem: mocks.preferenceGet, setItem: mocks.preferenceSet },
 }));
 vi.mock('expo-router', () => ({
   router: { push: mocks.push },
@@ -26,6 +33,7 @@ vi.mock('react-native', () => ({
   View: 'View',
   Text: 'Text',
   Pressable: 'Pressable',
+  ActivityIndicator: 'ActivityIndicator',
   useWindowDimensions: () => ({ fontScale: 1 }),
   AppState: {
     currentState: 'active',
@@ -106,7 +114,7 @@ vi.mock('../src/components/DataList', () => ({
     ),
 }));
 vi.mock('../src/components/ListStructure', () => ({
-  SearchToolbar: () => null,
+  SearchToolbar: (props: object) => React.createElement('SearchToolbar', props),
   Segmented: () => null,
   SectionHeading: ({ title }: { title: string }) => React.createElement('Text', {}, title),
 }));
@@ -115,7 +123,7 @@ vi.mock('../src/context/InventoryContext', () => ({
   makeId: () => 'unused_id',
 }));
 vi.mock('../src/context/AuthContext', () => ({
-  useAuth: () => ({ user: { uid: 'test_admin', role: mocks.role } }),
+  useAuth: () => ({ user: { uid: mocks.uid, role: mocks.role } }),
 }));
 vi.mock('../src/context/ThemeContext', () => ({ useTheme: () => ({ colors: light }) }));
 vi.mock('expo-location', () => ({}));
@@ -143,6 +151,9 @@ beforeEach(() => {
   mocks.dispatch.mockClear();
   mocks.state = seed(new Date('2026-10-18T15:00:00Z'));
   mocks.role = 'ADMIN';
+  mocks.uid = 'test_admin';
+  mocks.preferenceGet.mockReset().mockResolvedValue(null);
+  mocks.preferenceSet.mockReset().mockResolvedValue(undefined);
   vi.useFakeTimers();
   vi.setSystemTime(new Date('2026-10-18T15:00:00Z'));
 });
@@ -171,7 +182,7 @@ describe('contador visible en la fila de alquiler', () => {
     await act(async () => {
       view!.update(React.createElement(CardObra, { obra, now: new Date('2026-10-20T03:00:00Z') }));
     });
-    expect(textContent()).toContain('Retiro vencido hace 1 día');
+    expect(textContent()).toContain('Retiro atrasado · 1 día');
     expect(textContent()).toContain('Vencido');
     expect(JSON.stringify(obra)).toBe(before);
     await act(async () => view!.root.findByType('Pressable').props.onPress());
@@ -233,20 +244,62 @@ describe('consulta de detalle y listado con reloj empresarial', () => {
     await act(async () => {
       view = create(React.createElement(Home));
     });
-    expect(textContent()).toContain('Próximos retiros');
+    expect(textContent()).toContain('Próximos');
     expect(textContent()).toContain('Retirar mañana');
     expect(mocks.listeners.size).toBe(1);
     await act(async () => vi.advanceTimersByTime(1001));
-    expect(textContent()).toContain('Retiros de hoy');
+    expect(textContent()).toContain('Tareas de hoy');
     expect(textContent()).toContain('Retirar hoy');
     vi.setSystemTime(new Date('2026-10-20T12:00:00Z'));
     await act(async () => {
       for (const listener of mocks.listeners) listener('active');
     });
-    expect(textContent()).toContain('Vencidos');
-    expect(textContent()).toContain('Retiro vencido hace 1 día');
+    expect(textContent()).toContain('Atrasados');
+    expect(textContent()).toContain('Retiro atrasado · 1 día');
     expect(mocks.dispatch).not.toHaveBeenCalled();
     expect(JSON.stringify(mocks.state)).toBe(before);
+  });
+
+  it('una respuesta tardía de la pantalla anterior no reemplaza la búsqueda nueva al volver', async () => {
+    mocks.uid = 'preferences_race';
+    const disk = new Map<string, string>();
+    let releaseFirst!: () => void;
+    let releaseSecond!: () => void;
+    const first = new Promise<void>((resolve) => {
+      releaseFirst = resolve;
+    });
+    const second = new Promise<void>((resolve) => {
+      releaseSecond = resolve;
+    });
+    mocks.preferenceGet.mockImplementation(async (key) => disk.get(key) ?? null);
+    mocks.preferenceSet.mockImplementation(async (key, raw) => {
+      await (JSON.parse(raw).query === 'consulta anterior' ? first : second);
+      disk.set(key, raw);
+    });
+    await act(async () => {
+      view = create(React.createElement(Home));
+    });
+    await act(async () =>
+      view!.root.findByType('SearchToolbar').props.onChange('consulta anterior'),
+    );
+    await act(async () => view!.unmount());
+    await act(async () => {
+      view = create(React.createElement(Home));
+    });
+    await act(async () => view!.root.findByType('SearchToolbar').props.onChange('consulta nueva'));
+    try {
+      await act(async () => {
+        releaseFirst();
+      });
+      expect(rememberedRentalList('local:preferences_race')?.preferences.query).toBe(
+        'consulta nueva',
+      );
+    } finally {
+      await act(async () => {
+        releaseFirst();
+        releaseSecond();
+      });
+    }
   });
 
   it('el detalle distingue la fecha comercial de la efectiva y actualiza su contador', async () => {
@@ -304,6 +357,22 @@ describe('consulta de detalle y listado con reloj empresarial', () => {
       expect(textContent()).not.toMatch(/Retirar|vencido hace/);
     },
   );
+
+  it('el retiro completado ofrece cerrar revisión desde la acción principal sin sumar stock al abrir', async () => {
+    mocks.state.obras[0].estadoProceso = 'RETIRADO';
+    const before = JSON.stringify(mocks.state);
+    await act(async () => {
+      view = create(React.createElement(Detail));
+    });
+    const primary = view!.root.findAll(
+      (node) => node.type === 'ConfirmButton' && node.props.label === 'Cerrar reingreso',
+    );
+    expect(primary).toHaveLength(1);
+    expect(JSON.stringify(mocks.state)).toBe(before);
+    expect(mocks.dispatch).not.toHaveBeenCalled();
+    await act(async () => primary[0]!.props.onConfirm());
+    expect(mocks.dispatch).toHaveBeenCalledExactlyOnceWith({ type: 'REENTER', obraId: 'obra_1' });
+  });
 
   it('formatea solo fechas civiles válidas sin convertir una fecha imposible en otra', () => {
     expect(formatDate('2024-02-29')).toBe('29/02/2024');

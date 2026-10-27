@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+(node:11508) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/ui/maestro-alquileres.spec.ts:35:5 › Hoy incluye entrega y retiros; fila expone dirección/material y filtro no contiene documentos (1.8s)
+  ✓  2 tests/ui/maestro-alquileres.spec.ts:53:5 › búsqueda por localidad conserva contexto al volver del detalle y al recargar (2.0s)
+  ✓  3 tests/ui/maestro-alquileres.spec.ts:76:5 › vuelve del detalle al desplazamiento guardado de una lista larga (2.6s)
+
+  3 passed (7.4s)
