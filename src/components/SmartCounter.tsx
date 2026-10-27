@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { Minus, Plus } from 'lucide-react-native';
 import { Button, Field, Notice, Sheet, useUI, usePanelChanges } from './ui';
+import { fonts } from '../theme/tokens';
 import { quantity, MAX_QUANTITY } from '../domain/rules';
 import { haptic } from '../hooks/useHaptics';
 export function SmartCounter({
@@ -81,6 +82,7 @@ export function SmartCounter({
             style={{
               fontSize: 20,
               fontVariant: ['tabular-nums'],
+              fontFamily: fonts.monoMedium,
               fontWeight: '700',
               color: C.text,
             }}

@@ -39,10 +39,11 @@ describe('Apariencia y contraste', () => {
           expect(contrast(fg, bg), `${fg} sobre ${bg}`).toBeGreaterThanOrEqual(4.5);
       // Muted surfaces carry primary text (secondary buttons and counters).
       expect(contrast(c.text, c.panel2)).toBeGreaterThanOrEqual(4.5);
-      expect(contrast(c.onPrimary, c.red)).toBeGreaterThanOrEqual(4.5);
+      expect(contrast(c.onDanger, c.red)).toBeGreaterThanOrEqual(4.5);
     });
     it(`${name}: controles distinguibles`, () => {
-      for (const bg of [c.bg, c.panel]) expect(contrast(c.line, bg)).toBeGreaterThanOrEqual(3);
+      for (const bg of [c.bg, c.panel])
+        expect(contrast(c.controlBorder, bg)).toBeGreaterThanOrEqual(3);
       expect(contrast(c.focus, c.panel)).toBeGreaterThanOrEqual(3);
       expect(statusColor('PENDIENTE', c)).toBe(c.purple);
     });

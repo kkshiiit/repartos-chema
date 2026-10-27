@@ -11,6 +11,7 @@ import { ActivityIndicator, Platform, View, useColorScheme } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SystemUI from 'expo-system-ui';
 import { StatusBar } from 'expo-status-bar';
+import { useFonts } from 'expo-font';
 import { useMotionPreferences } from '../hooks/useMotionPreferences';
 import {
   dark,
@@ -31,6 +32,13 @@ interface Value extends ReturnType<typeof useMotionPreferences> {
 }
 const Context = createContext<Value | null>(null);
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [fontsLoaded, fontError] = useFonts({
+    Geist: require('../../assets/fonts/Geist-Regular.ttf'),
+    GeistMedium: require('../../assets/fonts/Geist-Medium.ttf'),
+    GeistSemiBold: require('../../assets/fonts/Geist-SemiBold.ttf'),
+    GeistMono: require('../../assets/fonts/GeistMono-Regular.ttf'),
+    GeistMonoMedium: require('../../assets/fonts/GeistMono-Medium.ttf'),
+  });
   const system = useColorScheme();
   const motion = useMotionPreferences();
   const [preference, set] = useState<ThemePreference>('system'),
@@ -97,16 +105,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       preference,
       mode,
       colors,
-      error,
+      error: error || (fontError ? 'No se pudo cargar la tipografía. Se usa la del sistema.' : ''),
       setPreference,
       toggle: () => setPreference(oppositeTheme(mode)),
     }),
-    [preference, mode, colors, error, setPreference, motion],
+    [preference, mode, colors, error, setPreference, motion, fontError],
   );
   return (
     <Context.Provider value={value}>
       <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />
-      {ready ? (
+      {ready && (fontsLoaded || fontError) ? (
         children
       ) : (
         <View style={{ flex: 1, backgroundColor: colors.bg, justifyContent: 'center' }}>
