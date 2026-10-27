@@ -31,7 +31,7 @@ test('viaje: borrador, posición directa, persistencia, deshacer y regreso sin m
   await page.goto('/mapa');
   const before = await page.evaluate(() => localStorage.getItem('chema:demo:v1'));
   await expect(page.getByRole('button', { name: 'Abrir recorrido', exact: true })).toBeVisible();
-  const stops = page.getByRole('button', { name: /^Parada \d+: / });
+  const stops = page.getByRole('button', { name: /^Parada 1: / });
   const first = await stops.first().getAttribute('aria-label');
   const originalName = first!.split(': ')[1]!.split('. Ver detalles')[0]!;
   const edit = async () => {

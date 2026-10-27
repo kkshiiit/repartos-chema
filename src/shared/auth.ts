@@ -243,6 +243,8 @@ export class SharedAuth {
           refresh_token: session.refreshToken,
         });
         this.assertGeneration(generation, session.userId);
+        if (response.status === 401 || response.status === 403)
+          throw new SharedSessionChangedError();
         if (!response.ok)
           throw new Error(
             'La sesión venció. Volvé a ingresar; tus cambios pendientes siguen guardados.',

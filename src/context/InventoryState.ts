@@ -2,6 +2,7 @@ import { createContext } from 'react';
 import type { Action, AppState, Envelope } from '../types';
 import type { BackupDestination } from '../services/files';
 export interface InventoryValue {
+  accessBlocked?: boolean;
   workspaceId?: string;
   workspaceKey?: string;
   syncSummary?: string;

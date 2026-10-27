@@ -1,3 +1,4 @@
+import { SharedAccessGate } from '../src/components/SharedAccessGate';
 import { SharedProvider } from '../src/context/SharedContext';
 import { FeedbackProvider } from '../src/context/FeedbackContext';
 import { WelcomeProvider } from '../src/components/WelcomeProvider';
@@ -32,7 +33,7 @@ function Navigation() {
   return (
     <InventoryProvider key={user?.uid || 'anonymous'}>
       <FeedbackProvider>
-        <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: C.bg } }} />
+        <SharedAccessGate><Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: C.bg } }} /></SharedAccessGate>
       </FeedbackProvider>
     </InventoryProvider>
   );

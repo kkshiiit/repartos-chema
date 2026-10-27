@@ -1,3 +1,13 @@
+# Reanudación activa — 27/10/2026
+
+Base publicada dff2864, rama feat/chema-maestro-etapa2, main81cd39a intacto. Sin APK nuevo todavía. Root corrige Viaje (reconciliar sólo tras inventario listo) y selectores de pruebas; primero RED real conserva fallo después de corregir selector DOM virtualizado. La nueva ejecución UI esperó bundle viejo porque Metro estaba editándose: NO acreditarla como corrección hasta nuevo build estable. Agente stage2_media_finish desarrolla H4B fotos; archivos sin commit aún, no aplicar/desplegar hasta informe/revisión.
+
+Avisos: diario global de cancelaciones pendientes, serialización entre espacios y recuperación al initialize/applyNative; no elimina políticas previas. Pruebas RED2 reproducidas para cancelación perdida y refresh401 sin status; GREEN67 focales. Gate oculta cache ante rechazo conocido de Auth/membresía, deja ruta equipo para validar, no borra cola. Prueba inicial .tsx no encontrada por include sólo.ts, convertida a.ts; RED real y GREEN guardados aparte. No físicoAndroid. UI general inicial5pasaron/2fallaron; depurar y repetir antesafirmar éxito.
+
+QA remota sintética tag b371981330a6 aún viva hasta pruebas UI. Privado /tmp/chema-remote-qa-private.json0600, jamás imprimir/commitear. Limpiar sólo sus dos cuentas/espacio con guardas al terminar. Usuarios comerciales todavía no creados. Próximo: agente media estable→revisión+tests+migración/Edge autorizados→buildweb+UI integrada2cuentas→H4ruta publicada/recuperación→regresión/documentos/matriz→fuenteZIP/push→GradleAPK compatible conocido1.6.1 (no asumir instalación2.0), descargas conservaranteriores. No serviciospagos/rotarfirma/resetdata/continuidadfutura prometida.
+
+---
+
 # Corte backend remoto verificado — 27/10/2026
 
 Últimos fuentes branchfeat/chema-maestro-etapa2:94bd97d integra backend/contextos sobreH1/H2. CambiosposteriorescorrigenRPCvoidHTTP204 ydiagnóstico safe de respuesta incierta; funciónremotav2 yaactiva. 8/8Authrealdoscuentas sintéticas PASARON;493generalprevias+13focalesdespuésHTTPfix. Fuenteclienteactualrequierebuildwebnuevo/recorridos UI; aúnNOAPK nuevo.

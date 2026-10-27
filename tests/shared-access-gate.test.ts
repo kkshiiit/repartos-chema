@@ -1,0 +1,23 @@
+import React from 'react';
+import { act, create, type ReactTestRenderer } from 'react-test-renderer';
+import { expect, it, vi } from 'vitest';
+import { SharedAccessGate } from '../src/components/SharedAccessGate';
+const testState = vi.hoisted(() => ({ blocked: true, route: '(tabs)' }));
+vi.mock('react-native', () => ({ View: 'View', Text: 'Text' }));
+vi.mock('react-native-safe-area-context', () => ({ SafeAreaView: 'SafeAreaView' }));
+vi.mock('expo-router', () => ({ useSegments: () => [testState.route], router: { push: () => {} } }));
+vi.mock('../src/context/InventoryContext', () => ({ useInventory: () => ({ accessBlocked: testState.blocked }) }));
+vi.mock('../src/components/ui', () => ({ Button: 'Button', useUI: () => ({ C: { bg: '#fff' }, s: {} }) }));
+it('oculta datos comerciales tras revocación conocida, permite validar acceso y preserva hijos al recuperar', async () => {
+  let tree!: ReactTestRenderer;
+  await act(async () => { tree = create(React.createElement(SharedAccessGate, null, React.createElement('span', null, 'Datos privados del alquiler'))); });
+  expect(JSON.stringify(tree.toJSON())).not.toContain('Datos privados del alquiler');
+  expect(JSON.stringify(tree.toJSON())).toContain('Validar acceso');
+  testState.route = 'equipo';
+  await act(async () => { tree.update(React.createElement(SharedAccessGate, null, React.createElement('span', null, 'Formulario de acceso'))); });
+  expect(JSON.stringify(tree.toJSON())).toContain('Formulario de acceso');
+  testState.route = '(tabs)'; testState.blocked = false;
+  await act(async () => { tree.update(React.createElement(SharedAccessGate, null, React.createElement('span', null, 'Datos recuperados'))); });
+  expect(JSON.stringify(tree.toJSON())).toContain('Datos recuperados');
+  await act(async () => { tree.unmount(); });
+});

@@ -74,7 +74,7 @@ const dateLabel = (date: string) =>
 type SortKind = 'DISTANCE' | 'ASC' | 'DESC';
 export default function Trip() {
   const { C, s } = useUI(),
-    { state, workspaceId, workspaceKey } = useInventory(),
+    { state, ready: inventoryReady, workspaceId, workspaceKey } = useInventory(),
     { user } = useAuth();
   const now = useBusinessClock(),
     today = businessDate(now);
@@ -266,7 +266,7 @@ export default function Trip() {
   }
   const eligibleKey = stops.map((s) => s.id).join('|');
   useEffect(() => {
-    if (!ready || busy || JSON.stringify(allIds) === JSON.stringify(prefs.ids)) return;
+    if (!ready || !inventoryReady || busy || JSON.stringify(allIds) === JSON.stringify(prefs.ids)) return;
     const key = `${prefs.revision}:${eligibleKey}`;
     if (reconciliationAttempt.current === key) return;
     reconciliationAttempt.current = key;
@@ -279,7 +279,7 @@ export default function Trip() {
     })).catch(() => undefined);
     // Reconcile changes of eligible IDs once. Storage failure remains visible, without an infinite retry.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, busy, eligibleKey, prefs.revision]);
+  }, [ready, inventoryReady, busy, eligibleKey, prefs.revision]);
   async function run(operation: () => Promise<unknown>) {
     try {
       setError('');
