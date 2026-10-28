@@ -1,3 +1,15 @@
+# Gradle completo en ejecución — 28/10/2026
+
+Fuente de build congelada7a81548178612ec0ea35f84dff89325382e2bf9c (último funcional5e0ba15) respaldada también enmain medianteffsinforce. ZIPprebuild restaurado2366archivos/81104966bytes: /workspace/entregas/maestro-1.7.0-prebuild/repartos-chema-7a81548.zip, .sha256/.verificado.json. Check527/61 yUI64/64terminados, npmcicleanexit0.
+
+Primer Gradle falló antesdecompilar:HOMEpredeterminadosincaché, wrapperintentódescargar9.3.1yJavaCONNECT_REFUSED. Logpreservadogradle-1.7.0.txt. Segundo usa GRADLE_USER_HOME=/workspace/gradle-cache yANDROID_USER_HOME=/workspace/android-user conJDK21/SDKexistentes: gradle-1.7.0-cache.txt estáactivo. No editarappni borrarbuild; comprobarlog/procesoantesderesubir. Keystore originalfueraGit, scriptrestauraantesdeGradle. Main7a81548 comprobado, no volvera sourcebaseantigua.
+
+Al finalizarbuild: verify-android.py APKactual /workspace/entregas/cobalto-1.6.1/repartos-chema-local-1.6.1-arm64.apk /workspace/entregas/maestro-1.7.0 7a81548; usarJAVA_HOME/PATHbuildtools36. Confirmarsourcevsappsin cambios, certfac61745..., packagecom.grupochema.repartos/code11/ARM64/min24. Sólodespués publicar ruta NUEVAandroid/v1.7.0-local-equipo.1 endescargas; añadircopiabackup81MB sinLFS. Clone/workspace/publicacion-chema-1.7 sparse indexseguro, basebddaf75. Comparartodasrutas/blobsanterioresdesdeárbolguardado, recuperarAPKviaGHauth ySHA.
+
+Reporte de escáner: coincidenciaBEGIN PRIVATE KEY enperfilAgencyes sóloejemplodedetección,sinPEM;ningúnJWTcompleto/service_secret encontrado. No hayclaveprivadaenZIP. FaltandocsfinalAPK/sha/matrizM2-M5checkpoint. Pendientes físicosycomerciales siguenigual; no prometercontinuidad fueraejecuciónactiva.
+
+---
+
 # Release validado, preparativos de APK — 28/10/2026
 
 Fuente funcional5e0ba156edf68f6f5771a517c1c16495074896bd publicada. Check527/527en61archivos, tipos/Functions bien, lint0errores/1warning histórico. UI FINAL64/64,0fallos0omisiones (CHEMA_TEST_LOCAL=true); Word/Excel/local/offline/scroll incluidos. Informe/matriz94/manual actualizados;361PNG actuales,29referencias revisadas identificadas en revision-visual.json, sinAndroidfísico. npm ci limpio terminóexit0,1565paquetes,locksin cambios: vernpm-ci-release. No APK nuevo todavía.
