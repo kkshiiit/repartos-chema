@@ -1,3 +1,15 @@
+# Reanudación comprobada — 28/10/2026
+
+Fuente remota c59866f. El entorno se reinició durante la pausa: procesos y /tmp desaparecieron, /workspace y cambios se conservaron. Corrección de scroll de Home recuperada junto con tests/rental-list-restoration.test.ts. Regresión REAL contra Home anterior:2fallos/1pasa; con guardia3/3. Causa: onLoad no confirma scrollToOffset y un evento inicial0 reemplazaba600. Ahora se espera offset solicitado o límite real, gesto/filtro pueden cancelar restauración. No reglas comerciales modificadas. Check/buildwebnuevos en curso, ver check-release-scroll/build-web-final.
+
+Primera UIrelease58PASS/3FAIL/3SKIP: baseline8082apagado(2) y scrollintermitente(1). Baseline recuperado2/2; aislado scroll4/4 no invalida fallo de carrera, por eso regresión determinista y fix. **La próxima suite completa debe usar CHEMA_TEST_LOCAL=true**, para ejecutar los tres recorridos individuales que sin variable se omiten. Servidores8081actual/8082histórico reiniciados; no asumir siguen vivos tras otra pausa.
+
+QA remota terminada2contextos/8Auth/5media/4ruta/3delta. Limpieza confirmada:4usuariosQA+2espacios+2JPEG631bytes eliminados con guardas; objetos medianteStorageAPI. Edge restaurado v7ACTIVE, archivos idénticos a v5 (bundle nuevo dae8644a179e947053387766ce33b1800149d487cb1b59b7d6a33b149fd11acf). No cuenta comercial creada. No reutilizar credencialesQA borradas ni repetir scripts sin nuevoentornoQA.
+
+Próximoexacto: comprobar check/build nuevos→UI completa CHEMA_TEST_LOCAL=true y últimos PNG→guardar/push fuente estable+ZIPrestaurado→GradleARM64 con firma existente→verifyAPK1.7.0code11→nuevo archivoen descargas, recuperar bytes/SHA y conservar9APKs previos (árbol bddaf75 preservado enrespaldos/cierre27). Matriz94/manual/autoauditoría actualizados parcialmente, falta informe final/root y metadatos APK. Sin físicoAndroid,APK2.0exactoniJSONexacto5pedidos. No pago ni reanudación automática prometida.
+
+---
+
 # Cierre03 — distribución compacta comprobada — 27/10/2026
 
 Base 1553166 y corrección de composición actual: contador integrado en fecha de cabecera, filas más compactas. Estructura light/dark 2/2 pasa sin cambiar umbrales; medidas guardadas (primera fila308CSSpx, altura117). General nuevo check-release:524/524 en60archivos, tipos/Functions pasan; lint0errores/3warnings (dos imports sin uso y una advertencia histórica). SQL real nuevo postgres-release:15/15. UI completa64 sobre build-web-release actual está en curso; revisar ui-release antes de afirmar éxito. Ningún APK1.7.0 todavía.
