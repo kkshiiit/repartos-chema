@@ -1,0 +1,1964 @@
+{
+  "dateUTC": "2026-10-28T08:12:53.874283+00:00",
+  "runtime": "5e0ba156edf68f6f5771a517c1c16495074896bd",
+  "platform": "Chromium web; datos sint\u00e9ticos, no Android",
+  "reviewed": [
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-alquileres-light.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "2bba8d2235e5b02014211e270aff57e0c4dc4e9747e1851968a911a2951a273a"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-deposito-light.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "d3cd019dbd3b40727b3ea11a084b2622f691d5cb60daf7924984bc6625b8839a"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-viaje-light.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "749e0fd3e85f57f1a999caa76af58bc2a2d78f8c0cc07232cd2dadfc80fc3b24"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-historial-light.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "cf5d9d7d531c9b645f8dd0ef3544d6725beaf0652626a417248f8e922ecbef77"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-nuevo-light.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "6e9a59fb2911b363e8d885ebc440230a94b42d11fa744fc56d2e18bdc972d4e1"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-detalle-light.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "04a2ac85430c760a87a4f545e40d598defd1ca5911c301f1874cae2dfbf75ea6"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-ajustes-light.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "4552de0b37d353fc202f8830e7fd6184f9537549e6625a0adf1e39154796d692"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-documentos-light.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "62461ebe264dd1789c50bf0a756d4ab3fed1a8ed062efbe6fcd494cf31b277fa"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-combos-light.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "c33d16cddef239a6ce6615705967092f4815fcfc9753142d70375a109a04403e"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-filtros-light.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "5ca4391e3ad581f943987e50a8c5a942351a3ff45b589e7b256995c6bd3a421f"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-filtros-historial-light.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "7507a1d1cacde5140f18520ef188fee9fd2fac2808aa572039f7afebf5594f98"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-alquileres-dark.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "b828bdaedaf60074c22d23a621f7fc842bc5390b7c3e8b29118538199fb6e48d"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-deposito-dark.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "bdf589b8342738d039973a542043f901bf8295f2970d1ec85badd215ca9ff7ab"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-viaje-dark.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "a692a0617f9273723891051561cc923dd39e12c3799c3d93acc69af64347d962"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-historial-dark.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "82768d8a5fe5ded69f476bb21b96d624113fe7201512cdaa9e6f0f8ef8927588"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-nuevo-dark.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "e062e2fbe1cc09ef43f98839f44faeb42cc5e99c035c18d96995e40551355772"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-detalle-dark.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "ed964894f21826135b058d63ff4eaa342859090162812e74ff5601e5c8c682f2"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-ajustes-dark.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "d66188716e64b0490933d4c9f827e133209b1c1ca0010426f423a4510ca135da"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-documentos-dark.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "6390f7f12ab62ed0b49b91be41fb26f9afb8d85b4a785d1f9c94d32a8b676a6c"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-combos-dark.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "b128e501d1952ea960e57ef1bb847c08a091fac6018338e6d53fb1d4cba2072f"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-filtros-dark.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "2a097fbb0541e4deb83d73f026755df578eaf05d49e00c243e71161b74ac54b7"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-filtros-historial-dark.png",
+      "method": "L\u00e1mina de inspecci\u00f3n real; sin atribuir revisi\u00f3n nativa",
+      "sha256": "cc4d33364fabc0ddda7e4a74c8b277144904a4bd4a74846998f84167e4c623b6"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-light-alquileres.png",
+      "method": "PNG individual y comparaci\u00f3n misma fixture390x844",
+      "sha256": "a976af5e194daa498762f2d669b31ba9a40ff51f0860cb1f5a8723e82d194451"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/despues-390-light-alquileres.png",
+      "method": "PNG individual y comparaci\u00f3n misma fixture390x844",
+      "sha256": "aaa1c62765156fc5ce9c2ad1d5ba1d14b497b4705165e03ec15a5c43ffbd453c"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-dark-alquileres.png",
+      "method": "PNG individual y comparaci\u00f3n misma fixture390x844",
+      "sha256": "a5805f8ae2cba0a4e79168b1a4fc85bf3e8bbe692844ad3e295d4990d6f53dcd"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/despues-390-dark-alquileres.png",
+      "method": "PNG individual y comparaci\u00f3n misma fixture390x844",
+      "sha256": "dd56ff7ba6c8756f14fa9da8ca41b0bcd7cd776d138bdaf26d07fac8c8fdbc5c"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/despues-390-dark-retiro.png",
+      "method": "PNG individual abierto en visor",
+      "sha256": "22da2278a13ec5787c3dd394fa896c907432c854212f801d695c3121467836d9"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/despues-390-light-carga.png",
+      "method": "PNG individual abierto en visor",
+      "sha256": "e17f93e7de6968b5cfb2e766216825361030acf8ff6e5740b9c64ba7d6a77347"
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-historial-texto200.png",
+      "method": "PNG individual abierto en visor",
+      "sha256": "d1f35a99f965d4f326d69d5e06a77c51d704736406ec0d6e2d4cf4eb038b9dee"
+    }
+  ],
+  "captures": [
+    {
+      "path": "artifacts/capturas/cierre-1.7/avisos-1.6/390-dark-ajustes.png",
+      "sha256": "eedb9bc176d9783119632b22a9fd1845daa3053863af1bc731ecc8b99e7511ef",
+      "bytes": 54350
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/avisos-1.6/390-dark-detalle.png",
+      "sha256": "b325cbed32bdaa1b09ad9d6afc2d642730f72cbd7200d301c6cfc78670a17d04",
+      "bytes": 49138
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/avisos-1.6/390-dark-personalizado.png",
+      "sha256": "5cfb642b161ed7d95e4216e23b8a00d2f2334274179a9a7bd96586ad8bbe2ba7",
+      "bytes": 52437
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/avisos-1.6/390-dark-principal.png",
+      "sha256": "7f10e0b8402172557ded529f49b5a6d1f391f58999176596ea60519cadec5d3c",
+      "bytes": 67890
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/avisos-1.6/390-light-ajustes.png",
+      "sha256": "ef01a86ae13aefb0a6eacc0bcbe15320ca9e953bc5ad99fc9193ee367a6c3509",
+      "bytes": 58347
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/avisos-1.6/390-light-detalle.png",
+      "sha256": "102dd0e73b0af8454316e743c7565cc233edffda69e277a4afb66e793b5f1e36",
+      "bytes": 54173
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/avisos-1.6/390-light-personalizado.png",
+      "sha256": "bd723ed0b59ee3037386dd70e3b0d0af8668958d7cead6bf60efb69b042edfad",
+      "bytes": 56040
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/avisos-1.6/390-light-principal.png",
+      "sha256": "1cf870dff576b30eca5f6385b9944a8a27c3f913fd04fe01cd7fc7db6dd34994",
+      "bytes": 71254
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/equipo/dark-ajustes.png",
+      "sha256": "bb106d0dad091345bd11a347b99c1eb2e49ad57716a0c9dc18cbe683ab815578",
+      "bytes": 40419
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/equipo/dark-alquileres.png",
+      "sha256": "47d982542924e60b35a8663019d65f497c04939a43bd9c8d393d58ec9fa2b71b",
+      "bytes": 63614
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/equipo/light-ajustes.png",
+      "sha256": "375c6b5753dae3a574adad358d4cdf70026070761d8d8fd0fd79a1bdc43355c5",
+      "bytes": 48426
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/equipo/light-alquileres.png",
+      "sha256": "10ef65779b2733d845f03f5f6dc8c88cfce631967a98147062611bd7bac1f0b0",
+      "bytes": 66914
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/bienvenida-1.png",
+      "sha256": "0ed670a853c0f4e67b4bfb6a8768a86ad27cff92e2c57cee26d6a7610c806f91",
+      "bytes": 38161
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/dashboard-desktop.png",
+      "sha256": "fa30e7541f6e0bde79e28884cbcea5a0ae5938ad3a5ecc43b26b0a9ab26067a3",
+      "bytes": 98591
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/dashboard-mobile.png",
+      "sha256": "7e32fbe7bb5633edb60fbb796d92642561c49ac1490c7a3e459342af26f66eab",
+      "bytes": 61657
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-ajustes-dark.png",
+      "sha256": "d66188716e64b0490933d4c9f827e133209b1c1ca0010426f423a4510ca135da",
+      "bytes": 40262
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-ajustes-light.png",
+      "sha256": "4552de0b37d353fc202f8830e7fd6184f9537549e6625a0adf1e39154796d692",
+      "bytes": 43525
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-alquileres-dark.png",
+      "sha256": "b828bdaedaf60074c22d23a621f7fc842bc5390b7c3e8b29118538199fb6e48d",
+      "bytes": 66020
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-alquileres-light.png",
+      "sha256": "2bba8d2235e5b02014211e270aff57e0c4dc4e9747e1851968a911a2951a273a",
+      "bytes": 69371
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-combos-dark.png",
+      "sha256": "b128e501d1952ea960e57ef1bb847c08a091fac6018338e6d53fb1d4cba2072f",
+      "bytes": 37127
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-combos-light.png",
+      "sha256": "c33d16cddef239a6ce6615705967092f4815fcfc9753142d70375a109a04403e",
+      "bytes": 38818
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-deposito-dark.png",
+      "sha256": "bdf589b8342738d039973a542043f901bf8295f2970d1ec85badd215ca9ff7ab",
+      "bytes": 58574
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-deposito-light.png",
+      "sha256": "d3cd019dbd3b40727b3ea11a084b2622f691d5cb60daf7924984bc6625b8839a",
+      "bytes": 61628
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-detalle-dark.png",
+      "sha256": "ed964894f21826135b058d63ff4eaa342859090162812e74ff5601e5c8c682f2",
+      "bytes": 50875
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-detalle-light.png",
+      "sha256": "04a2ac85430c760a87a4f545e40d598defd1ca5911c301f1874cae2dfbf75ea6",
+      "bytes": 56238
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-documentos-dark.png",
+      "sha256": "6390f7f12ab62ed0b49b91be41fb26f9afb8d85b4a785d1f9c94d32a8b676a6c",
+      "bytes": 36055
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-documentos-light.png",
+      "sha256": "62461ebe264dd1789c50bf0a756d4ab3fed1a8ed062efbe6fcd494cf31b277fa",
+      "bytes": 38550
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-filtros-dark.png",
+      "sha256": "2a097fbb0541e4deb83d73f026755df578eaf05d49e00c243e71161b74ac54b7",
+      "bytes": 41360
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-filtros-historial-dark.png",
+      "sha256": "cc4d33364fabc0ddda7e4a74c8b277144904a4bd4a74846998f84167e4c623b6",
+      "bytes": 39872
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-filtros-historial-light.png",
+      "sha256": "7507a1d1cacde5140f18520ef188fee9fd2fac2808aa572039f7afebf5594f98",
+      "bytes": 44316
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-filtros-light.png",
+      "sha256": "5ca4391e3ad581f943987e50a8c5a942351a3ff45b589e7b256995c6bd3a421f",
+      "bytes": 46589
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-historial-dark.png",
+      "sha256": "82768d8a5fe5ded69f476bb21b96d624113fe7201512cdaa9e6f0f8ef8927588",
+      "bytes": 52135
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-historial-light.png",
+      "sha256": "cf5d9d7d531c9b645f8dd0ef3544d6725beaf0652626a417248f8e922ecbef77",
+      "bytes": 55267
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-nuevo-dark.png",
+      "sha256": "e062e2fbe1cc09ef43f98839f44faeb42cc5e99c035c18d96995e40551355772",
+      "bytes": 39697
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-nuevo-light.png",
+      "sha256": "6e9a59fb2911b363e8d885ebc440230a94b42d11fa744fc56d2e18bdc972d4e1",
+      "bytes": 43106
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-viaje-dark.png",
+      "sha256": "a692a0617f9273723891051561cc923dd39e12c3799c3d93acc69af64347d962",
+      "bytes": 53659
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/despues-viaje-light.png",
+      "sha256": "749e0fd3e85f57f1a999caa76af58bc2a2d78f8c0cc07232cd2dadfc80fc3b24",
+      "bytes": 56722
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/local-ajustes-claro.png",
+      "sha256": "be430d9221fe432b66feb095cbb3b5bd2634b3c1c6d3156f0729d97d9144d9eb",
+      "bytes": 41874
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/local-alquileres.png",
+      "sha256": "fdac7d550cf060778a00b966414b68666265782941980121da2027d802879315",
+      "bytes": 41960
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-ajustes-texto200.png",
+      "sha256": "5d8d8ed49f088fc3a179af5ab991b78f34392f8f071f50f2d2c1df83585af5e0",
+      "bytes": 48979
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-ajustes.png",
+      "sha256": "18be0906d0a679bd669f93d775eaba2bd29cb1fc9ac6a04921f960110c56b50d",
+      "bytes": 45113
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-alquileres-texto200.png",
+      "sha256": "e9efb05480c2f47a9946e0b0a12377f7e1339f1b5b4d6e5c1981d24a32e5b995",
+      "bytes": 53906
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-alquileres.png",
+      "sha256": "b15ed2f6c9c09ce021fc33e76a7a0d034de7266793989b1fd4093d4cb303ea18",
+      "bytes": 64336
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-combos-texto200.png",
+      "sha256": "4b52e66780339e87746f929cab15b2678f683ed8759121b9c9c3053d8ed00a93",
+      "bytes": 47764
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-combos.png",
+      "sha256": "71fe59a071db28d9fe7ba6bcc7d912c8fca2bb88d011c08a9aa0f3d9830a09eb",
+      "bytes": 38634
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-deposito-texto200.png",
+      "sha256": "cd6c863ceab122d79feeddd523a81ed6818759433a6eafc5fa9b24131d6cc098",
+      "bytes": 49790
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-deposito.png",
+      "sha256": "e2eb09357c6c4c0f01976f2375bd887bae858482eb7db77a9fd1035886ed5e7c",
+      "bytes": 58109
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-detalle-texto200.png",
+      "sha256": "7e027aaffc8d86b86b24acfb5706b42b548a5f9460c416cefde63964820c4c26",
+      "bytes": 52284
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-detalle.png",
+      "sha256": "69cc8f54b8cd5d7e4279b66368e716d65097e6b4c0acb8509efc5cff9d7ea71a",
+      "bytes": 49734
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-documentos-texto200.png",
+      "sha256": "8d9066a62866607b3e21b5a11db164016f7ccabbbca8d453cfd8b5d8dd23afe9",
+      "bytes": 48646
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-documentos.png",
+      "sha256": "7d31c6d0e2cef1e4548895dc6f21fc9fde28a73eebed4ea604883d5945711f9c",
+      "bytes": 35465
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-historial-texto200.png",
+      "sha256": "e46b8eb16ef52b3ac3a280c3ffe620340643178602bc0f1344f088857b974752",
+      "bytes": 52095
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-historial.png",
+      "sha256": "4bf1b4317b75b822a9e86fa0ccfd6d08ebd39947feae0c07910517c2781bc4f6",
+      "bytes": 30319
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-nuevo-texto200.png",
+      "sha256": "ceadeccb453ac34be6bfb6eb5c5160403f37c90ef19105c502dc9bd8b6adbd13",
+      "bytes": 53466
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-nuevo.png",
+      "sha256": "67dad196cc7ae9ca97c71f54aaac23a68f86068b60b3fa6432077c313baaeb21",
+      "bytes": 39467
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-panel-carga-texto200.png",
+      "sha256": "634ab1cec826bdccb6b50e46b8f702005f39bea33e1914460b9a277aeeb6e156",
+      "bytes": 52711
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-panel-carga.png",
+      "sha256": "0dcaa1078f3f7acbbf4bd5a42bd7ecc5fac4f83ef0790824ff9d912f93e6a035",
+      "bytes": 47361
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-viaje-texto200.png",
+      "sha256": "10c6b306173e028b97c716d61e523f61458e07ef6c3eb0ea05f3caea04f752e3",
+      "bytes": 54214
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-dark-viaje.png",
+      "sha256": "d5f237b53bad94f219ccea8ff4466e3fd2df0c556a0cf0bc4f503d442e2289ca",
+      "bytes": 55482
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-ajustes-texto200.png",
+      "sha256": "3e487ffa19a3654a8301f9ea89c267b102f9c5fde087a86b0f137058258dc3af",
+      "bytes": 53938
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-ajustes.png",
+      "sha256": "b174aa2b4e81d3e9f57c2505110b43a0d9a74137962bbc56936a8744dc213750",
+      "bytes": 49346
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-alquileres-texto200.png",
+      "sha256": "23a1e35d94ed450d6b5c95db2f4658a3909e710110f5e8acb0d624d98a1113b0",
+      "bytes": 57700
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-alquileres.png",
+      "sha256": "88805c515511409658b7c65582808db5ec78cc1f3cd17524cae99ad694d8a986",
+      "bytes": 68123
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-combos-texto200.png",
+      "sha256": "be3581e2f103008f43e6419d8ef6df96e443acb25d2922f16eba53203450dd8c",
+      "bytes": 50369
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-combos.png",
+      "sha256": "568b1b16116bb7f76865e4f2b2ef98ed944aceb5254775be8ef78a769f453587",
+      "bytes": 40089
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-deposito-texto200.png",
+      "sha256": "a8df57d485ccc05acab8dc7c4ad909a5dcd60184d55ed89a93b9daab82d4c38c",
+      "bytes": 53034
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-deposito.png",
+      "sha256": "8e559dce4d3ad1905afa32bab29fab1862245dddac25e0c5c9093e84c8ec762a",
+      "bytes": 61158
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-detalle-texto200.png",
+      "sha256": "03104a400535c1597199f76b8caf9a29d5d6817c906d71092a9fd7f9d53d45c9",
+      "bytes": 57232
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-detalle.png",
+      "sha256": "308feeb8f6fd5a6c2270467b7a8cdad11c49232fc07f08fa4dc9e0a3b0ba6985",
+      "bytes": 55004
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-documentos-texto200.png",
+      "sha256": "9b14859dfcc349cab968a73d5f8363dc2a7b7fc50741cc9242529ea8c2de5f2e",
+      "bytes": 53403
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-documentos.png",
+      "sha256": "b394fc8972d32fa2411cd734802673c358a1959927dd436eadf79c7b02d1f40e",
+      "bytes": 38144
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-historial-texto200.png",
+      "sha256": "d1f35a99f965d4f326d69d5e06a77c51d704736406ec0d6e2d4cf4eb038b9dee",
+      "bytes": 54015
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-historial.png",
+      "sha256": "7fca6b89f480d930ee5a315f860f2e578929b45fae57b2766db583fc0a147087",
+      "bytes": 31491
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-nuevo-texto200.png",
+      "sha256": "86f41907591390847142e0566dffaff067faa2a05243fe55cbc72af8d88e6c2a",
+      "bytes": 58268
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-nuevo.png",
+      "sha256": "1db5d80f3bad9840234db053dcf9a90e32f10c511fe359e0e0fd2e67be6d8518",
+      "bytes": 43040
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-panel-carga-texto200.png",
+      "sha256": "b08fa2342d198a45b3994dfe5e5e24ef227d804db3a888d7d8ff51036cbe3c56",
+      "bytes": 58642
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-panel-carga.png",
+      "sha256": "8a150d0417da283c312e71ce18eab1f6f2a7562aea003ef96099bd4d341f2380",
+      "bytes": 52093
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-viaje-texto200.png",
+      "sha256": "1be39c29adac6c59ebdc136ef40343bbac66d974ad1c3d10609e929adce1bb9d",
+      "bytes": 57434
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/320-light-viaje.png",
+      "sha256": "9de5556828c7ae00c750ede34e01cee14b5eb7a5879ff5a1d5f37468007eebe4",
+      "bytes": 58644
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-ajustes-texto200.png",
+      "sha256": "1657e736998c869758b8062c59a4c4f226a1ce5c95b3c4e7d454bab7ef0ad53e",
+      "bytes": 51475
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-ajustes.png",
+      "sha256": "d59151a2c1eab95a580acd4402d9f1bf25419a3e6cdba0db2101d0cced8c8669",
+      "bytes": 46650
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-alquileres-texto200.png",
+      "sha256": "10bea616ca7f6cc4adbac66015052568dd5bd822067dc61e0ee634bc7aab9a9c",
+      "bytes": 60864
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-alquileres.png",
+      "sha256": "c891fa8d192c0610bd308261a33e67c3fe13470c008b5fe73755c240be3b8106",
+      "bytes": 72427
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-combos-texto200.png",
+      "sha256": "f72bdb6c7eacc28c707804b4987424abfb0a992c5b64ca5e3a6bd90d4f2d8146",
+      "bytes": 56852
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-combos.png",
+      "sha256": "c1041cdc47fa90b159b5e69f0097bfbedd1a6e46a705da723ab158d062adba32",
+      "bytes": 37129
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-deposito-texto200.png",
+      "sha256": "5987edbcb5c3bdc11a7e723ac764a939af0408f31bb1b0896613c7b87db0fc22",
+      "bytes": 61874
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-deposito.png",
+      "sha256": "cec9936f11902af2e5c49a58c3d7b114c043a977d1d066fc2ee90bcb09b0c662",
+      "bytes": 59190
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-detalle-texto200.png",
+      "sha256": "aff27498318c04b929359683152beddf4678e84f229e0c4192892adfe9ad71af",
+      "bytes": 55316
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-detalle.png",
+      "sha256": "f01bbcf4f3ee274ba08b3083e26e38fd0fdbe320b62e61a8084d2c94f4c34cb5",
+      "bytes": 52215
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-documentos-texto200.png",
+      "sha256": "40c50404f8826ade734562c4a8c64233f2de32a925c6c01455bb0cd36098251e",
+      "bytes": 49505
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-documentos.png",
+      "sha256": "90317b87101601e03bcf4a795ed85be280df694fc7fcebddbaaf58120c542fe0",
+      "bytes": 35931
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-historial-texto200.png",
+      "sha256": "a360d19a3abe1859e81cc688a01af5f647eb623cea8469da76720737eef3ecb8",
+      "bytes": 57395
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-historial.png",
+      "sha256": "12b19f546114db36d1affbbc112a26a54bd0f44f2d0917b9aa1edbcbb7bd5b87",
+      "bytes": 30802
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-nuevo-texto200.png",
+      "sha256": "586fd43b1d2bdfeab0f34043e19949a7b673d0454427072876c8663b86c6106f",
+      "bytes": 55783
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-nuevo.png",
+      "sha256": "7f0398dea9386e044b9a352f2634554d3c9af70d99834e2578ee77cf3f33e2fb",
+      "bytes": 41818
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-panel-carga-texto200.png",
+      "sha256": "b1ac0438a82805773526c5c68286f8a9c60437680ec22187a0ce24c1294d706f",
+      "bytes": 58733
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-panel-carga.png",
+      "sha256": "e00e55e6b7601f7f304062fbd708cdc4388dd8d5ca5cb578d24e9618dc7888b3",
+      "bytes": 47832
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-viaje-texto200.png",
+      "sha256": "04eda93d6c5e7f5f9016868afb61165e08799005b1a9f123e62ea1cbccd45b58",
+      "bytes": 56278
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-dark-viaje.png",
+      "sha256": "638ba91f24a0c2a36856236ffb0f131ce776f805188c3818e307a178f4a7766e",
+      "bytes": 56510
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-ajustes-texto200.png",
+      "sha256": "701e64ad2da6c093d605377809e56cf104ef7ff7070551bd3a2be94b372f7f43",
+      "bytes": 56455
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-ajustes.png",
+      "sha256": "cdd0a6693f6196b14bd512b318cdea8f4d3a869ea3e1e3a88ec35f621c4e151f",
+      "bytes": 50829
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-alquileres-texto200.png",
+      "sha256": "275baa1569592d91b88aeda3e47fe7a192d19d9e82a7d0751e406241bf2ebe2b",
+      "bytes": 65299
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-alquileres.png",
+      "sha256": "e5d3d3c5cd13f45aca96449865c6864c89564f5ac281d31a3482181dcb4c4e26",
+      "bytes": 76684
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-combos-texto200.png",
+      "sha256": "68e5d1ca9148ce02db68389241394d99840c2bedd4264f822471a05263d8edaa",
+      "bytes": 59840
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-combos.png",
+      "sha256": "4c12528e7b694863209ec4ca3703d18804a1efb788ac540b51538bd7d2396b40",
+      "bytes": 38808
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-deposito-texto200.png",
+      "sha256": "a283865b52ab18f4f1ef73230621db31a4d1f02d6025751a5af9a570e927f09e",
+      "bytes": 65651
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-deposito.png",
+      "sha256": "0c9a40fea3a9451501a9d52fbb291a3d60bad1129f44eb22261e517541be7817",
+      "bytes": 62300
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-detalle-texto200.png",
+      "sha256": "06fccc45bbf90a31d6643ec54de2395854259cc883fa86e224a7d9a6be00fb1b",
+      "bytes": 60719
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-detalle.png",
+      "sha256": "76c918c6a591085a496b8d367565e094e3f75695a37d236863a7a78155da29e3",
+      "bytes": 57862
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-documentos-texto200.png",
+      "sha256": "e043d648e1202a75ba9901f04f0e0fd5643cac347da6622bc3c109cd9bea05f5",
+      "bytes": 54056
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-documentos.png",
+      "sha256": "4345222175fbf16d898c928e8178881d32a7c7201522935f7f7ae528269f7d35",
+      "bytes": 38526
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-historial-texto200.png",
+      "sha256": "24cfeff83402624801eb70880cc8d157408f877db7c89a3b53ef82ec49d0486b",
+      "bytes": 59341
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-historial.png",
+      "sha256": "2341a806cba06fd639497423329465c6cc15b4d9842b6d36a0655d1957a39110",
+      "bytes": 31929
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-nuevo-texto200.png",
+      "sha256": "a8fa0f64d6cf62a4729a818b994211fb55d5315fab3dd125af95bb54a4368b63",
+      "bytes": 60533
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-nuevo.png",
+      "sha256": "b3519762bc7a4b9a03aef4461e5de6994ea3fc597cdab2f82def934a890f4f60",
+      "bytes": 45744
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-panel-carga-texto200.png",
+      "sha256": "2e852fc8dd776646d9acfc6273423eedc54a0b4597e403a5f8db174927130ee8",
+      "bytes": 64462
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-panel-carga.png",
+      "sha256": "fdb443d31160b87a4c69bf29cb2afe0c7861c2166fcab6c7fdab9e36060f5792",
+      "bytes": 52467
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-viaje-texto200.png",
+      "sha256": "cc75a5ac95b6fdb1ef058efb19b26641665653984468f22fe7ed112ca7e93c4c",
+      "bytes": 60377
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/360-light-viaje.png",
+      "sha256": "e18ca0e15054ce5580294370530ed0a743c624d0a6a0021c0f00d17c7951901f",
+      "bytes": 59708
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-ajustes-texto200.png",
+      "sha256": "a4c6a8cc30c511558a831e891bdc89543203fe745d5cf5f9f68cf38eaba9534e",
+      "bytes": 58206
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-ajustes.png",
+      "sha256": "9bb5a3d162e30a17802865e3311ac42296599800b0195f9d9cc01fdf4ef1de4c",
+      "bytes": 47344
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-alquileres-texto200.png",
+      "sha256": "c39ac20417b0b7518b55963df8871b3dc255e9d9b55a7e08d274de4db146ece2",
+      "bytes": 61902
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-alquileres.png",
+      "sha256": "117660442dcaad9705a9df98a84f564dae694d7c948857f3d14f00123cf915d6",
+      "bytes": 73291
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-combos-texto200.png",
+      "sha256": "8a7e6b9955aac13d1d32a69ba39f0fe00ae5a9e4b829a94e104c29749c625467",
+      "bytes": 59672
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-combos.png",
+      "sha256": "3a373c380fde84bb0eec94b63c67583de3c60afcd6d9bddcfab8d1f48ad93225",
+      "bytes": 37729
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-deposito-texto200.png",
+      "sha256": "def6c1c6dd31fa7972e43e9e0d75bd6d88bb9dab8abf2303ac0f48ec54ee4784",
+      "bytes": 63533
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-deposito.png",
+      "sha256": "7b8bd2f2028dcb94d0acbcfe96d27d6b356c32fdde712a0f79a317a1d85a5ed5",
+      "bytes": 62400
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-detalle-texto200.png",
+      "sha256": "c858173dd99fae570025a52b55a503326976ad69499dfaa09ef7f0b0d06a93b0",
+      "bytes": 57145
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-detalle.png",
+      "sha256": "230f693dc16d00ceac7b0100c11ac064b321a2a736a0cfb7b9d492062934df94",
+      "bytes": 52716
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-documentos-texto200.png",
+      "sha256": "04ec75ca7d4af38aec1f225510029d0dce9c878f29b72408004e4f91981feb52",
+      "bytes": 50090
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-documentos.png",
+      "sha256": "c5913c22783e4356e0279a7473f70310557cfba0778bcb5de7a4549913d28e8e",
+      "bytes": 36371
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-historial-texto200.png",
+      "sha256": "6922b2ac64acd1ce8f2cd8cc82280cd12b71979ec1f815021f5508837e21b17b",
+      "bytes": 59741
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-historial.png",
+      "sha256": "407e9f2c3744a22b3e85a86082ae709537f62c0d8de75d604c3d00b689c12fbd",
+      "bytes": 30862
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-nuevo-texto200.png",
+      "sha256": "be781d0a1be17a7544a37ff674e86650443082e79a4eda5c62b215a4d1330227",
+      "bytes": 57418
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-nuevo.png",
+      "sha256": "09a9cb6d5e378661c620b005e1d3e3b263dfc439d4c6c5a3f96f5a0b6f6fd94c",
+      "bytes": 42156
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-panel-carga-texto200.png",
+      "sha256": "4a181ae2abc883b325e21df785ee75b827158be4e86cb0e08e02c8a76517c9c4",
+      "bytes": 59212
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-panel-carga.png",
+      "sha256": "4ea2a67733f4d31e1ebec4435eff4dde22e6bc4c1e9ecaeb393dfb81994bdee0",
+      "bytes": 47814
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-viaje-texto200.png",
+      "sha256": "b6399a42fd586900508f43af015b858cf4c8b4d82660565566a5656ffe403491",
+      "bytes": 58857
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-dark-viaje.png",
+      "sha256": "95423d86f1f45d36d0ab7e444f4d66b054a3c2fa39f9413c4a16e7fd8744ab04",
+      "bytes": 57227
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-ajustes-texto200.png",
+      "sha256": "3fadeab61d71b91003d1b06e87874af9d087beb2f4d260ff9db79e912a49e3d5",
+      "bytes": 64474
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-ajustes.png",
+      "sha256": "529cd3cb49be900c93ee8a77d64161282b6bd8711d9d22b267449794da5bf82e",
+      "bytes": 51454
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-alquileres-texto200.png",
+      "sha256": "4a5a4fa5cd2d11133a0af508dd986f0f3a89ce77e096f17cf1df306d7ca07184",
+      "bytes": 66174
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-alquileres.png",
+      "sha256": "d34af0f41e9ba33ce75d1052e2dfd9aa0b3d23f5caf3e6e373c0d1253846ebd0",
+      "bytes": 77478
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-combos-texto200.png",
+      "sha256": "5a95134ac9e403f470b4beb7f560b113ce41c7bea09897a3b359aca1893cfb53",
+      "bytes": 62769
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-combos.png",
+      "sha256": "7fdca2c2ad11c1de2eea0b54fb26ff0e2a815f4adbd6e4059926b68fe973675a",
+      "bytes": 39626
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-deposito-texto200.png",
+      "sha256": "32a41dbfd06e7b2721794dee694f7500d0b717b999197af5df44ff15f1fece8e",
+      "bytes": 67258
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-deposito.png",
+      "sha256": "36fcd6e889edc3293a36d53c06fe56e9f877a2c056d0a08f561167b819f3085b",
+      "bytes": 65300
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-detalle-texto200.png",
+      "sha256": "c6a1b928c48c470ff14a7df6ba4b9ef0c26351e02b90abd19d42c99e06bbdd13",
+      "bytes": 62918
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-detalle.png",
+      "sha256": "66efc4f1dd68aa0922bbc05cc4fa9f1f38d8a9890e95b21639ff097e3d6896e3",
+      "bytes": 58328
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-documentos-texto200.png",
+      "sha256": "e89e42c8af5d2c0e44aa86747a3b58e40258c0c80d3298c7b4345863cc8b95d4",
+      "bytes": 54758
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-documentos.png",
+      "sha256": "7b2edb21cd041c462b077e234fd55b411c5bf40373befa020b90e90cb96a4346",
+      "bytes": 38883
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-historial-texto200.png",
+      "sha256": "422bce3142ab517fe8c3e6bfacf30685697fa6bf2a6a865feea796d635ac4d9c",
+      "bytes": 61765
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-historial.png",
+      "sha256": "c4eafe334c61586dbaced5b1e9b6b8c47bb7d555a54dd31788d62d4c080e503b",
+      "bytes": 32032
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-nuevo-texto200.png",
+      "sha256": "0a176389e4fbac04e43f6b55ee351b72bd773511b1daa5749e209d0be4cd08c0",
+      "bytes": 62100
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-nuevo.png",
+      "sha256": "91dab332df1b26811e0c54c0a6b9401f0db4d915e7a6decbe4f7506b4f65c18c",
+      "bytes": 46006
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-panel-carga-texto200.png",
+      "sha256": "9ee1e93af1e3c00d303429f332121501e55fbbd3bbd12f0a4afe59fb8693aeba",
+      "bytes": 64866
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-panel-carga.png",
+      "sha256": "220414588512223c8422986296352d9fe3e063c343340474c089a1a4fd1c6f52",
+      "bytes": 52387
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-viaje-texto200.png",
+      "sha256": "ced47a75044b716c11f79aa7701059057ef056e43e697639fa4a0232b56f6dd2",
+      "bytes": 62820
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/390-light-viaje.png",
+      "sha256": "878ed9b8a8acb6b74393f94a94e267ed726a53e08bc21949124b50542bb0daef",
+      "bytes": 60348
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-ajustes-texto200.png",
+      "sha256": "34dd2f5b27103b3677efb3a2017b1913c7441b948fe84df45a39572123fb9cc7",
+      "bytes": 58695
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-ajustes.png",
+      "sha256": "4390c29723f505b620c6ed49964b11cbf6255cc43b934779838519397b99a0bb",
+      "bytes": 47537
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-alquileres-texto200.png",
+      "sha256": "5908fad1fbaa3a1a689d6c8cc7a9c6492b723d6e34ddae99bdd894e5f48d3a31",
+      "bytes": 70107
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-alquileres.png",
+      "sha256": "337015d29a23e6ed6aee35025172740acec0e78a7cca504a319baf5b1c8267b5",
+      "bytes": 73458
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-combos-texto200.png",
+      "sha256": "d8253f45c888de3132ae66f724fc3c80b17721be6f9dabf6c4d6b288a759f89a",
+      "bytes": 62925
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-combos.png",
+      "sha256": "1639ba7cc10d3b834ea7d666759d97577dd1139d437e0e9e99906c29325218e5",
+      "bytes": 37619
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-deposito-texto200.png",
+      "sha256": "8ca47b0443b7636b2260781a047b32bb31514ce4e3c900f26edaf4f61f612292",
+      "bytes": 66469
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-deposito.png",
+      "sha256": "bccd5b8d208722eb3e5debb0c5ee4ccb92a24d573e402151075f024e337fd2fa",
+      "bytes": 63583
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-detalle-texto200.png",
+      "sha256": "77ba22d0f9272c9b0861ca8fa7720afbd0a3434875a34b83b922e03e80fa3248",
+      "bytes": 61173
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-detalle.png",
+      "sha256": "8eddc89d15b7dbd3ed19ac70e6e9b0191c01438b97443a718c77de4b53f1becf",
+      "bytes": 53115
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-documentos-texto200.png",
+      "sha256": "03b5c5f6425c90bc07284b5097c73de824a436a585787156a7ba1420a276e1a7",
+      "bytes": 55010
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-documentos.png",
+      "sha256": "ebc890ce6aafaefe6042dfc065316fbd084f2e4f0d3621c89477eb5174c118f6",
+      "bytes": 36466
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-historial-texto200.png",
+      "sha256": "2208b583dca4fa938487d19f7921506154ba2a222b0de1d591a5cf7eab47c66d",
+      "bytes": 59274
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-historial.png",
+      "sha256": "8fd35fbb394c6ed11ba625ee78fe9650fa95ae06a2be9c30de67a2dce7fcf3d7",
+      "bytes": 30879
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-nuevo-texto200.png",
+      "sha256": "70a9e587552a5c29d5944041336746a98e549c69b9fd7d151267f8c5c7fa860b",
+      "bytes": 58105
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-nuevo.png",
+      "sha256": "99128e38e6462b25fa057cbb82b61cf53c5d3c9a8b1eee93d4e87a56c63d1291",
+      "bytes": 42460
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-panel-carga-texto200.png",
+      "sha256": "daf391163539f4e5896740590aa9f26bfae24c4e46a616df35d99c3d1172c3c2",
+      "bytes": 59996
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-panel-carga.png",
+      "sha256": "0710cde1e7288df610cc5d9a1533aa8f2a3c174b880fe794353031c0389099b6",
+      "bytes": 48023
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-viaje-texto200.png",
+      "sha256": "8fbe4fde39b6f130475a8ffb4f002c48ca05709462a103c11ea8b55fa632c3ec",
+      "bytes": 61922
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-dark-viaje.png",
+      "sha256": "16157388572f66ceb2d06b609651e063ebcdb8f76a0b6b89a00c09713bc0cf13",
+      "bytes": 57500
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-ajustes-texto200.png",
+      "sha256": "87eddb734d30df93ea88f2938caa20b5cb291a7c172c55a68408cf10a38ac910",
+      "bytes": 64982
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-ajustes.png",
+      "sha256": "721ca759b6bef1be35261e359672984754ba68f865da382d85a02e5aa688031a",
+      "bytes": 51599
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-alquileres-texto200.png",
+      "sha256": "dfa949e903f30b22cdc16db4858297180af91f869452b58921acfc74188704cd",
+      "bytes": 74559
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-alquileres.png",
+      "sha256": "cf36574f7af81390faa67abb78817f826ab5d934b2c7c91069a830ba11b66852",
+      "bytes": 77744
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-combos-texto200.png",
+      "sha256": "a53de0a58490c1d78e4f318e9f1d0b5ea468b7c3821f483d86137c04c4c611ae",
+      "bytes": 66130
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-combos.png",
+      "sha256": "5adc5142e8d67495ad52a8d56bc72898299bba52fb0fb5315412ed5f4bdbe4e6",
+      "bytes": 39306
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-deposito-texto200.png",
+      "sha256": "381ceb2c7866ba73107dfaeec8a85651da3f38e023103bbf2f71e34260932dbe",
+      "bytes": 70476
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-deposito.png",
+      "sha256": "72d26f0c22512f4d60f45f0ee8841306886009b5af72a632de49b69ede979b62",
+      "bytes": 66604
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-detalle-texto200.png",
+      "sha256": "105239e2cb4500fcaf8cf771c7348c18f57a673bfb01e63c3ced8bcb7c88f44d",
+      "bytes": 67549
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-detalle.png",
+      "sha256": "3a3002a0fa0d318db2bcf1386c19bacdfb3f9868f7c1596ce0f38235a959f14c",
+      "bytes": 58664
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-documentos-texto200.png",
+      "sha256": "67b8200f8d3c5d5fce748a11ea73f4d6b1b6e0ea2a308e38637f053cd311a15f",
+      "bytes": 60067
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-documentos.png",
+      "sha256": "9d6405007a4f8387c8d34f0280a3ad29f1228847d7da98125fe11edca05339c5",
+      "bytes": 39005
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-historial-texto200.png",
+      "sha256": "8e076c85b229f2302214c5816de8dd04efa6196505c3bde2e9baea8226cba829",
+      "bytes": 61301
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-historial.png",
+      "sha256": "193d0c2bb9e72fb0973c85342d5046f2badb514f83a46726f7c71c02b28dbdfe",
+      "bytes": 31990
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-nuevo-texto200.png",
+      "sha256": "1c0e33fb96764701106abc888605c980c6c46248290e82ef37cca7ced28914c0",
+      "bytes": 62656
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-nuevo.png",
+      "sha256": "948ff8af142f1f63703844d3adc650b3cc3ca5d1e310953c5b01ba3f6a4bbf89",
+      "bytes": 46307
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-panel-carga-texto200.png",
+      "sha256": "d197f887b6e2fb2f3111370ebb68dc29a15f7155931f9512a66aeb43ae72da98",
+      "bytes": 65772
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-panel-carga.png",
+      "sha256": "4ad2a46cb300e03a5114420361d52b8c62134854d458017254565ae84572d5e1",
+      "bytes": 52526
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-viaje-texto200.png",
+      "sha256": "e5323db3f5d71595d5447a8611ca6d208a1a2e39032a8b96820dd312516dbc39",
+      "bytes": 66332
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/matriz/412-light-viaje.png",
+      "sha256": "7a7b4052373f2765e0201b4f9bfeb307023200be9a095ecedde988a071a8cea0",
+      "bytes": 60648
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-ajustes-dark.png",
+      "sha256": "b4e17a5b72c6de21bcd75a0f3a79dc489078b15ee6f889158ac25b131f212c3a",
+      "bytes": 50983
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-ajustes-light.png",
+      "sha256": "74c4076513992c92c0cb939c7c15c8d97c139977362d2abfb8aae596f2662938",
+      "bytes": 54961
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-alquileres-dark.png",
+      "sha256": "cfd6d3ecf8b9efe8ffc0ad6ba7e9f4d22869cfe4771dd0dd1288d81474216df8",
+      "bytes": 64388
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-alquileres-light.png",
+      "sha256": "7a8d2eea1b5667fe9cce081debcc9924d66937999da4fbbe909c7a09cecbe877",
+      "bytes": 67616
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-carga-dark.png",
+      "sha256": "392e15981e72138a91d3ea57f79622240a1ecf103d76801e2754c6db2f86462d",
+      "bytes": 48684
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-carga-light.png",
+      "sha256": "794fc10b14d9f19a530cee3c6e56ef536d2980a39ec672f95dc8f4655cb240ec",
+      "bytes": 54465
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-combos-dark.png",
+      "sha256": "88b8efb66b5070239c239788fe0dd0fd0e59384e07a7297f30d958ddac3f0441",
+      "bytes": 34793
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-combos-light.png",
+      "sha256": "dbf62a765d37658699b704edec7be560ef8d4141d3236e14cd4aaabe222951ac",
+      "bytes": 36592
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-deposito-dark.png",
+      "sha256": "a3fc6338168c31eb3528bc3b8eeaeb867dc3683162c7c403d4d9a166ee7e1f4d",
+      "bytes": 49317
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-deposito-light.png",
+      "sha256": "2ee0150b71a3660e7511030c60a1057f75d9b1103d40292b7564ea5d267d8bf8",
+      "bytes": 51752
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-detalle-dark.png",
+      "sha256": "7ba915fe6e5036212f5bccd5a87c932d872539771ca5b44a089a73d7dc53f228",
+      "bytes": 50150
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-detalle-light.png",
+      "sha256": "257c19e3e5628e925ce10fa225e5896d63c83d6738883f279ec6c3fa31b4585b",
+      "bytes": 55742
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-documentos-dark.png",
+      "sha256": "d0eba50674dfbc389d25fb0e9cbd23f2c321f676ac3a91188bbb18bbf9841279",
+      "bytes": 36184
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-documentos-light.png",
+      "sha256": "547ddc8e275836851788a4eda86a4683b766cc569e4a037cf8796f1c17ce2b74",
+      "bytes": 38606
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-historial-dark.png",
+      "sha256": "8a1a9cd229687bbdcc5c802810246c741053d947914593b288759366e1cc0309",
+      "bytes": 37733
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-historial-light.png",
+      "sha256": "676446f70c659c142d1f25efa8553a065a155693fffae85b3a0379dc583a14e6",
+      "bytes": 39705
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-nuevo-dark.png",
+      "sha256": "82a549a3ace0f2ed8be7619dd6ca4fd3ba55a543a6e935db1e5aa8a1480f27db",
+      "bytes": 45046
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-nuevo-light.png",
+      "sha256": "3a694698e8fc9a3d979f761bf09cbd3ef02b6c9a390c3cf08336096aa85b40aa",
+      "bytes": 49264
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-retiro-dark.png",
+      "sha256": "861144ec25336937050b0efce3a9f96caf2ed3d5b1ba7e9b99f2640a564c27f4",
+      "bytes": 50789
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-retiro-light.png",
+      "sha256": "9bee89b32f72b6c12e141b03e892898278022b60afd9ecc4191e88c3f86f1a97",
+      "bytes": 56535
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-viaje-dark.png",
+      "sha256": "7031d08914fa5d403d967ff8c094d2683d672ce16a4483fdf575f321cd0a6120",
+      "bytes": 52147
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/referencia-app-viaje-light.png",
+      "sha256": "6d2fe0ec4268179eec06305906127e50cef426325493439ccf3360e325a91abb",
+      "bytes": 54929
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/responsable.png",
+      "sha256": "3fc7b505630f783dd25ef0328e88acf8510a9c7ea31f94dab86ebe640bb41e09",
+      "bytes": 47469
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-dark-alquileres.png",
+      "sha256": "e014a2f3a087360431a363064ca2d2fe3bc882830d97666c28b8019ae159650c",
+      "bytes": 96065
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-dark-combos.png",
+      "sha256": "e76ea82381409c1b65c775517160267edb8f9aa8fff45c1be3166a924ee77880",
+      "bytes": 43108
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-dark-configuracion.png",
+      "sha256": "6cbe0c2f3e2800f7e0d3c3fb342c2db77d8fb1c534db41c26bdff25a3f40e848",
+      "bytes": 61209
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-dark-entrega.png",
+      "sha256": "74b9e61cd14eaacae160e51c1f84cda5a122775b4582155d22a5970fef93b593",
+      "bytes": 85166
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-dark-exportar.png",
+      "sha256": "dea2ede62faf6c416e4c6719704d8f680b820f888320f6ba03839d2ebab35592",
+      "bytes": 43573
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-dark-galpon.png",
+      "sha256": "1b325ee3d2bcc2a882b1a52bb6e2900f01d34377c67144ec3b3e2e05acb319d4",
+      "bytes": 81688
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-dark-historial.png",
+      "sha256": "995670035c6f094d06525b63a2ab420d76dc2f1faa26d2b3a2dba44b18162236",
+      "bytes": 37735
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-dark-login.png",
+      "sha256": "47bb6b206d1e9ee22e1f33474a7e695545c83b6a40d1c0bd7245ade38b59b028",
+      "bytes": 53557
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-dark-mapa.png",
+      "sha256": "60a872154cf3da9064b27c4e317afafae246d15bbc2c56de0abb58d61d59aa70",
+      "bytes": 75094
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-dark-obra-nueva.png",
+      "sha256": "d36848dbe55f262bdf40317fc8de0ad3ea0f1151b31e6c18942a4ccb9d435515",
+      "bytes": 50783
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-dark-obra-obra_5.png",
+      "sha256": "80b4cc90065c221f53a97385dfc11bedb2e73e4eb49611daca0ad7b22f1ce53f",
+      "bytes": 65742
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-dark-obras.png",
+      "sha256": "2100cb997ca784b3411c7802c01614aaae3c968f0e651cd4a1aa49a569f783ac",
+      "bytes": 94182
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-dark-retiro.png",
+      "sha256": "e1d6ebeef3948c7fc74ca0059626e1d9623c15651bf400ac871a152830ad6308",
+      "bytes": 86128
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-light-alquileres.png",
+      "sha256": "d4c78547658e7f18122af456778ea9e50d43906086332a92b8a9b1ae5a2f41fd",
+      "bytes": 98595
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-light-combos.png",
+      "sha256": "92e016576f1fc3b254fd4adcb7b48f5f9d3bf3bfdd27afba565e917de17186b0",
+      "bytes": 44166
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-light-configuracion.png",
+      "sha256": "e71b9d4c9991819685a74896e364e67b1f3cc09fdf2ae14c63389ed98c0b3136",
+      "bytes": 63480
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-light-entrega.png",
+      "sha256": "4dcb8af4c89e4e248033f89a9c48958c7c2477eef0a358f93663895cb81bd3d8",
+      "bytes": 90197
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-light-exportar.png",
+      "sha256": "3b8572053c9d8af211ba80b7cf0d97d51efb44f76ac663129efb4dedeca1d769",
+      "bytes": 45276
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-light-galpon.png",
+      "sha256": "19f475bd1c3f60512f77b47ddda14d04cc67450403d40263d6dc0e1a4a343d1d",
+      "bytes": 83208
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-light-historial.png",
+      "sha256": "d7e9a60d7115038529813747b96ac3d93983e8665e6e8385da2aead9f24b0fe7",
+      "bytes": 38340
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-light-login.png",
+      "sha256": "be0d939dca96f05e6d2fd369cc998ea437141c2c0ef7cc77d762e12e8f194e9c",
+      "bytes": 55337
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-light-mapa.png",
+      "sha256": "8ad6d340af70fb9d44c03eafe88fc73d8df63cd108ce2ff622858d692e8f3732",
+      "bytes": 76910
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-light-obra-nueva.png",
+      "sha256": "025d77514df1a3983507a07e5ad48c3b0535cf1fa277dd1dff4f371dc11fe76c",
+      "bytes": 53085
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-light-obra-obra_5.png",
+      "sha256": "7e3c969fc0eb07e16be2340c0f21f974127570dca4f7ad2844fdb6dd7017e1d6",
+      "bytes": 69345
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-light-obras.png",
+      "sha256": "1c76c46131da9964366909a32f488109266acdb7249991eaa25edd8c9941e285",
+      "bytes": 96498
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-1440-light-retiro.png",
+      "sha256": "44beb625cd213c4ccaab1e9ea5780fe7c056c98f481072d8e4822222d42b5c06",
+      "bytes": 93360
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-ajustes.png",
+      "sha256": "733422cd54f95362b9946f75ea241fa82d5969bf502a9cb5366bb8695781465f",
+      "bytes": 40502
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-alquileres.png",
+      "sha256": "f155b222be48978310193165a936c098ab098107f3fab015826b38b803da01e1",
+      "bytes": 69060
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-combos.png",
+      "sha256": "4fcd6df41832c75021af5bd539d9f4504e8e608ef969c2063a0f6108e644f4f7",
+      "bytes": 37435
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-configuracion.png",
+      "sha256": "72970a845914d5809a2c2f9cd7997083dec0eaab0b3b58bacf5a10533c25e6c1",
+      "bytes": 40530
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-deposito.png",
+      "sha256": "1c27e927e6d3970420ad3dcd755829062d80238ea7dad53f3b7375cfda38c301",
+      "bytes": 58211
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-detalle.png",
+      "sha256": "683a21d52196e512df9d6fe9604d5d60fbd43e1bbc9b141a841c5572c0730b58",
+      "bytes": 50980
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-documentos.png",
+      "sha256": "02d065b9b3f33b1fb2ac13f15afcbddb700bbb0fefae262201c1ec0239fd601e",
+      "bytes": 36070
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-entrega.png",
+      "sha256": "96dbc68f5ab4aad102c323c801ecf75fd4735924403a74673769486e63b487d8",
+      "bytes": 41196
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-exportar.png",
+      "sha256": "02d065b9b3f33b1fb2ac13f15afcbddb700bbb0fefae262201c1ec0239fd601e",
+      "bytes": 36070
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-galpon.png",
+      "sha256": "1c27e927e6d3970420ad3dcd755829062d80238ea7dad53f3b7375cfda38c301",
+      "bytes": 58211
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-historial.png",
+      "sha256": "ccb39d196aa4515236a421731e75b538e45b05dd75cfcfadd30777df3d6b355c",
+      "bytes": 30596
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-login.png",
+      "sha256": "7ff0c6d1d091422799fc6e5c0d983b019aeb4c0e0dfd7bcc0f40475bfa575c33",
+      "bytes": 44080
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-mapa.png",
+      "sha256": "4df0ecba8ab1765d5e58539b62820fc480b0414ee952939e7553d7d25558089f",
+      "bytes": 54272
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-nuevo.png",
+      "sha256": "2a1c750e9b0f344c30089c126882a815f6b7945b3ba5b233f54e133123a93688",
+      "bytes": 39659
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-obra-nueva.png",
+      "sha256": "2a1c750e9b0f344c30089c126882a815f6b7945b3ba5b233f54e133123a93688",
+      "bytes": 39659
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-obra-obra_5.png",
+      "sha256": "e1e4aec76f598e35ab3a4271391990238fdbf83194f45c9611109801b048ce4e",
+      "bytes": 51118
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-obras.png",
+      "sha256": "ac3ddfecdbcc66791bf82cee93f4f6f63758f6edaf791cdf661e815db0e2768e",
+      "bytes": 67909
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-retiro.png",
+      "sha256": "3521a91587dadd36916d8a4fba321fa10680b3fbb3f97f6e94e626479492ff4f",
+      "bytes": 50456
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-dark-viaje.png",
+      "sha256": "b6a4ba89aad3fcdeabea36e9eac2550f455a7daca963126ff71db9f28fb7e281",
+      "bytes": 54286
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-error-gps.png",
+      "sha256": "54a1711a01846d63665f9c7bc393f6f6e87e560156754418fea243a0c6b7ba3e",
+      "bytes": 42402
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-ajustes.png",
+      "sha256": "7cf513d003421976244870695dc9c8e71b44a81680bd28374bff634170e2f934",
+      "bytes": 44065
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-alquileres.png",
+      "sha256": "49df62ceba1d7418c781fdb3897278a29e5b400d2e6d2267e700ae85ee2596c9",
+      "bytes": 72800
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-combos.png",
+      "sha256": "e3cf49798ecd3a49399cec0d7a50454cd26557b045374b81c491cc1cff579c0c",
+      "bytes": 39345
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-configuracion.png",
+      "sha256": "c73ddde851392e4ed5ef34c308d2c362bff4b3793b543d837c6e784ba46e0263",
+      "bytes": 44093
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-deposito.png",
+      "sha256": "d574e8c3c8d6f0df592b5d3131b23412a5c108d20bded481a2b8883cd23660b3",
+      "bytes": 61073
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-detalle.png",
+      "sha256": "01a650d3f5f5c88447a61cb35b73526e693ddc303dce5d98f969b150b3efa849",
+      "bytes": 56280
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-documentos.png",
+      "sha256": "c31c407d85436bdb51d83cb1a33ebc50031c335babaf6a2426f6ac7a53bedc90",
+      "bytes": 38610
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-entrega.png",
+      "sha256": "3f1773a0101172ed6918d13cfa140c7de25e446eadcc663477d3eccbf227f84a",
+      "bytes": 44591
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-exportar.png",
+      "sha256": "c31c407d85436bdb51d83cb1a33ebc50031c335babaf6a2426f6ac7a53bedc90",
+      "bytes": 38610
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-galpon.png",
+      "sha256": "d574e8c3c8d6f0df592b5d3131b23412a5c108d20bded481a2b8883cd23660b3",
+      "bytes": 61073
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-historial.png",
+      "sha256": "9fa11acb7bc2fc79b5a04cb20d7dbec381fa8676d5906b1c745767974c5f1b23",
+      "bytes": 31780
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-login.png",
+      "sha256": "09d6ae466d86b56cd9d14c75281daa969744b8c00c17405181fed245eb18792c",
+      "bytes": 46736
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-mapa.png",
+      "sha256": "5f69a898b58b9b1fb296ef381e3244425f3b8fca14825d84d57dcf733b54b0d7",
+      "bytes": 57078
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-nuevo.png",
+      "sha256": "45817486ccb2daa58709de532348da824ee02f217d1a36e436599fe924f45e5a",
+      "bytes": 43098
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-obra-nueva.png",
+      "sha256": "45817486ccb2daa58709de532348da824ee02f217d1a36e436599fe924f45e5a",
+      "bytes": 43098
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-obra-obra_5.png",
+      "sha256": "d8b9bda7724a1acdb0d53a1d5e45410d42def8fc08e906f6408f7b87f3548be9",
+      "bytes": 56576
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-obras.png",
+      "sha256": "08a5a307dd126c7d0b8dae2f9289da0568f638021a5af84cfda8546884e264ff",
+      "bytes": 71511
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-retiro.png",
+      "sha256": "2e53ff7113135aef3bd1bd6c01e7d3f998143f9f9c9bb990a635e877665e0829",
+      "bytes": 56497
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/rutas-390-light-viaje.png",
+      "sha256": "6322bba02e258efede011db2e84beb56ce0020055cd8840de07103abc12262c0",
+      "bytes": 57162
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-bienvenida-1.png",
+      "sha256": "8f45607873aa313313896134d8e31876b4f9cef8fe55be4df4e1e0be47ec6758",
+      "bytes": 36532
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-bienvenida-2.png",
+      "sha256": "2facbcefb8c7e1fe3e0e9280dbe3b1b720a5dd9c9ccdc8e8cf746d474ed76fb9",
+      "bytes": 36952
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-bienvenida-3.png",
+      "sha256": "d4545b100c3d93e5cb2341a9dd7eab59d6a109fab1187f145c29e6069fb9a7d1",
+      "bytes": 37254
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-bienvenida-4.png",
+      "sha256": "bc16810664bf044ade61cd82e16fa7bd5ba165517e142ee1ce13d639a453d3ca",
+      "bytes": 37778
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-combo-editor.png",
+      "sha256": "e772b821199c9237c5ad072baf71f9145100974d335ee4e850c7dd7d32de3ae0",
+      "bytes": 26475
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-combo-selector-material.png",
+      "sha256": "322edb1d934d025353706cc1fe4c2160091536ebde9bbef41de0739c829c61d0",
+      "bytes": 24850
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-contador-directo.png",
+      "sha256": "f6b523ac5c719f76249f3bd1e01387860980e7a1f40157962b783610b7e5982b",
+      "bytes": 33050
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-detalle-fotos.png",
+      "sha256": "52ac6e45eb3aca30db4314ae3780a285a69bbc29cb59aeaeb0aafc8432445214",
+      "bytes": 39078
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-detalle-incidencias.png",
+      "sha256": "30026ac4b5a28f048bcadb3ca7db0078f82d89c0b5e2f9a58fb55d80557e5626",
+      "bytes": 41134
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-editar-cliente.png",
+      "sha256": "604bfc49ccc23b54f253807ad6d10ab09480d0a01eb4c3f8262c30c14cf41832",
+      "bytes": 41340
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-filtros-historial.png",
+      "sha256": "912edc085c30ead6c05b9a7067c80ea19370b42e1b22cbbf92a24ce151cb8e99",
+      "bytes": 35585
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-incidencia-editor.png",
+      "sha256": "fd498951ffc71a14f7b9755c552bfa2977d8bc566e2b443a285246519c4315bc",
+      "bytes": 35539
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-json-revision-confirmacion.png",
+      "sha256": "d35fcce34411247ad4158cfe64682440d0505ceb06c7887dc705f423eeddcc1e",
+      "bytes": 58033
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-pieza-ajuste.png",
+      "sha256": "74b3da105b3cacac4a5d8d0baee760014472944ecbb7b7671cf2a83015156a85",
+      "bytes": 44097
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-pieza-editar.png",
+      "sha256": "1496e52e53f6eb3de38010b6ac7c31a5baafdfd38173942d9c3324c8efb0610f",
+      "bytes": 45613
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-pieza-mover.png",
+      "sha256": "9a6080722e66dc3a1b8b498b9972752db594b3221049c46e29503c8cdc548027",
+      "bytes": 42566
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-pieza-opciones.png",
+      "sha256": "93d6ce799e3899b7c4ddb516248036750a8910f846afdbdfed4ff14279b7b2d7",
+      "bytes": 43621
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-selector-historial-alquiler.png",
+      "sha256": "f37e5cc5d0f9ed79f861385b63498fe176cf9f472a984a848d378693fbeb20b7",
+      "bytes": 27639
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-selector-historial-usuario.png",
+      "sha256": "4393b0d78d4bd42d8067f395eecb47ff7ebcad790bdfcfa60e66910dae07f39a",
+      "bytes": 29703
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-selector-zona.png",
+      "sha256": "3af23bcde90df9ee0d832628a5fe215eb18ee1eb49d3da070e45f7c914ea32b6",
+      "bytes": 33975
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-ubicacion-editor.png",
+      "sha256": "0137dcee4ad0ec495948a090b745e934b56892e2d51591119091ea796fd133be",
+      "bytes": 39111
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-wizard-carga.png",
+      "sha256": "4c21e721a0c1e4bd62449a2a1d1e48830b52ac7e3f328915f101efca33b1962e",
+      "bytes": 46318
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-dark-wizard-revisar.png",
+      "sha256": "815d91d25fcb1e7eb7080fc70f15e4460578dcd67b1409fa172104b40f2d5cc5",
+      "bytes": 45079
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-bienvenida-1.png",
+      "sha256": "e26d007ab6758dfc16e828a8e0a21f6bb38563aca791a3c4e79552cd22b8f86b",
+      "bytes": 41075
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-bienvenida-2.png",
+      "sha256": "82fc786ec95f6b851bf7f4c59a45d5b6782e6aaa12a1c3f2e471e720fdac73e1",
+      "bytes": 41202
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-bienvenida-3.png",
+      "sha256": "15268f0321685729b441a9c221864b54f40873226a61a9acf677ccf2a2d408d8",
+      "bytes": 41461
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-bienvenida-4.png",
+      "sha256": "fa539b6780886535b256689db9a0b548a1f560c91281f8f94be6647eca8907d3",
+      "bytes": 42310
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-combo-editor.png",
+      "sha256": "8e57bbf104aa61b885d013b4f2eefc9d366d8fecb96ca04a1e7cbcb0e7adec32",
+      "bytes": 29565
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-combo-selector-material.png",
+      "sha256": "0c4e6b2295c912bdd1b7c44536aa936e32e6642a8dd973f2c642c1c8c904cb05",
+      "bytes": 28442
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-contador-directo.png",
+      "sha256": "936eac3efa27c808a20f193fd23d3346701d43af8b64073461aaf70843d2d007",
+      "bytes": 38623
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-detalle-fotos.png",
+      "sha256": "ccc5db5df9370afd06c3b3c9b346a3d4e19791249bd7a76859919b23fd90d088",
+      "bytes": 42683
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-detalle-incidencias.png",
+      "sha256": "f98a8aed0dda6b70e08aebd094e7a117f74df47601f10d014f788c3282ac8fd1",
+      "bytes": 44646
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-editar-cliente.png",
+      "sha256": "ccbb06a37708c7817c382fcde86b2f493fd981bbdbeb32d4e286706f1744ead2",
+      "bytes": 45581
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-filtros-historial.png",
+      "sha256": "29409c7ddce6ee98d235832380faf554225f37543c5bd3f468e4d3985988a326",
+      "bytes": 39334
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-incidencia-editor.png",
+      "sha256": "99889437eb82c24cbfd4bb6eafd35ff468a9af8b808f09f13e2932e89dda36ed",
+      "bytes": 37812
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-json-revision-confirmacion.png",
+      "sha256": "60cfabd86500b3b3dfd44e663da0132e2bcc168cebddc004aa7b49821a78c3a0",
+      "bytes": 61978
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-pieza-ajuste.png",
+      "sha256": "bc14bc9f159707571d94b40de2e68e12444681c6da257acfb3b27f54d1a86398",
+      "bytes": 48228
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-pieza-editar.png",
+      "sha256": "aa157ada5d45014119ae24b78fe68bc1ff33da2f663dcb1fd7bac1bc292db1e9",
+      "bytes": 49111
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-pieza-mover.png",
+      "sha256": "690f28e319fb8ba7bf27308ff1434f1a5681d69689a0254f68eee546cabdb500",
+      "bytes": 46949
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-pieza-opciones.png",
+      "sha256": "a7aadd1e69bc0555e1296f3c94d01ef868454e25b6c11fd8750d1b00830436ca",
+      "bytes": 50121
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-selector-historial-alquiler.png",
+      "sha256": "b2860cf3dc3dff3f3c2de6c440b01e7b2919a69a6dc8e6049ef4e02f54cf1b2c",
+      "bytes": 32163
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-selector-historial-usuario.png",
+      "sha256": "b6694a26e767c46182353e63d776a5bdd094cedde96e57bc4818ccfff774c684",
+      "bytes": 35752
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-selector-zona.png",
+      "sha256": "ebd6ec0ce2d13538650b24b6572cac6b3c35dccfe98e6e43af93ff8abf3f6181",
+      "bytes": 41722
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-ubicacion-editor.png",
+      "sha256": "c42125d26bddf6364c426e7cd9e7ec2dc31ed05a3861a0308bca5724c5134654",
+      "bytes": 44323
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-wizard-carga.png",
+      "sha256": "a95597af60f455501055ab44d7d11d09b84e88bd1bb8a65e4cb797dff09e9200",
+      "bytes": 52429
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/estructura-1.5/superficies/390-light-wizard-revisar.png",
+      "sha256": "da2809da8c1febf9848482329018711dc45ff297b10f4ce6000972497f497dc0",
+      "bytes": 50476
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-dark-alquileres.png",
+      "sha256": "a5805f8ae2cba0a4e79168b1a4fc85bf3e8bbe692844ad3e295d4990d6f53dcd",
+      "bytes": 60057
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-dark-alta.png",
+      "sha256": "a4713b84a442ee98383fc9fffb3bde8d1486a86e37747f86f7f297139277351a",
+      "bytes": 46681
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-dark-carga.png",
+      "sha256": "c1632d2c7b54764092f3f601ec6fdbf627050ba3e4a91332ca4c0e9261d861a0",
+      "bytes": 53256
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-dark-detalle.png",
+      "sha256": "f537b427458ec10c04c1f7066b8fa43fce3bdd30fc0c62d1b56c460a58518a59",
+      "bytes": 54877
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-dark-filtros.png",
+      "sha256": "cf276d752a1310ea713e7ec7b5ab937765f584271a779b87c8a15f2d5b087b51",
+      "bytes": 36023
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-dark-retiro.png",
+      "sha256": "80a7a1f59143532188e91527a7b90e9d9b8230b721a0f8bab2a797fafe54deb0",
+      "bytes": 56237
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-dark-revision.png",
+      "sha256": "93467a58569148e6a82186811fbead80850cb1ed823da4dce9a1c0f2a219628c",
+      "bytes": 43749
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-light-alquileres.png",
+      "sha256": "a976af5e194daa498762f2d669b31ba9a40ff51f0860cb1f5a8723e82d194451",
+      "bytes": 58075
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-light-alta.png",
+      "sha256": "e73b18613c9d8ac6791acdf25661b4e236d6091dd09562540f57a217e816b817",
+      "bytes": 45774
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-light-carga.png",
+      "sha256": "5386e85f9ef7324f14f49551711f28362f1a182cf3f392da538f2c4ec6e7802e",
+      "bytes": 51457
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-light-detalle.png",
+      "sha256": "20d34724746afbb53599509051c5e6608437979af4ca6b84ce12a4b76eb3a5cb",
+      "bytes": 53719
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-light-filtros.png",
+      "sha256": "9e4332b349109876b760e8a50f3b2cc84fcf80ae8c002b60b6943fac251da502",
+      "bytes": 35119
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-light-retiro.png",
+      "sha256": "792cfbdbb478b1776fa427461b1782d069d5a305c882be1c67ba6a0cb41db015",
+      "bytes": 54150
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-light-revision.png",
+      "sha256": "84d995d9a2bb008c684567fc643d0d495f36ffa811f7af4b5661d21e10afc8e9",
+      "bytes": 43552
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/despues-390-dark-alquileres.png",
+      "sha256": "dd56ff7ba6c8756f14fa9da8ca41b0bcd7cd776d138bdaf26d07fac8c8fdbc5c",
+      "bytes": 68260
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/despues-390-dark-alta.png",
+      "sha256": "c38c37ddb6728ffa1d27ecc7b2921e6c787572264a455c65a85741e2a36aab83",
+      "bytes": 43186
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/despues-390-dark-carga.png",
+      "sha256": "24a497e7a0f5c658e969a67e0aed148108daf89ea406cebb2d5e51642d26ab0a",
+      "bytes": 47388
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/despues-390-dark-detalle.png",
+      "sha256": "2654f942a48f1f57d90ee20705030688a6b67107975ac6acef40283ad5b4dec9",
+      "bytes": 50679
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/despues-390-dark-filtros.png",
+      "sha256": "a5fee26763131bfdc2bf13252f3ed2ea0a5a90bf14e47a9182409383b24e384b",
+      "bytes": 41441
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/despues-390-dark-retiro.png",
+      "sha256": "22da2278a13ec5787c3dd394fa896c907432c854212f801d695c3121467836d9",
+      "bytes": 51115
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/despues-390-dark-revision.png",
+      "sha256": "d99c05ab8b201ae05fce0c5d1155113a8594a1e4592574ae31b8f2b6f86c0204",
+      "bytes": 38532
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/despues-390-light-alquileres.png",
+      "sha256": "aaa1c62765156fc5ce9c2ad1d5ba1d14b497b4705165e03ec15a5c43ffbd453c",
+      "bytes": 71705
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/despues-390-light-alta.png",
+      "sha256": "bad7402b1a6c61e2aafa428d4aa733f8410d94d871e79a5c9e2b86b00e8a27e1",
+      "bytes": 47460
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/despues-390-light-carga.png",
+      "sha256": "e17f93e7de6968b5cfb2e766216825361030acf8ff6e5740b9c64ba7d6a77347",
+      "bytes": 52928
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/despues-390-light-detalle.png",
+      "sha256": "17cc1a923b928c8079e271c5db6dd9d80efd6e43a86f8b8592d1464860ebc6da",
+      "bytes": 55977
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/despues-390-light-filtros.png",
+      "sha256": "652fe9108cbf8ad605858c965d0135211afc60f22def2683d69366ec20d494c5",
+      "bytes": 46747
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/despues-390-light-retiro.png",
+      "sha256": "eac70c4e10ed10d76b0ab359ec06ee4be87ecc18b772ffab06e47f0f2ab26e1b",
+      "bytes": 57124
+    },
+    {
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/despues-390-light-revision.png",
+      "sha256": "cb81f1690e03d4dcec9511109456756c99409fd6c221cddbbc0eda2c2ee77f4d",
+      "bytes": 43243
+    }
+  ],
+  "notes": [
+    "La existencia de PNG no acredita revisi\u00f3n individual completa.",
+    "L\u00e1minas son montajes de capturas reales, no dise\u00f1os generados.",
+    "Sin mediciones FPS, memoria o video nativo."
+  ]
+}

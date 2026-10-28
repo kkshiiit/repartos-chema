@@ -1,0 +1,42 @@
+{
+  "platform": "Chromium / React Native Web, NO Android físico",
+  "source": "Web release 1.6.1, runtime f9f018d; ZIP SHA256 3509f0bc01a8e7b06181fac0dea5fe32dca7c798f1648cc1a7594ce21ee8b493",
+  "capturedUTC": "2026-10-28T08:08:47.064Z",
+  "businessClockFixture": "2026-12-31T15:00:00.000Z",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "theme": "light",
+  "syntheticData": true,
+  "captures": [
+    {
+      "route": "http://127.0.0.1:8082/",
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-light-alquileres.png"
+    },
+    {
+      "route": "http://127.0.0.1:8082/",
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-light-filtros.png"
+    },
+    {
+      "route": "http://127.0.0.1:8082/obra/obra_1",
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-light-detalle.png"
+    },
+    {
+      "route": "http://127.0.0.1:8082/obra/obra_1",
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-light-retiro.png"
+    },
+    {
+      "route": "http://127.0.0.1:8082/obra/nueva",
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-light-alta.png"
+    },
+    {
+      "route": "http://127.0.0.1:8082/obra/nueva",
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-light-carga.png"
+    },
+    {
+      "route": "http://127.0.0.1:8082/obra/nueva",
+      "path": "artifacts/capturas/cierre-1.7/maestro-etapa2/antes-390-light-revision.png"
+    }
+  ]
+}
