@@ -1,0 +1,14 @@
+interface:
+  display_name: Video Analyzer
+  short_description: Analiza videos locales con fotogramas y tiempos
+  default_prompt: Usá $video-analyzer para revisar este video y describir lo observado
+    con marcas de tiempo.
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true

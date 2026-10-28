@@ -1,0 +1,14 @@
+{
+  "repository": "https://github.com/guimatheus92/mcp-video-analyzer",
+  "revision": "e37c8643c0d0597b07f169c5491223f54da999bf",
+  "path": "skills/video/SKILL.md",
+  "license": "MIT",
+  "package_version_reviewed": "0.11.0",
+  "adapted_for": "Codex local video review",
+  "adaptations": [
+    "portable local extraction helper",
+    "evidence and seek-time disclosure",
+    "no paid API fallback without explicit permission",
+    "source preserved for optional MCP/CLI compatibility"
+  ]
+}
