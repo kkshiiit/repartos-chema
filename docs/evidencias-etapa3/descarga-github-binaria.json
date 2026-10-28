@@ -1,0 +1,21 @@
+{
+  "dateUTC": "2026-10-28T08:38:17.462Z",
+  "commit": "f84e39dbc1f162224587876c6974ba72ccdafac9",
+  "downloads": [
+    {
+      "path": "android/v1.7.0-local-equipo.1/repartos-chema-local-1.7.0-arm64.apk",
+      "bytes": 57608043,
+      "sha256": "7a47c1f98756526d740f2ae4369843e660ddb815b35a088fad6082e98bf89afd",
+      "httpStatus": 200,
+      "method": "GitHub Contents metadata + binary HTTP download; private URL kept in memory"
+    },
+    {
+      "path": "respaldos/v1.7.0-local-equipo.1/repartos-chema-7a81548.zip",
+      "bytes": 81104966,
+      "sha256": "7a1170e494c0989f82f0d59b7a643fb9c759bf761340fb9066e38b212ee82636",
+      "httpStatus": 200,
+      "method": "GitHub Contents metadata + binary HTTP download; private URL kept in memory"
+    }
+  ],
+  "previousAttempt": "gh2.46 raw+json returned transform: short source buffer; partial files retained outside repository, never published"
+}

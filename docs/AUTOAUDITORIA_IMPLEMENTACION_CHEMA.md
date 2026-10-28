@@ -61,7 +61,7 @@ No sumar ejecuciones repetidas como pruebas únicas ni confundir suites distinta
 1. **Aceptación física:** no se probó instalación encima, SQLite/migración real, selector `content://`, cámara/galería, GPS/Maps, compartir Word/Excel, TalkBack, botón Atrás/IME, SecureStore ni avisos tras cierre/reinicio/force-stop. No hay métricas físicas de FPS/RAM/batería ni vídeo nativo que las sustituya.
 2. **Insumos exactos:** no está disponible el APK instalado llamado «2.0» ni `repartos-chema-5-pedidos-whatsapp.json`. La firma de1.6.1 y una fixture de cinco pedidos no acreditan esos casos.
 3. **Operación compartida comercial:** aún falta aprovisionar privadamente al responsable real, comprobar recuperación administrativa y ejecutar el piloto con dos teléfonos. No se creó una identidad comercial ficticia.
-4. **QA remota limpia:** cuatro identidades desechables, dos espacios y dosJPEG631bytes eliminados con guardas. Storage vía API; verificación cero remanentes y servicio Edge restaurado sin helper temporal. No se modificaron datos comerciales.
+4. **QA remota limpia:** cuatro identidades desechables, dos espacios y dosJPEG631 bytes eliminados con guardas. Storage vía API; verificación cero remanentes y servicio Edge restaurado sin helper temporal. No se modificaron datos comerciales.
 5. **Free y recuperación:** proyecto `lttfkynkhveomntejqhc`, organización kkshiiit, siete migraciones y Edge v7 en Free (archivos idénticos a v5 probada, restaurados tras limpiezaQA). No se activó tarjeta, upgrade ni servicio pago. La cuota puede agotarse y el proyecto puede pausarse. No se forzó una pausa/cuota agotada real para probar. La app individual sigue independiente del backend.
 6. **Respaldos compartidos:** JSON del teléfono tiene cobertura local, no backup completo de SQL/Auth/Storage. Hace falta una rutina administrativa de exportación SQL más objetos/manifest y prueba de recuperación. Un dump de base no incluye bytes de Storage; el plan Free no ofrece las mismas garantías de backup que un plan pago.
 7. **Seguridad adicional:** el aviso del proveedor «Leaked Password Protection Disabled» sigue abierto; no activar Pro para ocultarlo. Requiere contraseña fuerte, invitaciones privadas y decisión explícita si en el futuro cambia la política. Alta sin correo pago no demuestra propiedad del email ni ofrece recuperación por correo ya validada.
@@ -73,3 +73,7 @@ La [entrega](ENTREGA_MAESTRA_CHEMA.md), [auditoría de cierre](AUDITORIA_CIERRE_
 ### CIERRE08 — carrera de scroll cerrada
 
 Home recibía onScroll0 antes de confirmar scrollToOffset600. Guardia hasta offset/límite válido con cancelación por gesto/filtro; regresión del componente real2fallos anteriores→3/3, suite final64/64. No toca stock.
+
+## Cierre del artefacto
+
+APK 1.7.0/code11,57608043 bytes,Gradle 701 tareas/12 min con mismafirma/package; recuperadodeGitHubconSHA/CRC idénticos. Publicaciónf84e39d, fuente7a81548(funcional5e0ba15),100rutas anteriores/9APK/4partes preservados. Firma interna Android Debug conservada; no acredita firma exclusiva deproducción ni aceptación física. Ver ENTREGA yentrega-verificada.json.
