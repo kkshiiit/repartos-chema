@@ -1,3 +1,11 @@
+# Fuente corregida y validación final — 28/10/2026
+
+Scroll determinista RED2/3→GREEN3/3, check-release-scroll527/527 en61archivos, TypeScript/Functions pasan y lint0errores/1warning histórico. Buildwebfinal terminó0. UI final con CHEMA_TEST_LOCAL=true y2workers en curso ui-final.txt; baseline8082sirviendo ZIP anterior. Fuente funcional: Homeguardarestauración hastaoffsetconfirmado, gesto/filtrointerrumpen; no inventario tocado. No APK nuevo todavía; no afirmar actualización física.
+
+QA limpiada y backendrestaurado v7archivoidénticov5. Dosusuarios/syntheticspaces previos yotros2nuevos eliminados; Storage0objetosQA, evidencia guardada. FuentesFreeactualesverifican500MBDB(límitelectura) yegreso10GB separado5cached+5uncached. Próximo: UI64con0omisiones→revisiónPNGfinal/docs→commit/push+ZIPrestaurado→Gradlefull/verify1.7.0code11→publicaciónnueva+downloadSHAconservar9anteriores. No volvera auditarbase ni usarQA yaeliminada.
+
+---
+
 # Reanudación comprobada — 28/10/2026
 
 Fuente remota c59866f. El entorno se reinició durante la pausa: procesos y /tmp desaparecieron, /workspace y cambios se conservaron. Corrección de scroll de Home recuperada junto con tests/rental-list-restoration.test.ts. Regresión REAL contra Home anterior:2fallos/1pasa; con guardia3/3. Causa: onLoad no confirma scrollToOffset y un evento inicial0 reemplazaba600. Ahora se espera offset solicitado o límite real, gesto/filtro pueden cancelar restauración. No reglas comerciales modificadas. Check/buildwebnuevos en curso, ver check-release-scroll/build-web-final.

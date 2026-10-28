@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { FlashListRef } from '@shopify/flash-list';
 import { Plus } from 'lucide-react-native';
@@ -38,7 +38,7 @@ export default function Home() {
   return <RentalList key={scope} scope={scope} />;
 }
 function RentalList({ scope }: { scope: string }) {
-  const { C, s } = useUI();
+  const { C } = useUI();
   const inventory = useInventory();
   const { state } = inventory;
   const { user } = useAuth();
@@ -51,6 +51,10 @@ function RentalList({ scope }: { scope: string }) {
   const mounted = useRef(true);
   const list = useRef<FlashListRef<RentalRow>>(null);
   const restoredScroll = useRef(false);
+  // onLoad starts a native scroll request; it does not confirm its final offset.
+  // Ignore the initial zero event until that request reaches its target (or the
+  // actual end of a list whose content has shortened while detail was open).
+  const restoringOffset = useRef<number | null>(null);
   const writesBlocked = useRef(recalled?.writesBlocked ?? true);
   const changedBeforeLoad = useRef(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -155,6 +159,7 @@ function RentalList({ scope }: { scope: string }) {
     changedBeforeLoad.current = true;
     const next = { ...current.current, ...patch, scroll: 0 };
     current.current = next;
+    restoringOffset.current = null;
     setView(next);
     rememberRentalList(scope, next, viewError, writesBlocked.current);
     list.current?.scrollToOffset({ offset: 0, animated: false });
@@ -233,13 +238,27 @@ function RentalList({ scope }: { scope: string }) {
           keyboardShouldPersistTaps="handled"
           onLoad={() => {
             if (!restoredScroll.current) {
+              restoringOffset.current = current.current.scroll > 0 ? current.current.scroll : null;
               restoredScroll.current = true;
               list.current?.scrollToOffset({ offset: current.current.scroll, animated: false });
             }
           }}
+          onScrollBeginDrag={() => {
+            // A deliberate gesture takes precedence over a pending restoration.
+            restoringOffset.current = null;
+          }}
           onScroll={(event) => {
             if (!restoredScroll.current) return;
             const scroll = Math.max(0, event.nativeEvent.contentOffset.y);
+            if (restoringOffset.current !== null) {
+              const { contentSize, layoutMeasurement } = event.nativeEvent;
+              const maximum = contentSize.height - layoutMeasurement.height;
+              const target =
+                maximum > 0 ? Math.min(restoringOffset.current, maximum) : restoringOffset.current;
+              // Fractional layout/font rounding may shift the requested offset.
+              if (Math.abs(scroll - target) > 4) return;
+              restoringOffset.current = null;
+            }
             const next = { ...current.current, scroll };
             current.current = next;
             rememberRentalList(scope, next, viewError, writesBlocked.current);

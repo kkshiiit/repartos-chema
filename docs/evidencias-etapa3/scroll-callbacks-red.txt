@@ -1,0 +1,59 @@
+
+ RUN  v5.0.3 /workspace/repartos-chema
+
+stderr | tests/rental-list-restoration.test.ts > un evento inicial cero no reemplaza el desplazamiento pendiente; sólo se guarda el confirmado
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+
+stderr | tests/rental-list-restoration.test.ts > restauración acepta el límite real cuando la lista volvió con menos contenido
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+
+ ❯ tests/rental-list-restoration.test.ts (3 tests | 2 failed) 50ms
+   × un evento inicial cero no reemplaza el desplazamiento pendiente; sólo se guarda el confirmado 40ms
+   × restauración acepta el límite real cuando la lista volvió con menos contenido 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/rental-list-restoration.test.ts > un evento inicial cero no reemplaza el desplazamiento pendiente; sólo se guarda el confirmado
+AssertionError: expected +0 to be 600 // Object.is equality
+
+- Expected
++ Received
+
+- 600
++ 0
+
+ ❯ tests/rental-list-restoration.test.ts:86:74
+     84|   mocks.scrollTo.mockImplementation(() => props.onScroll(scroll(0)));
+     85|   await act(async () => props.onLoad());
+     86|   expect(rememberedRentalList(`local:${mocks.uid}`)?.preferences.scrol…
+       |                                                                          ^
+     87|   await act(async () => props.onScroll(scroll(598)));
+     88|   expect(rememberedRentalList(`local:${mocks.uid}`)?.preferences.scrol…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/rental-list-restoration.test.ts > restauración acepta el límite real cuando la lista volvió con menos contenido
+AssertionError: expected +0 to be 600 // Object.is equality
+
+- Expected
++ Received
+
+- 600
++ 0
+
+ ❯ tests/rental-list-restoration.test.ts:99:74
+     97|   await act(async () => props.onLoad());
+     98|   await act(async () => props.onScroll(scroll(0, 700)));
+     99|   expect(rememberedRentalList(`local:${mocks.uid}`)?.preferences.scrol…
+       |                                                                          ^
+    100|   await act(async () => props.onScroll(scroll(300, 700)));
+    101|   expect(rememberedRentalList(`local:${mocks.uid}`)?.preferences.scrol…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  08:03:43
+   Duration  301ms (transform 47%, tests 27%, import 24%, worker 2%)
+
