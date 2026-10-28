@@ -1,0 +1,9 @@
+{
+  "dateUTC": "2026-10-28T08:27:52.494825+00:00",
+  "adbPresent": true,
+  "adbExit": 0,
+  "output": "List of devices attached\n\n",
+  "kvmPresent": false,
+  "emulatorBinaryPresent": false,
+  "physicalAcceptance": "NO EJECUTADO; no dispositivo autorizado conectado detectado"
+}

@@ -2,13 +2,19 @@
 
 Cierre del **28/10/2026**. Repositorio privado [kkshiiit/repartos-chema](https://github.com/kkshiiit/repartos-chema). La instalación y aceptación en tu Android siguen pendientes; no se presentan como realizadas.
 
-## Estado verificado antes de Gradle
+## APK publicado y verificado
 
 - Último cambio funcional: `5e0ba156edf68f6f5771a517c1c16495074896bd`. Conserva paquete, firma, SQLite, fotos, JSON, stock y funcionamiento individual gratuito/offline.
-- **527/527 pruebas** en61archivos; TypeScript/Functions pasan; lint0errores/1advertencia histórica. **64/64 recorridos web**, sin fallos ni omisiones, incluidos Word/Excel, importación/restauración, operaciones y temas.
-- **15/15** PostgreSQL17+SQLite; integración real sintética Auth8, Storage5, rutas4, delta3 y dos contextos UI2. No son teléfonos Android.
-- Capturas actuales claro/oscuro y comparación con1.6.1 en `artifacts/capturas/cierre-1.7/`. Revisión y hashes: `artifacts/validacion/cierre-1.7/revision-visual.json`.
-- En este corte documental la compilación APK y publicación nuevas aún no terminaron. Los metadatos de release se agregan después de verificar el artefacto; no usar unAPK anterior para acreditar las correcciones.
+- **527/527 pruebas** en61 archivos; TypeScript/Functions pasan; lint0errores/1advertencia histórica. **64/64 recorridos web**, sin fallos ni omisiones, incluidos Word/Excel, importación/restauración, operaciones y temas.
+- **15/15** PostgreSQL17+SQLite; integración real sintética Auth 8, Storage 5, rutas4, delta3 y dos contextos UI 2. No son teléfonos Android.
+- Capturas actuales claro/oscuro y comparación con 1.6.1 en `artifacts/capturas/cierre-1.7/`. Revisión y hashes: `artifacts/validacion/cierre-1.7/revision-visual.json`.
+- **[Descargar APK 1.7.0 ARM64](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.7.0-local-equipo.1/repartos-chema-local-1.7.0-arm64.apk)** · [Ficha / Download raw](https://github.com/kkshiiit/repartos-chema/blob/f84e39dbc1f162224587876c6974ba72ccdafac9/android/v1.7.0-local-equipo.1/repartos-chema-local-1.7.0-arm64.apk). Publicación`f84e39dbc1f162224587876c6974ba72ccdafac9`. DescargaHTTP200 ySHA/CRC idénticos al compilado.
+- **57608043 bytes**; paquete`com.grupochema.repartos`; código 11; minSDK24. Firma v2, certificado`fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`, idéntico a1.6.1 conocido. Release no debuggable, SQLite y tres tonos verificados.
+- SHA256: **`7a47c1f98756526d740f2ae4369843e660ddb815b35a088fad6082e98bf89afd`**.
+- Gradle completo:12 min/701 tareas ejecutadas, fuente`7a81548178612ec0ea35f84dff89325382e2bf9c`. El primer intento sin caché falló antes de compilar; el segundo terminó correctamente. Sin cambios funcionales después.
+- [Respaldo fuente ZIP](https://github.com/kkshiiit/repartos-chema/blob/descargas/respaldos/v1.7.0-local-equipo.1/repartos-chema-7a81548.zip):81104966 bytes,2366 archivos restaurados/manifiestoSHA. SHA256`7a1170e494c0989f82f0d59b7a643fb9c759bf761340fb9066e38b212ee82636`. ZIP recuperado de GitHub idéntico. Contiene corte prebuild; metadatos finales están en esta entrega.
+- Versiones anteriores:100rutas artefactos conservadas con sus mismos modos/blobs;9APK completos y4partes antiguas. README original íntegro debajo de la nueva entrada.
+- La firma interna histórica es Android Debug; se conserva por compatibilidad, no es una identidad de producción recién emitida.
 
 ## Implementación y correcciones
 
@@ -26,7 +32,7 @@ Correcciones de cierre: listener al revalidar sesión, archivo atómico de propu
 
 ## Instalar y reproducir desde el código
 
-Requiere Node24/npm11 y lockfiles del repositorio. No hace falta configurar un proveedor para uso individual.
+Requiere Node 24/npm11 y lockfiles del repositorio. No hace falta configurar un proveedor para uso individual.
 
 ```bash
 npm ci
@@ -38,7 +44,7 @@ npm run preview
 
 Preview sirve en8081 dentro del entorno que lo ejecuta. Para automatización local: `CHEMA_TEST_LOCAL=true npm run test:ui -- --workers=2`; las comparaciones históricas necesitan además la web1.6.1 verificada en8082, según los tests. PostgreSQL de pruebas: `node scripts/backend-test.mjs`, con Docker local. Estos comandos no deben ejecutarse contra datos comerciales.
 
-Android necesita JDK21/AndroidSDK y la **firma existente**; no se incluye la clave enZIP/Git. Definir `JAVA_HOME`, `ANDROID_HOME` y `CHEMA_ANDROID_KEYSTORE` privados antes de `npm run build:android:demo`. El script hace Expo prebuild y Gradle completo para ARM64, restaura la firma y fija LOCAL_ONLY/demo. No usar una clave nueva para eludir un problema de actualización.
+Android necesita JDK21/AndroidSDK y la **firma existente**; no se incluye la clave enZIP/Git. Definir `JAVA_HOME`, `ANDROID_HOME` y `CHEMA_ANDROID_KEYSTORE` privados; en este workspace usar además `GRADLE_USER_HOME=/workspace/gradle-cache` y `ANDROID_USER_HOME=/workspace/android-user` antes de `npm run build:android:demo`. El script hace Expo prebuild y Gradle completo para ARM64, restaura la firma y fija LOCAL_ONLY/demo. No usar una clave nueva para eludir un problema de actualización.
 
 ## Equipo opcional y límites
 
@@ -53,7 +59,7 @@ Free tiene cuotas/pausas; no es garantía ilimitada. DB500MB antes de lectura; e
 - Aceptación física: actualización encima, migración de la instalación exacta, cámara/URIJSON/compartir/GPS/TalkBack/teclado y avisos tras reiniciar. No se probaron FPS/memoria/batería.
 - Archivo original `repartos-chema-5-pedidos-whatsapp.json` ausente; las cinco entidades de fixture no equivalen a ese archivo.
 - Primer responsable/recuperación del equipo, copia completa SQL+objetos y piloto en dos teléfonos. No se probó agotamiento real de cuota ni pausa del proveedor.
-- `npm audit` mantiene ocho nodos alertados (cuatroaltos/cuatromoderados), principalmente herramientasCLI y uuid usado como v4; alcance y avisos están en la auditoría. No se declara cero vulnerabilidades ni se fuerza un downgrade deExpo.
+- `npm audit` mantiene ocho nodos alertados (cuatro altos/cuatro moderados), principalmente herramientasCLI y uuid usado como v4; alcance y avisos están en la auditoría. No se declara cero vulnerabilidades ni se fuerza un downgrade deExpo.
 - Falta recorrido visual nativo de archivo de propuestas dependientes, aunque atomicidad/reapertura/aislamiento están probados en SQLite/provider.
 
 No hay automatización de continuidad futura confirmada. El próximo paso guardado y el estado de respaldo están en [CONTINUIDAD_CODEX.md](CONTINUIDAD_CODEX.md).

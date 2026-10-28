@@ -1,3 +1,43 @@
+# ENTREGA1.7.0 CERRADA CON PENDIENTES EXPLÍCITOS — 28/10/2026
+
+## Estado y commits
+
+Último commit previo a este checkpoint:333b4f4, posterior a fuente congelada **7a81548178612ec0ea35f84dff89325382e2bf9c**; último cambio funcional **5e0ba156edf68f6f5771a517c1c16495074896bd**. Main ya contiene7a81548; este cierre documental se publica enmain yfeat/chema-maestro-etapa2 sinforce. Consultar gitlog/-remote al retomar para obtener el commit que contiene este mismo checkpoint, sin suponer una auto-referencia de hash.
+
+**APK publicado en descargas:** commit **f84e39dbc1f162224587876c6974ba72ccdafac9**. Archivo `android/v1.7.0-local-equipo.1/repartos-chema-local-1.7.0-arm64.apk`, **57608043bytes**, SHA256 **7a47c1f98756526d740f2ae4369843e660ddb815b35a088fad6082e98bf89afd**. Versión1.7.0/code11, paquetecom.grupochema.repartos,ARM64/minSDK24, no debuggable. Firma v2/certificado **fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c**, igual a1.6.1 conocido; identidad históricaAndroidDebug conservada, no rotada.
+
+## Pruebas y artefactos comprobados
+
+- `npm ci`:exit0,1565paquetes, locksin cambios.
+- Check final527/527en61archivos; TypeScript/Functions correctos; lint0errores/1warning históricoAxe.
+- UI FINAL64/64sinfallos/omisiones, conCHEMA_TEST_LOCAL=true: localvacío/offline, stock, fechas, combos, operaciones, JSON/fotos/Word/Excel/temas yscroll incluidos.
+- PostgreSQL17+SQLite15/15; Auth8/Storage5/ruta4/delta3 reales sintéticos, UIequipo2contextos. Son corridas separadas, no sumar ni afirmar teléfonos.
+- Gradle completo701tareas/12min, `gradle-1.7.0-cache.txt`. Primer intento falló antesdecompilar porwrapper sin caché, conservado aparte. Variables necesarias:JAVA_HOME=/workspace/jdk21/jdk-21.0.12.1+1,ANDROID_HOME=/workspace/android-sdk,GRADLE_USER_HOME=/workspace/gradle-cache,ANDROID_USER_HOME=/workspace/android-user,CHEMA_ANDROID_KEYSTORE privado existente. No modificarHOME/ANDROID_PREFS_ROOT.
+- APK verificado por apksigner/aapt/CRC; SQLite y3tonosporSHA incluidos, sin marcadores publicitarios/configFirebase enloscontrolesdefinidos.
+- Descarga real HTTP200 desdeGitHub: APK y ZIP iguales por SHA/CRC. Primer método ghraw+json falló conbuffer corto; parciales separados y nunca publicados. Evidencia `descarga-github-binaria.json`.
+-100rutas previas con modo/blobidéntico;9APKcompletos y4partes conservados. READMEoriginal íntegro debajo dela nueva entrada; prueba `descargas-preservacion.json`.
+- ZIPfuente7a81548:81104966bytes/2366archivos restaurados yverificados, SHA **7a1170e494c0989f82f0d59b7a643fb9c759bf761340fb9066e38b212ee82636**. Publicadoen `respaldos/v1.7.0-local-equipo.1/`. Excluye firma/secretos/node_modules. LosdocsdelZIPsonprebuild; informesfinalesestánenmain.
+
+## Documentos y cambios
+
+Auditoría autocontenida **docs/AUDITORIA_CIERRE_MAESTRO_CHEMA.md**, integra matriz94íntegra; matrizoperativa, entrega, autoauditoría ymanualactualizados. Capturas361PNG webactuales/29referenciasrevisadas, manifiesto `artifacts/validacion/cierre-1.7/revision-visual.json`. No sonAndroid. Informeincluye correcciones de listener, cola dependiente, historial, P0001, delta durable, overflow/composición/errores ycarrera de scroll RED2→GREEN3. Código sin cambios despuésde5e0ba15; no recompilar por estosdocumentos.
+
+## Backend, datos y seguridad
+
+Individual empieza vacío sin cuenta, offline ysinserviciobligatorio. Supabaseequipo opcionalFree/kkshiiit/lttfkynkhveomntejqhc,7migraciones,Edgev7ACTIVE conarchivos idénticosav5probada (bundledae8644a...). QA LIMPIADA:4usuarios/2espacios/2JPEG631bytes eliminados sólo conguardas/StorageAPI, cero remanentes. No reutilizarcredencialesQA borradas; no cuenta comercial inventada. Nunca imprimir tokens/keystore ni subirprivados.
+
+Persisten8nodosnpm alertados(4altos/4moderados), especialmenteCLI yUUIDv4usado; notodossonexplotacionesdemostradas. Noauditfixforce/downgradeExpo. SQLite/fotos/JSONno se declaran cifrados. FirmaAndroidDebughistórica yRLSinfos/WARNcontraseñas documentados. NoLFS/pagos/Firebase/EAS/hosting/SMTPpago activados.
+
+## Pendientes y próxima acción exacta
+
+**Entregado/listo conpendientes:** APK y respaldos accesiblesdesdeGitHubprivado, auditoría ypruebas trazables. **No ejecutado:** Androidfísico (ADBsin dispositivos,sinKVM/emulador), instalaciónexacta«2.0», JSONoriginal5pedidos, piloto2teléfonos/cuota-pausa reales. **Pendiente técnico no oculto:** recorrido visual completo de propuestasarchivadasL8, evaluar parches deherramientas transitivas. **Antes deoperación compartida comercial:** alta privada primerresponsable, recuperación ybackupcompletoSQL+objetos; JSONequipo esLOCAL_CACHE_ONLY.
+
+Próximo paso mínimo: entregar enlaceAPK/SHA/auditoría alusuario. Él debe exportarJSONexterno con fotos e instalarencima **sin desinstalar ni borraralmacenamiento**; siAndroidrechazafirma/código, conservar mensaje/datos eidentificarAPK2.0. Probar cierre/modoavión, cantidades, Word/Excel, cámara/selector/GPS/avisos/TalkBack segúnmanual. Ante fallo reproducido, corregir conregresión yversión nueva, conservandotodoslosartefactos.
+
+Al retomar: leer este bloque, comprobar gitstatus/log/remoto yentrega-verificada.json. No volveraauditarbase, repetir64tests/reconstruirpor documentación ni usar APK1.6.1 comonuevo. No hayautomatización futura confirmada; no afirmartrabajo fuera deejecuciónactiva.
+
+---
+
 # Gradle completo en ejecución — 28/10/2026
 
 Fuente de build congelada7a81548178612ec0ea35f84dff89325382e2bf9c (último funcional5e0ba15) respaldada también enmain medianteffsinforce. ZIPprebuild restaurado2366archivos/81104966bytes: /workspace/entregas/maestro-1.7.0-prebuild/repartos-chema-7a81548.zip, .sha256/.verificado.json. Check527/61 yUI64/64terminados, npmcicleanexit0.

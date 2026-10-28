@@ -1,0 +1,67 @@
+{
+  "version": "1.7.0",
+  "versionCode": 11,
+  "package": "com.grupochema.repartos",
+  "codigoFuncional": "7a81548178612ec0ea35f84dff89325382e2bf9c",
+  "archivo": "repartos-chema-local-1.7.0-arm64.apk",
+  "bytes": 57608043,
+  "sha256": "7a47c1f98756526d740f2ae4369843e660ddb815b35a088fad6082e98bf89afd",
+  "certificadoSHA256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+  "firmaV2": true,
+  "certificadoCoincideConAnterior": true,
+  "apkAnterior": "repartos-chema-local-1.6.1-arm64.apk",
+  "CRC": "correcto",
+  "ABI": "arm64-v8a",
+  "minSDK": 24,
+  "debuggable": false,
+  "sqliteNativoIncluido": true,
+  "tonosLocalesIncluidos": true,
+  "tonosVerificados": {
+    "chema_recordatorio_calido.wav": {
+      "recursoAPK": "res/52.wav",
+      "sha256": "d9ebac4c4effdd4ae5c55e6e584ab70568d8b9e783dbd8a29b0e912bfe719691"
+    },
+    "chema_confirmacion_sutil.wav": {
+      "recursoAPK": "res/4o.wav",
+      "sha256": "6543cc3d5462476d826179824d567db062ac3d8b1ebf8c62a5e3b5f5f659be5f"
+    },
+    "chema_atencion_suave.wav": {
+      "recursoAPK": "res/ue.wav",
+      "sha256": "261ad27e0a5f582db294f019e674fdecdf9a2f64fc5733b2b9881b34cca06e46"
+    }
+  },
+  "pruebaFisica": false,
+  "publicidadDetectada": false,
+  "configFirebaseEmbebida": false,
+  "generadoUTC": "2026-10-28T08:33:33.752182+00:00",
+  "buildSource": "7a81548178612ec0ea35f84dff89325382e2bf9c",
+  "lastFunctionalCommit": "5e0ba156edf68f6f5771a517c1c16495074896bd",
+  "publicationCommit": "f84e39dbc1f162224587876c6974ba72ccdafac9",
+  "apkUrl": "https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.7.0-local-equipo.1/repartos-chema-local-1.7.0-arm64.apk",
+  "fileUrl": "https://github.com/kkshiiit/repartos-chema/blob/f84e39dbc1f162224587876c6974ba72ccdafac9/android/v1.7.0-local-equipo.1/repartos-chema-local-1.7.0-arm64.apk",
+  "downloadedAPKMatchesCompiled": true,
+  "downloadedSourceMatchesRestoredBackup": true,
+  "downloadedCRCValid": true,
+  "sourceChangesAfterBuild": false,
+  "sourceZip": {
+    "file": "repartos-chema-7a81548.zip",
+    "bytes": 81104966,
+    "sha256": "7a1170e494c0989f82f0d59b7a643fb9c759bf761340fb9066e38b212ee82636",
+    "restoredFiles": 2366
+  },
+  "previousArtifactProof": "artifacts/validacion/cierre-1.7/descargas-preservacion.json",
+  "testSummary": {
+    "unit": 527,
+    "unitFiles": 61,
+    "ui": 64,
+    "uiSkipped": 0,
+    "postgres": 15,
+    "authRemote": 8,
+    "mediaRemote": 5,
+    "routeRemote": 4,
+    "deltaRemote": 3,
+    "realBackendBrowserContexts": 2,
+    "physicalAndroid": false
+  },
+  "verifiedUTC": "2026-10-28T08:40:13.887037+00:00"
+}
