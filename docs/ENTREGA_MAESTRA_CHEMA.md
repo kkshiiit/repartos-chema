@@ -1,82 +1,59 @@
-# Entrega maestra Chema — estado real al27/10/2026
+# Entrega maestra — Repartos Chema 1.7.0
 
-**Todavía no es una entrega final ni hay APK1.7.0 publicado.** Se completaron bloques de implementación y pruebas; quedan correcciones de recuperación, regresión final y compilación.
+Cierre del **28/10/2026**. Repositorio privado [kkshiiit/repartos-chema](https://github.com/kkshiiit/repartos-chema). La instalación y aceptación en tu Android siguen pendientes; no se presentan como realizadas.
 
-## Código y respaldo comprobados
+## Estado verificado antes de Gradle
 
-Repositorio privado kkshiiit/repartos-chema. Fuente confirmada: `1a9355aa24ed3a7e38769bfdd3220be88addee53`, rama `feat/chema-maestro-etapa2`. Main conserva la base anterior81cd39a. El checkpoint posterior se guarda en CONTINUIDAD_CODEX.
+- Último cambio funcional: `5e0ba156edf68f6f5771a517c1c16495074896bd`. Conserva paquete, firma, SQLite, fotos, JSON, stock y funcionamiento individual gratuito/offline.
+- **527/527 pruebas** en61archivos; TypeScript/Functions pasan; lint0errores/1advertencia histórica. **64/64 recorridos web**, sin fallos ni omisiones, incluidos Word/Excel, importación/restauración, operaciones y temas.
+- **15/15** PostgreSQL17+SQLite; integración real sintética Auth8, Storage5, rutas4, delta3 y dos contextos UI2. No son teléfonos Android.
+- Capturas actuales claro/oscuro y comparación con1.6.1 en `artifacts/capturas/cierre-1.7/`. Revisión y hashes: `artifacts/validacion/cierre-1.7/revision-visual.json`.
+- En este corte documental la compilación APK y publicación nuevas aún no terminaron. Los metadatos de release se agregan después de verificar el artefacto; no usar unAPK anterior para acreditar las correcciones.
 
-Commits principales:13399f2 autorización/respaldo; d456ade sistema visual; a8fdd39 revisión JSON;6018528 alquileres; f7348bd Viaje;94bd97d equipo transaccional; dff2864 Auth remoto;0f4f5a6 recuperación;1a9355a fotos privadas, plan publicado y guardas de integridad.
+## Implementación y correcciones
 
-Respaldo original verificado y restaurado: /workspace/respaldos/etapa2-base-2026-10-26/repartos-chema-e133ae4.zip. La firma privada está fuera de Git. La fuente actual está en GitHub; el ZIP final debe generarse y verificarse antes de Gradle.
+Alquileres por urgencia con búsqueda por localidad/dirección/cliente y contexto al volver; Depósito en filas con cantidades alineadas; Viaje ordenable sin efecto de stock, GPS/Maps externos y regreso fijo al depósito; Historial paginado y deshacer seguro. Formularios, operaciones, combos, avisos, fotos, copias y documentos conservan sus funciones. Claro/Oscuro/Sistema persistentes y acceso rápido único desde cabeceras. Sin publicidad ni dependencias visuales nuevas.
 
-## Implementación realizada
+Correcciones de cierre: listener al revalidar sesión, archivo atómico de propuestas dependientes, continuidad del historial y botón de continuación, conflictos de revisión sin reintentos de infraestructura, delta durable por entidad, errores en español, overflow de texto ampliado, composición compacta y carrera de restauración del scroll. [Auditoría completa](AUDITORIA_CIERRE_MAESTRO_CHEMA.md), [matriz94requisitos](MATRIZ_ACEPTACION_CHEMA.md) y [autoauditoría](AUTOAUDITORIA_IMPLEMENTACION_CHEMA.md).
 
-- Expo57/RN0.86 y SQLite conservados. Sistema Modern Dark y claro, fuentes Geist/Mono locales licenciadas, cuatro pestañas inferiores y componentes compartidos. Sin nueva biblioteca visual pesada.
-- Alquileres en filas compactas por urgencia, Hoy incluye entregas y retiros, dirección/material/medida visibles. Búsqueda por cliente/dirección/localidad y contexto de lista conservado.
-- Alta en tres pasos, detalle y operaciones existentes. Crear pendiente no descuenta stock. Retiro completo, reingreso sin doble suma, incidencias, transferencias, auditoría y deshacer mantienen el motor original.
-- Viaje con filtros por tarea/zona, distancia estricta desde un origen elegido, comparación literal por material/medida, editor de posiciones, guardar/cancelar/deshacer y reconciliación. Maps recibe visibles en orden y depósito final.
-- Copia JSON con metadata y revisión completa virtualizada. Cancelar no modifica datos. Restauración individual explícita con copia previa; en equipo abre recuperación individual aislada.
-- Equipo opcional sobre Supabase Free autorizado: Auth real, invitación privada de un uso, roles en servidor, outbox SQLite por usuario/espacio, recibos idempotentes, CAS y tarea comercial estable.
-- Fotos compartidas privadas con cola independiente, validación JPEG/hash y caché aislada. El fallo de una subida no bloquea guardar el alquiler.
-- Publicación explícita del plan de Viaje, asignaciones por miembro, revisión esperada y últimas50versiones. Los filtros personales no publican.
-- Avisos existentes con herencia3/2/1/0, ámbitos separados y diario durable para recuperar cancelaciones fallidas.
+## Cómo probar y actualizar
 
-## Ubicación de acciones
+1. Exportá una copia JSON con fotos desde la app actual y guardala fuera de la aplicación. Conservá el archivo original y anotá versión/cantidades.
+2. Descargá el APK nuevo desde su ficha privada, con sesión GitHub kkshiiit, usando **Download raw / Descargar archivo sin procesar**. Localhost del entorno no es una URL para tu celular.
+3. Elegí **Actualizar**, sin desinstalar ni borrar almacenamiento. Si Android rechaza firma/código/paquete, detenete y compartí el mensaje exacto. La instalación llamada«2.0» no fue identificada; no se certifica su compatibilidad por memoria.
+4. Compará stock por estado, alquileres, fotos e historial. Modo avión, cerrar/abrir y temas con formulario pendiente deben conservar datos.
+5. Probá un recorrido sintético crear→cargar→entregar→retirarconincidencia→reingresar; reingresar no suma dos veces. ProbáJSONcancelar/restaurar, Word/Excel, cámara/galería, GPS/depósito y avisos. [Manual completo y dos teléfonos](USO_MAESTRO_ANDROID.md).
 
-|Destino|Acciones|
-|---|---|
-|Alquileres → fila → detalle|Entregar/retirar, carga, responsables, incidencias, fotos, remito/WhatsApp, GPS y correcciones|
-|Depósito → menú de pieza|Editar, mover, ajustar y recuperar; Combos en cabecera|
-|Viaje|Cambiar orden, Opciones, origen, criterios, Maps, regreso y plan publicado|
-|Historial|Filtros y deshacer con límites de autor/plazo/revisión|
-|Ajustes|Datos, copias, recuperación, documentos, apariencia, avisos, responsables y equipo|
-|Equipo|Ingreso/vinculación real, miembros, invitaciones, revocación e incorporación explícita al equipo vacío|
+## Instalar y reproducir desde el código
 
-## Pruebas comprobadas
+Requiere Node24/npm11 y lockfiles del repositorio. No hace falta configurar un proveedor para uso individual.
 
-|Entorno|Resultado guardado|Alcance|
-|---|---|---|
-|Node/check|514/514 en57archivos; tipos/Functions correctos; lint0errores/1warning histórico|Corte integrado anterior al último guard de cursor|
-|PostgreSQL17 + SQLiteNode reales|14/14|Concurrencia, idempotencia, bootstrap, permisos, rutas y reincorporación|
-|Auth/Edge/PostgreSQL remotos reales|8/8|Dos cuentas sintéticas, devolución, última unidad, timeout/recibo y revocación|
-|Auth/Edge/Storage remotos reales|5/5|JPEG sintético, reintento, descarga privada y acceso público rechazado|
-|Chromium local|7/7|Depósito, Viaje, conservación de contexto e importación sintética|
-|Chromium y Auth real|2/2|Dos contextos acceden al mismo equipo, con roles distintos|
-|Android físico|No ejecutado|Instalación, cámara, GPS, notificaciones, selector, lector y rendimiento pendientes|
+```bash
+npm ci
+npm --prefix functions ci
+npm run check
+npm run build:web
+npm run preview
+```
 
-Evidencia en docs/evidencias-etapa2; capturas web antes/después y ambos temas en artifacts/capturas/maestro-etapa2. No sumar repeticiones como pruebas únicas. Se conservan los intentos fallidos y sus correcciones.
+Preview sirve en8081 dentro del entorno que lo ejecuta. Para automatización local: `CHEMA_TEST_LOCAL=true npm run test:ui -- --workers=2`; las comparaciones históricas necesitan además la web1.6.1 verificada en8082, según los tests. PostgreSQL de pruebas: `node scripts/backend-test.mjs`, con Docker local. Estos comandos no deben ejecutarse contra datos comerciales.
 
-Después del último guard de cursor quedaron procesos para check final, QA de rutas y build web. El entorno se interrumpió: sus resultados deben recuperarse antes de anunciar más pruebas aprobadas.
+Android necesita JDK21/AndroidSDK y la **firma existente**; no se incluye la clave enZIP/Git. Definir `JAVA_HOME`, `ANDROID_HOME` y `CHEMA_ANDROID_KEYSTORE` privados antes de `npm run build:android:demo`. El script hace Expo prebuild y Gradle completo para ARM64, restaura la firma y fija LOCAL_ONLY/demo. No usar una clave nueva para eludir un problema de actualización.
 
-## Correcciones pendientes de cierre
+## Equipo opcional y límites
 
-La revisión señaló dos problemas importantes confirmados por inspección de código, todavía sin reproducción/corrección final: suscripción de pantalla al revalidar la misma cuenta y recuperación de una cola con propuestas dependientes de un conflicto. AUTOAUDITORIA_IMPLEMENTACION_CHEMA detalla síntomas, archivos y pruebas necesarias.
+Modo individual: tu nombre identifica autor local, sin autenticación ni servidor. Inicio vacío, sin alquileres ficticios. No publicar automáticamente una copia al equipo.
 
-También debe comprobarse un posible hueco de historial al combinar páginas después de una desconexión larga. El borrador de formulario conserva valores entre pasos/errores/temas, pero no se anuncia persistencia general tras matar el proceso antes de guardar.
+Equipo: SupabaseFree autorizado en kkshiiit, proyecto lttfkynkhveomntejqhc, siete migraciones. Edgev7 restaurado con los mismos archivos v5 probados. Requiere invitación privada/credenciales propias y aprovisionar primer responsable comercial. No se inventaron usuarios reales; QA sintética ya eliminada con guardas, incluidos cuatro usuarios/dos espacios/dosJPEG. Sin tarjeta/upgrade/servicio pago activado.
 
-Faltan regresión completa integrada, capturas finales de ventanas/secundarios y contraste, actualización de la matriz94IDs, provisión privada del responsable y recuperación operativa, limpieza restringida de QA, ZIP final y APK.
+Free tiene cuotas/pausas; no es garantía ilimitada. DB500MB antes de lectura; egreso separado5GBcached+5GBuncached. CopiaJSONcompartida contiene historial disponible localmente, no todo el servidor. Operación de respaldo SQL+objetos privados y su restauración quedan por establecer antes del piloto comercial.
 
-## APK: identidad y publicación
+## Pendientes reales
 
-Candidata fuente1.7.0/code11. Paquete conservado: `com.grupochema.repartos`. Certificado conocido SHA256: `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`.
+- Aceptación física: actualización encima, migración de la instalación exacta, cámara/URIJSON/compartir/GPS/TalkBack/teclado y avisos tras reiniciar. No se probaron FPS/memoria/batería.
+- Archivo original `repartos-chema-5-pedidos-whatsapp.json` ausente; las cinco entidades de fixture no equivalen a ese archivo.
+- Primer responsable/recuperación del equipo, copia completa SQL+objetos y piloto en dos teléfonos. No se probó agotamiento real de cuota ni pausa del proveedor.
+- `npm audit` mantiene ocho nodos alertados (cuatroaltos/cuatromoderados), principalmente herramientasCLI y uuid usado como v4; alcance y avisos están en la auditoría. No se declara cero vulnerabilidades ni se fuerza un downgrade deExpo.
+- Falta recorrido visual nativo de archivo de propuestas dependientes, aunque atomicidad/reapertura/aislamiento están probados en SQLite/provider.
 
-El APK anterior1.6.1/code10 no contiene esta etapa. La instalación denominada2.0 no está identificada: no se certifica actualización sobre ella ni se pide desinstalar.
-
-Antes de publicar: corregir los hallazgos, cerrar las pruebas, commit/push, ZIP restaurado/SHA y Gradle completo con firma existente. Verificar paquete, versión, ABI, minSDK, firma, tamaño, CRC y SHA. Publicar archivo nuevo en descargas, conservar anteriores y recuperar bytes de GitHub para cotejar hash. No hay enlace de APK nuevo porque ese archivo aún no está generado y verificado.
-
-## Costo y límites
-
-La aplicación individual funciona sin cuenta, servidor o Internet. La colaboración usa el proyecto Supabase Free autorizado lttfkynkhveomntejqhc en kkshiiit; cinco migraciones aplicadas y Edgechema-api v4. Sin facturación, tarjeta, addon pago, Firebase obligatorio, hosting adicional o publicidad.
-
-Free tiene cuotas y posibles pausas/cambios: no se promete gratuidad ilimitada. Los cambios offline compartidos son provisionales hasta confirmación autoritativa. No hay sincronización garantizada con app cerrada.
-
-El estado comercial se recibe como snapshot completo con cursor monotónico e historial paginado aparte. No se afirma recepción incremental de entidades. Las fotos borradas lógicamente se retienen para recuperación; es necesario vigilar cuota antes de una limpieza autorizada.
-
-No se creó una cuenta comercial real. Los datos remotos actuales son exclusivamente QA sintética y deben limpiarse de forma controlada. El archivo exacto de cinco pedidos tampoco está disponible; la fixture sintética no lo reemplaza.
-
-## Bloqueo actual y próxima acción
-
-El entorno de ejecución informa pending/offline y rechaza comandos. GitHub sí está accesible, por lo que el checkpoint y estos informes se respaldan mediante su conector. No se modificó más código ni se ejecutaron nuevas pruebas durante ese bloqueo.
-
-Al recuperarse: leer CONTINUIDAD_CODEX, preservar el trabajo local, integrar los commits documentales, comprobar logs pendientes y ejecutar primero las correcciones de recuperación. Después cerrar QA, respaldo y compilación. No existe una continuidad automática confirmada fuera de una ejecución activa.
+No hay automatización de continuidad futura confirmada. El próximo paso guardado y el estado de respaldo están en [CONTINUIDAD_CODEX.md](CONTINUIDAD_CODEX.md).

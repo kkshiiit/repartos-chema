@@ -1,3 +1,13 @@
+# Release validado, preparativos de APK — 28/10/2026
+
+Fuente funcional5e0ba156edf68f6f5771a517c1c16495074896bd publicada. Check527/527en61archivos, tipos/Functions bien, lint0errores/1warning histórico. UI FINAL64/64,0fallos0omisiones (CHEMA_TEST_LOCAL=true); Word/Excel/local/offline/scroll incluidos. Informe/matriz94/manual actualizados;361PNG actuales,29referencias revisadas identificadas en revision-visual.json, sinAndroidfísico. npm ci limpio terminóexit0,1565paquetes,locksin cambios: vernpm-ci-release. No APK nuevo todavía.
+
+QAremota yaeliminada (4cuentas/2spaces/2JPEG), backendrestauradov7samefilesv5/7migrationsFree. Privados QA fueraGit no son reutilizables. Siguientepasoinmediato: confirmar npmciexit0→commit/push fuente/docs/evidencias→ZIPconmanifiestorestaurado→GradleARM64 mismo paquete/certificado, code11→verifyAPK y nueva ruta descargas+SHA/download y comparación9APKprevios/archivospartidos. Clon parcialseguro/workspace/publicacion-chema-1.7 tiene descargasbasebddaf75 y sparsecheckout sólo nuevasrutas. No usarclonesviejoscon borrados staged.
+
+No editar app durante Gradle. Se puede completar documentación/metadatos después, distinguiendo commitfuncional5e del commitbuild. Main todavía81cd39a hasta integrar fuentevalidada sinforce; usuario autorizó main. No datos comerciales, no firma nueva, no pagos. Pendientes externos: Androidreal/APKexacto2.0/JSONexacto5pedidos y provisión del primer responsable comercial/backupoperativo. L8falta ruta visualconflicto, no afirmartodofísicoPASA. Sin promesa fuera deejecuciónactiva.
+
+---
+
 # Fuente corregida y validación final — 28/10/2026
 
 Scroll determinista RED2/3→GREEN3/3, check-release-scroll527/527 en61archivos, TypeScript/Functions pasan y lint0errores/1warning histórico. Buildwebfinal terminó0. UI final con CHEMA_TEST_LOCAL=true y2workers en curso ui-final.txt; baseline8082sirviendo ZIP anterior. Fuente funcional: Homeguardarestauración hastaoffsetconfirmado, gesto/filtrointerrumpen; no inventario tocado. No APK nuevo todavía; no afirmar actualización física.
