@@ -1,8 +1,8 @@
-# Repartos Chema 2.0.0 — APK Android
+# Repartos Chema 2.0.1 — APK Android
 
-- Archivo: `repartos-chema-2.0.0-arm64.apk` (56758420 bytes)
-- SHA-256: `97d4fcc12d8253580282d2b19124ff88146f7d71ea818b66c7f45cc1bb050f29`
-- Paquete `com.grupochema.repartos`, versión 2.0.0 (code 12), Android 7+, ARM64.
+- Archivo: `repartos-chema-2.0.1-arm64.apk` (57321188 bytes)
+- SHA-256: `832320225c731dd7bd27aee7455b5a21d5e2490808a7de4dc9747e56b0843af2`
+- Paquete `com.grupochema.repartos`, versión 2.0.1 (code 13), Android 7+, ARM64.
 - Firma: certificado SHA-256 `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`, el mismo de la 1.x → **se instala encima sin desinstalar**.
 
 ## Instalar

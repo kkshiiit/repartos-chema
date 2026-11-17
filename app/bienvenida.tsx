@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
+import { Image, KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { BookOpen, LogIn, Plus, Truck } from 'lucide-react-native';
+import { BookOpen, LogIn, Plus } from 'lucide-react-native';
 import { Button, Field, Notice, useUI } from '../src/components/ui';
 import { ThemeToggle } from '../src/components/ThemeToggle';
 import { useAuth } from '../src/context/AuthContext';
@@ -38,18 +38,11 @@ export default function Bienvenida() {
               <ThemeToggle />
             </View>
             <View style={{ alignItems: 'center', gap: 14, paddingVertical: 12 }}>
-              <View
-                style={{
-                  width: 84,
-                  height: 84,
-                  borderRadius: 26,
-                  backgroundColor: C.primary,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Truck size={44} color={C.onPrimary} />
-              </View>
+              <Image
+                source={require('../assets/brand/chema-andamios.png')}
+                accessibilityLabel="Logo Chema Andamios"
+                style={{ width: 150, height: 150 }}
+              />
               <Text accessibilityRole="header" style={[s.title, { fontSize: 32, lineHeight: 38, textAlign: 'center' }]}>
                 Repartos Chema
               </Text>
