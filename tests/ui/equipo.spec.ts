@@ -1,5 +1,5 @@
 /**
- * Chema Andamios 2.0 — recorrido completo contra el backend real (Supabase).
+ * Chema Andamios — recorrido completo contra el backend real (Supabase).
  * Crea un equipo de prueba con nombre "QA ..." que luego se borra con
  * `scripts/qa-cleanup.mjs` (necesita token de gestión, nunca se guarda en el repo).
  */

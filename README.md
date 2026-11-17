@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="descargas/LEEME.md"><b>Descargar APK 2.1.0</b></a> ·
+  <a href="descargas/LEEME.md"><b>Descargar APK 1.0.0</b></a> ·
   <a href="docs/MANUAL.md">Manual de uso</a> ·
   <a href="docs/ARQUITECTURA.md">Arquitectura</a> ·
   <a href="docs/SEGURIDAD.md">Seguridad</a> ·
@@ -51,13 +51,13 @@ src/
   domain/            Reglas de negocio puras (motor de operaciones, validaciones)
   documents/         Generadores de remito Word y reporte Excel
   services/          Fotos, archivos, copias, tickets, viaje, avisos
-  data/              Lectura de datos de la versión 1.x (migración)
+  data/              Lectura de datos de la app anterior (migración)
   theme/             Colores y tipografía (Sol / Noche)
 supabase/migrations/ Esquema y funciones del servidor
 tests/               Pruebas unitarias (Vitest) y de punta a punta (Playwright)
 scripts/             Compilación web/Android, servidor local, limpieza de QA, respaldo
 descargas/           APK publicado y verificación SHA-256
-docs/                Manual, arquitectura, seguridad, cambios, capturas e historial 1.x
+docs/                Manual, arquitectura, seguridad, cambios y capturas
 ```
 
 ## Desarrollo

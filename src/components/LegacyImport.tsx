@@ -12,7 +12,7 @@ import { Button, Notice, useUI } from './ui';
 
 const LEGACY_KEY = 'chema:demo:v1';
 
-/** Ofrece pasar al equipo los datos que este teléfono tenía en la versión 1.x (solo local). */
+/** Ofrece pasar al equipo los datos que este teléfono tenía en la app anterior (Repartos Chema, sólo local). */
 export function LegacyImport() {
   const { C, s } = useUI();
   const inv = useInventory();
