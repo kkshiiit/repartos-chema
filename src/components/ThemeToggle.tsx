@@ -30,10 +30,10 @@ export function ThemeToggle() {
         minHeight: 48,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 12,
-        borderWidth: 0,
+        borderRadius: 14,
+        borderWidth: 1,
         borderColor: colors.hairline,
-        backgroundColor: pressed ? colors.selection : colors.glass,
+        backgroundColor: pressed ? colors.selection : colors.panel,
       })}
     >
       <Animated.View

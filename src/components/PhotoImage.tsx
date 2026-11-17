@@ -1,79 +1,50 @@
 import React, { useEffect, useState } from 'react';
-import { Image, Text, View } from 'react-native';
-import { getBytes, ref } from 'firebase/storage';
+import { ActivityIndicator, Image, Text, View } from 'react-native';
 import type { PhotoRef } from '../types';
-import { photoBytes, storePhoto, displayPhoto, releasePhoto } from '../services/photoCache';
-import { firebase, DATA_MODE } from '../services/firebase';
-import { useSharedSession } from '../context/SharedContext';
-import { downloadSharedPhoto, sharedPhotoCacheId } from '../shared/media';
+import { displayPhoto, releasePhoto } from '../services/photoCache';
+import { useAuth } from '../context/AuthContext';
+import { fetchTeamPhoto } from '../context/InventoryContext';
 import { useUI } from './ui';
+/** Muestra la foto local; si la sacó otra persona, la descarga una sola vez del equipo. */
 export function PhotoImage({ photo }: { photo: PhotoRef }) {
-  const { s } = useUI();
-  const shared = useSharedSession();
-  const remote = shared?.active ? shared.remote : null;
-  const cacheId =
-    remote && shared?.spaceId && shared.actor
-      ? sharedPhotoCacheId(shared.spaceId, shared.actor.uid, photo.id)
-      : photo.id;
+  const { C, s } = useUI();
+  const { session } = useAuth();
   const [uri, setUri] = useState(''),
     [error, setError] = useState('');
   useEffect(() => {
     let active = true,
       release = '';
     void (async () => {
-      let bytes = await photoBytes(cacheId);
-      if (!bytes && remote) {
-        const snapshot = await remote.snapshot();
-        const obra = snapshot.state.obras.find((o) => o.fotos?.some((p) => p.id === photo.id));
-        if (!obra) throw new Error('Foto pendiente de confirmar.');
-        bytes = await downloadSharedPhoto(remote, obra.id, photo.id);
-        await storePhoto(cacheId, bytes);
-      }
-      if (!bytes && !remote && photo.storagePath && DATA_MODE === 'firebase') {
-        bytes = new Uint8Array(
-          await getBytes(ref(firebase().storage, photo.storagePath), 2 * 1024 * 1024),
-        );
-        await storePhoto(photo.id, bytes);
-      }
-      const source = bytes
-        ? displayPhoto(bytes, cacheId)
-        : remote || DATA_MODE === 'demo' || photo.uri.startsWith('chema-photo:')
-          ? ''
-          : photo.uri;
-      if (!source) throw new Error('La foto no está disponible en este dispositivo.');
+      const bytes = session ? await fetchTeamPhoto(session.code, photo.id) : null;
+      if (!bytes) throw new Error('missing');
+      const source = displayPhoto(bytes, photo.id);
       if (active) {
         release = source;
         setUri(source);
         setError('');
       } else releasePhoto(source);
     })().catch(() => {
-      if (active) {
-        setUri('');
-        setError(
-          remote
-            ? 'Foto pendiente. Reintentá con conexión; el original se conserva.'
-            : DATA_MODE === 'demo'
-              ? 'Foto local no disponible. Recuperá una copia JSON completa.'
-              : 'Foto sin copia local. Reintenta con conexión.',
-        );
-      }
+      if (active) setError('Foto todavía no disponible. Se descargará con conexión.');
     });
     return () => {
       active = false;
       if (release) releasePhoto(release);
     };
-  }, [photo.id, photo.uri, photo.storagePath, remote, cacheId]);
+  }, [photo.id, session]);
   return (
     <View>
-      {uri && remote ? <Text style={s.muted}>Copia disponible en este teléfono</Text> : null}
       {uri ? (
         <Image
           source={{ uri }}
-          accessibilityLabel="Foto de materiales de la obra"
-          style={{ width: 150, height: 140, borderRadius: 12 }}
+          accessibilityLabel="Foto de materiales del alquiler"
+          style={{ width: 150, height: 140, borderRadius: 12, backgroundColor: C.panel2 }}
         />
+      ) : error ? (
+        <Text style={s.muted}>{error}</Text>
       ) : (
-        <Text style={s.muted}>{error || 'Cargando foto…'}</Text>
+        <View style={{ width: 150, height: 140, borderRadius: 12, backgroundColor: C.panel2, justifyContent: 'center' }}>
+          <ActivityIndicator color={C.accent} />
+        </View>
       )}
     </View>
   );

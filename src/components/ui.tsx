@@ -35,7 +35,7 @@ import {
   Check,
   ChevronDown,
   CloudOff,
-  Settings,
+  HelpCircle,
   Package,
   RefreshCw,
   X,
@@ -43,13 +43,9 @@ import {
 import { router } from 'expo-router';
 import { useAuth } from '../context/AuthContext';
 import { useInventory } from '../context/InventoryContext';
-import { DATA_MODE } from '../services/firebase';
-import { LOCAL_ONLY } from '../services/localMode';
 import { useTheme } from '../context/ThemeContext';
 import { dark, light, Colors, radius, typography, motionMs, spacing, fonts } from '../theme/tokens';
-import { pickBackup } from '../services/files';
 import { ThemeToggle } from './ThemeToggle';
-import { AuroraBackground } from './AuroraBackground';
 const makeStyles = (C: Colors) =>
   StyleSheet.create({
     row: { flexDirection: 'row', alignItems: 'center', gap: 12 },
@@ -57,6 +53,8 @@ const makeStyles = (C: Colors) =>
     card: {
       backgroundColor: C.panel,
       borderRadius: radius.object,
+      borderWidth: 1,
+      borderColor: C.hairline,
       padding: spacing.lg,
       gap: spacing.md,
     },
@@ -79,7 +77,7 @@ const makeStyles = (C: Colors) =>
       paddingHorizontal: 14,
       paddingVertical: 13,
       fontSize: typography.body.fontSize,
-      minHeight: 48,
+      minHeight: 52,
     },
     divider: { height: 1, backgroundColor: C.hairline },
     grow: { flex: 1, minWidth: 0 },
@@ -188,7 +186,7 @@ export function Button({
         onPressOut={() => press(1)}
         style={({ pressed }) => [
           {
-            minHeight: variant === 'primary' ? 52 : 48,
+            minHeight: variant === 'primary' ? 54 : 50,
             borderRadius: radius.input,
             paddingHorizontal: 16,
             paddingVertical: 11,
@@ -204,7 +202,7 @@ export function Button({
                   : variant === 'secondary'
                     ? C.panel2
                     : 'transparent',
-            borderWidth: 0,
+            borderWidth: variant === 'secondary' ? 1 : 0,
             borderColor: variant === 'primary' ? C.primary : C.line,
             opacity: disabled ? 0.4 : pressed ? 0.92 : 1,
           },
@@ -215,13 +213,13 @@ export function Button({
         {isBusy ? (
           <ActivityIndicator color={foreground} />
         ) : Icon ? (
-          <Icon size={18} color={foreground} />
+          <Icon size={20} color={foreground} />
         ) : null}
         <Text
           style={{
             color: foreground,
             fontFamily: fonts.semibold,
-            fontSize: 15,
+            fontSize: 16,
             lineHeight: 22,
             fontWeight: '700',
             flexShrink: 1,
@@ -255,9 +253,9 @@ export function IconButton({
         minWidth: 48,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: pressed ? C.selection : C.glass,
+        backgroundColor: pressed ? C.selection : C.panel,
         borderRadius: radius.input,
-        borderWidth: 0,
+        borderWidth: 1,
         borderColor: C.hairline,
       })}
     >
@@ -761,11 +759,20 @@ export function Screen({
   scroll?: boolean;
 }) {
   const { C, s } = useUI();
-  const { user, error: authError } = useAuth(),
+  const { user, session, error: authError } = useAuth(),
     inv = useInventory(),
     { width } = useWindowDimensions();
-  const [recovery, setRecovery] = useState<string | null>(null),
-    [localError, setLocalError] = useState('');
+  const pending = inv.queue.length;
+  const syncTone = !inv.online ? C.warning : inv.error ? C.danger : pending ? C.warning : C.success;
+  const syncText = !inv.online
+    ? `Sin conexión${pending ? ` · ${pending} por enviar` : ' · guardado aquí'}`
+    : inv.syncing
+      ? 'Sincronizando…'
+      : inv.error
+        ? 'Error al sincronizar · tocá para reintentar'
+        : pending
+          ? `${pending} por enviar`
+          : 'Sincronizado';
   const body = (
     <View
       style={{
@@ -777,35 +784,48 @@ export function Screen({
         flex: scroll ? undefined : 1,
       }}
     >
-      <View style={{ gap: 4 }}>
+      <View style={{ gap: 6 }}>
         {!back ? (
-          <View style={[s.row, { justifyContent: 'space-between' }]}>
-            <View style={s.grow}>
-              <Text style={[s.label, { fontSize: 12 }]}>Repartos Chema</Text>
-              <Text style={[s.muted, { fontSize: 12 }]}>
-                {DATA_MODE === 'demo'
-                  ? inv.workspaceId
-                    ? inv.syncSummary || 'Copia local del equipo'
-                    : LOCAL_ONLY
-                      ? inv.workspaceKey && inv.workspaceKey !== 'local'
-                        ? 'Copia individual recuperada'
-                        : 'Local · En este celular'
-                      : 'Demo · En este dispositivo'
-                  : !inv.online
-                    ? 'Sin conexión'
-                    : inv.syncing
-                      ? 'Sincronizando…'
-                      : inv.queue.length
-                        ? `${inv.queue.length} pendientes`
-                        : 'Guardado en el equipo'}
+          <View style={[s.row, { justifyContent: 'space-between', gap: 8 }]}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={`${session?.teamName || 'Repartos Chema'}. ${syncText}. Tocar para sincronizar ahora.`}
+              onPress={() => void inv.retry()}
+              style={({ pressed }) => [s.grow, { opacity: pressed ? 0.7 : 1, minHeight: 48, justifyContent: 'center' }]}
+            >
+              <Text numberOfLines={1} style={[s.label, { fontSize: 13, color: C.muted }]}>
+                {session?.teamName || 'Repartos Chema'}
               </Text>
-            </View>
+              <View style={[s.row, { gap: 6 }]}>
+                {inv.syncing ? (
+                  <ActivityIndicator size="small" color={syncTone} />
+                ) : (
+                  <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: syncTone }} />
+                )}
+                <Text numberOfLines={1} style={{ color: C.text, fontFamily: fonts.medium, fontSize: 13 }}>
+                  {syncText}
+                </Text>
+              </View>
+            </Pressable>
+            <IconButton label="Guía de uso" icon={HelpCircle} onPress={() => router.push('/guia')} />
             <ThemeToggle />
-            <IconButton
-              label="Abrir ajustes"
-              icon={Settings}
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={`Sesión de ${user?.nombre || ''}. Abrir ajustes`}
               onPress={() => router.push('/configuracion')}
-            />
+              style={({ pressed }) => ({
+                minHeight: 48,
+                minWidth: 48,
+                borderRadius: 24,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: pressed ? C.selection : C.primary,
+              })}
+            >
+              <Text style={{ color: C.onPrimary, fontFamily: fonts.semibold, fontSize: 17, fontWeight: '700' }}>
+                {initials(user?.nombre)}
+              </Text>
+            </Pressable>
           </View>
         ) : null}
         <View style={[s.row, { justifyContent: 'space-between' }]}>
@@ -824,9 +844,9 @@ export function Screen({
         {subtitle ? <Text style={s.muted}>{subtitle}</Text> : null}
       </View>
       {authError ? <Notice text={authError} tone="error" /> : null}
-      {inv.error || inv.queue.some((q) => q.status === 'CONFLICT') ? (
+      {inv.error ? (
         <View style={{ gap: 8 }}>
-          <Notice text={inv.error || 'Conflicto pendiente de revisión.'} tone="error" />
+          <Notice text={inv.error} tone="error" />
           <Button
             label="Reintentar"
             icon={RefreshCw}
@@ -834,49 +854,9 @@ export function Screen({
             loading={inv.syncing}
             onPress={() => void inv.retry()}
           />
-          {user?.role === 'ADMIN' ? (
-            <>
-              <Button
-                label="Guardar copia"
-                variant="secondary"
-                onPress={() => void inv.backup().catch((e) => setLocalError(userError(e)))}
-              />
-              {DATA_MODE === 'demo' ? (
-                <Button
-                  label="Elegir recuperación"
-                  variant="secondary"
-                  onPress={() =>
-                    void pickBackup()
-                      .then(setRecovery)
-                      .catch((e) => setLocalError(userError(e)))
-                  }
-                />
-              ) : null}
-              {recovery !== null ? (
-                <ConfirmButton
-                  label="Restaurar datos"
-                  title="Recuperar desde copia"
-                  description="Se conservará el original. En equipo, la copia se abre en un espacio individual; no reemplaza al equipo."
-                  onConfirm={async () => {
-                    await inv.restore(recovery);
-                    setRecovery(null);
-                    setLocalError('');
-                  }}
-                />
-              ) : null}
-            </>
-          ) : null}
-          {localError ? <Notice text={localError} tone="error" /> : null}
-          {inv.queue.some((q) => q.status === 'CONFLICT') ? (
-            <ConfirmButton
-              label="Descartar rechazo"
-              title="Descartar intento rechazado"
-              description="Se conservará una copia local del intento. Revisa el inventario actualizado y registra una corrección con motivo."
-              onConfirm={inv.discard}
-            />
-          ) : null}
         </View>
       ) : null}
+      {inv.rejected?.length ? <RejectedNotice /> : null}
       {!inv.ready ? <ActivityIndicator color={C.red} /> : children}
     </View>
   );
@@ -885,7 +865,6 @@ export function Screen({
       edges={back ? ['top', 'bottom', 'left', 'right'] : ['top', 'left', 'right']}
       style={{ flex: 1, backgroundColor: C.bg }}
     >
-      <AuroraBackground />
       {scroll ? (
         <ScrollView
           keyboardShouldPersistTaps="handled"
@@ -960,8 +939,29 @@ export function Pending() {
     <View style={[s.row, { gap: 5 }]}>
       <CloudOff size={13} color={C.subtle} />
       <Text style={{ fontSize: 11, color: C.muted }}>
-        {DATA_MODE === 'demo' ? 'Guardado local' : 'Pendiente de nube'}
+        Por enviar
       </Text>
+    </View>
+  );
+}
+
+export function initials(name?: string) {
+  const parts = (name || '?').trim().split(/\s+/).filter(Boolean);
+  return ((parts[0]?.[0] || '?') + (parts[1]?.[0] || '')).toUpperCase();
+}
+/** Cambios propios que el equipo no pudo aplicar (por ejemplo, stock ya usado por otra persona). */
+function RejectedNotice() {
+  const { s } = useUI();
+  const inv = useInventory();
+  const list = inv.rejected || [];
+  return (
+    <View style={{ gap: 8 }}>
+      <Notice
+        tone="error"
+        text={`${list.length === 1 ? 'Un cambio tuyo no se pudo aplicar' : `${list.length} cambios tuyos no se pudieron aplicar`} porque otra persona modificó lo mismo antes. ${list[0]?.error || ''}`}
+      />
+      <Text style={s.muted}>Revisá los datos actualizados y, si hace falta, cargá el cambio de nuevo.</Text>
+      <Button label="Entendido" variant="secondary" onPress={() => inv.dismissRejected?.()} />
     </View>
   );
 }
