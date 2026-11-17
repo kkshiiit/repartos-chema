@@ -1,6 +1,6 @@
 # Repartos Chema 2.0 — equipo sincronizado
 
-**Descargar APK 2.0.0 (Android 7+, ARM64):** ver la sección *Descarga* más abajo · [Novedades, instalación y funcionamiento](docs/VERSION_2_0.md)
+**[Descargar APK 2.0.0 (Android 7+, ARM64)](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/claude/vibrant-lamport-0ogsbp/descargas/repartos-chema-2.0.0-arm64.apk)** · [Instalación y SHA-256](descargas/LEEME.md) · [Novedades, instalación y funcionamiento](docs/VERSION_2_0.md)
 
 - Todos los teléfonos con el mismo **código de equipo** ven y cargan los mismos datos; funciona sin señal y sincroniza solo.
 - Cada persona **ingresa con su nombre**. Todo cambio queda en la **Auditoría** (quién, qué, cuándo y qué materiales se movieron).
