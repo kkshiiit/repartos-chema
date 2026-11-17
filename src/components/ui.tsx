@@ -789,12 +789,12 @@ export function Screen({
           <View style={[s.row, { justifyContent: 'space-between', gap: 8 }]}>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel={`${session?.teamName || 'Repartos Chema'}. ${syncText}. Tocar para sincronizar ahora.`}
+              accessibilityLabel={`${session?.teamName || 'Chema Andamios'}. ${syncText}. Tocar para sincronizar ahora.`}
               onPress={() => void inv.retry()}
               style={({ pressed }) => [s.grow, { opacity: pressed ? 0.7 : 1, minHeight: 48, justifyContent: 'center' }]}
             >
               <Text numberOfLines={1} style={[s.label, { fontSize: 13, color: C.muted }]}>
-                {session?.teamName || 'Repartos Chema'}
+                {session?.teamName || 'Chema Andamios'}
               </Text>
               <View style={[s.row, { gap: 6 }]}>
                 {inv.syncing ? (

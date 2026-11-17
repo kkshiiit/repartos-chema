@@ -1,5 +1,5 @@
 import { expect, it, vi } from 'vitest';
-import { Repository, type KeyValueStorage } from '../src/data/repository';
+import { Repository, type KeyValueStorage } from './helpers/legacyRepository';
 import { emptyLocalState } from '../src/data/localInitialState';
 import { demoProfile, seed } from '../src/data/seed';
 import { saveVerifiedBackup } from '../src/services/backupService';

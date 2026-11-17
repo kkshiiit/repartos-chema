@@ -38,7 +38,6 @@ vi.mock('../src/context/InventoryContext', () => ({
     undoRestore: mocks.undoRestore,
   }),
 }));
-vi.mock('../src/services/firebase', () => ({ DATA_MODE: 'demo' }));
 vi.mock('../src/services/localMode', () => ({ LOCAL_ONLY: true }));
 vi.mock('../src/services/files', () => ({
   pickBackup: mocks.pick,
@@ -70,7 +69,6 @@ vi.mock('../src/components/DataList', () => ({
     ),
 }));
 vi.mock('../src/services/photoCache', () => ({ photoBytes: vi.fn(), storePhoto: vi.fn() }));
-vi.mock('../src/services/notifications', () => ({ enableNotifications: vi.fn() }));
 vi.mock('../src/components/ui', () => ({
   Screen: 'Screen',
   Button: 'Button',

@@ -9,7 +9,6 @@ import { useAuth } from '../context/AuthContext';
 import { Button, Chip, Field, Notice, Select, useUI, usePanelChanges } from './ui';
 import { SmartCounter } from './SmartCounter';
 import { FaltantesForm } from './FaltantesForm';
-import { LOCAL_ONLY } from '../services/localMode';
 import { required } from '../domain/rules';
 export function Drivers({ value, onChange }: { value: string[]; onChange: (v: string[]) => void }) {
   const { s } = useUI();
@@ -236,9 +235,7 @@ export function OperationForm({
             text={
               mode === 'retiro'
                 ? 'El material sano vuelve a depósito. Registra aquí solo los nuevos daños o pérdidas de esta inspección.'
-                : LOCAL_ONLY
-                  ? 'El material afectado sale del saldo alquilado y queda registrado en el historial de este celular. No se envían avisos externos.'
-                  : 'El material afectado sale del saldo de este alquiler. El aviso a administración quedará pendiente hasta que el servicio FCM lo confirme.'
+                : 'El material afectado sale del saldo alquilado y queda registrado en la Auditoría con tu nombre.'
             }
           />
           <FaltantesForm obra={obra} value={incidents} onChange={setIncidents} />

@@ -2,9 +2,7 @@ import { Platform } from 'react-native';
 import * as Picker from 'expo-image-picker';
 import { ImageManipulator, SaveFormat } from 'expo-image-manipulator';
 import { File, Paths } from 'expo-file-system';
-import { ref, uploadBytes, getDownloadURL, getMetadata } from 'firebase/storage';
-import { photoBytes, storePhoto } from './photoCache';
-import { firebase } from './firebase';
+import { storePhoto } from './photoCache';
 import type { PhotoRef } from '../types';
 export async function selectPhoto(
   id: string,
@@ -41,26 +39,4 @@ export async function selectPhoto(
     uri = dest.uri;
   }
   return { id, uri, status: 'PENDING', usuarioUid: uid };
-}
-export async function uploadPhoto(obraId: string, p: PhotoRef): Promise<PhotoRef> {
-  const path = `photos/${p.usuarioUid}/${obraId}/${p.id}.jpg`;
-  const objectRef = ref(firebase().storage, path);
-  try {
-    await getMetadata(objectRef);
-    return { ...p, status: 'SYNCED', storagePath: path, uri: await getDownloadURL(objectRef) };
-  } catch (e) {
-    if ((e as { code?: string }).code !== 'storage/object-not-found') throw e;
-  }
-  const blob =
-    (await photoBytes(p.id)) ??
-    (Platform.OS === 'web' ? await (await fetch(p.uri)).blob() : await new File(p.uri).bytes());
-  if ((blob instanceof Uint8Array ? blob.byteLength : blob.size) > 2 * 1024 * 1024)
-    throw new Error('Foto demasiado grande.');
-  await uploadBytes(ref(firebase().storage, path), blob, { contentType: 'image/jpeg' });
-  return {
-    ...p,
-    status: 'SYNCED',
-    storagePath: path,
-    uri: await getDownloadURL(ref(firebase().storage, path)),
-  };
 }

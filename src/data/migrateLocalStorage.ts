@@ -1,4 +1,4 @@
-import type { KeyValueStorage } from './repository';
+import type { KeyValueStorage } from './keyValueStorage';
 import type { SqliteStorage } from './sqliteStorage';
 const PREFIX = 'chema:demo:v1';
 export const MIGRATION_KEY = 'chema:migrated-asyncstorage:v1';

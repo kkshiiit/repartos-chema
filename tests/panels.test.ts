@@ -11,7 +11,6 @@ vi.mock('../src/context/ThemeContext', () => ({
 }));
 vi.mock('../src/context/AuthContext', () => ({ useAuth: () => ({}) }));
 vi.mock('../src/context/InventoryContext', () => ({ useInventory: () => ({}) }));
-vi.mock('../src/services/firebase', () => ({ DATA_MODE: 'demo' }));
 vi.mock('../src/services/localMode', () => ({ LOCAL_ONLY: true }));
 vi.mock('../src/services/files', () => ({ pickBackup: vi.fn() }));
 vi.mock('../src/components/ThemeToggle', () => ({ ThemeToggle: () => null }));

@@ -18,7 +18,7 @@ export function remitoText(o: ObraCard): string {
     `Recibió: ${o.recibidoPor || 'Sin registrar'}`,
     `Entrega: ${o.entregadoPor?.join(', ') || 'Por asignar'}`,
     `Retiro: ${o.retiradoPor?.join(', ') || 'Por asignar'}`,
-    'Repartos Chema · Remito informativo',
+    'Chema Andamios · Remito informativo',
   ].join('\n');
 }
 export function whatsappUrl(o: ObraCard): string {

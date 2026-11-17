@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { Repository, KeyValueStorage, RemoteAdapter } from '../src/data/repository';
+import { Repository, KeyValueStorage, RemoteAdapter } from './helpers/legacyRepository';
 import { seed, demoProfile } from '../src/data/seed';
 import { applyOperation } from '../src/domain/engine';
 import type { Operation } from '../src/types';

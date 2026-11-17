@@ -142,7 +142,7 @@ ${o.observaciones ? `<h2>Observaciones</h2><div class="notes">${esc(o.observacio
 <div><div class="label">Recibió</div><div class="value">${esc(o.recibidoPor || '—')}</div></div>
 </div>
 <div class="sign"><div>Firma y aclaración del cliente</div><div>Firma ${esc(t.business)}</div></div>
-<div class="foot">Atendió ${esc(t.issuedBy)} · Documento generado con Repartos Chema</div>
+<div class="foot">Atendió ${esc(t.issuedBy)} · Documento generado con Chema Andamios</div>
 </body></html>`;
 }
 

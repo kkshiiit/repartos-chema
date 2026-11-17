@@ -173,7 +173,7 @@ export default function Settings() {
   };
   const shareCode = () =>
     Share.share({
-      message: `Sumate al equipo "${session?.teamName}" en Repartos Chema.\n\n1. Instalá la app.\n2. Tocá "Unirme a un equipo".\n3. Escribí este código: ${session?.code}\n4. Ingresá con tu nombre.`,
+      message: `Sumate al equipo "${session?.teamName}" en Chema Andamios.\n\n1. Instalá la app.\n2. Tocá "Unirme a un equipo".\n3. Escribí este código: ${session?.code}\n4. Ingresá con tu nombre.`,
     })
       .then(() => undefined)
       .catch(() => undefined);
@@ -302,7 +302,7 @@ export default function Settings() {
         onConfirm={leaveTeam}
       />
       <Text style={[s.muted, { textAlign: 'center' }]}>
-        Repartos Chema {version} · Sincronizado en la nube
+        Chema Andamios {version} · Sincronizado en la nube
       </Text>
 
       <Sheet

@@ -1,9 +1,11 @@
 import { it, expect } from 'vitest';
 import ExcelJS from 'exceljs';
-import { generateExcel } from '../functions/src/excelGenerator';
-import { generateWord } from '../functions/src/wordGenerator';
+import { generateExcel } from '../src/documents/excelGenerator';
+import { generateWord } from '../src/documents/wordGenerator';
 import { seed } from '../src/data/seed';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 it('genera un XLSX institucional válido y un DOCX real', async () => {
   const obras = seed().obras;
   const excel = await generateExcel(obras, ExcelJS.Workbook);
@@ -17,7 +19,6 @@ it('genera un XLSX institucional válido y un DOCX real', async () => {
   const word = await generateWord(obras[0]!);
   expect(word.subarray(0, 2).toString()).toBe('PK');
   expect(word.length).toBeGreaterThan(5000);
-  await mkdir('artifacts', { recursive: true });
-  await writeFile('artifacts/reporte-demo.xlsx', Buffer.from(excel));
-  await writeFile('artifacts/remito-demo.docx', word);
+  await writeFile(join(tmpdir(), 'reporte-demo.xlsx'), Buffer.from(excel));
+  await writeFile(join(tmpdir(), 'remito-demo.docx'), word);
 });

@@ -6,5 +6,5 @@
     "paths": { "@/*": ["./src/*"] }
   },
   "include": ["app/**/*.tsx", "src/**/*.ts", "src/**/*.tsx", "expo-env.d.ts"],
-  "exclude": ["node_modules", "functions", "tests"]
+  "exclude": ["node_modules", "tests"]
 }

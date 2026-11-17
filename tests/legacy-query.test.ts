@@ -74,7 +74,6 @@ vi.mock('../src/components/ui', () => {
   };
 });
 vi.mock('../src/services/exportService', () => ({ exportDocument: mocks.exportDocument }));
-vi.mock('../src/services/firebase', () => ({ DATA_MODE: 'demo' }));
 vi.mock('../src/services/depotSettings', () => ({ loadDepot: vi.fn(async () => ({ nombre: 'Depósito sintético', direccion: 'Dirección sintética', coordenadas: { lat: -34.5, lng: -58.5 } })) }));
 vi.mock('../src/services/links', () => ({ openLink: vi.fn() }));
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });

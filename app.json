@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "Repartos Chema",
-    "slug": "repartos-chema",
+    "name": "Chema Andamios",
+    "slug": "chema-andamios",
     "scheme": "repartoschema",
-    "version": "2.0.1",
+    "version": "2.1.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "ios": {
@@ -14,18 +14,21 @@
       "package": "com.grupochema.repartos",
       "blockedPermissions": [
         "android.permission.RECORD_AUDIO",
-        "android.permission.SYSTEM_ALERT_WINDOW"
+        "android.permission.SYSTEM_ALERT_WINDOW",
+        "com.google.android.c2dm.permission.RECEIVE",
+        "com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"
       ],
-      "versionCode": 13,
+      "versionCode": 14,
       "adaptiveIcon": {
         "foregroundImage": "./assets/app/adaptive-foreground.png",
         "backgroundColor": "#C91824"
-      }
+      },
+      "allowBackup": false
     },
     "web": {
       "bundler": "metro",
       "output": "single",
-      "name": "Repartos Chema",
+      "name": "Chema Andamios",
       "favicon": "./assets/app/icon.png"
     },
     "plugins": [
@@ -44,7 +47,6 @@
           "locationWhenInUsePermission": "Usar tu ubicación al ordenar el viaje."
         }
       ],
-      "expo-secure-store",
       "expo-status-bar",
       "expo-sharing",
       "expo-font",

@@ -1,4 +1,0 @@
-
-> repartos-chema@1.0.0 lint
-> eslint app src tests functions/src
-
