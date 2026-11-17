@@ -1,7 +1,4 @@
-import { SharedAccessGate } from '../src/components/SharedAccessGate';
-import { SharedProvider } from '../src/context/SharedContext';
 import { FeedbackProvider } from '../src/context/FeedbackContext';
-import { WelcomeProvider } from '../src/components/WelcomeProvider';
 import { Stack, router, useSegments } from 'expo-router';
 import { ThemeProvider } from '../src/context/ThemeContext';
 import React, { useEffect } from 'react';
@@ -11,31 +8,44 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider, useAuth } from '../src/context/AuthContext';
 import { InventoryProvider } from '../src/context/InventoryContext';
 import { useUI } from '../src/components/ui';
+
+const OPEN_ROUTES = ['bienvenida', 'quien', 'guia'];
 function Navigation() {
   const { C } = useUI();
-  const { user, loading } = useAuth();
+  const { user, session, loading } = useAuth();
   const segments = useSegments();
-  const loginRoute = segments[0] === '(auth)';
-  const authRoute = loginRoute || segments[0] === 'equipo';
+  const first = segments[0] || '';
   useEffect(() => {
-    if (!loading) {
-      if (!user && !authRoute) router.replace('/(auth)/login');
-      if (user && loginRoute) router.replace('/');
-    }
-  }, [user, loading, authRoute, loginRoute]);
+    if (loading) return;
+    if (!session && first !== 'bienvenida' && first !== 'guia') router.replace('/bienvenida');
+    else if (session && !user && first !== 'quien' && first !== 'guia') router.replace('/quien');
+    else if (user && (first === 'bienvenida' || first === 'quien')) router.replace('/');
+  }, [user, session, loading, first]);
   if (loading)
     return (
       <View style={{ flex: 1, backgroundColor: C.bg, justifyContent: 'center', gap: 12 }}>
-        <ActivityIndicator color={C.red} />
-        <Text style={{ color: C.muted, textAlign: 'center' }}>Cargando Repartos Chema…</Text>
+        <ActivityIndicator color={C.accent} size="large" />
+        <Text style={{ color: C.muted, textAlign: 'center' }}>Cargando Chema Andamios…</Text>
       </View>
     );
+  const blocked = !user && !OPEN_ROUTES.includes(first);
   return (
-    <InventoryProvider key={user?.uid || 'anonymous'}>
+    <InventoryProvider key={session?.teamId || "none"}>
       <FeedbackProvider>
-        <SharedAccessGate>
-          <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: C.bg } }} />
-        </SharedAccessGate>
+        {blocked ? (
+          <View style={{ flex: 1, backgroundColor: C.bg, justifyContent: 'center' }}>
+            <ActivityIndicator color={C.accent} size="large" />
+          </View>
+        ) : (
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              animation: 'fade_from_bottom',
+              animationDuration: 180,
+              contentStyle: { backgroundColor: C.bg },
+            }}
+          />
+        )}
       </FeedbackProvider>
     </InventoryProvider>
   );
@@ -45,13 +55,9 @@ export default function Root() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <ThemeProvider>
-          <SharedProvider>
-            <AuthProvider>
-              <WelcomeProvider>
-                <Navigation />
-              </WelcomeProvider>
-            </AuthProvider>
-          </SharedProvider>
+          <AuthProvider>
+            <Navigation />
+          </AuthProvider>
         </ThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

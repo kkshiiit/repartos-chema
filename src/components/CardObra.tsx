@@ -28,6 +28,18 @@ export function CardObra({
   const task = rentalTaskForDate(o, today);
   const taskColor =
     task.group === 'overdue' ? C.danger : task.group === 'today' ? C.warning : C.muted;
+  const stripe =
+    task.group === 'overdue'
+      ? C.danger
+      : task.group === 'today'
+        ? C.warning
+        : o.estadoProceso === 'PENDIENTE_ENTREGA'
+          ? C.purple
+          : o.estadoProceso === 'ENTREGADO'
+            ? C.success
+            : C.line;
+  void first;
+  void last;
   return (
     <Pressable
       accessibilityRole="button"
@@ -36,24 +48,24 @@ export function CardObra({
       onPress={() => router.push(`/obra/${o.id}`)}
       style={({ pressed }) => ({
         backgroundColor: pressed ? C.selection : C.panel,
-        borderBottomWidth: last ? 0 : 1,
+        borderWidth: 1,
+        borderLeftWidth: 6,
         borderColor: C.hairline,
-        borderTopLeftRadius: first ? 12 : 0,
-        borderTopRightRadius: first ? 12 : 0,
-        borderBottomLeftRadius: last ? 12 : 0,
-        borderBottomRightRadius: last ? 12 : 0,
-        paddingVertical: 10,
+        borderLeftColor: stripe,
+        borderRadius: 16,
+        marginBottom: 10,
+        paddingVertical: 12,
         paddingHorizontal: 14,
-        gap: 3,
+        gap: 4,
       })}
     >
       <View style={[s.row, { alignItems: 'flex-start', gap: 8 }]}>
-        <Text style={[s.label, s.grow, { fontSize: 16, lineHeight: 22, fontWeight: '700' }]}>
+        <Text style={[s.label, s.grow, { fontSize: 18, lineHeight: 24, fontWeight: '700' }]}>
           {o.clienteNombre}
         </Text>
         <ChevronRight size={18} color={C.muted} />
       </View>
-      <Text style={[s.body, { fontSize: 14, lineHeight: 20 }]}>
+      <Text style={[s.body, { fontSize: 15, lineHeight: 21 }]}>
         {o.direccion} <Text style={{ color: C.muted }}>· {o.localidadBarrio}</Text>
       </Text>
       <Text style={[s.muted, { fontSize: 13, lineHeight: 19 }]}>
@@ -62,7 +74,7 @@ export function CardObra({
       <View style={[s.row, { flexWrap: 'wrap', gap: 6, marginTop: 3 }]}>
         <StatusChip obra={o} compact today={today} />
         {task.kind !== 'FINISHED' ? (
-          <Text style={[s.muted, { color: taskColor, fontSize: 13, lineHeight: 19 }]}>
+          <Text style={[s.muted, { color: taskColor, fontSize: 14, lineHeight: 20, fontWeight: '700' }]}>
             {task.label}
           </Text>
         ) : null}

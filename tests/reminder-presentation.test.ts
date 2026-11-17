@@ -23,7 +23,7 @@ const mocks = vi.hoisted(() => ({
   resetDirty: vi.fn(),
 }));
 vi.mock('react-native', () => ({ View: 'View', Text: 'Text', Pressable: 'Pressable' }));
-vi.mock('lucide-react-native', () => ({ Check: 'Check' }));
+vi.mock('lucide-react-native', () => new Proxy({}, { get: (_t, k) => (k === '__esModule' ? false : k === 'then' ? undefined : String(k)), has: () => true }));
 vi.mock('../src/context/FeedbackContext', () => ({
   useFeedback: () => ({
     state: mocks.state!,

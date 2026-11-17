@@ -1,18 +1,20 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, Pressable, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { FlashListRef } from '@shopify/flash-list';
-import { Plus } from 'lucide-react-native';
+import { AlertTriangle, CalendarClock, HardHat, PackagePlus, Plus } from 'lucide-react-native';
 import { router } from 'expo-router';
 import { useInventory } from '../../src/context/InventoryContext';
 import { useAuth } from '../../src/context/AuthContext';
 import { Button, Empty, Notice, Screen, Select, Sheet, useUI } from '../../src/components/ui';
 import { CardObra } from '../../src/components/CardObra';
+import { LegacyImport } from '../../src/components/LegacyImport';
 import { DataList } from '../../src/components/DataList';
-import { SearchToolbar, SectionHeading, Segmented } from '../../src/components/ListStructure';
+import { SearchToolbar, SectionHeading } from '../../src/components/ListStructure';
 import { businessDate } from '../../src/domain/rules';
 import {
   rentalRows,
+  rentalTaskForDate,
   matchesPresentationStatusFilter,
   matchesRentalSearch,
   type RentalRow,
@@ -26,6 +28,8 @@ import {
 } from '../../src/services/rentalListPreferences';
 import { BUSINESS_TIME_ZONE } from '../../src/utils/retirementCalendar';
 import { useBusinessClock } from '../../src/hooks/useBusinessClock';
+import { fonts } from '../../src/theme/tokens';
+import type { ObraCard } from '../../src/types';
 
 export default function Home() {
   const inventory = useInventory();
@@ -181,6 +185,7 @@ function RentalList({ scope }: { scope: string }) {
         ) : undefined
       }
     >
+      <LegacyImport />
       <View style={{ gap: 10 }}>
         <SearchToolbar
           label="Buscar alquileres"
@@ -189,15 +194,7 @@ function RentalList({ scope }: { scope: string }) {
           placeholder="Cliente, dirección o localidad"
           onFilter={() => setFiltersOpen(true)}
         />
-        <Segmented
-          value={status}
-          options={[
-            { value: 'TODAS', label: 'Todos' },
-            { value: 'HOY', label: 'Hoy' },
-            { value: 'ATRASADOS', label: 'Atrasados' },
-          ]}
-          onChange={(value) => changeView({ status: value })}
-        />
+        <SummaryTiles obras={state.obras} today={today} value={status} onChange={(value) => changeView({ status: status === value ? 'TODAS' : value })} />
         {hasFilters ? (
           <View style={{ alignItems: 'flex-start' }}>
             <Button label="Limpiar filtros" variant="ghost" onPress={clearFilters} />
@@ -327,6 +324,7 @@ function RentalList({ scope }: { scope: string }) {
             { value: 'ATRASADOS', label: 'Entregas y retiros atrasados' },
             { value: 'PROXIMOS', label: 'Próximas tareas' },
             { value: 'PENDIENTE', label: 'Por entregar' },
+            { value: 'EN_OBRA', label: 'En obra' },
             { value: 'ROJO', label: 'Retiros vencidos' },
             { value: 'AMARILLO', label: 'Retiros de hoy' },
             { value: 'VERDE', label: 'Al día' },
@@ -339,5 +337,82 @@ function RentalList({ scope }: { scope: string }) {
         <Button label="Limpiar filtros" variant="ghost" onPress={clearFilters} />
       </Sheet>
     </Screen>
+  );
+}
+
+/** Resumen del día: cuatro números grandes que además filtran la lista al tocarlos. */
+function SummaryTiles({
+  obras,
+  today,
+  value,
+  onChange,
+}: {
+  obras: ObraCard[];
+  today: string;
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  const { C } = useUI();
+  const counts = useMemo(() => {
+    let overdue = 0,
+      todayCount = 0,
+      pending = 0,
+      working = 0;
+    for (const o of obras) {
+      const group = rentalTaskForDate(o, today).group;
+      if (group === 'overdue') overdue++;
+      if (group === 'today') todayCount++;
+      if (o.estadoProceso === 'PENDIENTE_ENTREGA') pending++;
+      if (o.estadoProceso === 'ENTREGADO') working++;
+    }
+    return { overdue, todayCount, pending, working };
+  }, [obras, today]);
+  const tiles = [
+    { key: 'ATRASADOS', label: 'Atrasados', n: counts.overdue, icon: AlertTriangle, color: C.danger, bg: C.dangerBackground },
+    { key: 'HOY', label: 'Para hoy', n: counts.todayCount, icon: CalendarClock, color: C.warning, bg: C.warningBackground },
+    { key: 'PENDIENTE', label: 'Por entregar', n: counts.pending, icon: PackagePlus, color: C.purple, bg: C.panel2 },
+    { key: 'EN_OBRA', label: 'En obra', n: counts.working, icon: HardHat, color: C.success, bg: C.successBackground },
+  ];
+  return (
+    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+      {tiles.map((t) => {
+        const selected = value === t.key;
+        return (
+          <Pressable
+            key={t.key}
+            accessibilityRole="button"
+            accessibilityState={{ selected }}
+            accessibilityLabel={`${t.label}: ${t.n}. ${selected ? 'Filtro activo, tocar para ver todos' : 'Tocar para filtrar'}`}
+            onPress={() => onChange(t.key)}
+            style={({ pressed }) => ({
+              flexGrow: 1,
+              flexBasis: '45%',
+              minHeight: 74,
+              borderRadius: 16,
+              paddingHorizontal: 14,
+              paddingVertical: 10,
+              borderWidth: selected ? 2.5 : 1,
+              borderColor: selected ? t.color : C.hairline,
+              backgroundColor: pressed ? C.selection : selected ? t.bg : C.panel,
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 10,
+            })}
+          >
+            <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: t.bg, alignItems: 'center', justifyContent: 'center' }}>
+              <t.icon size={22} color={t.color} />
+            </View>
+            <View style={{ flex: 1, minWidth: 0 }}>
+              <Text style={{ color: C.text, fontFamily: fonts.semibold, fontSize: 26, lineHeight: 30, fontWeight: '700', fontVariant: ['tabular-nums'] }}>
+                {t.n}
+              </Text>
+              <Text numberOfLines={1} style={{ color: C.muted, fontFamily: fonts.medium, fontSize: 13 }}>
+                {t.label}
+              </Text>
+            </View>
+          </Pressable>
+        );
+      })}
+    </View>
   );
 }

@@ -34,24 +34,7 @@ vi.mock('react-native', () => ({
     },
   },
 }));
-vi.mock('lucide-react-native', () => ({
-  Navigation: 'Navigation',
-  LocateFixed: 'LocateFixed',
-  ArrowUp: 'ArrowUp',
-  ArrowDown: 'ArrowDown',
-  CornerDownLeft: 'CornerDownLeft',
-  Route: 'Route',
-  RotateCcw: 'RotateCcw',
-  MoreHorizontal: 'MoreHorizontal',
-  ChevronRight: 'ChevronRight',
-  Warehouse: 'Warehouse',
-  CheckCircle2: 'CheckCircle2',
-  Clock: 'Clock',
-  CircleAlert: 'CircleAlert',
-  Archive: 'Archive',
-  Download: 'Download',
-  FileText: 'FileText',
-}));
+vi.mock('lucide-react-native', () => new Proxy({}, { get: (_t, k) => (k === '__esModule' ? false : k === 'then' ? undefined : String(k)), has: () => true }));
 vi.mock('../src/components/TripOrderEditor', () => ({ TripOrderEditor: () => null }));
 vi.mock('../src/components/DataList', () => ({
   DataList: ({ data, renderItem, ListHeaderComponent }: { data: unknown[]; renderItem: (arg: {item: unknown}) => React.ReactNode; ListHeaderComponent?: React.ReactNode }) =>
@@ -91,7 +74,6 @@ vi.mock('../src/components/ui', () => {
   };
 });
 vi.mock('../src/services/exportService', () => ({ exportDocument: mocks.exportDocument }));
-vi.mock('../src/services/firebase', () => ({ DATA_MODE: 'demo' }));
 vi.mock('../src/services/depotSettings', () => ({ loadDepot: vi.fn(async () => ({ nombre: 'Depósito sintético', direccion: 'Dirección sintética', coordenadas: { lat: -34.5, lng: -58.5 } })) }));
 vi.mock('../src/services/links', () => ({ openLink: vi.fn() }));
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });

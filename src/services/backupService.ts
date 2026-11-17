@@ -57,14 +57,14 @@ export function inspectBackup(raw: string) {
     );
   }
   if (!value || typeof value !== 'object' || Array.isArray(value))
-    throw new Error('Seleccioná una copia JSON de Repartos Chema. No se modificaron datos.');
+    throw new Error('Seleccioná una copia JSON de Chema Andamios. No se modificaron datos.');
   const parsed = value as {
     format?: string;
     envelope?: Envelope;
     photos?: Record<string, string>;
   };
   if (parsed.format !== 'chema-backup-v1')
-    throw new Error('Selecciona una copia completa de Repartos Chema.');
+    throw new Error('Selecciona una copia completa de Chema Andamios.');
   const e = parseEnvelope(JSON.stringify(parsed.envelope));
   validateImportEnvelope(e);
   if (e.queue.length)

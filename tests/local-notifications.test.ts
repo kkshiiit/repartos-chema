@@ -103,7 +103,7 @@ describe('adaptadores de notificaciones locales', () => {
         identifier: 'test-id',
         content: expect.objectContaining({
           title: 'Recordatorio de alquiler',
-          body: 'Cliente sintético · Revisá el retiro previsto en Repartos Chema.',
+          body: 'Cliente sintético · Revisá el retiro previsto en Chema Andamios.',
           data: { obraId: 'synthetic', kind: 'reminder', sound: true },
         }),
         trigger: {

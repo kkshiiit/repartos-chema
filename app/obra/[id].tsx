@@ -20,7 +20,6 @@ import {
 } from 'lucide-react-native';
 import * as Location from 'expo-location';
 import { useInventory, makeId } from '../../src/context/InventoryContext';
-import { useSharedSession } from '../../src/context/SharedContext';
 import { useAuth } from '../../src/context/AuthContext';
 import {
   Button,
@@ -34,7 +33,7 @@ import {
   useUI,
 } from '../../src/components/ui';
 import { PhotoImage } from '../../src/components/PhotoImage';
-import { deleteLocalPhoto } from '../../src/services/photoCache';
+import { TicketShareButton } from '../../src/components/TicketShare';
 import { StatusChip } from '../../src/components/StatusChip';
 import { SmartCounter } from '../../src/components/SmartCounter';
 import { LoadEditor } from '../../src/components/LoadEditor';
@@ -42,8 +41,6 @@ import { OperationForm } from '../../src/components/OperationForm';
 import { mapsUrl, whatsappUrl } from '../../src/utils/whatsapp';
 import { openLink } from '../../src/services/links';
 import { selectPhoto } from '../../src/services/storageService';
-import { LOCAL_ONLY } from '../../src/services/localMode';
-import { DATA_MODE } from '../../src/services/firebase';
 import { businessDate } from '../../src/domain/rules';
 import { useBusinessClock } from '../../src/hooks/useBusinessClock';
 import { retirementCountdown } from '../../src/utils/retirementCalendar';
@@ -51,7 +48,6 @@ import { formatDate } from '../../src/utils/formatters';
 export default function Detail() {
   const { C, s } = useUI();
   const now = useBusinessClock();
-  const shared = useSharedSession();
   const { id, accion } = useLocalSearchParams<{ id: string; accion?: string }>(),
     { state, dispatch } = useInventory(),
     { user } = useAuth();
@@ -145,41 +141,16 @@ export default function Detail() {
               }}
               onPress={() => run(() => openLink(mapsUrl(o)))}
             />
-            <Button
-              label="Remito"
-              icon={MessageCircle}
-              variant="secondary"
-              disabled={busy}
-              style={{
-                flex: 1,
-                minWidth: 80,
-                minHeight: 48,
-                paddingHorizontal: 10,
-                gap: 6,
-              }}
-              onPress={() => run(() => openLink(whatsappUrl(o)))}
+            <TicketShareButton
+              obra={o}
+              style={{ flex: 2, minWidth: 160, minHeight: 48, paddingHorizontal: 10, gap: 6 }}
             />
-            {user?.role === 'ADMIN' ? (
-              <Button
-                label="Documento"
-                icon={Download}
-                variant="secondary"
-                style={{
-                  flex: 1,
-                  minWidth: 90,
-                  minHeight: 48,
-                  paddingHorizontal: 10,
-                  gap: 6,
-                }}
-                onPress={() => router.push(`/exportar?obraId=${o.id}`)}
-              />
-            ) : null}
           </View>
         </View>
         <View
           style={[
             s.row,
-            { backgroundColor: C.panel, borderRadius: 16, padding: 16, flexWrap: 'wrap', gap: 16 },
+            { backgroundColor: C.panel, borderRadius: 16, borderWidth: 1, borderColor: C.hairline, padding: 16, flexWrap: 'wrap', gap: 16 },
           ]}
         >
           <CalendarDays size={24} color={C.muted} />
@@ -340,9 +311,7 @@ export default function Detail() {
         </Disclosure>
         <Disclosure title="Fotos">
           <Text style={s.muted}>
-            {DATA_MODE === 'demo'
-              ? 'Fotos locales; no se respaldan en nube. Al borrar datos de la app o del navegador se pierden.'
-              : 'Fotos en cola hasta completar subida y registro. Mantén la app abierta para sincronizar.'}
+            Las fotos se comparten con todo el equipo al sincronizar.
           </Text>
           <View style={s.wrap}>
             <Button
@@ -374,28 +343,13 @@ export default function Detail() {
             {o.fotos?.map((p) => (
               <View key={p.id} style={{ width: 150, gap: 8 }}>
                 <PhotoImage photo={p} />
-                <Text style={s.muted}>
-                  {shared?.active
-                    ? 'Foto del equipo'
-                    : DATA_MODE === 'demo'
-                      ? 'Foto local'
-                      : p.status === 'PENDING'
-                        ? 'Subida pendiente'
-                        : 'Foto en nube'}
-                </Text>
                 {user?.role === 'ADMIN' || p.usuarioUid === user?.uid ? (
                   <ConfirmButton
                     label="Borrar foto"
                     title="Eliminar foto"
-                    description={
-                      shared?.active || DATA_MODE === 'demo'
-                        ? 'Se quitará del alquiler. El archivo se conserva para recuperar copias anteriores.'
-                        : 'Se quitará del registro. La limpieza remota se procesa por el servidor.'
-                    }
+                    description="Se quitará del alquiler para todo el equipo. Queda registrado en la auditoría."
                     onConfirm={async () => {
                       await dispatch({ type: 'DELETE_PHOTO', obraId: o.id, photoId: p.id });
-                      if (!shared?.active && DATA_MODE === 'firebase' && p.status === 'SYNCED')
-                        await deleteLocalPhoto(p.id);
                     }}
                   />
                 ) : null}
@@ -449,15 +403,6 @@ export default function Detail() {
               setLng(String(o.coordenadas?.lng ?? ''));
               setModal('ubicacion');
             }}
-          />
-          <Notice
-            text={
-              LOCAL_ONLY || DATA_MODE === 'demo'
-                ? 'Guardado en este celular. No hay sincronización en la nube.'
-                : o.syncStatus === 'PENDING'
-                  ? '☁️⏳ Pendiente de nube. El cambio está guardado en este dispositivo.'
-                  : 'Confirmado por el servidor.'
-            }
           />
         </Disclosure>
         <Disclosure title="Recordatorios">

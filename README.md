@@ -1,109 +1,80 @@
-# Repartos Chema 1.6.1 — Android individual y gratuito
+<p align="center">
+  <img src="assets/brand/chema-andamios.png" width="140" alt="Chema Andamios" />
+</p>
 
-[**Descargar APK 1.6.1 ARM64**](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.6.1-local.1/repartos-chema-local-1.6.1-arm64.apk) · [Instalación y SHA256](https://github.com/kkshiiit/repartos-chema/blob/descargas/android/v1.6.1-local.1/LEEME.md) · [Auditoría completa](docs/AUDITORIA_MAESTRA_ACTUAL.md) · [Informe de entrega](docs/ENTREGA_LOCAL_1_6_1.md) · [Fuente ZIP y web](https://github.com/kkshiiit/repartos-chema/tree/descargas/respaldos/v1.6.1-local)
+<h1 align="center">Chema Andamios</h1>
 
-Local y offline, instalación nueva vacía, sin anuncios ni backend/servicios pagos obligatorios. Antes de actualizar: guardar JSON fuera de la app e instalar encima, sin desinstalar ni borrar datos. Mismo paquete/certificado. 444unitarias/57recorridosweb, Gradle completo y descarga recuperada verificados; **prueba físicaAndroid pendiente**. Los avisos dependen de los permisos y las restricciones del sistema, sin puntualidad exacta garantizada.
+<p align="center">
+  App Android para el alquiler de andamios: entregas, retiros, depósito y viajes,<br/>
+  con todo el equipo sincronizado, auditoría de cada cambio y tickets profesionales.
+</p>
 
-SHA256 APK: `03e42657ad62d9c39ddd3cc2060a8ebd1d11d861fd78c0da46bda2f311c578f1`. [Manual](docs/USO_LOCAL_ANDROID.md) · [Capturas claras/oscuras](docs/GALERIA_AVISOS_1_6.md) · [Continuidad](docs/CONTINUIDAD_CODEX.md).
-
-## Desarrollo local actual
-
-```bash
-npm ci
-npm --prefix functions ci
-npm run check
-npm run build:web
-npm run preview
-CHEMA_TEST_LOCAL=true npm run test:ui -- --workers=1
-```
-
-Node24 probado; Chromium para Playwright (CHROMIUM_PATH si está en otra ruta). Sin .env para individual. Android necesita JDK21/SDK36 y la clave anterior externa: [guía](docs/ANDROID.md). No correr instalaciones, Chromium y Gradle simultáneamente en un entorno con8GiB. Npm audit no está en cero; revisión y límites en la auditoría. No activar cloud ni facturación para la demo individual.
+<p align="center">
+  <a href="descargas/LEEME.md"><b>Descargar APK 2.1.0</b></a> ·
+  <a href="docs/MANUAL.md">Manual de uso</a> ·
+  <a href="docs/ARQUITECTURA.md">Arquitectura</a> ·
+  <a href="docs/SEGURIDAD.md">Seguridad</a> ·
+  <a href="docs/CAMBIOS.md">Cambios</a>
+</p>
 
 ---
 
-## Antecedente 1.4, preservado como historial
+## Funciones
 
-# Repartos Chema 1.4.0 — individual local
+| | |
+|---|---|
+| **Equipo sincronizado** | Todos los teléfonos con el mismo código de equipo ven y cargan los mismos datos. Funciona sin señal y sincroniza solo. |
+| **Ingreso por nombre** | Cada persona elige su nombre; no hay contraseñas. |
+| **Auditoría** | Cada cambio queda registrado con persona, fecha, hora y materiales movidos. No se puede borrar desde la app. |
+| **Alquileres** | Cliente, carga, entrega, retiro con faltantes/daños, reingreso, fotos y recordatorios. |
+| **Depósito** | Stock en depósito, en obra, en taller y perdido; ajustes y movimientos con motivo. |
+| **Viaje** | Recorrido del día ordenado y abierto en Google Maps. |
+| **Tickets** | PDF profesional, WhatsApp al cliente, texto, Word o Excel. |
+| **Copias** | Exportar/importar todo en JSON (con fotos y auditoría). |
+| **Sol y Noche** | Tema de alto contraste para la calle y tema oscuro. |
+| **Guía** | Guía de uso por secciones dentro de la app, exportable en PDF. |
 
-[**Descargar APK único 1.4.0 ARM64**](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.4.0-local.1/repartos-chema-local-1.4.0-arm64.apk)
+<p align="center">
+  <img src="docs/capturas/02b-inicio-con-datos-sol.png" width="230" alt="Inicio, modo Sol" />
+  <img src="docs/capturas/06-inicio-noche.png" width="230" alt="Inicio, modo Noche" />
+  <img src="docs/capturas/04-ticket-formatos.png" width="230" alt="Compartir ticket" />
+</p>
 
-[Si no descarga: abrir la ficha y tocar Download raw file](https://github.com/kkshiiit/repartos-chema/blob/descargas/android/v1.4.0-local.1/repartos-chema-local-1.4.0-arm64.apk). Repositorio privado: iniciar sesión con acceso.
+## Estructura
 
-Android7+, ARM64, versión1.4.0/code7,56.039.655bytes. Gradle completo10m36s; firma v2/CRC/ABI/SQLite y tonos originales comprobados. Certificado idéntico a1.3.0. Recuperado desdeGitHub y SHA coincidente. **No se probó instalación ni uso en Android físico.** Antes de actualizar: guardar JSON fuera de la app e instalar encima sin desinstalar ni borrar datos. Una instalación nueva comienza vacía; una existente conserva datos/migración.
-
-SHA256:
-
-```text
-79ad05905267460596270333316403796465e5bc9e874d478b04ca8710ca6bb1
+```
+app/                 Pantallas (Expo Router)
+src/
+  components/        Componentes de interfaz
+  context/           Sesión (equipo + nombre), inventario sincronizado, tema, avisos
+  sync/              Sincronización: API del servidor, almacenamiento local, cola y réplica
+  domain/            Reglas de negocio puras (motor de operaciones, validaciones)
+  documents/         Generadores de remito Word y reporte Excel
+  services/          Fotos, archivos, copias, tickets, viaje, avisos
+  data/              Lectura de datos de la versión 1.x (migración)
+  theme/             Colores y tipografía (Sol / Noche)
+supabase/migrations/ Esquema y funciones del servidor
+tests/               Pruebas unitarias (Vitest) y de punta a punta (Playwright)
+scripts/             Compilación web/Android, servidor local, limpieza de QA, respaldo
+descargas/           APK publicado y verificación SHA-256
+docs/                Manual, arquitectura, seguridad, cambios, capturas e historial 1.x
 ```
 
-[Manual Android](docs/USO_LOCAL_ANDROID.md) · [Informe de entrega](docs/ENTREGA_COBALTO_1_4.md) · [Capturas claras/oscuras](docs/GALERIA_COBALTO.md) · [APK comprobado](artifacts/validacion/android-1.4.0-apk.json) · [Fuentes ZIP y web](https://github.com/kkshiiit/repartos-chema/tree/descargas/respaldos/v1.4.0-local)
+## Desarrollo
 
-## Novedades y funcionamiento
-
-- Papel cálido, tinta y cobalto. Títulos serif locales, listas claras, temas claro/oscuro/sistema y cambio rápido. Fondo estático, transiciones breves y reducir movimiento. Alta/edición en Cliente/Carga/Revisar sin mover stock al avanzar. Paneles con cierre protegido.
-- Alquileres, Depósito, Viaje e Historial. Búsqueda, zona y estados con texto/iconos. Retirados agrupa retirado y reingresado; no hay filtro Cerradas separado.
-- Cargas, cantidades, medidas, apodos, combos, responsables configurables y recibido por. Entrega, retiro inspeccionado, reingreso, reactivación, triangulación, daños/pérdidas, recuperación, ajustes y deshacer seguro auditado.
-- Inventario Android en SQLite transaccional, migración no destructiva y recuperación explícita ante errores. No se reinicia silenciosamente por corrupción.
-- JSON con revisión antes de confirmar, validación de referencias/fechas/medidas, copias anteriores y catálogo de recuperación. Guardado Android en carpeta con lectura de comprobación; cancelar no cuenta como respaldo. Empezar vacío exige copia importable y confirmación.
-- Fotos locales JPEG hasta1024px, permisos y compresión. Quitar una foto activa conserva bytes necesarios para copias retenidas. No se suben a nube.
-- Viaje prioriza retiros, orden manual o ubicación real, Maps y regreso al depósito fijo. WhatsApp abre remito para que el usuario confirme su envío.
-- Word/Excel institucionales locales. Descarga web probada; cámara, selector de carpeta y Compartir nativos pendientes de validación física. No hay PDF automático.
-- Avisos por alquiler, locales y opt-in, fecha/hora elegidas, sin repetición automática. Sonidos/vibración de confirmación apagados inicialmente; web no programa avisos. No hay push remoto.
-- Ingreso por nombre local: identifica movimientos, no autentica una cuenta ni crea usuarios remotos.
-
-## Ejecutar desde el código
-
-Expo57, React Native0.86, React19, TypeScript6, Expo Router, React Context, SQLite nativo/AsyncStorage web, Zod, FlashList, Lucide, ExcelJS/docx. No se cambió de framework.
-
-Node22.13+ o24.3+ y npm; esta entrega se comprobó con Node24.19/npm11.9. No se necesitan credenciales:
+Requisitos: Node 22+, npm. Para Android: JDK 21 (y JDK 17 para plugins de Gradle), Android SDK 36, build-tools 36.0.0, NDK 27.1.12297006, CMake 3.22.1.
 
 ```bash
 npm ci
-cp .env.example .env
-npm run web
+npm run check                 # tipos + lint + pruebas unitarias
+npm run build:web && npm run preview   # versión web de prueba en http://localhost:8081
+npm run test:ui -- --trace off         # recorrido real con dos teléfonos (crea equipos "QA …")
+npm run qa:cleanup            # borra los equipos "QA …" (requiere SUPABASE_ACCESS_TOKEN)
+npm run build:android         # APK ARM64 verificado (firma, paquete y versión)
 ```
 
-El ejemplo fija LOCAL_ONLY=true y DATA_MODE=demo: comienza vacío únicamente cuando no existen datos. Las variables Firebase quedan vacías; el código cloud histórico permanece inactivo. No configurar servicios para usar esta edición.
+No hay variables de entorno obligatorias ni claves secretas en el proyecto. Ver [Seguridad](docs/SEGURIDAD.md).
 
-Exportación web reproducible:
+## Licencia
 
-```bash
-npm run build:web
-npm run preview
-# http://localhost:8081 en ese mismo equipo
-```
-
-Localhost del entorno remoto no es una URL pública accesible desde el celular. Para Android usar el APK. No abrir index.html mediante file://. El worker web guarda estáticos, no respuestas Firebase ni documentos privados.
-
-## Pruebas y compilación
-
-```bash
-npm --prefix functions ci
-npm run check
-npm run build:web
-# mantener npm run preview abierto:
-CHEMA_TEST_LOCAL=true npm run test:ui -- --workers=2
-```
-
-Resultados actuales:218/218 pruebas, tipos/lint/build Functions correctos;44/44recorridos web. npmci completo desde carpeta vacía correcto.271capturas nuevas,80superficies de contraste sin violaciones automáticas. Integraciones Firebase excluidas y no ejecutadas; compilar Functions no demuestra nube funcionando. Cámara/archivos/avisos nativos se comprobaron con adaptadores simulados, pendientes de prueba física.
-
-APK con JDK21 completo, SDK36/build-tools36.0.0, NDK27.1.12297006 y CMake3.22.1:
-
-```bash
-CHEMA_ANDROID_KEYSTORE=/ruta/privada/firma-existente.keystore npm run build:android:demo
-```
-
-Requiere JAVA_HOME/ANDROID_HOME válidos. Genera Android y ejecuta Gradle completo ARM64; no usa EAS ni un servicio de compilación pago. Preservar certificado; nunca sustituir la firma de una instalación con datos. Detalles y proxy del entorno en [ANDROID.md](docs/ANDROID.md).
-
-## Límites y conservación
-
-La validación física sigue pendiente: actualizar encima, migrar datos/fotos, reiniciar, cámara/galería, GPS/Maps/WhatsApp, guardar carpeta y abrir/compartir documentos. No hay métricas físicas de FPS, RAM o batería. Las capturas son web real con contenido sintético, no Android físico.
-
-La firma es interna de plantilla. JSON y fotos no están cifrados por usar el sandbox; guardar copias externas y proteger el dispositivo. Las recuperaciones/fotos retenidas consumen espacio: no hay limpieza destructiva automática. AutoBackup del sistema no sustituye una copia comprobada.
-
-Quedan avisos transitivos de dependencias documentados en el informe. Se corrigió el decoder vulnerable sin degradar Expo/RN. No se declara cero vulnerabilidades ni se usó audit fix --force.
-
-No se activó facturación, hosting ni producción. El APK opera sin infraestructura paga; las cuotas futuras de GitHub/cómputo de desarrollo o conexión móvil no se consideran ilimitadas.
-
-[Checkpoint para continuar](docs/CONTINUIDAD_CODEX.md) · [Arquitectura](docs/ARQUITECTURA.md) · [Entrega anterior1.2.2 conservada](docs/PULIDO_1_2_2.md). Las guías cloud antiguas describen integraciones separadas, no requisitos de esta edición.
+Software privado de Chema Andamios. Todos los derechos reservados.

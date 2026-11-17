@@ -17,8 +17,8 @@ vi.mock('@react-native-async-storage/async-storage', () => ({
     },
   },
 }));
-vi.mock('react-native', () => ({ View: 'View', ActivityIndicator: 'ActivityIndicator' }));
-vi.mock('lucide-react-native', () => ({ Plus: 'Plus' }));
+vi.mock('react-native', () => ({ View: 'View', ActivityIndicator: 'ActivityIndicator', Pressable: 'Pressable', Text: 'Text' }));
+vi.mock('lucide-react-native', () => new Proxy({}, { get: (_t, k) => (k === '__esModule' ? false : k === 'then' ? undefined : String(k)), has: () => true }));
 vi.mock('expo-router', () => ({ router: { push: vi.fn() } }));
 vi.mock('../src/context/InventoryContext', () => ({
   useInventory: () => ({
