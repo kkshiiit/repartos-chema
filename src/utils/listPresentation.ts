@@ -79,6 +79,7 @@ export function matchesPresentationStatusFilter(
   if (filter === 'ATRASADOS') return task.group === 'overdue';
   if (filter === 'PROXIMOS') return task.group === 'upcoming';
   if (filter === 'RETIRADO') return task.kind === 'FINISHED';
+  if (filter === 'EN_OBRA') return obra.estadoProceso === 'ENTREGADO';
   return obraPresentationStatus(obra, today).key === filter;
 }
 export type RentalRow =

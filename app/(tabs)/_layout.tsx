@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Slot, router, usePathname } from 'expo-router';
 import { Animated, View, Text, Pressable } from 'react-native';
-import { LayoutGrid, Warehouse, Map, History } from 'lucide-react-native';
+import { LayoutGrid, Warehouse, Map, ShieldCheck } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useUI } from '../../src/components/ui';
 import { useTheme } from '../../src/context/ThemeContext';
@@ -10,7 +10,7 @@ const links = [
   { path: '/', label: 'Alquileres', icon: LayoutGrid },
   { path: '/galpon', label: 'Depósito', icon: Warehouse },
   { path: '/mapa', label: 'Viaje', icon: Map },
-  { path: '/historial', label: 'Historial', icon: History },
+  { path: '/historial', label: 'Auditoría', icon: ShieldCheck },
 ];
 function TabItem({ link, active }: { link: (typeof links)[number]; active: boolean }) {
   const { C } = useUI();
@@ -41,7 +41,7 @@ function TabItem({ link, active }: { link: (typeof links)[number]; active: boole
       style={({ pressed }) => ({
         flex: 1,
         minWidth: 0,
-        minHeight: 58,
+        minHeight: 64,
         alignItems: 'center',
         justifyContent: 'center',
         gap: 4,
@@ -55,10 +55,11 @@ function TabItem({ link, active }: { link: (typeof links)[number]; active: boole
         pointerEvents="none"
         style={{
           position: 'absolute',
-          top: 4,
-          width: 44,
-          height: 29,
-          borderRadius: 10,
+          top: 7,
+          zIndex: 0,
+          width: 58,
+          height: 32,
+          borderRadius: 16,
           backgroundColor: C.selection,
           opacity: progress,
           transform: [
@@ -66,13 +67,15 @@ function TabItem({ link, active }: { link: (typeof links)[number]; active: boole
           ],
         }}
       />
-      <link.icon size={21} color={active ? C.accent : C.muted} strokeWidth={active ? 2.5 : 1.8} />
+      <View style={{ zIndex: 1, height: 32, justifyContent: 'center' }}>
+        <link.icon size={24} color={active ? C.accent : C.muted} strokeWidth={active ? 2.5 : 2} />
+      </View>
       <Text
         style={{
           fontFamily: active ? fonts.semibold : fonts.regular,
           color: active ? C.text : C.muted,
-          fontSize: 12,
-          lineHeight: 17,
+          fontSize: 13,
+          lineHeight: 18,
           textAlign: 'center',
           maxWidth: '100%',
           alignSelf: 'stretch',
@@ -81,9 +84,6 @@ function TabItem({ link, active }: { link: (typeof links)[number]; active: boole
       >
         {link.label}
       </Text>
-      {active ? (
-        <View style={{ width: 14, height: 2, borderRadius: 2, backgroundColor: C.accent }} />
-      ) : null}
     </Pressable>
   );
 }
@@ -99,7 +99,7 @@ export default function Tabs() {
       <View
         style={{
           borderTopWidth: 1,
-          borderColor: C.hairline,
+          borderColor: C.line,
           backgroundColor: C.panel,
           paddingBottom: Math.max(insets.bottom, 6),
           paddingHorizontal: 8,

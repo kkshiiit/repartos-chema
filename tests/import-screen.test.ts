@@ -5,25 +5,10 @@ import { create, act } from 'react-test-renderer';
 import Settings from '../app/configuracion';
 const mocks = vi.hoisted(() => ({ pick: vi.fn(), restore: vi.fn(), undoRestore: vi.fn() }));
 vi.mock('../src/components/FeedbackSettings', () => ({ FeedbackSettings: () => null }));
-vi.mock('react-native', () => ({ View: 'View', Text: 'Text', Pressable: 'Pressable' }));
-vi.mock('lucide-react-native', () =>
-  Object.fromEntries(
-    [
-      'Bell',
-      'BookOpen',
-      'FileClock',
-      'FileText',
-      'Info',
-      'Layers',
-      'MapPin',
-      'Move',
-      'Sun',
-      'UserRound',
-      'UsersRound',
-      'ChevronRight',
-    ].map((name) => [name, 'Icon']),
-  ),
-);
+vi.mock('react-native', () => ({ View: 'View', Text: 'Text', Pressable: 'Pressable', Share: { share: vi.fn() } }));
+vi.mock('expo-constants', () => ({ default: { expoConfig: { version: '2.0.0' } } }));
+vi.mock('../src/components/LocalBackupActions', () => ({ LocalBackupActions: () => null }));
+vi.mock('lucide-react-native', () => new Proxy({}, { get: (_t, k) => (k === '__esModule' ? false : k === 'then' ? undefined : String(k)), has: () => true }));
 vi.mock('../src/services/depotSettings', () => ({
   loadDepot: vi.fn(async () => ({
     nombre: 'Depósito de prueba',
@@ -32,14 +17,20 @@ vi.mock('../src/services/depotSettings', () => ({
 }));
 vi.mock('expo-router', () => ({ router: { push: vi.fn() } }));
 vi.mock('../src/components/DepotSettings', () => ({ DepotSettings: () => null }));
-vi.mock('../src/components/TeamSettings', () => ({ TeamSettings: () => null }));
-vi.mock('../src/components/WelcomeProvider', () => ({
-  useWelcome: () => ({ openWelcome: vi.fn() }),
-}));
 vi.mock('../src/context/ThemeContext', () => ({
   useTheme: () => ({ preference: 'system', setPreference: vi.fn() }),
 }));
-vi.mock('../src/context/AuthContext', () => ({ useAuth: () => ({ user: { role: 'ADMIN' } }) }));
+vi.mock('../src/context/AuthContext', () => ({
+  useAuth: () => ({
+    user: { role: 'ADMIN', nombre: 'Ana', uid: 'u1' },
+    session: { code: 'ABCD-EFGH-JKLM', teamId: 't', teamName: 'Equipo' },
+    members: [],
+    refreshMembers: async () => [],
+    removeMember: vi.fn(),
+    switchUser: vi.fn(),
+    leaveTeam: vi.fn(),
+  }),
+}));
 vi.mock('../src/context/InventoryContext', () => ({
   useInventory: () => ({
     state: { obras: [], materiales: [], responsables: [] },
@@ -91,6 +82,7 @@ vi.mock('../src/components/ui', () => ({
     visible ? children : null,
   useUI: () => ({ s: {}, C: { panel: '#fff', hairline: '#ddd', muted: '#555' } }),
   usePanelChanges: () => ({ resetDirty: vi.fn() }),
+  initials: () => 'A',
 }));
 const raw = readFileSync(new URL('./fixtures/whatsapp-five.json', import.meta.url), 'utf8');
 beforeEach(() => {
@@ -107,7 +99,7 @@ it('al elegir copia abre revisión con cinco alquileres, sin anunciar guardado n
     view!.root.findAllByType('Button' as never).find((b) => b.props.label === name)!;
   expect(button('Elegir copia')).toBeUndefined();
   await act(async () => {
-    view!.root.findByProps({ accessibilityLabel: 'Copias y restauración' }).props.onPress();
+    view!.root.findByProps({ accessibilityLabel: 'Exportar e importar copia' }).props.onPress();
   });
   await act(async () => {
     await button('Elegir copia').props.onPress();
@@ -134,7 +126,7 @@ it('al elegir copia abre revisión con cinco alquileres, sin anunciar guardado n
   expect(mocks.restore).toHaveBeenCalledOnce();
   expect(mocks.restore).toHaveBeenCalledWith(raw);
   expect(view!.root.findAllByType('Notice' as never).map((n) => n.props.text)).toContain(
-    'Importación completada: 5 alquileres guardados en este celular.',
+    'Importación completada: 5 alquileres guardados para todo el equipo.',
   );
   await act(async () => view!.unmount());
 });
@@ -147,7 +139,7 @@ it('cancelar no restaura; una selección inválida posterior no permite importar
     view!.root.findAllByType('Button' as never).find((b) => b.props.label === name);
   expect(button('Elegir copia')).toBeUndefined();
   await act(async () => {
-    view!.root.findByProps({ accessibilityLabel: 'Copias y restauración' }).props.onPress();
+    view!.root.findByProps({ accessibilityLabel: 'Exportar e importar copia' }).props.onPress();
   });
   await act(async () => {
     await button('Elegir copia')!.props.onPress();

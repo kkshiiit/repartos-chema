@@ -1,3 +1,27 @@
+# Repartos Chema 2.0 — equipo sincronizado
+
+**Descargar APK 2.0.0 (Android 7+, ARM64):** ver la sección *Descarga* más abajo · [Novedades, instalación y funcionamiento](docs/VERSION_2_0.md)
+
+- Todos los teléfonos con el mismo **código de equipo** ven y cargan los mismos datos; funciona sin señal y sincroniza solo.
+- Cada persona **ingresa con su nombre**. Todo cambio queda en la **Auditoría** (quién, qué, cuándo y qué materiales se movieron).
+- Interfaz nueva: modo **Sol** (alto contraste para la calle) y **Noche**, cuadros de resumen del día, tarjetas con color de estado.
+- **Ticket** de cada alquiler en PDF, WhatsApp, texto, Word o Excel.
+- **Guía de uso** por secciones (exportable en PDF) y **exportar/importar** todo en JSON.
+- Se instala **encima de la 1.7 sin desinstalar** (misma firma). Si el teléfono tenía datos, el inicio ofrece pasarlos al equipo.
+
+## Desarrollo
+
+```bash
+npm ci
+npm run check          # tipos + lint + pruebas unitarias
+npm run build:web && npm run preview
+npm run test:ui -- --trace off   # recorrido real con dos teléfonos (crea equipos "QA …")
+```
+
+---
+
+## Antecedente 1.6.1 / 1.7, preservado como historial
+
 # Repartos Chema 1.6.1 — Android individual y gratuito
 
 [**Descargar APK 1.6.1 ARM64**](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/descargas/android/v1.6.1-local.1/repartos-chema-local-1.6.1-arm64.apk) · [Instalación y SHA256](https://github.com/kkshiiit/repartos-chema/blob/descargas/android/v1.6.1-local.1/LEEME.md) · [Auditoría completa](docs/AUDITORIA_MAESTRA_ACTUAL.md) · [Informe de entrega](docs/ENTREGA_LOCAL_1_6_1.md) · [Fuente ZIP y web](https://github.com/kkshiiit/repartos-chema/tree/descargas/respaldos/v1.6.1-local)

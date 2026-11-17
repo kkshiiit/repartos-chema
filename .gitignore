@@ -25,3 +25,4 @@ playwright-report/
 # Estado local regenerable de Supabase CLI
 supabase/.temp/
 supabase/.branches/
+artifacts/playwright/
