@@ -1,6 +1,6 @@
 # Chema Andamios 2.1.0 — APK Android
 
-**[Descargar chema-andamios-2.1.0-arm64.apk](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/claude/vibrant-lamport-0ogsbp/descargas/chema-andamios-2.1.0-arm64.apk)** (repositorio privado: iniciar sesión en GitHub)
+**[Descargar chema-andamios-2.1.0-arm64.apk](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/main/descargas/chema-andamios-2.1.0-arm64.apk)** (repositorio privado: iniciar sesión en GitHub)
 
 | | |
 |---|---|
