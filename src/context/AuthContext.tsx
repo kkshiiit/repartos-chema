@@ -1,7 +1,8 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import * as Crypto from 'expo-crypto';
 import type { UserProfile } from '../types';
-import { api, newTeamCode, normalizeCode, type Member } from '../sync/api';
+import { api, newTeamCode, normalizeCode, SyncError, type Member } from '../sync/api';
+import { kv } from '../sync/kv';
 import { readSession, writeSession, type TeamSession } from '../sync/session';
 import { actorFor } from '../sync/ops';
 
@@ -41,12 +42,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await writeSession(s);
     setSession(s);
   }, []);
+  const membersKey = session ? `chema2:members:${session.teamId}` : '';
   const refreshMembers = useCallback(async () => {
     if (!session) return [];
-    const list = await api.members(session.code);
-    setMembers(list);
-    return list;
-  }, [session]);
+    try {
+      const list = await api.members(session.code);
+      setMembers(list);
+      await kv.setItem(membersKey, JSON.stringify(list)).catch(() => undefined);
+      return list;
+    } catch (e) {
+      // Sin señal: usar la última lista guardada en el teléfono.
+      const cached = JSON.parse((await kv.getItem(membersKey)) || 'null') as Member[] | null;
+      if (cached) {
+        setMembers(cached);
+        return cached;
+      }
+      throw e;
+    }
+  }, [session, membersKey]);
   useEffect(() => {
     if (session) void Promise.resolve().then(refreshMembers).catch(() => undefined);
   }, [session, refreshMembers]);
@@ -82,7 +95,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (!session) throw new Error('Primero entrá a un equipo.');
         const clean = name.trim().replace(/\s+/g, ' ');
         if (clean.length < 2) throw new Error('Escribí tu nombre (al menos 2 letras).');
-        const member = await api.addMember(session.code, clean);
+        let member: Member;
+        try {
+          member = await api.addMember(session.code, clean);
+        } catch (e) {
+          const known = members.find((m) => m.name.toLowerCase() === clean.toLowerCase());
+          if (!(e instanceof SyncError && e.kind === 'offline') || !known) throw e;
+          member = known; // sin señal, una persona ya registrada puede volver a entrar
+        }
         await save({ ...session, member: { id: member.id, name: member.name } });
         refreshMembers().catch(() => undefined);
       },
