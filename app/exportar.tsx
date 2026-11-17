@@ -7,7 +7,6 @@ import { useInventory } from '../src/context/InventoryContext';
 import { useAuth } from '../src/context/AuthContext';
 import { Button, Field, Notice, Screen, Select, useUI } from '../src/components/ui';
 import { exportDocument } from '../src/services/exportService';
-import { DATA_MODE } from '../src/services/firebase';
 import { businessDate, validDate } from '../src/domain/rules';
 import { obraPresentationStatus } from '../src/utils/listPresentation';
 export default function Export() {
@@ -55,9 +54,7 @@ export default function Export() {
     <Screen
       title="Documentos"
       subtitle={
-        DATA_MODE === 'demo'
-          ? 'Generados en este dispositivo.'
-          : 'Generación privada de documentos.'
+        'Remitos Word y reportes Excel, generados en este teléfono.'
       }
       back
       footer={
@@ -159,11 +156,9 @@ export default function Export() {
           )}
           <Notice
             text={
-              DATA_MODE === 'demo'
-                ? Platform.OS === 'web'
-                  ? 'Excel y Word se generan en este dispositivo. No se envían a la nube.'
-                  : 'Excel y Word se generan en este celular y se comparten con las aplicaciones instaladas. No requieren servicios en la nube.'
-                : 'Generación privada en Cloud Functions. El archivo requiere autenticación y se elimina automáticamente.'
+              Platform.OS === 'web'
+                ? 'Excel y Word se generan en este dispositivo.'
+                : 'Excel y Word se generan en este teléfono y se comparten con las aplicaciones instaladas.'
             }
           />
           {error ? <Notice text={error} tone="error" /> : null}

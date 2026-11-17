@@ -114,7 +114,6 @@ vi.mock('../src/services/photoCache', () => ({ deleteLocalPhoto: vi.fn() }));
 vi.mock('../src/services/storageService', () => ({ selectPhoto: vi.fn() }));
 vi.mock('../src/services/links', () => ({ openLink: vi.fn() }));
 vi.mock('../src/services/localMode', () => ({ LOCAL_ONLY: true }));
-vi.mock('../src/services/firebase', () => ({ DATA_MODE: 'demo' }));
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
 
 let view: ReactTestRenderer | undefined;

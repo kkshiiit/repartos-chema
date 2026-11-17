@@ -1,9 +1,6 @@
 import { Platform } from 'react-native';
 import { saveFile } from './files';
-import { httpsCallable } from 'firebase/functions';
-import { getBytes, ref } from 'firebase/storage';
 import type { ObraCard, UserProfile } from '../types';
-import { DATA_MODE, firebase } from './firebase';
 import { localDocument } from './localDocuments';
 export async function exportDocument(
   kind: 'excel' | 'word',
@@ -13,20 +10,8 @@ export async function exportDocument(
 ) {
   if (user.role !== 'ADMIN') throw new Error('Exportación exclusiva de administración.');
   if (!obras.length) throw new Error('No hay obras para exportar.');
-  let bytes: Uint8Array;
-  if (DATA_MODE === 'demo') bytes = await localDocument(kind, obras);
-  else {
-    const result = await httpsCallable<
-      { kind: string; obraId?: string; from?: string; to?: string; status?: string },
-      { path: string }
-    >(
-      firebase().functions,
-      'exportDocument',
-    )({ kind, ...(kind === 'word' ? { obraId: obras[0]!.id } : filters) });
-    bytes = new Uint8Array(
-      await getBytes(ref(firebase().storage, result.data.path), 12 * 1024 * 1024),
-    );
-  }
+  void filters;
+  const bytes = await localDocument(kind, obras);
   const name = `chema-${kind === 'excel' ? 'reporte.xlsx' : 'remito.docx'}`,
     mime =
       kind === 'excel'

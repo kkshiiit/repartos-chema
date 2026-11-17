@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { expect, it, vi } from 'vitest';
 import { prepareRestore } from '../src/services/backupService';
 import { parseEnvelope } from '../src/data/validation';
-import { Repository, type KeyValueStorage } from '../src/data/repository';
+import { Repository, type KeyValueStorage } from './helpers/legacyRepository';
 import { seed, demoProfile } from '../src/data/seed';
 vi.mock('../src/services/photoCache', () => ({ storePhoto: vi.fn(), photoBytes: vi.fn() }));
 vi.mock('../src/services/files', () => ({ saveFile: vi.fn() }));

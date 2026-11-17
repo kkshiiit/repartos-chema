@@ -1,4 +1,4 @@
-import { SHARED_CONFIG } from '../services/sharedConfig';
+import { SHARED_CONFIG } from './config';
 
 export class SyncError extends Error {
   constructor(
@@ -15,6 +15,9 @@ const messages: Record<string, string> = {
   NOMBRE_VACIO: 'Escribí tu nombre.',
   LOTE_INVALIDO: 'No se pudieron enviar los cambios. Se reintentará.',
   OPERACION_GRANDE: 'El cambio es demasiado grande para enviarlo.',
+  DEMASIADOS_EQUIPOS: 'Se crearon demasiados equipos en poco tiempo. Probá de nuevo en una hora.',
+  LIMITE_EQUIPO: 'El equipo llegó al límite de espacio del servidor. Exportá una copia y avisá al responsable.',
+  FOTO_INVALIDA: 'Una foto no se pudo enviar porque el archivo no es válido.',
 };
 
 export async function rpc<T>(name: string, body: Record<string, unknown>, timeoutMs = 20000): Promise<T> {

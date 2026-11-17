@@ -152,8 +152,8 @@ export class SyncStore {
                 try {
                   await this.transport.uploadPhoto(id);
                 } catch (e) {
-                  if (e instanceof SyncError) throw e;
-                  /* foto ausente en este teléfono: no bloquea el resto */
+                  // Sin señal o servidor caído: reintentar más tarde. Foto ausente o inválida: seguir.
+                  if (e instanceof SyncError && (e.kind === 'offline' || e.kind === 'server')) throw e;
                 }
                 d.uploadedPhotos.push(id);
               }

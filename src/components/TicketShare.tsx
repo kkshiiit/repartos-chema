@@ -25,14 +25,14 @@ export function TicketShareButton({ obra, style }: { obra: ObraCard; style?: obj
     [busy, setBusy] = useState<TicketFormat | null>(null),
     [error, setError] = useState(''),
     [done, setDone] = useState('');
-  const data = user ? ticketData(obra, inv.state, session?.teamName || 'Repartos Chema', user) : null;
+  const data = user ? ticketData(obra, inv.state, session?.teamName || 'Chema Andamios', user) : null;
   const send = async (format: TicketFormat) => {
     if (!data || !user) return;
     setBusy(format);
     setError('');
     setDone('');
     try {
-      const label = await shareTicket(format, ticketData(obra, inv.state, session?.teamName || 'Repartos Chema', user, new Date()), user);
+      const label = await shareTicket(format, ticketData(obra, inv.state, session?.teamName || 'Chema Andamios', user, new Date()), user);
       await inv.note?.(`Compartió el ticket N° ${ticketNumber(obra)} (${label})`, obra.id);
       setDone(`Ticket ${label} listo.`);
     } catch (e) {

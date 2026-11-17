@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { Repository } from '../src/data/repository';
+import { Repository } from './helpers/legacyRepository';
 import { parseEnvelope, validateImportEnvelope } from '../src/data/validation';
 import { demoProfile, seed } from '../src/data/seed';
 import { backupData, inspectBackup, prepareRestore } from '../src/services/backupService';

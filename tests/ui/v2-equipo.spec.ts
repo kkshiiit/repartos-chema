@@ -1,11 +1,11 @@
 /**
- * Repartos Chema 2.0 — recorrido completo contra el backend real (Supabase).
+ * Chema Andamios 2.0 — recorrido completo contra el backend real (Supabase).
  * Crea un equipo de prueba con nombre "QA ..." que luego se borra con
  * `scripts/qa-cleanup.mjs` (necesita token de gestión, nunca se guarda en el repo).
  */
 import { test, expect, type Page, type Browser } from '@playwright/test';
 
-const shot = (name: string) => `artifacts/capturas/2.0/${name}.png`;
+const shot = (name: string) => `docs/capturas/${name}.png`;
 async function phone(browser: Browser, scheme: 'light' | 'dark') {
   const ctx = await browser.newContext({
     viewport: { width: 400, height: 860 },

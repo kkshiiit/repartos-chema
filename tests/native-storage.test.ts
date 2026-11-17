@@ -2,7 +2,7 @@ import { expect, it } from 'vitest';
 import { SqliteStorage } from '../src/data/sqliteStorage';
 import { createNativeInventoryStorage } from '../src/data/nativeInventoryStorage';
 import { sqliteDb } from './helpers/sqlite';
-import { Repository } from '../src/data/repository';
+import { Repository } from './helpers/legacyRepository';
 import { emptyLocalState } from '../src/data/localInitialState';
 import { demoProfile } from '../src/data/seed';
 function fixture() {

@@ -1,18 +1,12 @@
 import { createContext } from 'react';
 import type { Action, AppState, Envelope } from '../types';
-import type { ConflictArchive, ConflictArchiveSummary } from '../shared/repository';
 import type { BackupDestination } from '../services/files';
 import type { Rejected } from '../sync/store';
 export interface InventoryValue {
-  accessBlocked?: boolean;
   workspaceId?: string;
   workspaceKey?: string;
   syncSummary?: string;
   lastSyncedAt?: string;
-  loadMoreHistory?: () => Promise<boolean>;
-  historyHasMore?: boolean;
-  proposalArchives?: ConflictArchiveSummary[];
-  readProposalArchive?: (id: string) => Promise<ConflictArchive | null>;
   state: AppState;
   rejected?: Rejected[];
   dismissRejected?: (id?: string) => Promise<void>;

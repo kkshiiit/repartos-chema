@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import { sqliteDb as db } from './helpers/sqlite';
-import type { KeyValueStorage } from '../src/data/repository';
+import type { KeyValueStorage } from './helpers/legacyRepository';
 import { SqliteStorage } from '../src/data/sqliteStorage';
 import { migrateLocalInventory } from '../src/data/migrateLocalStorage';
-import { Repository } from '../src/data/repository';
+import { Repository } from './helpers/legacyRepository';
 import { emptyLocalState } from '../src/data/localInitialState';
 import { seed, demoProfile } from '../src/data/seed';
 class Legacy implements KeyValueStorage {

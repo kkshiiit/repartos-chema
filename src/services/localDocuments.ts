@@ -8,13 +8,13 @@ export async function localDocument(
   if (kind === 'word') {
     const [{ Packer }, { remitoDocument }] = await Promise.all([
       import('docx'),
-      import('../../functions/src/wordGenerator'),
+      import('../documents/wordGenerator'),
     ]);
     return new Uint8Array(await Packer.toArrayBuffer(remitoDocument(obras[0]!)));
   }
   const [ExcelJS, { generateExcel }] = await Promise.all([
     import('exceljs/dist/exceljs.min.js'),
-    import('../../functions/src/excelGenerator'),
+    import('../documents/excelGenerator'),
   ]);
   return new Uint8Array((await generateExcel(obras, ExcelJS.default.Workbook)) as ArrayBuffer);
 }

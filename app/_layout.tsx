@@ -25,7 +25,7 @@ function Navigation() {
     return (
       <View style={{ flex: 1, backgroundColor: C.bg, justifyContent: 'center', gap: 12 }}>
         <ActivityIndicator color={C.accent} size="large" />
-        <Text style={{ color: C.muted, textAlign: 'center' }}>Cargando Repartos Chema…</Text>
+        <Text style={{ color: C.muted, textAlign: 'center' }}>Cargando Chema Andamios…</Text>
       </View>
     );
   const blocked = !user && !OPEN_ROUTES.includes(first);

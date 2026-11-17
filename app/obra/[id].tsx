@@ -41,8 +41,6 @@ import { OperationForm } from '../../src/components/OperationForm';
 import { mapsUrl, whatsappUrl } from '../../src/utils/whatsapp';
 import { openLink } from '../../src/services/links';
 import { selectPhoto } from '../../src/services/storageService';
-import { LOCAL_ONLY } from '../../src/services/localMode';
-import { DATA_MODE } from '../../src/services/firebase';
 import { businessDate } from '../../src/domain/rules';
 import { useBusinessClock } from '../../src/hooks/useBusinessClock';
 import { retirementCountdown } from '../../src/utils/retirementCalendar';

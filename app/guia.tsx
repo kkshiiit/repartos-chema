@@ -188,13 +188,13 @@ const SECTIONS: Section[] = [
 
 const esc = (v: string) => v.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]!);
 function guideHtml() {
-  return `<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Guía Repartos Chema</title><style>
+  return `<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Guía Chema Andamios</title><style>
 @page{size:A4;margin:16mm}body{font-family:-apple-system,Roboto,Helvetica,Arial,sans-serif;color:#0A0C10;font-size:13px;line-height:1.5}
 h1{font-size:24px;margin:0 0 4px}.sub{color:#3B4350;margin-bottom:18px}
 .sec{border:1px solid #C9D0D9;border-left:6px solid #C2410C;border-radius:10px;padding:10px 14px;margin:0 0 12px;page-break-inside:avoid}
 .n{color:#C2410C;font-weight:800;font-size:11px;letter-spacing:1px;text-transform:uppercase}h2{font-size:16px;margin:2px 0 6px}
 ol{margin:6px 0 0 18px;padding:0}li{margin:2px 0}</style></head><body>
-<h1>Repartos Chema · Guía de uso</h1><div class="sub">Cada sección de la app, explicada en pocas líneas.</div>
+<h1>Chema Andamios · Guía de uso</h1><div class="sub">Cada sección de la app, explicada en pocas líneas.</div>
 ${SECTIONS.map((s, i) => `<div class="sec"><div class="n">Sección ${i + 1} · ${esc(s.where)}</div><h2>${esc(s.title)}</h2><div>${esc(s.summary)}</div><ol>${s.steps.map((t) => `<li>${esc(t)}</li>`).join('')}</ol></div>`).join('')}
 </body></html>`;
 }
@@ -203,7 +203,7 @@ async function exportGuide() {
   if (Platform.OS === 'web') return Print.printAsync({ html: guideHtml() });
   const { uri } = await Print.printToFileAsync({ html: guideHtml(), width: 595, height: 842 });
   const Sharing = await import('expo-sharing');
-  await Sharing.shareAsync(uri, { mimeType: 'application/pdf', UTI: 'com.adobe.pdf', dialogTitle: 'Guía Repartos Chema' });
+  await Sharing.shareAsync(uri, { mimeType: 'application/pdf', UTI: 'com.adobe.pdf', dialogTitle: 'Guía Chema Andamios' });
 }
 
 export default function Guia() {

@@ -44,7 +44,7 @@ export default function Bienvenida() {
                 style={{ width: 150, height: 150 }}
               />
               <Text accessibilityRole="header" style={[s.title, { fontSize: 32, lineHeight: 38, textAlign: 'center' }]}>
-                Repartos Chema
+                Chema Andamios
               </Text>
               <Text style={[s.body, { textAlign: 'center', color: C.muted }]}>
                 Alquiler de andamios: entregas, retiros, depósito y viajes. Todo el equipo ve lo mismo
@@ -84,7 +84,7 @@ export default function Bienvenida() {
                   label="Nombre del negocio"
                   value={teamName}
                   onChangeText={setTeamName}
-                  placeholder="Ej.: Andamios Chema"
+                  placeholder="Ej.: Chema Andamios"
                   maxLength={80}
                   onSubmitEditing={() => void go(() => createTeam(teamName))}
                 />
