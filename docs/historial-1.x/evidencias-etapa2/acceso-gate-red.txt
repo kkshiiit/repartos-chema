@@ -1,8 +1,0 @@
-
- RUN  v5.0.3 /workspace/repartos-chema
-
-No test files found, exiting with code 1
-
-filter: tests/shared-access-gate.test.tsx
-include: tests/**/*.test.ts
-exclude:  tests/*.integration.test.ts

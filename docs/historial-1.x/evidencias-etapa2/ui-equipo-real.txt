@@ -1,2 +1,0 @@
-PASS dark: Auth real + tres alquileres del mismo equipo
-PASS light: Auth real + tres alquileres del mismo equipo

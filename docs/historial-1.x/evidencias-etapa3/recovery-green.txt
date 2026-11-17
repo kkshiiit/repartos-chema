@@ -1,8 +1,0 @@
-
- RUN  v5.0.3 /workspace/repartos-chema
-
-
- Test Files  2 passed (2)
-      Tests  8 passed (8)
-   Start at  19:54:53
-   Duration  689ms (import 38%, tests 30%, transform 30%, worker 1%)

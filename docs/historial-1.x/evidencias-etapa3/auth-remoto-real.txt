@@ -1,9 +1,0 @@
-PASS Auth real aprovisiona por invitación privada y verifica membresía ADMIN
-PASS segunda identidad real se incorpora como OPERADOR, sin elevar su rol
-PASS bootstrap real una sola vez y dos clientes reciben el mismo inventario
-PASS la misma devolución desde dos JWT/UUID distintos sólo mueve una unidad
-PASS la última unidad no se confirma para dos entregas concurrentes
-PASS repetir tras perder el acuse recupera recibo sin duplicar movimiento
-PASS JWT de B no puede atribuirse una cola vinculada a A
-PASS revocar membresía bloquea recepción y envío con el JWT todavía existente
-{"passed":8,"failed":0,"cleanup":"pendiente","physicalAndroid":false}

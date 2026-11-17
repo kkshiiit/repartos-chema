@@ -6,7 +6,7 @@ import Settings from '../app/configuracion';
 const mocks = vi.hoisted(() => ({ pick: vi.fn(), restore: vi.fn(), undoRestore: vi.fn() }));
 vi.mock('../src/components/FeedbackSettings', () => ({ FeedbackSettings: () => null }));
 vi.mock('react-native', () => ({ View: 'View', Text: 'Text', Pressable: 'Pressable', Share: { share: vi.fn() } }));
-vi.mock('expo-constants', () => ({ default: { expoConfig: { version: '2.0.0' } } }));
+vi.mock('expo-constants', () => ({ default: { expoConfig: { version: '1.0.0' } } }));
 vi.mock('../src/components/LocalBackupActions', () => ({ LocalBackupActions: () => null }));
 vi.mock('lucide-react-native', () => new Proxy({}, { get: (_t, k) => (k === '__esModule' ? false : k === 'then' ? undefined : String(k)), has: () => true }));
 vi.mock('../src/services/depotSettings', () => ({

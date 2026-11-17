@@ -1,4 +1,4 @@
-/** Almacenamiento clave-valor usado por la base local de la versión 1.x (se lee para migrar). */
+/** Almacenamiento clave-valor usado por la base local de la app anterior (se lee para migrar). */
 export interface KeyValueStorage {
   getItem(key: string): Promise<string | null>;
   setItem(key: string, value: string): Promise<void>;

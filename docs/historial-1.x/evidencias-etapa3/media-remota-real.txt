@@ -1,6 +1,0 @@
-PASS registro foto conserva referencia lógica y existencias
-PASS Storage privado recibe JPEG y reintento no reemplaza el objeto
-PASS otro miembro descarga bytes idénticos bajo Auth y ACL
-PASS referencia inexistente impide lectura y JPEG falso no se acepta
-PASS bucket no entrega el objeto por URL pública anónima
-PASS total 5
