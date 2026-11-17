@@ -1,7 +1,0 @@
-npm warn EBADENGINE Unsupported engine {
-npm warn EBADENGINE   package: 'repartos-chema-functions@1.0.0',
-npm warn EBADENGINE   required: { node: '22' },
-npm warn EBADENGINE   current: { node: 'v24.19.0', npm: '11.9.0' }
-npm warn EBADENGINE }
-
-changed 1 package in 787ms

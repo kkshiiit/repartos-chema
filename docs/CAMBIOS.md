@@ -1,27 +1,48 @@
 # Registro de cambios
 
-## Base recuperable
+## 2.1.0 — 17/11/2026
 
-`5c554c4`: fuente original inspeccionada y preservada. Respaldo original con SHA-256 y restauración comprobada, sin dependencias regenerables ni secretos. Git local main, sin remoto.
+- La app pasa a llamarse **Chema Andamios**, con el logo de la marca (ícono y bienvenida).
+- Seguridad: funciones del servidor sólo para la app (rol anónimo), límites anti-abuso y de espacio, validación de fotos, registro de cuentas desactivado, función del equipo 1.x eliminada, respaldo de Android desactivado. Ver [SEGURIDAD.md](SEGURIDAD.md).
+- Se puede volver a entrar sin señal con una persona ya registrada.
+- Repositorio ordenado: sin Firebase ni el protocolo de equipo 1.x (≈570 paquetes menos), documentación nueva y la de 1.x archivada en `docs/historial-1.x/`.
 
-## Integridad
+## 2.0.1 — 17/11/2026
 
-`d258544`: validación persistida, recuperación de conflicto, fallos de almacenamiento, stock no vinculado en taller/perdido, correcciones de faltantes, variantes/medidas, fechas planificadas/efectivas, revisión optimista en edición, auditoría con nombres históricos.
+- Ícono con el logo Chema Andamios.
 
-## Temas, fotos y publicidad
+## 2.0.0 — 17/11/2026 — equipo sincronizado
 
-`c634908`: elimina dependencia/plugin/contextos/componentes/configuración de publicidad; implementa tokens claro/oscuro y sistema, cambio rápido, preferencia aislada, componentes dinámicos, compactación móvil; fotos web IndexedDB; copia/restauración; documentos diferidos y generador nativo; traducción de errores y mejoras de servidor. No altera datos comerciales para retirar publicidad.
+### Qué cambió
 
-## Recuperación y validación
+- **Sincronizado entre teléfonos.** Todos los teléfonos con el mismo *código de equipo* ven y cargan los mismos datos. Funciona sin señal: los cambios quedan guardados en el teléfono y se envían solos al volver la conexión.
+- **Ingreso por nombre.** Cada persona elige su nombre (o lo escribe la primera vez). No hay contraseñas.
+- **Auditoría completa.** Cada cambio (alta, edición, entrega, retiro, ajuste de stock, fotos, importación, exportación, tickets compartidos, ingresos) queda registrado con persona, fecha y hora, y con los materiales que se movieron. El registro vive en el servidor y no se puede borrar desde la app.
+- **Interfaz nueva.** Modo **Sol** (máximo contraste para la calle) y modo **Noche** (oscuro, no encandila), letras y botones más grandes, cuatro cuadros de resumen en el inicio (Atrasados, Para hoy, Por entregar, En obra) que filtran la lista al tocarlos, y tarjetas con color de estado.
+- **Ticket profesional.** Desde cada alquiler: *Compartir ticket* en PDF, WhatsApp al cliente, texto, Word o Excel.
+- **Guía de uso** con 12 secciones marcadas y explicación breve; se puede exportar en PDF.
+- **Exportar / importar todo** (JSON con alquileres, depósito, combos, auditoría y fotos). Importar reemplaza los datos del equipo y queda auditado.
+- **Migración automática:** si el teléfono tenía datos de la versión 1.x, el inicio ofrece *Pasar datos al equipo*.
 
-`1436419`: faltantes libres sin inventar stock, restauración de referencias de imagen, dependencia directa buffer, pruebas de copia y backend concurrente, pruebas UI de recuperación, script de paquete con restauración verificada, punto de continuidad actualizado.
+### Instalar o actualizar
 
-## Cierre de ejecución 14/10
+1. Descargar el APK 2.0.0 (enlace en el README).
+2. Abrirlo en el teléfono y permitir la instalación.
+3. **Se instala encima de la 1.7 sin desinstalar** (misma firma y mismo paquete). No borres los datos de la app.
+4. Primera persona: *Crear un equipo nuevo*. En *Ajustes* aparece el código; tocar *Compartir código*.
+5. Resto del equipo: *Unirme a un equipo* → código → nombre.
+6. Si había datos en la versión anterior, en el inicio aparece *Datos de la versión anterior* → *Pasar datos al equipo* (hacerlo en **un solo** teléfono).
 
-Historial incorpora obras/usuarios de registros antiguos y deja de refrescarse en pestañas inactivas; deshacer marca la auditoría remota original; comprobación de cabecera JPEG; envío FCM parcial conserva destinatarios aceptados, quita tokens inválidos y usa texto sin cliente en la pantalla bloqueada (FCM real pendiente). Nuevas pruebas de transferencia/daño/recuperación, documentos en Storage Emulator y fotos. Documentación/manual/validación/entrega y regeneración de builds y capturas.
+### Cómo funciona la sincronización
 
-Para diferencias exactas: `git diff 5c554c4..HEAD --stat`, `git log --oneline` y `git show COMMIT`. Los archivos generados y capturas pueden cambiar entre pruebas por fechas dinámicas de la demo.
+- Cada cambio es una operación inmutable con número de orden en el servidor (`c2_ops`). Todos los teléfonos aplican las mismas operaciones en el mismo orden con el mismo motor de reglas (`src/domain/engine.ts`), así que llegan al mismo resultado. Ese mismo registro es la auditoría.
+- Si dos personas usan el mismo material a la vez, gana la que llegó primero al servidor. A la otra le aparece un aviso explicando que su cambio no se pudo aplicar.
+- El teléfono sincroniza al abrir la app, al volver a la app, cada 15 segundos mientras está abierta, al recuperar la señal y después de cada cambio. Tocar el punto de color de arriba fuerza una sincronización.
+- Las fotos se suben comprimidas y los demás teléfonos las descargan la primera vez que las ven.
 
-## Accesibilidad y preparación Android
+### Servidor
 
-`52aa064`: 19 pruebas UI aprobadas, axe sin infracciones en ocho pantallas por tema, contenedor tablist/aria-selected y métricas con foco. `c83e0e8`: paquete web restaurable, exclusión de permisos Android innecesarios y script de compilación. JDK21 completo instalado en workspace tras detectar que el runtime anterior no tenía javac. Corrección posterior de columnas del detalle y prueba de controles recortados; resultado final en VALIDACION.
+- Proyecto Supabase gratuito existente (`repartos-chema`, región São Paulo). Migración: `supabase/migrations/20261117000000_c2_sync.sql`.
+- Las tablas `c2_*` tienen RLS activado y **ningún acceso directo**: la clave pública sólo puede llamar funciones que exigen el código del equipo (se guarda como hash SHA-256).
+- Seguridad: quien tenga el código del equipo puede entrar. Compartirlo sólo con el personal. Si se filtra, crear un equipo nuevo, exportar e importar los datos.
+- Límites del plan gratuito: 500 MB de base de datos; los proyectos gratuitos se pausan tras 7 días sin uso (se reactivan desde supabase.com). Con uso diario no se pausa.

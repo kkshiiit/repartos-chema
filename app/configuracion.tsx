@@ -1,36 +1,34 @@
 import { FeedbackSettings } from '../src/components/FeedbackSettings';
 import { RetirementReminderSettings } from '../src/components/RetirementReminderSettings';
 import { DepotSettings } from '../src/components/DepotSettings';
-import { TeamSettings } from '../src/components/TeamSettings';
 import { LocalBackupActions } from '../src/components/LocalBackupActions';
 import { BackupImport } from '../src/components/BackupImport';
 import { ToolGroup, ToolRow } from '../src/components/ToolsLayout';
-import { useWelcome } from '../src/components/WelcomeProvider';
 import { userError } from '../src/services/errors';
 import { useTheme } from '../src/context/ThemeContext';
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Share, Pressable } from 'react-native';
 import {
   Bell,
   BookOpen,
-  FileClock,
+  FileDown,
   FileText,
-  Info,
   Layers,
   MapPin,
-  Move,
-  Sun,
-  UserRound,
+  Moon,
+  Share2,
+  SunMedium,
+  SmartphoneNfc,
+  UserRoundCog,
   UsersRound,
+  X,
 } from 'lucide-react-native';
 import { router } from 'expo-router';
+import Constants from 'expo-constants';
 import { useAuth } from '../src/context/AuthContext';
 import { useInventory } from '../src/context/InventoryContext';
-import { DATA_MODE } from '../src/services/firebase';
-import { LOCAL_ONLY } from '../src/services/localMode';
 import {
   Button,
-  Chip,
   ConfirmButton,
   Field,
   Notice,
@@ -38,29 +36,19 @@ import {
   Sheet,
   useUI,
   usePanelChanges,
+  initials,
 } from '../src/components/ui';
-import { enableNotifications } from '../src/services/notifications';
 import { loadDepot } from '../src/services/depotSettings';
 import { DEFAULT_DEPOT } from '../src/utils/trip';
+import { fonts } from '../src/theme/tokens';
 
-type Panel =
-  | 'identity'
-  | 'appearance'
-  | 'motion'
-  | 'feedback'
-  | 'responsables'
-  | 'copies'
-  | 'depot'
-  | 'environment';
+type Panel = 'feedback' | 'responsables' | 'copies' | 'depot' | 'members';
 const titles: Record<Panel, string> = {
-  identity: LOCAL_ONLY ? 'Uso individual' : 'Equipo Chema',
-  appearance: 'Apariencia',
-  motion: 'Movimiento',
   feedback: 'Avisos y sonidos',
-  responsables: 'Responsables',
-  copies: 'Copias y restauración',
+  responsables: 'Responsables de reparto',
+  copies: 'Exportar e importar',
   depot: 'Depósito',
-  environment: 'Entorno de trabajo',
+  members: 'Personas del equipo',
 };
 
 function ResponsibleEditor({
@@ -77,12 +65,15 @@ function ResponsibleEditor({
   const panel = usePanelChanges();
   return (
     <>
+      <Text style={{ fontSize: 15 }}>
+        Son los nombres que aparecen al confirmar una entrega o un retiro (fleteros, ayudantes).
+      </Text>
       <Field
-        label="Responsables · uno por línea"
+        label="Un nombre por línea"
         value={names}
         onChangeText={setNames}
         multiline
-        style={{ minHeight: 140 }}
+        style={{ minHeight: 160, textAlignVertical: 'top' }}
       />
       <Button
         loading={busy}
@@ -95,24 +86,68 @@ function ResponsibleEditor({
   );
 }
 
+function ThemeOption({
+  label,
+  detail,
+  icon: Icon,
+  selected,
+  onPress,
+}: {
+  label: string;
+  detail: string;
+  icon: React.ComponentType<{ size: number; color: string }>;
+  selected: boolean;
+  onPress: () => void;
+}) {
+  const { C } = useUI();
+  return (
+    <Pressable
+      accessibilityRole="radio"
+      accessibilityState={{ checked: selected }}
+      accessibilityLabel={`${label}. ${detail}`}
+      onPress={onPress}
+      style={({ pressed }) => ({
+        flex: 1,
+        minWidth: 96,
+        minHeight: 96,
+        borderRadius: 16,
+        borderWidth: selected ? 2.5 : 1,
+        borderColor: selected ? C.accent : C.hairline,
+        backgroundColor: pressed || selected ? C.selection : C.panel,
+        padding: 12,
+        gap: 6,
+        alignItems: 'center',
+        justifyContent: 'center',
+      })}
+    >
+      <Icon size={26} color={selected ? C.accent : C.text} />
+      <Text style={{ color: C.text, fontFamily: fonts.semibold, fontSize: 15, fontWeight: '700' }}>
+        {label}
+      </Text>
+      <Text style={{ color: C.muted, fontSize: 12, textAlign: 'center' }}>{detail}</Text>
+    </Pressable>
+  );
+}
+
 export default function Settings() {
-  const { s } = useUI();
+  const { C, s } = useUI();
   const theme = useTheme();
-  const { openWelcome } = useWelcome();
-  const { user, membership } = useAuth();
-  const { state, dispatch, backup, recoverPrevious, workspaceId } = useInventory();
+  const { user, session, members, refreshMembers, removeMember, switchUser, leaveTeam } = useAuth();
+  const { state, dispatch } = useInventory();
   const [panel, setPanel] = useState<Panel | null>(null);
   const [depot, setDepot] = useState(DEFAULT_DEPOT);
   const [names, setNames] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const admin = user?.role === 'ADMIN';
   useEffect(() => {
     void loadDepot()
       .then(setDepot)
       .catch(() => undefined);
   }, [panel]);
+  useEffect(() => {
+    refreshMembers().catch(() => undefined);
+  }, [refreshMembers]);
   const open = (value: Panel) => {
     setError('');
     setSuccess('');
@@ -123,7 +158,7 @@ export default function Settings() {
     try {
       await f();
       setError('');
-      setSuccess('Configuración guardada.');
+      setSuccess('Guardado.');
       return true;
     } catch (e) {
       setError(userError(e));
@@ -136,162 +171,201 @@ export default function Settings() {
     setPanel(null);
     setNames(null);
   };
+  const shareCode = () =>
+    Share.share({
+      message: `Sumate al equipo "${session?.teamName}" en Chema Andamios.\n\n1. Instalá la app.\n2. Tocá "Unirme a un equipo".\n3. Escribí este código: ${session?.code}\n4. Ingresá con tu nombre.`,
+    })
+      .then(() => undefined)
+      .catch(() => undefined);
+  const version = Constants.expoConfig?.version || '2.0.0';
   return (
     <Screen title="Ajustes" back>
-      <ToolGroup>
-        <ToolRow
-          label={membership?.nombre || user?.nombre || 'Identidad local'}
-          detail={workspaceId ? 'Equipo compartido' : 'Uso individual · En este celular'}
-          icon={UserRound}
-          onPress={() => open('identity')}
-          last
-        />
-      </ToolGroup>
-      <ToolGroup title="Preferencias">
-        <ToolRow
-          label="Apariencia"
-          value={{ light: 'Claro', dark: 'Oscuro', system: 'Sistema' }[theme.preference]}
-          icon={Sun}
-          onPress={() => open('appearance')}
-        />
-        <ToolRow
-          label="Movimiento"
-          value={theme.motionPreference === 'ambient' ? 'Suave' : 'Estático'}
-          icon={Move}
-          onPress={() => open('motion')}
-        />
-        <ToolRow label="Avisos y sonidos" icon={Bell} onPress={() => open('feedback')} last />
-      </ToolGroup>
-      <ToolGroup title="Datos y herramientas">
-        {admin ? (
-          <>
-            <ToolRow
-              label="Copias y restauración"
-              icon={FileClock}
-              onPress={() => open('copies')}
-            />
-            <ToolRow label="Documentos" icon={FileText} onPress={() => router.push('/exportar')} />
-            <ToolRow label="Combos de carga" icon={Layers} onPress={() => router.push('/combos')} />
-            <ToolRow
-              label="Responsables"
-              detail={`${state.responsables.length} configurados`}
-              icon={UsersRound}
-              onPress={() => open('responsables')}
-            />
-          </>
-        ) : null}
-        <ToolRow label="Entorno de trabajo" icon={Info} onPress={() => open('environment')} last />
-      </ToolGroup>
-      <ToolGroup title="Colaboración">
-        <ToolRow
-          label="Equipo compartido"
-          detail={
-            workspaceId
-              ? 'Acceso vinculado · Cambios pendientes y miembros'
-              : 'Opcional · El uso individual se conserva'
-          }
+      <View style={[s.card, { gap: 14 }]}>
+        <View style={[s.row, { gap: 14 }]}>
+          <View
+            style={{
+              width: 56,
+              height: 56,
+              borderRadius: 28,
+              backgroundColor: C.primary,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Text style={{ color: C.onPrimary, fontSize: 22, fontFamily: fonts.semibold, fontWeight: '700' }}>
+              {initials(user?.nombre)}
+            </Text>
+          </View>
+          <View style={s.grow}>
+            <Text style={[s.h2]}>{user?.nombre}</Text>
+            <Text style={s.muted}>Equipo: {session?.teamName}</Text>
+          </View>
+        </View>
+        <Text style={s.muted}>
+          Todo lo que hagas queda registrado con tu nombre en la Auditoría.
+        </Text>
+        <Button label="Cambiar de persona" icon={UserRoundCog} variant="secondary" onPress={switchUser} />
+      </View>
+
+      <View style={[s.card, { gap: 12 }]}>
+        <Text style={s.h2}>Código del equipo</Text>
+        <Text style={s.muted}>
+          Compartilo con quienes tengan que usar la app. Con este código ven y cargan los mismos datos
+          desde su teléfono.
+        </Text>
+        <Text
+          selectable
+          accessibilityLabel={`Código ${session?.code.split('').join(' ')}`}
+          style={{
+            color: C.text,
+            fontFamily: fonts.monoMedium,
+            fontSize: 26,
+            letterSpacing: 2,
+            textAlign: 'center',
+            paddingVertical: 14,
+            borderRadius: 14,
+            borderWidth: 2,
+            borderStyle: 'dashed',
+            borderColor: C.accent,
+            backgroundColor: C.selection,
+          }}
+        >
+          {session?.code}
+        </Text>
+        <Button label="Compartir código" icon={Share2} onPress={shareCode} />
+        <Button
+          label={`Personas del equipo (${members.length})`}
           icon={UsersRound}
-          onPress={() => router.push('/equipo/conectar')}
-          last
+          variant="secondary"
+          onPress={() => open('members')}
         />
-      </ToolGroup>
-      <ToolGroup title="Depósito">
+      </View>
+
+      <View style={[s.card, { gap: 12 }]}>
+        <Text style={s.h2}>Apariencia</Text>
+        <View accessibilityRole="radiogroup" style={[s.row, { gap: 10, alignItems: 'stretch' }]}>
+          <ThemeOption
+            label="Sol"
+            detail="Máximo contraste de día"
+            icon={SunMedium}
+            selected={theme.preference === 'light'}
+            onPress={() => theme.setPreference('light')}
+          />
+          <ThemeOption
+            label="Noche"
+            detail="Oscuro, no encandila"
+            icon={Moon}
+            selected={theme.preference === 'dark'}
+            onPress={() => theme.setPreference('dark')}
+          />
+          <ThemeOption
+            label="Auto"
+            detail="Igual que el teléfono"
+            icon={SmartphoneNfc}
+            selected={theme.preference === 'system'}
+            onPress={() => theme.setPreference('system')}
+          />
+        </View>
+        {theme.error ? <Notice text={theme.error} tone="error" /> : null}
+      </View>
+
+      <ToolGroup title="Datos">
         <ToolRow
-          label={depot.nombre}
-          detail={depot.direccion}
-          icon={MapPin}
-          onPress={() => open('depot')}
-          last
+          label="Exportar e importar copia"
+          detail="Todo el inventario en un archivo JSON"
+          icon={FileDown}
+          onPress={() => open('copies')}
         />
+        <ToolRow
+          label="Planillas Word y Excel"
+          detail="Remitos y reportes"
+          icon={FileText}
+          onPress={() => router.push('/exportar')}
+        />
+        <ToolRow label="Combos de carga" icon={Layers} onPress={() => router.push('/combos')} />
+        <ToolRow
+          label="Responsables de reparto"
+          detail={`${state.responsables.length} cargados`}
+          icon={UsersRound}
+          onPress={() => open('responsables')}
+        />
+        <ToolRow label={depot.nombre} detail={depot.direccion} icon={MapPin} onPress={() => open('depot')} last />
       </ToolGroup>
-      <ToolGroup>
-        <ToolRow label="Ver bienvenida" icon={BookOpen} onPress={openWelcome} last />
+      <ToolGroup title="Ayuda">
+        <ToolRow label="Avisos y sonidos" icon={Bell} onPress={() => open('feedback')} />
+        <ToolRow label="Guía de uso" detail="Cada sección explicada" icon={BookOpen} onPress={() => router.push('/guia')} last />
       </ToolGroup>
-      {LOCAL_ONLY && !workspaceId ? (
-        <Text style={[s.muted, { textAlign: 'center' }]}>Sin cuenta ni suscripción.</Text>
-      ) : null}
+      <ConfirmButton
+        label="Salir del equipo en este teléfono"
+        title="Salir del equipo"
+        description="Este teléfono deja de ver los datos del equipo. Los datos no se borran: siguen en los demás teléfonos y podés volver a entrar con el código."
+        onConfirm={leaveTeam}
+      />
+      <Text style={[s.muted, { textAlign: 'center' }]}>
+        Chema Andamios {version} · Sincronizado en la nube
+      </Text>
+
       <Sheet
         visible={panel !== null}
-        title={
-          panel === 'identity'
-            ? workspaceId
-              ? 'Equipo compartido'
-              : 'Uso individual'
-            : panel
-              ? titles[panel]
-              : 'Ajustes'
-        }
+        title={panel ? titles[panel] : 'Ajustes'}
         onClose={close}
         busy={busy}
         protectChanges={panel === 'depot' || panel === 'responsables' || panel === 'feedback'}
-        hasChanges={
-          panel === 'responsables' && names !== null && names !== state.responsables.join('\n')
-        }
+        hasChanges={panel === 'responsables' && names !== null && names !== state.responsables.join('\n')}
       >
-        {panel === 'identity' ? <TeamSettings /> : null}
-        {panel === 'appearance' ? (
+        {panel === 'members' ? (
           <>
-            <View style={s.wrap}>
-              {(
-                [
-                  { value: 'light', label: 'Claro' },
-                  { value: 'dark', label: 'Oscuro' },
-                  { value: 'system', label: 'Seguir sistema' },
-                ] as const
-              ).map((option) => (
-                <Chip
-                  key={option.value}
-                  label={option.label}
-                  selected={theme.preference === option.value}
-                  onPress={() => theme.setPreference(option.value)}
-                />
-              ))}
-            </View>
+            {members.map((m) => (
+              <View key={m.id} style={[s.row, { minHeight: 56, borderBottomWidth: 1, borderColor: C.hairline }]}>
+                <View
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 20,
+                    backgroundColor: C.panel2,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Text style={{ color: C.text, fontFamily: fonts.semibold }}>{initials(m.name)}</Text>
+                </View>
+                <View style={s.grow}>
+                  <Text style={s.body}>
+                    {m.name}
+                    {m.id === user?.uid ? ' (vos)' : ''}
+                  </Text>
+                  {m.lastSeen ? (
+                    <Text style={s.muted}>
+                      Última actividad {new Date(m.lastSeen).toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' })}
+                    </Text>
+                  ) : null}
+                </View>
+                {m.id !== user?.uid ? (
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityLabel={`Quitar a ${m.name} de la lista`}
+                    onPress={() => void run(() => removeMember(m.id))}
+                    style={{ minWidth: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center' }}
+                  >
+                    <X size={20} color={C.danger} />
+                  </Pressable>
+                ) : null}
+              </View>
+            ))}
             <Text style={s.muted}>
-              Tu elección se guarda en este dispositivo. También podés cambiarla desde la cabecera
-              principal.
+              Quitar a alguien solo lo saca de la lista de nombres. Su historial queda en la Auditoría.
             </Text>
-            {theme.error ? <Notice text={theme.error} tone="error" /> : null}
-          </>
-        ) : null}
-        {panel === 'motion' ? (
-          <>
-            <View style={s.wrap}>
-              <Chip
-                label="Transiciones suaves"
-                selected={theme.motionPreference === 'ambient'}
-                onPress={() => theme.setMotionPreference('ambient')}
-              />
-              <Chip
-                label="Estático"
-                selected={theme.motionPreference === 'static'}
-                onPress={() => theme.setMotionPreference('static')}
-              />
-            </View>
-            <Text style={s.muted}>
-              Se respeta reducir movimiento del sistema. El fondo es estático en ambos modos.
-            </Text>
-            {theme.motionError ? <Notice text={theme.motionError} tone="error" /> : null}
+            <Button label="Invitar con el código" icon={Share2} onPress={shareCode} />
           </>
         ) : null}
         {panel === 'feedback' ? (
           <>
             <RetirementReminderSettings />
             <FeedbackSettings showError={false} />
-            {admin && !LOCAL_ONLY ? (
-              <Button
-                loading={busy}
-                label="Activar avisos"
-                variant="secondary"
-                onPress={async () => {
-                  await run(enableNotifications);
-                }}
-              />
-            ) : null}
           </>
         ) : null}
         {panel === 'depot' ? <DepotSettings /> : null}
-        {panel === 'responsables' && admin ? (
+        {panel === 'responsables' ? (
           <ResponsibleEditor
             names={names ?? state.responsables.join('\n')}
             setNames={setNames}
@@ -311,53 +385,13 @@ export default function Settings() {
             }}
           />
         ) : null}
-        {panel === 'copies' && admin ? (
+        {panel === 'copies' ? (
           <>
-            <Notice text="Guarda la copia en un lugar privado. Contiene alquileres, historial y fotos locales; no incluye contraseñas. Los archivos Excel y Word no reemplazan esta copia." />
-            {LOCAL_ONLY && !workspaceId ? (
-              <LocalBackupActions />
-            ) : (
-              <Button
-                label="Descargar copia"
-                variant="secondary"
-                loading={busy}
-                onPress={async () => {
-                  await run(backup);
-                }}
-              />
-            )}
-            {DATA_MODE === 'demo' ? <BackupImport /> : null}
-            {LOCAL_ONLY && !workspaceId ? (
-              <ConfirmButton
-                label="Recuperar anterior"
-                title="Recuperar inventario anterior"
-                description="Se recuperará la copia local anterior a Empezar vacío. Los datos activos también se archivarán antes del cambio."
-                onConfirm={async () => {
-                  await recoverPrevious();
-                  setNames(null);
-                  setSuccess('Inventario anterior recuperado.');
-                }}
-              />
-            ) : null}
-          </>
-        ) : null}
-        {panel === 'environment' ? (
-          <>
-            <Notice
-              text={
-                workspaceId
-                  ? 'Equipo privado con guardado local y confirmación remota. Sin conexión los cambios son provisionales; revisá los pendientes antes de cerrar una jornada. Sin servicios pagos ni Firebase.'
-                  : LOCAL_ONLY
-                    ? 'Uso individual sin conexión. Los datos se guardan en este celular; no se envían a Firebase ni a otros servicios. Conserva copias JSON fuera del dispositivo.'
-                    : DATA_MODE === 'demo'
-                      ? 'Demostración local. Datos ficticios persistidos en este dispositivo. No hay sincronización cloud ni push enviados.'
-                      : 'Firebase configurado. Las operaciones se confirman con el servidor y los conflictos requieren revisión.'
-              }
-            />
-            <Text style={s.muted}>
-              El calendario usa America/Argentina/Buenos_Aires. Los nombres del flete son
-              responsables configurables, no usuarios autenticados.
-            </Text>
+            <Notice text="Exportar guarda TODO (alquileres, depósito, combos, auditoría y fotos) en un archivo JSON. Importar reemplaza los datos del equipo por los del archivo, en todos los teléfonos, y queda registrado en la Auditoría." />
+            <Text style={s.h2}>Exportar</Text>
+            <LocalBackupActions />
+            <Text style={s.h2}>Importar</Text>
+            <BackupImport />
           </>
         ) : null}
         {error ? <Notice text={error} tone="error" /> : null}

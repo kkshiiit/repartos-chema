@@ -1,4 +1,4 @@
-import type { KeyValueStorage } from './repository';
+import type { KeyValueStorage } from './keyValueStorage';
 export interface SqlDatabase {
   closeAsync?(): Promise<void>;
   execAsync(sql: string): Promise<void>;

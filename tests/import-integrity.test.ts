@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { AppState, Envelope, FaltanteRegistro, ObraCard } from '../src/types';
 import { parseEnvelope } from '../src/data/validation';
-import { Repository, type KeyValueStorage } from '../src/data/repository';
+import { Repository, type KeyValueStorage } from './helpers/legacyRepository';
 import { emptyState, demoProfile } from '../src/data/seed';
 import { inspectBackup, prepareRestore } from '../src/services/backupService';
 

@@ -5,9 +5,7 @@ module.exports = defineConfig([
   {
     ignores: [
       'dist/**',
-      'functions/lib/**',
       'node_modules/**',
-      'functions/node_modules/**',
       'public/**',
     ],
   },

@@ -1,5 +1,5 @@
 import { describe,it,expect } from 'vitest';
-import { Repository,type KeyValueStorage } from '../src/data/repository';
+import { Repository,type KeyValueStorage } from './helpers/legacyRepository';
 import { emptyLocalState } from '../src/data/localInitialState';
 import { seed,demoProfile } from '../src/data/seed';
 class Storage implements KeyValueStorage {

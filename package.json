@@ -1,23 +1,22 @@
 {
-  "name": "repartos-chema",
-  "version": "1.7.0",
+  "name": "chema-andamios",
+  "version": "2.1.0",
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
     "web": "expo start --web",
     "android": "expo run:android",
-    "ios": "expo run:ios",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint app src tests functions/src",
+    "lint": "eslint app src tests",
     "test": "vitest run",
+    "check": "npm run typecheck && npm run lint && npm test",
     "build:web": "node scripts/build-web-local.mjs",
-    "check": "npm run typecheck && npm run lint && npm test && npm --prefix functions run build",
-    "test:integration": "firebase emulators:exec --project demo-repartos-chema --only firestore,storage \"vitest run --config vitest.integration.config.mts\"",
     "preview": "node scripts/serve.mjs",
     "test:ui": "playwright test",
-    "format": "prettier --write app src functions/src tests docs scripts *.json *.md *.ts *.mts *.js",
-    "build:android:demo": "node scripts/build-android-demo.mjs"
+    "build:android": "node scripts/build-android.mjs",
+    "qa:cleanup": "node scripts/qa-cleanup.mjs",
+    "format": "prettier --write app src tests scripts \"*.json\" \"*.md\" \"*.ts\" \"*.mts\" \"*.js\""
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.2.0",
@@ -41,13 +40,12 @@
     "expo-linking": "~57.0.13",
     "expo-location": "~57.0.21",
     "expo-notifications": "~57.0.23",
+    "expo-print": "~57.0.2",
     "expo-router": "~57.0.28",
-    "expo-secure-store": "~57.0.4",
     "expo-sharing": "~57.0.23",
     "expo-sqlite": "~57.0.4",
     "expo-status-bar": "~57.0.1",
     "expo-system-ui": "~57.0.4",
-    "firebase": "^13.0.0",
     "lucide-react-native": "^1.54.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -63,21 +61,19 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
-    "@firebase/rules-unit-testing": "^6.0.0",
     "@playwright/test": "^1.64.0",
     "@types/react": "~19.2.2",
     "@types/react-test-renderer": "^19.1.0",
     "esbuild": "^0.28.2",
     "eslint": "^9.39.5",
     "eslint-config-expo": "^57.0.2",
-    "firebase-tools": "^15.33.0",
     "prettier": "^3.9.9",
     "react-test-renderer": "^19.2.3",
     "typescript": "~6.0.3",
     "vitest": "^5.0.3"
   },
   "overrides": {
-    "@grpc/grpc-js": "1.14.6",
     "decode-uri-component": "$decode-uri-component"
-  }
+  },
+  "description": "Chema Andamios: alquiler de andamios con equipo sincronizado, auditoría y tickets."
 }

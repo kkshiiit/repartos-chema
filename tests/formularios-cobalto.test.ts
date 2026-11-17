@@ -19,11 +19,7 @@ vi.mock('../src/context/FeedbackContext', () => ({
   useFeedback: () => ({ notifyError: vi.fn(), notifySuccess: mocks.notifySuccess }),
 }));
 vi.mock('react-native', () => ({ View: 'View', Text: 'Text', Pressable: 'Pressable' }));
-vi.mock('lucide-react-native', () => ({
-  Layers: 'Layers',
-  ChevronDown: 'ChevronDown',
-  ChevronUp: 'ChevronUp',
-}));
+vi.mock('lucide-react-native', () => new Proxy({}, { get: (_t, k) => (k === '__esModule' ? false : k === 'then' ? undefined : String(k)), has: () => true }));
 vi.mock('expo-router', () => ({
   router: { replace: mocks.replace },
   useNavigation: () => ({ dispatch: mocks.navigate }),

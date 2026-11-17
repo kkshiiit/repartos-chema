@@ -1,195 +1,220 @@
-import { SharedInventoryProvider } from './SharedInventoryProvider';
-import { useSharedSession } from './SharedContext';
-import { userError } from '../services/errors';
-import React, { useContext, useEffect, useMemo, useState, useCallback } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import NetInfo from '@react-native-community/netinfo';
-import { AppState as NativeState, Platform } from 'react-native';
+import { AppState as NativeState } from 'react-native';
 import * as Crypto from 'expo-crypto';
-import type { Envelope } from '../types';
-import { Repository } from '../data/repository';
-import { inventoryStorage } from '../data/localStorage';
-import { seed, emptyState } from '../data/seed';
+import { Buffer } from 'buffer';
+import type { Action } from '../types';
 import { emptyLocalState } from '../data/localInitialState';
-import { LOCAL_ONLY } from '../services/localMode';
-import { DATA_MODE, cloudAdapter } from '../services/firebase';
+import { snapshot } from '../domain/engine';
 import { haptic } from '../hooks/useHaptics';
+import { userError } from '../services/errors';
+import { photoBytes, storePhoto } from '../services/photoCache';
+import { api, SyncError } from '../sync/api';
+import { kv } from '../sync/kv';
+import type { SyncAction } from '../sync/ops';
+import { SyncStore, type View } from '../sync/store';
 import { useAuth } from './AuthContext';
 import { InventoryDataContext, type InventoryValue } from './InventoryState';
+
 export const makeId = () => Crypto.randomUUID();
 export { InventoryDataContext } from './InventoryState';
 export type { InventoryValue } from './InventoryState';
 const Context = InventoryDataContext;
-export function InventoryProvider({ children }: { children: React.ReactNode }) {
-  const shared = useSharedSession();
-  return shared?.active ? (
-    <SharedInventoryProvider key={`${shared.spaceId}:${shared.actor?.uid}:${shared.actor?.role}`}>
-      {children}
-    </SharedInventoryProvider>
-  ) : (
-    <LocalInventoryProvider key={shared?.localKey || 'local'}>{children}</LocalInventoryProvider>
-  );
+
+/** Descarga una foto de otro teléfono la primera vez que se ve. */
+export async function fetchTeamPhoto(code: string, id: string) {
+  const local = await photoBytes(id);
+  if (local) return local;
+  const data = await api.photoGet(code, id);
+  if (!data) return null;
+  const bytes = new Uint8Array(Buffer.from(data, 'base64'));
+  await storePhoto(id, bytes);
+  return bytes;
 }
-function LocalInventoryProvider({ children }: { children: React.ReactNode }) {
-  const shared = useSharedSession();
-  const { user } = useAuth();
-  const [env, setEnv] = useState<Envelope | null>(null),
+
+function serialize(state: InventoryValue['state']) {
+  return JSON.stringify({ schema: 1, confirmed: state, state, queue: [] });
+}
+
+export function InventoryProvider({ children }: { children: React.ReactNode }) {
+  const { session, user } = useAuth();
+  const code = session?.code || '';
+  const teamId = session?.teamId || '';
+  const store = useMemo(
+    () =>
+      teamId
+        ? new SyncStore(kv, teamId, {
+            push: (ops) => api.push(code, ops),
+            pull: (after) => api.pull(code, after),
+            async uploadPhoto(id) {
+              const bytes = await photoBytes(id);
+              if (!bytes) throw new Error('Foto ausente');
+              await api.photoPut(code, id, Buffer.from(bytes).toString('base64'));
+            },
+          })
+        : null,
+    [teamId, code],
+  );
+  const [view, setView] = useState<View | null>(null),
     [error, setError] = useState(''),
     [online, setOnline] = useState(true),
     [syncing, setSyncing] = useState(false);
-  const repo = useMemo(
-    () =>
-      new Repository(
-        LOCAL_ONLY ? inventoryStorage : AsyncStorage,
-        DATA_MODE === 'demo'
-          ? shared?.localKey || 'chema:demo:v1'
-          : `chema:cloud:${process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID}:${user?.uid}:v1`,
-        DATA_MODE === 'demo' ? (LOCAL_ONLY ? emptyLocalState : seed) : emptyState,
-        DATA_MODE === 'firebase' ? cloudAdapter : undefined,
-      ),
-    [user?.uid, shared?.localKey],
-  );
+  const running = useRef(false);
+
   const retry = useCallback(async () => {
+    if (!store || running.current) return;
+    running.current = true;
     setSyncing(true);
     try {
-      const loaded = await repo.load();
-      setEnv(loaded);
-      if (user && DATA_MODE === 'firebase') await repo.sync();
+      await store.sync();
       setError('');
+      setOnline(true);
     } catch (e) {
-      setError(userError(e));
+      if (e instanceof SyncError && e.kind === 'offline') setOnline(false);
+      else setError(userError(e));
     } finally {
+      running.current = false;
       setSyncing(false);
     }
-  }, [repo, user]);
+  }, [store]);
+
   useEffect(() => {
-    if (!user) return;
+    if (!store) return;
     let active = true;
-    const off = repo.subscribe((e) => {
-      if (active) setEnv(e);
-    });
-    repo
+    const off = store.subscribe((v) => active && setView(v));
+    store
       .load()
-      .then((e) => {
-        if (active) {
-          setEnv(e);
-        }
+      .then(() => {
+        if (active) void retry();
       })
-      .catch((e) => {
-        if (active) setError(userError(e));
-      });
+      .catch((e) => active && setError(userError(e)));
     return () => {
       active = false;
       off();
     };
-  }, [repo, retry, user]);
+  }, [store, retry]);
+
   useEffect(
     () =>
-      NetInfo.addEventListener((s) =>
-        setOnline(s.isConnected !== false && s.isInternetReachable !== false),
-      ),
-    [],
+      NetInfo.addEventListener((s) => {
+        const up = s.isConnected !== false && s.isInternetReachable !== false;
+        setOnline(up);
+        if (up) void retry();
+      }),
+    [retry],
   );
-  const ready = !!env;
   useEffect(() => {
-    if (user && online && ready && DATA_MODE === 'firebase') {
-      void Promise.resolve().then(retry);
-      const timer = setInterval(() => {
-        if (
-          NativeState.currentState === 'active' &&
-          (Platform.OS !== 'web' || document.visibilityState === 'visible')
-        )
-          void retry();
-      }, 30000);
-      const sub = NativeState.addEventListener('change', (s) => {
-        if (s === 'active') void retry();
-      });
-      return () => {
-        clearInterval(timer);
-        sub.remove();
-      };
-    }
-  }, [online, ready, retry, user]); // Cola serial; también consulta cambios de otros usuarios al volver al frente.
-  useEffect(() => {
-    if (Platform.OS !== 'web') return;
-    const refresh = () => {
-      if (DATA_MODE === 'firebase') void retry();
-      else
-        void repo
-          .load()
-          .then(setEnv)
-          .catch((e) => setError(userError(e)));
+    if (!store) return;
+    const timer = setInterval(() => {
+      if (NativeState.currentState === 'active') void retry();
+    }, 15000);
+    const sub = NativeState.addEventListener('change', (s) => {
+      if (s === 'active') void retry();
+    });
+    return () => {
+      clearInterval(timer);
+      sub.remove();
     };
-    globalThis.addEventListener?.('focus', refresh);
-    return () => globalThis.removeEventListener?.('focus', refresh);
-  }, [retry, repo]);
-  const [, setMinute] = useState(0);
-  useEffect(() => {
-    const timer = setInterval(() => setMinute((n) => n + 1), 60000);
-    return () => clearInterval(timer);
-  }, []);
-  const value: InventoryValue = {
-    workspaceKey: shared?.localKey || 'local',
-    state: env?.state || emptyState(),
-    ready: !!env,
-    error: env?.queue.find((q) => q.status === 'CONFLICT')?.error || error,
-    online,
-    syncing,
-    queue: env?.queue || [],
-    retry,
-    backup: async () => {
-      if (user?.role !== 'ADMIN') throw new Error('Solo administración.');
-      const { downloadBackup } = await import('../services/backupService');
-      await downloadBackup(await repo.exportRaw());
-    },
-    backupToDestination: async () => {
-      if (user?.role !== 'ADMIN') throw new Error('Solo administración.');
-      const { saveVerifiedBackup } = await import('../services/backupService');
-      return saveVerifiedBackup(await repo.exportRaw());
-    },
-    archives: () => repo.listArchives(),
-    recoverArchive: async (key) => {
-      if (!user || DATA_MODE !== 'demo') throw new Error('Disponible solo en este dispositivo.');
-      await repo.recoverArchive(key, user);
-      setError('');
-    },
-    restore: async (raw) => {
-      if (!user || user.role !== 'ADMIN' || DATA_MODE !== 'demo')
-        throw new Error('Restauración disponible para administración en demo.');
-      const { prepareRestore } = await import('../services/backupService');
-      await repo.restoreDemo(await prepareRestore(raw), user);
-      setError('');
-    },
-    undoRestore: async () => {
-      if (!user || DATA_MODE !== 'demo') throw new Error('Disponible solo en este dispositivo.');
-      await repo.undoRestore(user);
-      setError('');
-    },
-    startEmpty: async () => {
-      if (!user || DATA_MODE !== 'demo') throw new Error('Disponible solo en este dispositivo.');
-      await repo.startEmpty(user);
-      setError('');
-    },
-    recoverPrevious: async () => {
-      if (!user || DATA_MODE !== 'demo') throw new Error('Disponible solo en este dispositivo.');
-      await repo.recoverPrevious(user);
-      setError('');
-    },
-    discard: async () => {
-      await repo.discardConflict();
-      setError('');
-    },
-    dispatch: async (action) => {
-      if (!user) throw new Error('Inicia sesión.');
-      await repo.dispatch({
-        id: makeId(),
-        createdAt: new Date().toISOString(),
-        actor: user,
-        action,
-      });
+  }, [store, retry]);
+
+  const dispatchSync = useCallback(
+    async (action: SyncAction) => {
+      if (!store || !user) throw new Error('Ingresá con tu nombre.');
+      await store.dispatch({ id: makeId(), createdAt: new Date().toISOString(), actor: user, action });
       setError('');
       haptic();
-      if (online && DATA_MODE === 'firebase') void retry();
+      void retry();
+    },
+    [store, user, retry],
+  );
+
+  // Registro de ingreso (una vez por persona y teléfono) y alta automática como responsable.
+  useEffect(() => {
+    if (!store || !user || !view || !teamId) return;
+    const key = `chema2:announced:${teamId}:${user.uid}`;
+    let cancelled = false;
+    void (async () => {
+      if (await kv.getItem(key)) return;
+      if (cancelled) return;
+      await kv.setItem(key, '1');
+      await dispatchSync({ type: 'NOTE', accion: `${user.nombre} ingresó desde un teléfono` });
+      const current = store.current()?.state;
+      if (current && !current.responsables.includes(user.nombre))
+        await dispatchSync({ type: 'RESPONSABLES', nombres: [...current.responsables, user.nombre] });
+    })().catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [store, user, view, teamId, dispatchSync]);
+
+  const current = store ? view : null;
+  const state = current?.state || emptyLocalState();
+  const value: InventoryValue = {
+    workspaceKey: teamId || 'local',
+    workspaceId: teamId,
+    state,
+    ready: !!current,
+    error,
+    online,
+    syncing,
+    lastSyncedAt: current?.lastSyncAt,
+    syncSummary: current
+      ? current.pending.length
+        ? `${current.pending.length} cambio${current.pending.length === 1 ? '' : 's'} por enviar`
+        : 'Todo sincronizado'
+      : 'Cargando…',
+    queue: (current?.pending || []).map((operation) => ({
+      operation: operation as never,
+      status: 'PENDING' as const,
+    })),
+    rejected: current?.rejected || [],
+    dismissRejected: async (id) => {
+      await store?.dismissRejected(id);
+    },
+    note: (accion, obraId) => dispatchSync({ type: 'NOTE', accion, obraId }),
+    importSnapshot: (snap, origen) => dispatchSync({ type: 'IMPORT_SNAPSHOT', origen, snapshot: snap }),
+    dispatch: (action: Action) => dispatchSync(action),
+    retry,
+    discard: async () => {
+      await store?.dismissRejected();
+    },
+    backup: async () => {
+      const { downloadBackup } = await import('../services/backupService');
+      await downloadBackup(serialize(state));
+      await dispatchSync({ type: 'NOTE', accion: 'Exportó una copia completa (JSON)' });
+    },
+    backupToDestination: async () => {
+      const { saveVerifiedBackup } = await import('../services/backupService');
+      const result = await saveVerifiedBackup(serialize(state));
+      if (result.saved || result.prepared)
+        await dispatchSync({ type: 'NOTE', accion: 'Exportó una copia completa (JSON)' });
+      return result;
+    },
+    archives: async () => [],
+    recoverArchive: async () => {
+      throw new Error('Usá Importar copia para recuperar datos.');
+    },
+    restore: async (raw: string) => {
+      const { prepareRestore } = await import('../services/backupService');
+      const prepared = JSON.parse(await prepareRestore(raw)) as { state: InventoryValue['state'] };
+      await dispatchSync({
+        type: 'IMPORT_SNAPSHOT',
+        origen: 'archivo JSON',
+        snapshot: snapshot(prepared.state),
+      });
+    },
+    undoRestore: async () => {
+      throw new Error('Para deshacer una importación, importá la copia anterior.');
+    },
+    startEmpty: async () => {
+      await dispatchSync({
+        type: 'IMPORT_SNAPSHOT',
+        origen: 'empezar vacío',
+        snapshot: { obras: [], materiales: [], combos: [], responsables: state.responsables, notificaciones: [] },
+      });
+    },
+    recoverPrevious: async () => {
+      throw new Error('Usá Importar copia para recuperar datos.');
     },
   };
   return <Context.Provider value={value}>{children}</Context.Provider>;

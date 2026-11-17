@@ -1,4 +1,4 @@
-import type { KeyValueStorage } from './repository';
+import type { KeyValueStorage } from './keyValueStorage';
 import { MIGRATION_KEY, migrateLocalInventory, type MigrationGuard } from './migrateLocalStorage';
 import type { SqliteStorage } from './sqliteStorage';
 import { parseEnvelope, validateImportEnvelope } from './validation';

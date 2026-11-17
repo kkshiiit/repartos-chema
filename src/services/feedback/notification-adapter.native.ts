@@ -77,7 +77,7 @@ export const notificationAdapter: ReminderAdapter = {
         title: reminder.notificationTitle || 'Recordatorio de alquiler',
         body:
           reminder.notificationBody ||
-          `${reminder.title} · Revisá el retiro previsto en Repartos Chema.`,
+          `${reminder.title} · Revisá el retiro previsto en Chema Andamios.`,
         sound: reminder.sound ? sounds.reminder : false,
         vibrate: reminder.vibrate ? [0, 100] : [0],
         data: {
@@ -165,7 +165,7 @@ export async function confirmationFeedback(sound: boolean, vibrate: boolean, err
       const identifier = await Notifications.scheduleNotificationAsync({
         identifier: 'chema-local-confirmation',
         content: {
-          title: 'Repartos Chema',
+          title: 'Chema Andamios',
           body: error ? 'Revisá el aviso en la app.' : 'Operación guardada.',
           autoDismiss: true,
           sound: sound ? sounds[error ? 'error' : 'success'] : false,

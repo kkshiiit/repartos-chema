@@ -63,7 +63,7 @@ export function BackupImport() {
       await restore(selection.raw);
       const count = selection.envelope.state.obras.length;
       setSuccess(
-        `Importación completada: ${count} ${count === 1 ? 'alquiler guardado' : 'alquileres guardados'} en este celular.`,
+        `Importación completada: ${count} ${count === 1 ? 'alquiler guardado' : 'alquileres guardados'} para todo el equipo.`,
       );
       setSelection(null);
     } catch (e) {
@@ -166,7 +166,7 @@ export function BackupImport() {
             ListFooterComponent={
               <View style={{ gap: 12, paddingTop: 16 }}>
                 <Button
-                  label={workspaceId ? 'Abrir copia individual' : 'Restaurar esta copia'}
+                  label="Restaurar esta copia"
                   variant="danger"
                   loading={busy}
                   onPress={confirm}

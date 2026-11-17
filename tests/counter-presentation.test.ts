@@ -43,29 +43,7 @@ vi.mock('react-native', () => ({
     },
   },
 }));
-vi.mock('lucide-react-native', () => ({
-  Building2: 'Building2',
-  ChevronRight: 'ChevronRight',
-  CheckCircle2: 'CheckCircle2',
-  Clock: 'Clock',
-  CircleAlert: 'CircleAlert',
-  Archive: 'Archive',
-  Camera: 'Camera',
-  ImagePlus: 'ImagePlus',
-  MapPin: 'MapPin',
-  Navigation: 'Navigation',
-  MessageCircle: 'MessageCircle',
-  Pencil: 'Pencil',
-  Package: 'Package',
-  Truck: 'Truck',
-  ArrowRightLeft: 'ArrowRightLeft',
-  Download: 'Download',
-  CalendarDays: 'CalendarDays',
-  MoreHorizontal: 'MoreHorizontal',
-  Plus: 'Plus',
-  ChevronDown: 'ChevronDown',
-  ChevronUp: 'ChevronUp',
-}));
+vi.mock('lucide-react-native', () => new Proxy({}, { get: (_t, k) => (k === '__esModule' ? false : k === 'then' ? undefined : String(k)), has: () => true }));
 vi.mock('../src/components/ui', () => {
   const host = (name: string) => {
     function Host(props: { children?: React.ReactNode }) {
@@ -136,7 +114,6 @@ vi.mock('../src/services/photoCache', () => ({ deleteLocalPhoto: vi.fn() }));
 vi.mock('../src/services/storageService', () => ({ selectPhoto: vi.fn() }));
 vi.mock('../src/services/links', () => ({ openLink: vi.fn() }));
 vi.mock('../src/services/localMode', () => ({ LOCAL_ONLY: true }));
-vi.mock('../src/services/firebase', () => ({ DATA_MODE: 'demo' }));
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
 
 let view: ReactTestRenderer | undefined;

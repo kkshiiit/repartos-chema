@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { Repository } from '../src/data/repository';
+import { Repository } from './helpers/legacyRepository';
 import { demoProfile, emptyState, seed } from '../src/data/seed';
 import { backupData, prepareRestore } from '../src/services/backupService';
 import type { AppState, Envelope, Operation } from '../src/types';

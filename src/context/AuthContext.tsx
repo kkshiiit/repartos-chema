@@ -1,177 +1,137 @@
-import { useSharedSession } from './SharedContext';
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, signInAnonymously, signOut } from 'firebase/auth';
-import { doc, onSnapshot } from 'firebase/firestore';
-import { httpsCallable } from 'firebase/functions';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import * as Crypto from 'expo-crypto';
 import type { UserProfile } from '../types';
-import type { TeamMember } from '../domain/team';
-import { teamName, invitationToken } from '../domain/team';
-import { DATA_MODE, firebase } from '../services/firebase';
-import { localSession, clearLocalSession, enterLocalTeam } from '../services/teamService';
-import { cachedProfile, saveProfile } from '../services/profileCache';
+import { api, newTeamCode, normalizeCode, SyncError, type Member } from '../sync/api';
+import { kv } from '../sync/kv';
+import { readSession, writeSession, type TeamSession } from '../sync/session';
+import { actorFor } from '../sync/ops';
+
 interface AuthValue {
   user: UserProfile | null;
-  membership: TeamMember | null;
-  canManageTeam: boolean;
+  session: TeamSession | null;
+  members: Member[];
   loading: boolean;
   error: string;
-  enterTeam: (nombre: string, invitation?: string) => Promise<void>;
+  /** Compatibilidad: todos los integrantes pueden administrar; la auditoría registra quién hizo qué. */
+  canManageTeam: boolean;
+  membership: null;
+  createTeam: (teamName: string) => Promise<TeamSession>;
+  joinTeam: (code: string) => Promise<TeamSession>;
+  enterAs: (name: string) => Promise<void>;
+  refreshMembers: () => Promise<Member[]>;
+  removeMember: (id: string) => Promise<void>;
+  switchUser: () => Promise<void>;
+  leaveTeam: () => Promise<void>;
   logout: () => Promise<void>;
+  enterTeam: (name: string) => Promise<void>;
 }
 const Context = createContext<AuthValue | null>(null);
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const shared = useSharedSession();
-  const [user, setUser] = useState<UserProfile | null>(null),
-    [membership, setMember] = useState<TeamMember | null>(null),
+  const [session, setSession] = useState<TeamSession | null>(null),
+    [members, setMembers] = useState<Member[]>([]),
     [loading, setLoading] = useState(true),
     [error, setError] = useState('');
-  const apply = (m: TeamMember | null) => {
-    setMember(m);
-    setUser(
-      m ? { uid: m.uid, nombre: m.nombre, email: '', role: 'ADMIN', createdAt: m.createdAt } : null,
-    );
-  };
   useEffect(() => {
-    let active = true,
-      offProfile: (() => void) | undefined;
-    if (DATA_MODE === 'demo') {
-      void localSession()
-        .then((m) => {
-          if (active) apply(m);
-        })
-        .catch(() => {
-          if (active)
-            setError('No se pudo recuperar el acceso local. Los alquileres se conservan.');
-        })
-        .finally(() => {
-          if (active) setLoading(false);
-        });
-      return () => {
-        active = false;
-      };
-    }
-    const services = firebase();
-    const off = onAuthStateChanged(services.auth, (current) => {
-      offProfile?.();
-      if (!current) {
-        if (active) {
-          apply(null);
-          setLoading(false);
-        }
-        return;
-      }
-      offProfile = onSnapshot(
-        doc(services.db, 'users', current.uid),
-        (snapshot) => {
-          if (!active) return;
-          const d = snapshot.data();
-          if (d?.teamAccess === true && d.active === true) {
-            const m: TeamMember = {
-              uid: current.uid,
-              nombre: d.nombre,
-              createdAt: d.createdAt,
-              active: true,
-              owner: d.teamOwner === true,
-            };
-            apply(m);
-            void saveProfile({
-              uid: m.uid,
-              nombre: m.nombre,
-              email: '',
-              role: 'ADMIN',
-              createdAt: m.createdAt,
-            }).catch(() => {});
-            setError('');
-          } else {
-            apply(null);
-            if (d?.active === false)
-              setError('Tu acceso al equipo fue retirado. Contacta al responsable.');
-          }
-          setLoading(false);
-        },
-        async (e) => {
-          if (!active) return;
-          if (/unavailable|network-request-failed/.test(e.code)) {
-            const p = await cachedProfile(current.uid);
-            if (active && p) {
-              setUser(p);
-              setMember({
-                uid: p.uid,
-                nombre: p.nombre,
-                createdAt: p.createdAt,
-                owner: false,
-                active: true,
-              });
-            }
-          } else {
-            apply(null);
-            setError('No se pudo validar el acceso al equipo.');
-          }
-          if (active) setLoading(false);
-        },
-      );
-    });
-    return () => {
-      active = false;
-      off();
-      offProfile?.();
-    };
+    readSession()
+      .then(setSession)
+      .catch(() => setError('No se pudo leer la sesión guardada.'))
+      .finally(() => setLoading(false));
   }, []);
-  const value: AuthValue = {
-    user: shared?.active ? shared.actor : user,
-    membership:
-      shared?.active && shared.actor
-        ? {
-            uid: shared.actor.uid,
-            nombre: shared.actor.nombre,
-            createdAt: shared.actor.createdAt,
-            active: true,
-            owner: shared.actor.role === 'ADMIN',
-          }
-        : membership,
-    canManageTeam: shared?.active ? shared.actor?.role === 'ADMIN' : membership?.owner === true,
-    loading: loading || !!shared?.loading,
-    error: shared?.error || error,
-    enterTeam: async (nombre, input = '') => {
-      const name = teamName(nombre);
-      setError('');
-      if (DATA_MODE === 'demo') {
-        apply(await enterLocalTeam(name, input));
-        return;
+  const save = useCallback(async (s: TeamSession | null) => {
+    await writeSession(s);
+    setSession(s);
+  }, []);
+  const membersKey = session ? `chema2:members:${session.teamId}` : '';
+  const refreshMembers = useCallback(async () => {
+    if (!session) return [];
+    try {
+      const list = await api.members(session.code);
+      setMembers(list);
+      await kv.setItem(membersKey, JSON.stringify(list)).catch(() => undefined);
+      return list;
+    } catch (e) {
+      // Sin señal: usar la última lista guardada en el teléfono.
+      const cached = JSON.parse((await kv.getItem(membersKey)) || 'null') as Member[] | null;
+      if (cached) {
+        setMembers(cached);
+        return cached;
       }
-      const token = invitationToken(input),
-        services = firebase();
-      if (!services.auth.currentUser) await signInAnonymously(services.auth);
-      try {
-        const response = await httpsCallable<{ nombre: string; token: string }, TeamMember>(
-          services.functions,
-          'joinTeam',
-        )({ nombre: name, token });
-        apply(response.data);
-      } catch (e) {
-        const message = (e as { message?: string }).message || '';
-        throw new Error(
-          message.includes('invitación') || message.includes('acceso')
-            ? message
-            : 'No se pudo ingresar al equipo. Revisa la invitación y la conexión.',
-        );
-      }
-    },
-    logout: async () => {
-      if (shared?.active) {
-        await shared.useLocal();
-        return;
-      }
-      if (DATA_MODE === 'demo') await clearLocalSession();
-      else await signOut(firebase().auth);
-      apply(null);
-      setError('');
-    },
-  };
+      throw e;
+    }
+  }, [session, membersKey]);
+  useEffect(() => {
+    if (session) void Promise.resolve().then(refreshMembers).catch(() => undefined);
+  }, [session, refreshMembers]);
+  const value = useMemo<AuthValue>(
+    () => ({
+      user: session?.member ? actorFor(session.member) : null,
+      session,
+      members,
+      loading,
+      error,
+      canManageTeam: true,
+      membership: null,
+      async createTeam(teamName) {
+        const name = teamName.trim();
+        if (!name) throw new Error('Escribí el nombre del negocio o equipo.');
+        const code = newTeamCode((n) => Crypto.getRandomBytes(n));
+        const info = await api.createTeam(code, name);
+        const s = { code, teamId: info.teamId, teamName: info.name };
+        await save(s);
+        setMembers([]);
+        return s;
+      },
+      async joinTeam(raw) {
+        const code = normalizeCode(raw);
+        if (code.replace(/-/g, '').length < 8) throw new Error('El código tiene 12 letras y números.');
+        const info = await api.join(code);
+        const s = { code, teamId: info.teamId, teamName: info.name };
+        await save(s);
+        setMembers(info.members);
+        return s;
+      },
+      async enterAs(name) {
+        if (!session) throw new Error('Primero entrá a un equipo.');
+        const clean = name.trim().replace(/\s+/g, ' ');
+        if (clean.length < 2) throw new Error('Escribí tu nombre (al menos 2 letras).');
+        let member: Member;
+        try {
+          member = await api.addMember(session.code, clean);
+        } catch (e) {
+          const known = members.find((m) => m.name.toLowerCase() === clean.toLowerCase());
+          if (!(e instanceof SyncError && e.kind === 'offline') || !known) throw e;
+          member = known; // sin señal, una persona ya registrada puede volver a entrar
+        }
+        await save({ ...session, member: { id: member.id, name: member.name } });
+        refreshMembers().catch(() => undefined);
+      },
+      refreshMembers,
+      async removeMember(id) {
+        if (!session) return;
+        setMembers(await api.removeMember(session.code, id));
+      },
+      async switchUser() {
+        if (session) await save({ ...session, member: undefined });
+      },
+      async leaveTeam() {
+        await save(null);
+        setMembers([]);
+      },
+      async logout() {
+        if (session) await save({ ...session, member: undefined });
+      },
+      async enterTeam(name) {
+        await value.enterAs(name);
+      },
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [session, members, loading, error, save, refreshMembers],
+  );
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 export function useAuth() {
   const c = useContext(Context);
-  if (!c) throw new Error('Falta proveedor de sesión.');
+  if (!c) throw new Error('Falta AuthProvider.');
   return c;
 }

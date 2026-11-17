@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, AppState, Platform, Pressable } from 'react-native';
+import { View, Text, AppState, Platform, Pressable, ScrollView } from 'react-native';
 import { useFocusEffect } from 'expo-router';
 import { History, ArrowRight, ChevronRight, ArrowDown, ArrowUp } from 'lucide-react-native';
 import { useInventory } from '../../src/context/InventoryContext';
@@ -8,6 +8,7 @@ import { undoReason } from '../../src/domain/engine';
 import { businessDate } from '../../src/domain/rules';
 import {
   Button,
+  Chip,
   ConfirmButton,
   Empty,
   Field,
@@ -19,13 +20,11 @@ import {
 } from '../../src/components/ui';
 import { SearchToolbar, SectionHeading } from '../../src/components/ListStructure';
 import { historyRows } from '../../src/utils/listPresentation';
-import { DATA_MODE } from '../../src/services/firebase';
-import { loadHistory, HistoryCursor } from '../../src/services/historyService';
 import type { ActivityLog } from '../../src/types';
 import { DataList } from '../../src/components/DataList';
 export default function HistoryPage() {
   const { C, s } = useUI();
-  const { state, dispatch, loadMoreHistory, historyHasMore, workspaceId } = useInventory(),
+  const { state, dispatch, rejected } = useInventory(),
     { user } = useAuth();
   const [filtersOpen, setFiltersOpen] = useState(false),
     [selectedId, setSelectedId] = useState<string | null>(null);
@@ -46,12 +45,7 @@ export default function HistoryPage() {
       return () => clearInterval(timer);
     }, []),
   );
-  const [older, setOlder] = useState<ActivityLog[]>([]),
-    [cursor, setCursor] = useState<HistoryCursor>(),
-    [more, setMore] = useState(true),
-    [busy, setBusy] = useState(false),
-    [error, setError] = useState('');
-  const all = [...new Map([...older, ...state.logs].map((l) => [l.id, l])).values()].sort((a, b) =>
+  const all = [...state.logs].sort((a, b) =>
     b.timestamp.localeCompare(a.timestamp),
   );
   const users = [...new Map(all.map((l) => [l.usuarioUid, l.usuarioNombre])).entries()];
@@ -75,15 +69,26 @@ export default function HistoryPage() {
       ? state.obras.find((o) => o.id === value.slice(5))?.clienteNombre || 'Alquiler archivado'
       : { galpon: 'Depósito', taller: 'A reparar', perdido: 'Perdido' }[value] || value;
   return (
-    <Screen title="Historial" subtitle="Cada movimiento, con su responsable." scroll={false}>
+    <Screen title="Auditoría" subtitle={`${all.length} registros · quién hizo cada cambio, cuándo y qué movió`} scroll={false}>
       <SearchToolbar
         label="Buscar actividad"
         value={query}
         onChange={setQuery}
         placeholder="Acción, alquiler o persona"
-        filterLabel="Filtrar historial"
+        filterLabel="Filtrar auditoría"
         onFilter={() => setFiltersOpen(true)}
       />
+      {users.length > 1 ? (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexGrow: 0 }} contentContainerStyle={{ gap: 8 }}>
+          <Chip label="Todas las personas" selected={actor === 'TODOS'} onPress={() => setActor('TODOS')} />
+          {users.map(([value, label]) => (
+            <Chip key={value} label={label} selected={actor === value} onPress={() => setActor(actor === value ? 'TODOS' : value)} />
+          ))}
+        </ScrollView>
+      ) : null}
+      {rejected?.length ? (
+        <Notice tone="error" text={`Rechazados (no aplicados): ${rejected.map((r) => describeRejected(r.op.action.type)).join(', ')}`} />
+      ) : null}
       {obra !== 'TODAS' || actor !== 'TODOS' || date ? (
         <Text style={s.muted}>{data.length} resultados · Filtros activos</Text>
       ) : null}
@@ -96,38 +101,6 @@ export default function HistoryPage() {
             title="Sin movimientos"
             detail="Las acciones registradas aparecerán aquí. Probá cambiando los filtros."
           />
-        }
-        ListFooterComponent={
-          (workspaceId || DATA_MODE === 'firebase') && user?.role === 'ADMIN' ? (
-            <View style={{ gap: 10 }}>
-              {error ? <Notice text={error} tone="error" /> : null}
-              <Button
-                label={(historyHasMore ?? more) ? 'Cargar historial' : 'Historial completo'}
-                disabled={!(historyHasMore ?? more)}
-                loading={busy}
-                variant="secondary"
-                onPress={async () => {
-                  setBusy(true);
-                  try {
-                    if (loadMoreHistory) {
-                      setMore(await loadMoreHistory());
-                      setError('');
-                      return;
-                    }
-                    const result = await loadHistory(cursor);
-                    setOlder([...older, ...result.items]);
-                    setCursor(result.cursor);
-                    setMore(result.more);
-                    setError('');
-                  } catch {
-                    setError('No se pudo consultar el historial remoto. Reintentá con conexión.');
-                  } finally {
-                    setBusy(false);
-                  }
-                }}
-              />
-            </View>
-          ) : null
         }
         renderItem={({ item }) => {
           if (item.kind === 'section') return <SectionHeading title={item.title} />;
@@ -172,11 +145,11 @@ export default function HistoryPage() {
               <View style={[s.grow, { gap: 3 }]}>
                 <Text style={s.label}>{l.accion}</Text>
                 {name(l) ? <Text style={s.body}>{name(l)}</Text> : null}
-                <Text numberOfLines={1} style={s.muted}>
+                <Text numberOfLines={1} style={[s.muted, { color: C.text }]}>
+                  <Text style={{ fontWeight: '700' }}>{l.usuarioNombre}</Text>
                   {l.movimientos.length
-                    ? `${l.movimientos.reduce((sum, m) => sum + m.cantidad, 0)} piezas · `
+                    ? ` · ${l.movimientos.reduce((sum, m) => sum + m.cantidad, 0)} piezas movidas`
                     : ''}
-                  {l.usuarioNombre}
                 </Text>
               </View>
               <View style={{ alignItems: 'flex-end', gap: 8 }}>
@@ -194,7 +167,7 @@ export default function HistoryPage() {
         }}
         contentContainerStyle={{ paddingBottom: 16 }}
       />
-      <Sheet visible={filtersOpen} title="Filtrar historial" onClose={() => setFiltersOpen(false)}>
+      <Sheet visible={filtersOpen} title="Filtrar auditoría" onClose={() => setFiltersOpen(false)}>
         <Select
           label="Alquiler"
           value={obra}
@@ -205,10 +178,10 @@ export default function HistoryPage() {
           onChange={setObra}
         />
         <Select
-          label="Usuario"
+          label="Persona"
           value={actor}
           options={[
-            { value: 'TODOS', label: 'Todos los usuarios' },
+            { value: 'TODOS', label: 'Todas las personas' },
             ...users.map(([value, label]) => ({ value, label })),
           ]}
           onChange={setActor}
@@ -284,4 +257,17 @@ export default function HistoryPage() {
       </Sheet>
     </Screen>
   );
+}
+
+const REJECTED_LABELS: Record<string, string> = {
+  DELIVER: 'una entrega',
+  RETIRE: 'un retiro',
+  ADJUST: 'un ajuste de stock',
+  MOVE_STOCK: 'un movimiento de stock',
+  TRANSFER: 'un traspaso',
+  SET_LOAD: 'una carga',
+  UPDATE_OBRA: 'una edición',
+};
+function describeRejected(type: string) {
+  return REJECTED_LABELS[type] || 'un cambio';
 }
