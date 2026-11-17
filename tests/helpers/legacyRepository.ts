@@ -1,4 +1,4 @@
-/** Repositorio local de la versión 1.x, conservado sólo como ayuda de pruebas (motor, validación y migración). */
+/** Repositorio local de la app anterior, conservado sólo como ayuda de pruebas (motor, validación y migración). */
 import type { AppState, Envelope, Operation, UserProfile } from '../../src/types';
 import { parseEnvelope, validateImportEnvelope } from '../../src/data/validation';
 import { applyOperation, clone } from '../../src/domain/engine';

@@ -28,16 +28,16 @@ Si dos personas usan el mismo material a la vez, ambas operaciones llegan al ser
 |---|---|
 | `src/sync/api.ts` | Llamadas RPC al servidor, mensajes de error en castellano, generación del código de equipo. |
 | `src/sync/store.ts` | `SyncStore`: estado confirmado + operaciones pendientes, envío por lotes, descarga paginada, rechazos. |
-| `src/sync/ops.ts` | Operaciones propias de 2.x (`IMPORT_SNAPSHOT`, `NOTE`) sobre el motor existente. |
+| `src/sync/ops.ts` | Operaciones propias de la sincronización (`IMPORT_SNAPSHOT`, `NOTE`) sobre el motor existente. |
 | `src/sync/kv*.ts` | Almacenamiento local (SQLite en Android, `localStorage` en web de prueba). |
 | `src/context/AuthContext.tsx` | Sesión: equipo + persona; lista de personas (también sin señal). |
 | `src/context/InventoryContext.tsx` | Expone el inventario a las pantallas; sincroniza al abrir, al volver, cada 15 s y al recuperar señal. |
-| `src/components/LegacyImport.tsx` | Ofrece pasar al equipo los datos de la versión 1.x guardados en el teléfono. |
+| `src/components/LegacyImport.tsx` | Ofrece pasar al equipo los datos de la app anterior guardados en el teléfono. |
 | `src/utils/ticketFormat.ts` / `src/services/ticket.ts` | Ticket en texto/HTML (puro) y su envío (PDF, WhatsApp, Word, Excel). |
 
 ## Servidor
 
-Migraciones en `supabase/migrations/` (las `20261027…` son del modo equipo 1.x y ya no se usan; se conservan como historia del esquema).
+Esquema completo en `supabase/migrations/20261117000000_inicial.sql`.
 
 | Función | Uso |
 |---|---|
@@ -51,5 +51,5 @@ Migraciones en `supabase/migrations/` (las `20261027…` son del modo equipo 1.x
 ## Pruebas
 
 - `tests/sync-store.test.ts`: dos teléfonos convergen, conflicto rechazado y avisado, importación y notas auditadas.
-- `tests/ui/v2-equipo.spec.ts`: recorrido completo en navegador contra el servidor real con dos teléfonos y migración 1.x.
+- `tests/ui/equipo.spec.ts`: recorrido completo en navegador contra el servidor real con dos teléfonos y migración de la app anterior.
 - El resto de `tests/` cubre motor, validación, fechas, documentos, copias, avisos e interfaz.

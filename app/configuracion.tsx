@@ -177,7 +177,7 @@ export default function Settings() {
     })
       .then(() => undefined)
       .catch(() => undefined);
-  const version = Constants.expoConfig?.version || '2.0.0';
+  const version = Constants.expoConfig?.version || '1.0.0';
   return (
     <Screen title="Ajustes" back>
       <View style={[s.card, { gap: 14 }]}>
