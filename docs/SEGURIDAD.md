@@ -1,6 +1,6 @@
 # Seguridad — Chema Andamios
 
-Revisión del 17/11/2026 (versión 2.1.0).
+Revisión del 17/11/2026 (versión 1.0.0).
 
 ## Modelo de acceso
 
@@ -13,14 +13,14 @@ Revisión del 17/11/2026 (versión 2.1.0).
 | Control | Estado |
 |---|---|
 | Tablas `c2_*` con RLS activado y **sin políticas** → la clave pública no puede leer ni escribir tablas | ✅ verificado (`permission denied`) |
-| Todos los privilegios de tablas revocados a `anon` y `authenticated` (incluidas las tablas 1.x) | ✅ |
+| Todos los privilegios de tablas revocados a `anon` y `authenticated` | ✅ |
 | Acceso sólo por funciones `SECURITY DEFINER` con `search_path` vacío que exigen el código | ✅ |
 | Funciones ejecutables sólo por `anon` (no por `authenticated`) | ✅ |
 | Límite: 30 equipos nuevos por hora en total (anti-spam) | ✅ |
 | Límites por equipo: 200 personas, 150 MB de operaciones, 300 MB de fotos; 100 operaciones y 3 MB por envío | ✅ |
 | Validación de identificadores y de base64 en fotos | ✅ |
 | Registro de cuentas (Auth) desactivado; no hay usuarios | ✅ |
-| Función Edge `chema-api` del modo equipo 1.x eliminada (no tenía datos; el código está en el historial git) | ✅ |
+| Tablas, funciones y función Edge del sistema anterior eliminadas del servidor (estaban vacías) | ✅ |
 
 Las advertencias del asesor de Supabase "función SECURITY DEFINER ejecutable por anon" son **intencionales**: es el único punto de entrada y cada función valida el código.
 
@@ -30,7 +30,7 @@ Las advertencias del asesor de Supabase "función SECURITY DEFINER ejecutable po
 - Sólo HTTPS (tráfico en claro deshabilitado en release). Permisos: internet, ubicación (al ordenar el viaje), cámara/fotos (al documentar), vibración y avisos. Micrófono y superposición bloqueados.
 - Tickets y guía en PDF se generan con escape de HTML; los enlaces de WhatsApp se codifican.
 - Sin publicidad, analítica ni rastreadores.
-- **Firma del APK:** certificado SHA-256 `fac61745…3b9c`, el mismo de las versiones 1.x (permite actualizar sin desinstalar). Es la clave de depuración estándar de React Native. Sirve para distribución interna por APK, **no para Play Store**: si en el futuro se publica en la tienda, crear una clave de publicación propia y guardarla fuera del repositorio.
+- **Firma del APK:** certificado SHA-256 `fac61745…3b9c`, el mismo de la app anterior (permite actualizar sin desinstalar). Es la clave de depuración estándar de React Native. Sirve para distribución interna por APK, **no para Play Store**: si en el futuro se publica en la tienda, crear una clave de publicación propia y guardarla fuera del repositorio.
 
 ## Repositorio
 
