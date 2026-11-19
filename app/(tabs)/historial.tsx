@@ -67,7 +67,7 @@ export default function HistoryPage() {
   const locationName = (value: string) =>
     value.startsWith('obra:')
       ? state.obras.find((o) => o.id === value.slice(5))?.clienteNombre || 'Alquiler archivado'
-      : { galpon: 'Depósito', taller: 'A reparar', perdido: 'Perdido' }[value] || value;
+      : { galpon: 'Depósito', taller: 'A reparar', perdido: 'Perdido', baja: 'Dado de baja' }[value] || value;
   return (
     <Screen title="Auditoría" subtitle={`${all.length} registros · quién hizo cada cambio, cuándo y qué movió`} scroll={false}>
       <SearchToolbar

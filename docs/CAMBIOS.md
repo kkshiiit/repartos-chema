@@ -1,5 +1,9 @@
 # Registro de cambios
 
+## 1.0.2 — 19/11/2026
+
+- Papelera roja en cada material del depósito para borrarlo con confirmación: da de baja su stock, lo quita de los combos y queda en la Auditoría. No deja borrar si hay piezas en obra, en una carga por entregar o faltantes sin resolver.
+
 ## 1.0.1 — 19/11/2026
 
 - Papelera roja para borrar un alquiler entero de un toque, con confirmación (tarjeta del inicio y detalle). Ahora también se puede borrar aunque tenga fotos.

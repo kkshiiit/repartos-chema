@@ -1,12 +1,12 @@
-# Chema Andamios 1.0.1 — APK Android
+# Chema Andamios 1.0.2 — APK Android
 
-**[Descargar chema-andamios-1.0.1-arm64.apk](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/main/descargas/chema-andamios-1.0.1-arm64.apk)** (repositorio privado: iniciar sesión en GitHub)
+**[Descargar chema-andamios-1.0.2-arm64.apk](https://github.com/kkshiiit/repartos-chema/raw/refs/heads/main/descargas/chema-andamios-1.0.2-arm64.apk)** (repositorio privado: iniciar sesión en GitHub)
 
 | | |
 |---|---|
-| Tamaño | 55702612 bytes |
-| SHA-256 | `1312cebd273c577a12c9f8b1cacc6b27e695d877b257918571e0c0b4e306d138` |
-| Paquete | `com.grupochema.repartos` · versión 1.0.1 (code 16) · Android 7+ · ARM64 |
+| Tamaño | 55709252 bytes |
+| SHA-256 | `1c61739e289ed002058fa6692f6dd713d7ca11dc47be52f786c3c85abfda61f2` |
+| Paquete | `com.grupochema.repartos` · versión 1.0.2 (code 17) · Android 7+ · ARM64 |
 | Firma | `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c` (la misma de la app anterior: actualiza sin desinstalar) |
 
 ## Instalar

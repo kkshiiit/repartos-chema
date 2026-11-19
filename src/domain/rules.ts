@@ -82,6 +82,7 @@ export const adminActions: Action['type'][] = [
   'CORRECT_INCIDENT',
   'SAVE_COMBO',
   'DELETE_COMBO',
+  'DELETE_MATERIAL',
   'RESPONSABLES',
 ];
 export function authorize(actor: UserProfile, action: Action) {

@@ -124,6 +124,7 @@ const SECTIONS: Section[] = [
       'Agregá materiales nuevos con su medida.',
       'Usá "Ajustar" para compras, roturas o conteos (siempre con motivo).',
       'Usá "Mover" para pasar de taller a depósito cuando se reparó algo.',
+      'Papelera roja: borra un material que ya no usás (con confirmación). No deja si está en obra o en una carga.',
     ],
     route: '/galpon',
   },

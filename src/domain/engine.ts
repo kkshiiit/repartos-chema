@@ -647,6 +647,30 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
       s.combos = s.combos.filter((c) => c.id !== a.comboId);
       summary = 'Eliminó un combo';
       break;
+    case 'DELETE_MATERIAL': {
+      const m = material(a.materialId);
+      ensure(m.cantidadEnObra === 0, `Hay ${m.cantidadEnObra} ${m.nombre} en obras. Registrá los retiros antes de borrarlo.`);
+      const loads = s.obras.filter(
+        (o) => o.estadoProceso === 'PENDIENTE_ENTREGA' && o.materialesCargados.some((x) => x.materialId === m.id),
+      );
+      ensure(!loads.length, `Está en la carga de ${loads.map((o) => o.clienteNombre).join(', ')}. Quitalo de esa carga primero.`);
+      const open = s.obras.some((o) =>
+        o.faltantesRegistrados?.some((f) => f.materialId === m.id && f.recuperado < f.cantidad),
+      );
+      ensure(!open, 'Tiene faltantes o daños sin resolver en un alquiler. Recuperalos primero.');
+      for (const [bucket, place] of [
+        ['cantidadGalpon', 'galpon'],
+        ['cantidadEnTaller', 'taller'],
+        ['cantidadPerdido', 'perdido'],
+      ] as const)
+        if (m[bucket] > 0) move(m.id, m[bucket], place, 'baja', 'Material borrado del depósito');
+      for (const c of s.combos) c.items = c.items.filter((i) => i.materialId !== m.id);
+      s.combos = s.combos.filter((c) => c.items.length > 0);
+      for (const o of s.obras) delete o.saldosEnObra[m.id];
+      s.materiales = s.materiales.filter((x) => x.id !== m.id);
+      summary = `Borró el material ${m.nombre}${m.medida ? ` ${m.medida}` : ''}`;
+      break;
+    }
     case 'RESPONSABLES':
       ensure(
         a.nombres.length > 0 && a.nombres.length <= 50,
