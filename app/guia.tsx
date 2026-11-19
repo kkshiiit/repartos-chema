@@ -47,6 +47,7 @@ const SECTIONS: Section[] = [
       'En Ajustes aparece el código del equipo: tocá "Compartir código" y mandalo por WhatsApp.',
       'El resto instala la app, toca "Unirme a un equipo", escribe el código y elige su nombre.',
       'Para cambiar de persona en un mismo teléfono: tocá tu inicial (arriba a la derecha) → "Cambiar de persona".',
+      'Si el código llegó a quien no debía: Ajustes → "Cambiar código". El viejo deja de servir y el resto entra con el nuevo.',
     ],
     route: '/configuracion',
   },

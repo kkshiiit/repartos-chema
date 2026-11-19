@@ -26,3 +26,8 @@ playwright-report/
 supabase/.temp/
 supabase/.branches/
 
+
+# Los APK se publican en GitHub Releases, no dentro del código
+*.apk
+*.aab
+entregas/

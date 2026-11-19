@@ -22,17 +22,28 @@ interface AuthValue {
   removeMember: (id: string) => Promise<void>;
   switchUser: () => Promise<void>;
   leaveTeam: () => Promise<void>;
+  /** Genera un código nuevo; el anterior deja de funcionar en todos los teléfonos. */
+  rotateCode: () => Promise<string>;
+  /** El servidor ya no reconoce el código guardado (otra persona lo cambió). */
+  codeLost: () => Promise<void>;
+  notice: string;
+  clearNotice: () => void;
   logout: () => Promise<void>;
   enterTeam: (name: string) => Promise<void>;
 }
 const Context = createContext<AuthValue | null>(null);
+const NOTICE_KEY = 'chema2:notice';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<TeamSession | null>(null),
     [members, setMembers] = useState<Member[]>([]),
     [loading, setLoading] = useState(true),
-    [error, setError] = useState('');
+    [error, setError] = useState(''),
+    [notice, setNotice] = useState('');
   useEffect(() => {
+    kv.getItem(NOTICE_KEY)
+      .then((n) => n && setNotice(n))
+      .catch(() => undefined);
     readSession()
       .then(setSession)
       .catch(() => setError('No se pudo leer la sesión guardada.'))
@@ -114,6 +125,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       async switchUser() {
         if (session) await save({ ...session, member: undefined });
       },
+      async rotateCode() {
+        if (!session) throw new Error('Primero entrá a un equipo.');
+        const code = newTeamCode((n) => Crypto.getRandomBytes(n));
+        await api.rotateCode(session.code, code);
+        await save({ ...session, code });
+        return code;
+      },
+      async codeLost() {
+        // Releer el código guardado: si este teléfono acaba de cambiarlo, sigue siendo válido.
+        const current = await readSession();
+        if (!current) return;
+        try {
+          await api.join(current.code);
+          if (current.code !== session?.code) setSession(current);
+          return;
+        } catch (e) {
+          if (!(e instanceof SyncError && e.kind === 'not-found')) return;
+        }
+        const text =
+          'El código del equipo cambió. Pedile el código nuevo a tu equipo y volvé a entrar: tus cambios guardados en este teléfono no se pierden.';
+        await kv.setItem(NOTICE_KEY, text);
+        setNotice(text);
+        await save(null);
+      },
+      notice,
+      clearNotice: () => {
+        setNotice('');
+        void kv.removeItem(NOTICE_KEY).catch(() => undefined);
+      },
       async leaveTeam() {
         await save(null);
         setMembers([]);
@@ -126,7 +166,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [session, members, loading, error, save, refreshMembers],
+    [session, members, loading, error, notice, save, refreshMembers],
   );
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
