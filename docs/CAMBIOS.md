@@ -1,5 +1,10 @@
 # Registro de cambios
 
+## 1.0.3 — 19/11/2026
+
+- **Cambiar código del equipo** (Ajustes): el código anterior deja de funcionar al instante. Los demás teléfonos ven un aviso y vuelven a entrar con el código nuevo sin perder nada. Queda en la Auditoría.
+- Los APK ya no se guardan dentro del repositorio: se publican en GitHub Releases.
+
 ## 1.0.2 — 19/11/2026
 
 - Papelera roja en cada material del depósito para borrarlo con confirmación: da de baja su stock, lo quita de los combos y queda en la Auditoría. No deja borrar si hay piezas en obra, en una carga por entregar o faltantes sin resolver.

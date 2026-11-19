@@ -37,7 +37,7 @@ function serialize(state: InventoryValue['state']) {
 }
 
 export function InventoryProvider({ children }: { children: React.ReactNode }) {
-  const { session, user } = useAuth();
+  const { session, user, codeLost } = useAuth();
   const code = session?.code || '';
   const teamId = session?.teamId || '';
   const store = useMemo(
@@ -71,12 +71,13 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
       setOnline(true);
     } catch (e) {
       if (e instanceof SyncError && e.kind === 'offline') setOnline(false);
+      else if (e instanceof SyncError && e.kind === 'not-found') void codeLost();
       else setError(userError(e));
     } finally {
       running.current = false;
       setSyncing(false);
     }
-  }, [store]);
+  }, [store, codeLost]);
 
   useEffect(() => {
     if (!store) return;

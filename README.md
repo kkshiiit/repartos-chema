@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="descargas/LEEME.md"><b>Descargar APK 1.0.2</b></a> ·
+  <a href="descargas/LEEME.md"><b>Descargar APK 1.0.3</b></a> ·
   <a href="docs/MANUAL.md">Manual de uso</a> ·
   <a href="docs/ARQUITECTURA.md">Arquitectura</a> ·
   <a href="docs/SEGURIDAD.md">Seguridad</a> ·
@@ -56,7 +56,7 @@ src/
 supabase/migrations/ Esquema y funciones del servidor
 tests/               Pruebas unitarias (Vitest) y de punta a punta (Playwright)
 scripts/             Compilación web/Android, servidor local, limpieza de QA, respaldo
-descargas/           APK publicado y verificación SHA-256
+descargas/           Cómo descargar el APK (publicado en GitHub Releases)
 docs/                Manual, arquitectura, seguridad, cambios y capturas
 ```
 

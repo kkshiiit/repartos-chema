@@ -11,7 +11,7 @@ import { fonts } from '../src/theme/tokens';
 
 export default function Bienvenida() {
   const { C, s } = useUI();
-  const { createTeam, joinTeam } = useAuth();
+  const { createTeam, joinTeam, notice, clearNotice } = useAuth();
   const [mode, setMode] = useState<'start' | 'join' | 'create'>('start');
   const [code, setCode] = useState(''),
     [teamName, setTeamName] = useState(''),
@@ -22,6 +22,7 @@ export default function Bienvenida() {
     setError('');
     try {
       await f();
+      clearNotice();
       router.replace('/quien');
     } catch (e) {
       setError(userError(e));
@@ -51,6 +52,7 @@ export default function Bienvenida() {
                 en su teléfono.
               </Text>
             </View>
+            {notice ? <Notice text={notice} /> : null}
             {mode === 'start' ? (
               <View style={{ gap: 12 }}>
                 <Button label="Unirme a un equipo" icon={LogIn} onPress={() => setMode('join')} />

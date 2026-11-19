@@ -6,7 +6,7 @@ Revisión del 17/11/2026 (versión 1.0.0).
 
 - No hay cuentas ni contraseñas. Un **código de equipo** de 12 caracteres (alfabeto de 32 símbolos, ~60 bits, generado con el generador seguro del sistema) da acceso a los datos de ese equipo. El servidor guarda sólo su **hash SHA-256**, nunca el código.
 - El **nombre** identifica a la persona en la auditoría. Es un control de trazabilidad, no de autenticación: alguien con el código podría escribir otro nombre. Compartir el código sólo con el personal.
-- Si el código se filtra: crear un equipo nuevo, *Exportar* la copia desde el viejo e *Importar* en el nuevo, y que todos se unan con el código nuevo.
+- Si el código se filtra: Ajustes → **Cambiar código**. El anterior deja de funcionar al instante y los demás teléfonos reciben un aviso para entrar con el nuevo.
 
 ## Servidor (Supabase, proyecto `repartos-chema`)
 
