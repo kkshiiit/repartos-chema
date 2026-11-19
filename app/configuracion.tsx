@@ -132,8 +132,8 @@ function ThemeOption({
 export default function Settings() {
   const { C, s } = useUI();
   const theme = useTheme();
-  const { user, session, members, refreshMembers, removeMember, switchUser, leaveTeam } = useAuth();
-  const { state, dispatch } = useInventory();
+  const { user, session, members, refreshMembers, removeMember, switchUser, leaveTeam, rotateCode } = useAuth();
+  const { state, dispatch, note, retry } = useInventory();
   const [panel, setPanel] = useState<Panel | null>(null);
   const [depot, setDepot] = useState(DEFAULT_DEPOT);
   const [names, setNames] = useState<string | null>(null);
@@ -233,6 +233,17 @@ export default function Settings() {
           {session?.code}
         </Text>
         <Button label="Compartir código" icon={Share2} onPress={shareCode} />
+        <ConfirmButton
+          label="Cambiar código"
+          variant="secondary"
+          title="Cambiar el código del equipo"
+          description="Usalo si el código llegó a alguien que no debía tenerlo. Se genera uno nuevo y el anterior deja de funcionar al instante: los demás teléfonos van a tener que entrar de nuevo con el código nuevo (no pierden nada). Después compartí el código nuevo con tu equipo."
+          onConfirm={async () => {
+            await note?.('Cambió el código del equipo');
+            await retry();
+            await rotateCode();
+          }}
+        />
         <Button
           label={`Personas del equipo (${members.length})`}
           icon={UsersRound}

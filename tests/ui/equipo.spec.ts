@@ -232,3 +232,58 @@ test('papelera del depósito: un material se borra con confirmación y queda aud
   await expect(p.getByText(/Borró el material Rueda/)).toBeVisible();
   expect(errors).toEqual([]);
 });
+
+test('cambiar código: el viejo deja de servir, el otro teléfono recibe aviso y vuelve a entrar sin perder nada', async ({ browser }) => {
+  test.setTimeout(150000);
+  const A = await phone(browser, 'light');
+  const a = A.page;
+  await a.goto('/');
+  await a.getByRole('button', { name: 'Crear un equipo nuevo', exact: true }).click();
+  await a.getByLabel('Nombre del negocio', { exact: true }).fill(`QA Código ${Date.now()}`);
+  await a.getByRole('button', { name: 'Crear equipo', exact: true }).click();
+  await a.getByLabel('Tu nombre y apellido', { exact: true }).fill('Ana Gómez');
+  await a.getByRole('button', { name: 'Entrar con este nombre', exact: true }).click();
+  await expect(a.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible({ timeout: 30000 });
+  await synced(a);
+  const oldCode = (await session(a)).code as string;
+
+  const B = await phone(browser, 'dark');
+  const b = B.page;
+  await b.goto('/');
+  await b.getByRole('button', { name: 'Unirme a un equipo', exact: true }).click();
+  await b.getByLabel('Código del equipo (12 letras y números)', { exact: true }).fill(oldCode);
+  await b.getByRole('button', { name: 'Entrar', exact: true }).click();
+  await b.getByLabel('Tu nombre y apellido', { exact: true }).fill('Beto Ruiz');
+  await b.getByRole('button', { name: 'Entrar con este nombre', exact: true }).click();
+  await expect(b.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible({ timeout: 30000 });
+  await synced(b);
+
+  await a.goto('/configuracion');
+  await a.getByRole('button', { name: 'Cambiar código', exact: true }).click();
+  await a.getByRole('button', { name: 'Confirmar', exact: true }).click();
+  await expect.poll(async () => (await session(a)).code, { timeout: 30000 }).not.toBe(oldCode);
+  const newCode = (await session(a)).code as string;
+  await expect(a.getByText(newCode, { exact: true })).toBeVisible();
+  await a.screenshot({ path: shot('14-codigo-cambiado') });
+
+  // B: el próximo sincronizado detecta el código viejo y lo manda a la bienvenida con aviso.
+  await b.getByRole('button', { name: /Tocar para sincronizar ahora/ }).click();
+  await expect(b.getByText(/El código del equipo cambió/)).toBeVisible({ timeout: 30000 });
+  await b.screenshot({ path: shot('15-aviso-codigo-cambiado') });
+  await b.getByRole('button', { name: 'Unirme a un equipo', exact: true }).click();
+  await b.getByLabel('Código del equipo (12 letras y números)', { exact: true }).fill(oldCode);
+  await b.getByRole('button', { name: 'Entrar', exact: true }).click();
+  await expect(b.getByText(/No existe un equipo con ese código/)).toBeVisible({ timeout: 20000 });
+  await b.getByLabel('Código del equipo (12 letras y números)', { exact: true }).fill(newCode);
+  await b.getByRole('button', { name: 'Entrar', exact: true }).click();
+  await b.getByRole('button', { name: 'Entrar como Beto Ruiz', exact: true }).click();
+  await expect(b.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible({ timeout: 30000 });
+  await synced(b);
+
+  // A sigue adentro y la auditoría registra el cambio.
+  await a.goto('/historial');
+  await synced(a);
+  await expect(a.getByText('Cambió el código del equipo', { exact: true })).toBeVisible();
+  expect(A.errors).toEqual([]);
+  expect(B.errors).toEqual([]);
+});

@@ -60,5 +60,5 @@ La app funciona igual. El punto de arriba a la izquierda indica el estado: **ver
 
 - **¿Necesito internet?** Sólo para crear o unirte a un equipo. Después funciona sin señal.
 - **Dos personas cargaron lo mismo a la vez.** Gana la primera; a la otra le aparece un aviso para revisar.
-- **Se filtró el código.** Crear un equipo nuevo, exportar del viejo e importar en el nuevo.
+- **Se filtró el código.** Ajustes → **Cambiar código**. El viejo deja de funcionar al instante; compartí el nuevo con tu equipo.
 - **La app no sincroniza hace días.** El plan gratuito del servidor se pausa tras 7 días sin uso; se reactiva desde supabase.com.

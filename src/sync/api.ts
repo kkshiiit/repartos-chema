@@ -88,6 +88,8 @@ export const api = {
     rpc<{ opId: string; seq: number }[]>('c2_push', { p_code: code, p_ops: ops }, 45000),
   pull: (code: string, after: number, limit = 300) =>
     rpc<{ ops: RemoteOp[]; lastSeq: number }>('c2_pull', { p_code: code, p_after: after, p_limit: limit }, 45000),
+  rotateCode: (code: string, newCode: string) =>
+    rpc<boolean>('c2_rotate_code', { p_code: code, p_new_code: newCode }),
   photoPut: (code: string, id: string, data: string) =>
     rpc<boolean>('c2_photo_put', { p_code: code, p_id: id, p_data: data }, 60000),
   photoGet: (code: string, id: string) =>
