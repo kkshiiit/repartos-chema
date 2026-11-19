@@ -4,6 +4,8 @@ import { router } from 'expo-router';
 import { ChevronRight } from 'lucide-react-native';
 import type { ObraCard, MaterialItem } from '../types';
 import { useUI } from './ui';
+import { DeleteRentalButton } from './DeleteRentalButton';
+import { deleteBlocker } from '../utils/deleteRental';
 import { StatusChip } from './StatusChip';
 import { rentalSummary, rentalTaskForDate, rentalMaterialPreview } from '../utils/listPresentation';
 import { businessDate } from '../domain/rules';
@@ -63,6 +65,7 @@ export function CardObra({
         <Text style={[s.label, s.grow, { fontSize: 18, lineHeight: 24, fontWeight: '700' }]}>
           {o.clienteNombre}
         </Text>
+        {deleteBlocker(o) === null ? <DeleteRentalButton obra={o} size={40} /> : null}
         <ChevronRight size={18} color={C.muted} />
       </View>
       <Text style={[s.body, { fontSize: 15, lineHeight: 21 }]}>

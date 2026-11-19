@@ -282,9 +282,8 @@ export function applyOperation(current: AppState, op: Operation, now = new Date(
         !o.faltantesRegistrados?.some((i) => i.recuperado < i.cantidad),
         'Recupera o conserva los faltantes antes de eliminar.',
       );
-      ensure(!o.fotos?.length, 'Elimina las fotos antes de eliminar la obra.');
       s.obras = s.obras.filter((x) => x.id !== o.id);
-      summary = 'Eliminó una obra';
+      summary = `Borró el alquiler de ${o.clienteNombre}`;
       break;
     }
     case 'SET_LOAD': {
