@@ -161,6 +161,7 @@ export const actionSchema = z.discriminatedUnion('type', [
     })
     .strict(),
   z.object({ type: z.literal('DELETE_COMBO'), comboId: id }).strict(),
+  z.object({ type: z.literal('DELETE_MATERIAL'), materialId: id }).strict(),
   z
     .object({
       type: z.literal('RESPONSABLES'),
