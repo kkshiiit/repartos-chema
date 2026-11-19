@@ -202,3 +202,33 @@ test('papelera: un alquiler cargado se borra de un toque con confirmación y que
   await expect(p.getByText('Borró el alquiler de Cliente Arrepentido', { exact: true })).toBeVisible();
   expect(errors).toEqual([]);
 });
+
+test('papelera del depósito: un material se borra con confirmación y queda auditado', async ({ browser }) => {
+  test.setTimeout(120000);
+  const { page: p, errors } = await phone(browser, 'light');
+  await p.goto('/');
+  await p.getByRole('button', { name: 'Crear un equipo nuevo', exact: true }).click();
+  await p.getByLabel('Nombre del negocio', { exact: true }).fill(`QA Material ${Date.now()}`);
+  await p.getByRole('button', { name: 'Crear equipo', exact: true }).click();
+  await p.getByLabel('Tu nombre y apellido', { exact: true }).fill('Ana Gómez');
+  await p.getByRole('button', { name: 'Entrar con este nombre', exact: true }).click();
+  await expect(p.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible({ timeout: 30000 });
+  await p.goto('/galpon');
+  await p.getByRole('button', { name: 'Agregar material', exact: true }).click();
+  await p.getByLabel('Nombre del material', { exact: true }).fill('Rueda');
+  await p.getByRole('button', { name: 'Guardar cambios', exact: true }).click();
+  await p.getByRole('button', { name: 'Confirmar', exact: true }).click();
+  const trash = p.getByRole('button', { name: /^Borrar material Rueda/ });
+  await expect(trash).toBeVisible();
+  await p.screenshot({ path: shot('12-papelera-deposito') });
+  await trash.click();
+  await expect(p.getByText('¿Borrar este material?', { exact: true })).toBeVisible();
+  await p.waitForTimeout(500);
+  await p.screenshot({ path: shot('13-papelera-deposito-confirmacion') });
+  await p.getByRole('button', { name: 'Sí, borrar material', exact: true }).click();
+  await expect(trash).toHaveCount(0);
+  await expect.poll(async () => (await data(p)).confirmed.materiales.length, { timeout: 30000 }).toBe(0);
+  await p.goto('/historial');
+  await expect(p.getByText(/Borró el material Rueda/)).toBeVisible();
+  expect(errors).toEqual([]);
+});

@@ -20,7 +20,7 @@
 | Pestaña | Para qué sirve |
 |---|---|
 | **Alquileres** | Lista ordenada por urgencia. Cuadros de arriba: Atrasados, Para hoy, Por entregar, En obra (tocarlos filtra). Lupa para buscar. Botón **Nuevo alquiler**. |
-| **Depósito** | Stock por material: en depósito, en obra, en taller y perdido. **Agregar material**, **Ajustar** (con motivo) y **Mover stock**. |
+| **Depósito** | Stock por material: en depósito, en obra, en taller y perdido. **Agregar material**, **Ajustar** (con motivo), **Mover stock** y **papelera roja** para borrar un material que ya no se usa. |
 | **Viaje** | Paradas del día ordenadas; **Abrir en Maps** y **Volver al depósito**. |
 | **Auditoría** | Todo lo que pasó: quién, qué, cuándo y qué se movió. Filtro por persona. |
 

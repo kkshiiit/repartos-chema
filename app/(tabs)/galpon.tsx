@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { DeleteMaterialButton } from '../../src/components/DeleteMaterialButton';
 import { userError } from '../../src/services/errors';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, useWindowDimensions } from 'react-native';
@@ -164,11 +165,14 @@ export default function WarehousePage() {
                 </Text>
               </View>
               {user?.role === 'ADMIN' ? (
-                <IconButton
-                  label={`Opciones de ${m.nombre} ${m.medida || ''}`}
-                  icon={MoreHorizontal}
-                  onPress={() => open(m, 'opciones')}
-                />
+                <View style={[s.row, { gap: spacing.xs }]}>
+                  <DeleteMaterialButton material={m} />
+                  <IconButton
+                    label={`Opciones de ${m.nombre} ${m.medida || ''}`}
+                    icon={MoreHorizontal}
+                    onPress={() => open(m, 'opciones')}
+                  />
+                </View>
               ) : null}
             </View>
             <Text style={[s.muted, { fontVariant: ['tabular-nums'] }]}>
