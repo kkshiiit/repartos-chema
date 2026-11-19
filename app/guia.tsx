@@ -61,6 +61,7 @@ const SECTIONS: Section[] = [
       'Tocá un cuadro (Hoy, Atrasados, Por entregar, En obra) para filtrar la lista.',
       'Usá la lupa para buscar por cliente, dirección o barrio.',
       'Tocá un alquiler para ver el detalle y sus acciones.',
+      'Papelera roja: borra el alquiler entero (cliente y materiales cargados) de un toque, con confirmación. Sólo si todavía no se entregó o ya se cerró.',
     ],
     route: '/',
   },

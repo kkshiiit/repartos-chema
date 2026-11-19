@@ -34,6 +34,7 @@ import {
 } from '../../src/components/ui';
 import { PhotoImage } from '../../src/components/PhotoImage';
 import { TicketShareButton } from '../../src/components/TicketShare';
+import { DeleteRentalButton } from '../../src/components/DeleteRentalButton';
 import { StatusChip } from '../../src/components/StatusChip';
 import { SmartCounter } from '../../src/components/SmartCounter';
 import { LoadEditor } from '../../src/components/LoadEditor';
@@ -115,9 +116,12 @@ export default function Detail() {
     >
       <View style={{ maxWidth: 760, width: '100%', alignSelf: 'center', gap: 16 }}>
         <View style={{ gap: 8 }}>
-          <Text accessibilityRole="header" style={s.title}>
-            {o.clienteNombre}
-          </Text>
+          <View style={[s.row, { alignItems: 'flex-start' }]}>
+            <Text accessibilityRole="header" style={[s.title, s.grow]}>
+              {o.clienteNombre}
+            </Text>
+            <DeleteRentalButton obra={o} onDeleted={() => router.replace('/')} />
+          </View>
           <View style={[s.row, { justifyContent: 'space-between', flexWrap: 'wrap' }]}>
             <View style={[s.row, { flex: 1, minWidth: 140, gap: 8 }]}>
               <MapPin size={18} color={C.muted} />
@@ -487,17 +491,6 @@ export default function Detail() {
                 setModal('ubicacion');
               }}
             />
-            {user?.role === 'ADMIN' ? (
-              <ConfirmButton
-                label="Eliminar alquiler"
-                title="Eliminar este alquiler"
-                description="Solo se permite sin alquiler activo, fotos ni faltantes abiertos. Se conservará la evidencia en el historial."
-                onConfirm={async () => {
-                  await dispatch({ type: 'DELETE_OBRA', obraId: o.id });
-                  router.replace('/');
-                }}
-              />
-            ) : null}
           </>
         ) : null}
         {modal === 'carga' ? <LoadEditor obra={o} onDone={() => setModal('')} /> : null}
