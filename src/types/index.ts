@@ -194,6 +194,7 @@ export type Action =
     }
   | { type: 'SAVE_COMBO'; combo: ComboPreset; expectedVersion?: number }
   | { type: 'DELETE_COMBO'; comboId: string }
+  | { type: 'DELETE_MATERIAL'; materialId: string }
   | { type: 'RESPONSABLES'; nombres: string[] }
   | { type: 'PHOTO'; obraId: string; photo: PhotoRef }
   | { type: 'DELETE_PHOTO'; obraId: string; photoId: string }

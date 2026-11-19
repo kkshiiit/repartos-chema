@@ -3,7 +3,7 @@
     "name": "Chema Andamios",
     "slug": "chema-andamios",
     "scheme": "repartoschema",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "ios": {
@@ -18,7 +18,7 @@
         "com.google.android.c2dm.permission.RECEIVE",
         "com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"
       ],
-      "versionCode": 16,
+      "versionCode": 17,
       "adaptiveIcon": {
         "foregroundImage": "./assets/app/adaptive-foreground.png",
         "backgroundColor": "#C91824"

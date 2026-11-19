@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="descargas/LEEME.md"><b>Descargar APK 1.0.1</b></a> ·
+  <a href="descargas/LEEME.md"><b>Descargar APK 1.0.2</b></a> ·
   <a href="docs/MANUAL.md">Manual de uso</a> ·
   <a href="docs/ARQUITECTURA.md">Arquitectura</a> ·
   <a href="docs/SEGURIDAD.md">Seguridad</a> ·
