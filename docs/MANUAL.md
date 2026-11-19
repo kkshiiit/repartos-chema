@@ -34,6 +34,8 @@ Colores de las tarjetas: **rojo** atrasado · **amarillo** hoy · **violeta** po
 4. Al retirar: **Registrar retiro** → marcar faltantes o daños si hay → **Confirmar**. Lo sano vuelve al depósito.
 5. **Cerrar reingreso** cuando quedó todo acomodado.
 
+**¿Se arrepintió el cliente o lo cargaste mal?** Tocá la **papelera roja** (en la tarjeta del inicio o arriba en el detalle) → **Sí, borrar alquiler**. Se borra todo de una vez y queda en la Auditoría. Si ya se entregó, primero hay que registrar el retiro.
+
 ## 4. Copias
 
 **Ajustes → Exportar e importar copia**
