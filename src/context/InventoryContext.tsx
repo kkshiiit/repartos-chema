@@ -5,6 +5,8 @@ import * as Crypto from 'expo-crypto';
 import { Buffer } from 'buffer';
 import type { Action } from '../types';
 import { emptyLocalState } from '../data/localInitialState';
+import type { DomainSnapshot } from '../types';
+import { stateBefore } from '../sync/restore';
 import { snapshot } from '../domain/engine';
 import { haptic } from '../hooks/useHaptics';
 import { userError } from '../services/errors';
@@ -148,6 +150,32 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
     };
   }, [store, user, view, teamId, dispatchSync]);
 
+  // Copia automática semanal: el primer teléfono que sincroniza en la semana la sube (el servidor
+  // ignora las repetidas). Se revisa como máximo una vez por día y por teléfono.
+  useEffect(() => {
+    if (!store || !view?.lastSyncAt || !code || !teamId) return;
+    const key = `chema2:backup-check:${teamId}`;
+    void (async () => {
+      const last = Number((await kv.getItem(key)) || 0);
+      if (Date.now() - last < 24 * 60 * 60 * 1000) return;
+      const confirmed = store.current();
+      if (!confirmed || (!confirmed.state.obras.length && !confirmed.state.materiales.length)) return;
+      await api.backupPut(code, confirmed.lastSeq, snapshot(confirmed.state), 'auto', user?.nombre);
+      await kv.setItem(key, String(Date.now()));
+    })().catch(() => undefined);
+  }, [store, view?.lastSyncAt, code, teamId, user?.nombre]);
+
+  /** Guarda el estado actual como copia y lo reemplaza por `snap`, dejando constancia en la Auditoría. */
+  const restoreTo = useCallback(
+    async (snap: DomainSnapshot, accion: string) => {
+      const now = store?.current();
+      if (!now) throw new Error('Los datos todavía se están cargando.');
+      await api.backupPut(code, now.lastSeq, snapshot(now.state), 'antes-de-restaurar', user?.nombre);
+      await dispatchSync({ type: 'IMPORT_SNAPSHOT', origen: 'restauración', accion, snapshot: snap });
+    },
+    [store, code, user?.nombre, dispatchSync],
+  );
+
   const current = store ? view : null;
   const state = current?.state || emptyLocalState();
   const value: InventoryValue = {
@@ -174,6 +202,19 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
     },
     note: (accion, obraId) => dispatchSync({ type: 'NOTE', accion, obraId }),
     importSnapshot: (snap, origen) => dispatchSync({ type: 'IMPORT_SNAPSHOT', origen, snapshot: snap }),
+    backups: () => api.backupList(code),
+    previewBackup: async (id) => {
+      const data = (await api.backupGet(code, id)) as DomainSnapshot | null;
+      if (!data) throw new Error('No se encontró esa copia.');
+      return data;
+    },
+    restoreSnapshot: restoreTo,
+    previewBefore: async (opId) => {
+      const found = await stateBefore(opId, (after) => api.pull(code, after, 500));
+      if (!found)
+        throw new Error('Ese cambio todavía no llegó al servidor. Sincronizá y probá de nuevo.');
+      return snapshot(found.state);
+    },
     dispatch: (action: Action) => dispatchSync(action),
     retry,
     discard: async () => {

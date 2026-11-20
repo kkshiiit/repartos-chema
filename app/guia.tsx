@@ -13,6 +13,7 @@ import {
   Map,
   PackageCheck,
   PackageOpen,
+  RotateCcw,
   Plus,
   Receipt,
   SunMoon,
@@ -166,6 +167,20 @@ const SECTIONS: Section[] = [
       'Sirve también para pasar datos de la versión anterior de la app.',
     ],
     route: '/configuracion',
+  },
+  {
+    id: 'restaurar',
+    title: 'Copias y volver atrás',
+    where: 'Ajustes → "Copias y restauración" · Auditoría',
+    icon: RotateCcw,
+    summary: 'Cada semana se guarda sola una copia completa. Y si algo se borró o se cargó mal, se puede volver a como estaba antes de ese cambio.',
+    steps: [
+      'Abrí la Auditoría y tocá el cambio que querés deshacer.',
+      'Tocá "Volver a como estaba antes": vas a ver cómo está ahora y cómo quedaría.',
+      'Confirmá con "Sí, restaurar". Antes se guarda una copia de cómo estaba, así que también se puede deshacer.',
+      'En Ajustes → "Copias y restauración" están las copias semanales para restaurar con un toque.',
+    ],
+    route: '/copias',
   },
   {
     id: 'apariencia',

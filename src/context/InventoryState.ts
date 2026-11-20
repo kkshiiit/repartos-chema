@@ -13,6 +13,13 @@ export interface InventoryValue {
   /** Deja constancia en la auditoría de una acción sin efecto en el stock. */
   note?: (accion: string, obraId?: string) => Promise<void>;
   /** Reemplaza el inventario del equipo por una copia (queda auditado). */
+  /** Copias guardadas en el servidor (automáticas y previas a restaurar). */
+  backups?: () => Promise<import('../sync/api').BackupInfo[]>;
+  previewBackup?: (id: number) => Promise<import('../types').DomainSnapshot>;
+  /** Inventario tal como estaba justo antes de ese cambio de la Auditoría. */
+  previewBefore?: (opId: string) => Promise<import('../types').DomainSnapshot>;
+  /** Guarda una copia del estado actual y lo reemplaza (queda en la Auditoría). */
+  restoreSnapshot?: (snap: import('../types').DomainSnapshot, accion: string) => Promise<void>;
   importSnapshot?: (snapshot: import('../types').DomainSnapshot, origen: string) => Promise<void>;
   ready: boolean;
   error: string;
