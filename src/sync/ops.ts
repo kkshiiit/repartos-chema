@@ -6,6 +6,8 @@ export interface ImportAction {
   type: 'IMPORT_SNAPSHOT';
   snapshot: DomainSnapshot;
   origen: string;
+  /** Texto para la Auditoría (restauraciones). Si falta, se usa el texto de importación. */
+  accion?: string;
 }
 /** Evento sin efecto en el stock, solo para la auditoría (ingresos, exportaciones, tickets). */
 export interface NoteAction {
@@ -51,7 +53,13 @@ export function applySync(current: AppState, op: SyncOperation): AppState {
     s.notificaciones = snap.notificaciones || [];
     s.revision += 1;
     s.appliedIds.push(op.id);
-    pushLog(s, op, `Importó una copia completa (${a.origen.slice(0, 80)}): ${snap.obras.length} alquileres, ${snap.materiales.length} materiales`);
+    pushLog(
+      s,
+      op,
+      a.accion
+        ? a.accion.slice(0, 200)
+        : `Importó una copia completa (${a.origen.slice(0, 80)}): ${snap.obras.length} alquileres, ${snap.materiales.length} materiales`,
+    );
     return s;
   }
   if (a.type === 'NOTE') {

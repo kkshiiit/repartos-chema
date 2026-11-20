@@ -17,6 +17,8 @@ const messages: Record<string, string> = {
   OPERACION_GRANDE: 'El cambio es demasiado grande para enviarlo.',
   DEMASIADOS_EQUIPOS: 'Se crearon demasiados equipos en poco tiempo. Probá de nuevo en una hora.',
   LIMITE_EQUIPO: 'El equipo llegó al límite de espacio del servidor. Exportá una copia y avisá al responsable.',
+  COPIA_INVALIDA: 'La copia no tiene el formato esperado. No se modificó nada.',
+  DEMASIADAS_COPIAS: 'Se hicieron demasiadas restauraciones seguidas. Esperá unos minutos.',
   FOTO_INVALIDA: 'Una foto no se pudo enviar porque el archivo no es válido.',
 };
 
@@ -69,6 +71,15 @@ export interface Member {
   name: string;
   lastSeen?: string | null;
 }
+export interface BackupInfo {
+  id: number;
+  createdAt: string;
+  reason: 'auto' | 'antes-de-restaurar';
+  lastSeq: number;
+  obras: number;
+  materiales: number;
+  createdBy?: string | null;
+}
 export interface RemoteOp {
   seq: number;
   op: unknown;
@@ -88,6 +99,10 @@ export const api = {
     rpc<{ opId: string; seq: number }[]>('c2_push', { p_code: code, p_ops: ops }, 45000),
   pull: (code: string, after: number, limit = 300) =>
     rpc<{ ops: RemoteOp[]; lastSeq: number }>('c2_pull', { p_code: code, p_after: after, p_limit: limit }, 45000),
+  backupPut: (code: string, seq: number, data: unknown, reason: 'auto' | 'antes-de-restaurar', by?: string) =>
+    rpc<{ saved: boolean; id?: number }>('c2_backup_put', { p_code: code, p_seq: seq, p_data: data, p_reason: reason, p_by: by ?? null }, 60000),
+  backupList: (code: string) => rpc<BackupInfo[]>('c2_backup_list', { p_code: code }),
+  backupGet: (code: string, id: number) => rpc<unknown>('c2_backup_get', { p_code: code, p_id: id }, 60000),
   rotateCode: (code: string, newCode: string) =>
     rpc<boolean>('c2_rotate_code', { p_code: code, p_new_code: newCode }),
   photoPut: (code: string, id: string, data: string) =>

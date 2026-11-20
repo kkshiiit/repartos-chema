@@ -1,5 +1,11 @@
 # Registro de cambios
 
+## 1.1.0 — 20/11/2026
+
+- **Copia de seguridad semanal automática** en el servidor (se conservan las últimas 8). Pantalla nueva *Copias y restauración* en Ajustes para restaurar una copia con un toque.
+- **Volver a como estaba antes de un cambio** desde la Auditoría, con comparación *Ahora / Quedaría así* antes de confirmar.
+- Antes de restaurar se guarda sola una copia del estado actual: restaurar también se puede deshacer. Todo queda en la Auditoría.
+
 ## 1.0.3 — 19/11/2026
 
 - **Cambiar código del equipo** (Ajustes): el código anterior deja de funcionar al instante. Los demás teléfonos ven un aviso y vuelven a entrar con el código nuevo sin perder nada. Queda en la Auditoría.
