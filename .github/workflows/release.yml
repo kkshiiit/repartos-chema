@@ -1,0 +1,95 @@
+# Publicar una versión: compila el APK, verifica firma/paquete/versión y crea el Release.
+# Se inicia a mano (o desde Claude) y espera la aprobación del responsable en el entorno "publicacion".
+name: Publicar versión
+
+on:
+  workflow_dispatch:
+    inputs:
+      motivo:
+        description: 'Qué se publica (queda en el registro)'
+        required: false
+        default: 'Nueva versión'
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  publicar:
+    name: Compilar y publicar APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    environment: publicacion
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Versión de la app
+        id: version
+        run: |
+          VERSION=$(node -p "require('./app.json').expo.version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+          if gh release view "v$VERSION" >/dev/null 2>&1; then
+            echo "::error::Ya existe el Release v$VERSION. Subí la versión en app.json antes de publicar."
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            17
+            21
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Componentes de Android (SDK 36, NDK, CMake)
+        run: sdkmanager "platforms;android-36" "build-tools;36.0.0" "ndk;27.1.12297006" "cmake;3.22.1" > /dev/null
+
+      - name: JDK 17 visible para Gradle
+        run: |
+          mkdir -p ~/.gradle
+          echo "org.gradle.java.installations.paths=$JAVA_HOME_17_X64,$JAVA_HOME_21_X64" >> ~/.gradle/gradle.properties
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ hashFiles('package-lock.json') }}
+
+      - run: npm ci --no-audit --no-fund
+      - run: npm run check
+
+      - name: Compilar y verificar APK
+        run: npm run build:android
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
+
+      - name: Preparar archivo y notas
+        id: apk
+        run: |
+          FILE="chema-andamios-${{ steps.version.outputs.version }}-arm64.apk"
+          cp android/app/build/outputs/apk/release/app-release.apk "$FILE"
+          SHA=$(sha256sum "$FILE" | cut -d' ' -f1)
+          echo "file=$FILE" >> "$GITHUB_OUTPUT"
+          node scripts/release-notes.mjs "${{ steps.version.outputs.version }}" "$SHA" > notas.md
+          cat notas.md
+
+      - name: Crear Release
+        run: |
+          gh release create "${{ steps.version.outputs.tag }}" "${{ steps.apk.outputs.file }}" \
+            --title "Chema Andamios ${{ steps.version.outputs.version }}" \
+            --notes-file notas.md --target "${{ github.sha }}" --latest
+        env:
+          GH_TOKEN: ${{ github.token }}
