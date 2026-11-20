@@ -19,6 +19,7 @@ Revisión del 17/11/2026 (versión 1.0.0).
 | Límite: 30 equipos nuevos por hora en total (anti-spam) | ✅ |
 | Límites por equipo: 200 personas, 150 MB de operaciones, 300 MB de fotos; 100 operaciones y 3 MB por envío | ✅ |
 | Validación de identificadores y de base64 en fotos | ✅ |
+| Copias de seguridad semanales (8) + copia previa a cada restauración; tabla cerrada al acceso directo y límite de 10 restauraciones por hora | ✅ |
 | Registro de cuentas (Auth) desactivado; no hay usuarios | ✅ |
 | Tablas, funciones y función Edge del sistema anterior eliminadas del servidor (estaban vacías) | ✅ |
 

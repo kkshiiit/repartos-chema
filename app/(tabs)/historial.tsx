@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { View, Text, AppState, Platform, Pressable, ScrollView } from 'react-native';
 import { useFocusEffect } from 'expo-router';
-import { History, ArrowRight, ChevronRight, ArrowDown, ArrowUp } from 'lucide-react-native';
+import { History, ArrowRight, ChevronRight, ArrowDown, ArrowUp, RotateCcw } from 'lucide-react-native';
 import { useInventory } from '../../src/context/InventoryContext';
 import { useAuth } from '../../src/context/AuthContext';
 import { undoReason } from '../../src/domain/engine';
@@ -22,9 +22,10 @@ import { SearchToolbar, SectionHeading } from '../../src/components/ListStructur
 import { historyRows } from '../../src/utils/listPresentation';
 import type { ActivityLog } from '../../src/types';
 import { DataList } from '../../src/components/DataList';
+import { RestoreSheet } from '../../src/components/RestoreSheet';
 export default function HistoryPage() {
   const { C, s } = useUI();
-  const { state, dispatch, rejected } = useInventory(),
+  const { state, dispatch, rejected, previewBefore } = useInventory(),
     { user } = useAuth();
   const [filtersOpen, setFiltersOpen] = useState(false),
     [selectedId, setSelectedId] = useState<string | null>(null);
@@ -63,6 +64,15 @@ export default function HistoryPage() {
       (!date || businessDate(new Date(l.timestamp)) === date),
   );
   const selected = all.find((l) => l.id === selectedId);
+  const [restoreFor, setRestoreFor] = useState<ActivityLog | null>(null);
+  const shortWhen = (iso: string) =>
+    new Date(iso).toLocaleString('es-AR', {
+      timeZone: 'America/Argentina/Buenos_Aires',
+      day: '2-digit',
+      month: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
   const reason = selected && user ? undoReason(state, selected, user, now) : 'Iniciá sesión.';
   const locationName = (value: string) =>
     value.startsWith('obra:')
@@ -241,6 +251,15 @@ export default function HistoryPage() {
                 <Text style={s.muted}>{m.motivo}</Text>
               </View>
             ))}
+            <Button
+              label="Volver a como estaba antes"
+              icon={RotateCcw}
+              variant="secondary"
+              onPress={() => {
+                setRestoreFor(selected);
+                setSelectedId(null);
+              }}
+            />
             {reason ? (
               <Text style={s.muted}>{reason}</Text>
             ) : (
@@ -255,6 +274,19 @@ export default function HistoryPage() {
           </>
         ) : null}
       </Sheet>
+      <RestoreSheet
+        visible={!!restoreFor}
+        title="Volver a como estaba antes"
+        explain={
+          restoreFor
+            ? `Todo el equipo vuelve a como estaba justo antes de “${restoreFor.accion}” (${restoreFor.usuarioNombre}, ${shortWhen(restoreFor.timestamp)}). Se deshace ese cambio y todo lo que se cargó después.`
+            : ''
+        }
+        accion={restoreFor ? `Volvió a como estaba antes de “${restoreFor.accion.slice(0, 80)}” (${shortWhen(restoreFor.timestamp)})` : ''}
+        load={() => previewBefore!(restoreFor!.operationId || restoreFor!.id)}
+        onClose={() => setRestoreFor(null)}
+        onDone={() => setSelectedId(null)}
+      />
     </Screen>
   );
 }

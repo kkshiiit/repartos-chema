@@ -47,6 +47,13 @@ Esquema completo en `supabase/migrations/20261117000000_inicial.sql`.
 | `c2_push(code, ops)` | Agrega operaciones (idempotente por `opId`). |
 | `c2_pull(code, after, limit)` | Devuelve operaciones a partir de un número de orden. |
 | `c2_photo_put / c2_photo_get` | Fotos JPEG comprimidas (base64). |
+| `c2_backup_put / c2_backup_list / c2_backup_get` | Copias del inventario: semanal automática (máx. una cada 6 días, se guardan 8) y "antes de restaurar". |
+
+## Copias y restauración
+
+- **Copia semanal:** tras sincronizar, cada teléfono revisa (una vez por día) si hace falta; el servidor guarda como máximo una cada 6 días y conserva las 8 más nuevas.
+- **Volver atrás:** `src/sync/restore.ts` vuelve a aplicar, en orden, las operaciones del servidor hasta justo antes de la elegida. El resultado se aplica como una operación `IMPORT_SNAPSHOT` (con texto propio en la Auditoría), así que todos los teléfonos convergen y la auditoría completa se conserva.
+- Antes de restaurar se sube una copia `antes-de-restaurar` del estado actual.
 
 ## Pruebas
 

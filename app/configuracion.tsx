@@ -17,6 +17,7 @@ import {
   MapPin,
   Moon,
   Share2,
+  ShieldCheck,
   SunMedium,
   SmartphoneNfc,
   UserRoundCog,
@@ -281,6 +282,12 @@ export default function Settings() {
       </View>
 
       <ToolGroup title="Datos">
+        <ToolRow
+          label="Copias y restauración"
+          detail="Copia semanal automática · volver atrás"
+          icon={ShieldCheck}
+          onPress={() => router.push('/copias')}
+        />
         <ToolRow
           label="Exportar e importar copia"
           detail="Todo el inventario en un archivo JSON"
