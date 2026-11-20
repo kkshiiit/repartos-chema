@@ -4,14 +4,14 @@
 
 Los APK se publican en **Releases**, no dentro del código, para que el repositorio no crezca 55 MB con cada versión.
 
-## Versión actual: 1.0.3
+## Versión actual: 1.1.0
 
 | | |
 |---|---|
-| Archivo | `chema-andamios-1.0.3-arm64.apk` |
-| Tamaño | 55714676 bytes |
-| SHA-256 | `8b3eb355c3e08ec7dbaa6f5d4458e18320cb0a3aff88cf6aa6dbb6ae8f735cf7` |
-| Paquete | `com.grupochema.repartos` · versión 1.0.3 (code 18) · Android 7+ · ARM64 |
+| Archivo | `chema-andamios-1.1.0-arm64.apk` |
+| Tamaño | 55735428 bytes |
+| SHA-256 | `f3b356c3af5257e088654d8d1deb47289378e5931651617fc57d5b2180d19797` |
+| Paquete | `com.grupochema.repartos` · versión 1.1.0 (code 19) · Android 7+ · ARM64 |
 | Firma | `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c` (actualiza sin desinstalar) |
 
 ## Instalar

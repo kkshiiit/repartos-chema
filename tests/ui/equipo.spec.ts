@@ -287,3 +287,55 @@ test('cambiar código: el viejo deja de servir, el otro teléfono recibe aviso y
   expect(A.errors).toEqual([]);
   expect(B.errors).toEqual([]);
 });
+
+test('copias: se guarda la copia semanal y un borrado por error se deshace volviendo atrás desde la Auditoría', async ({ browser }) => {
+  test.setTimeout(150000);
+  const { page: p, errors } = await phone(browser, 'light');
+  await p.goto('/');
+  await p.getByRole('button', { name: 'Crear un equipo nuevo', exact: true }).click();
+  await p.getByLabel('Nombre del negocio', { exact: true }).fill(`QA Copias ${Date.now()}`);
+  await p.getByRole('button', { name: 'Crear equipo', exact: true }).click();
+  await p.getByLabel('Tu nombre y apellido', { exact: true }).fill('Ana Gómez');
+  await p.getByRole('button', { name: 'Entrar con este nombre', exact: true }).click();
+  await expect(p.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible({ timeout: 30000 });
+  await p.goto('/galpon');
+  await p.getByRole('button', { name: 'Agregar material', exact: true }).click();
+  await p.getByLabel('Nombre del material', { exact: true }).fill('Rueda');
+  await p.getByRole('button', { name: 'Guardar cambios', exact: true }).click();
+  await p.getByRole('button', { name: 'Confirmar', exact: true }).click();
+  await p.getByRole('button', { name: /^Opciones de Rueda/ }).click();
+  await p.getByRole('button', { name: 'Ajustar', exact: true }).click();
+  await p.getByLabel('Diferencia entera (+ o −)', { exact: true }).fill('12');
+  await p.getByLabel('Procedencia / destino', { exact: true }).fill('Compra');
+  await p.getByLabel('Motivo y comprobante', { exact: true }).fill('Factura 1');
+  await p.getByRole('button', { name: 'Guardar cambios', exact: true }).click();
+  await p.getByRole('button', { name: 'Confirmar', exact: true }).click();
+  await expect.poll(async () => (await data(p)).confirmed.materiales[0]?.cantidadGalpon, { timeout: 30000 }).toBe(12);
+
+  // La copia semanal automática se guarda sola tras sincronizar con datos.
+  await p.goto('/copias');
+  await expect(p.getByText(/Copia semanal/).first()).toBeVisible({ timeout: 30000 });
+
+  // "Error": se borra el material.
+  await p.goto('/galpon');
+  await p.getByRole('button', { name: /^Borrar material Rueda/ }).click();
+  await p.getByRole('button', { name: 'Sí, borrar material', exact: true }).click();
+  await expect.poll(async () => (await data(p)).confirmed.materiales.length, { timeout: 30000 }).toBe(0);
+
+  // Recuperar desde la Auditoría.
+  await p.goto('/historial');
+  await p.getByRole('button', { name: /Ver movimiento: Borró el material Rueda/ }).click();
+  await p.getByRole('button', { name: 'Volver a como estaba antes', exact: true }).click();
+  await expect(p.getByText('Quedaría así', { exact: true })).toBeVisible({ timeout: 30000 });
+  await p.waitForTimeout(400);
+  await p.screenshot({ path: shot('16-volver-atras-confirmacion') });
+  await p.getByRole('button', { name: 'Sí, restaurar', exact: true }).click();
+  await expect.poll(async () => (await data(p)).confirmed.materiales[0]?.cantidadGalpon, { timeout: 30000 }).toBe(12);
+  await expect(p.getByText(/Volvió a como estaba antes de “Borró el material Rueda”/)).toBeVisible();
+
+  // Quedó una copia de "antes de restaurar" para poder deshacer la restauración.
+  await p.goto('/copias');
+  await expect(p.getByText(/Antes de una restauración · Ana Gómez/)).toBeVisible({ timeout: 30000 });
+  await p.screenshot({ path: shot('17-copias'), fullPage: true });
+  expect(errors).toEqual([]);
+});
