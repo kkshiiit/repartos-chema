@@ -14,7 +14,8 @@
   <a href="docs/MANUAL.md">Manual de uso</a> ·
   <a href="docs/ARQUITECTURA.md">Arquitectura</a> ·
   <a href="docs/SEGURIDAD.md">Seguridad</a> ·
-  <a href="docs/CAMBIOS.md">Cambios</a>
+  <a href="docs/CAMBIOS.md">Cambios</a> ·
+  <a href="docs/PUBLICAR.md">Publicar</a>
 </p>
 
 ---
@@ -71,6 +72,7 @@ npm run build:web && npm run preview   # versión web de prueba en http://localh
 npm run test:ui -- --trace off         # recorrido real con dos teléfonos (crea equipos "QA …")
 npm run qa:cleanup            # borra los equipos "QA …" (requiere SUPABASE_ACCESS_TOKEN)
 npm run build:android         # APK ARM64 verificado (firma, paquete y versión)
+# Publicar: GitHub Actions → «Publicar versión» (con aprobación). Ver docs/PUBLICAR.md
 ```
 
 No hay variables de entorno obligatorias ni claves secretas en el proyecto. Ver [Seguridad](docs/SEGURIDAD.md).
