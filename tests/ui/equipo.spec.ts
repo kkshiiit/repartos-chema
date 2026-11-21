@@ -339,3 +339,55 @@ test('copias: se guarda la copia semanal y un borrado por error se deshace volvi
   await p.screenshot({ path: shot('17-copias'), fullPage: true });
   expect(errors).toEqual([]);
 });
+
+test('responsable con PIN: restaurar pide el PIN, rechaza uno equivocado y acepta el correcto', async ({ browser }) => {
+  test.setTimeout(150000);
+  const { page: p, errors } = await phone(browser, 'light');
+  await p.goto('/');
+  await p.getByRole('button', { name: 'Crear un equipo nuevo', exact: true }).click();
+  await p.getByLabel('Nombre del negocio', { exact: true }).fill(`QA PIN ${Date.now()}`);
+  await p.getByRole('button', { name: 'Crear equipo', exact: true }).click();
+  await p.getByLabel('Tu nombre y apellido', { exact: true }).fill('Ana Gómez');
+  await p.getByRole('button', { name: 'Entrar con este nombre', exact: true }).click();
+  await expect(p.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible({ timeout: 30000 });
+
+  // Designar responsable con PIN.
+  await p.goto('/configuracion');
+  await p.getByRole('button', { name: 'Elegir responsable y PIN', exact: true }).click();
+  await p.getByLabel('PIN nuevo (4 a 8 números)', { exact: true }).fill('2468');
+  await p.getByLabel('Repetir PIN nuevo', { exact: true }).fill('2468');
+  await p.getByRole('button', { name: 'Guardar', exact: true }).click();
+  await expect(p.getByText('Listo: las acciones importantes ahora piden el PIN.', { exact: true })).toBeVisible({ timeout: 20000 });
+  await p.screenshot({ path: shot('18-responsable-pin') });
+
+  // Material que después se borra "por error".
+  await p.goto('/galpon');
+  await p.getByRole('button', { name: 'Agregar material', exact: true }).click();
+  await p.getByLabel('Nombre del material', { exact: true }).fill('Rueda');
+  await p.getByRole('button', { name: 'Guardar cambios', exact: true }).click();
+  await p.getByRole('button', { name: 'Confirmar', exact: true }).click();
+  await p.getByRole('button', { name: /^Borrar material Rueda/ }).click();
+  await p.getByRole('button', { name: 'Sí, borrar material', exact: true }).click();
+  await expect.poll(async () => (await data(p)).confirmed.materiales.length, { timeout: 30000 }).toBe(0);
+
+  await p.goto('/historial');
+  await p.getByRole('button', { name: /Ver movimiento: Borró el material Rueda/ }).click();
+  await p.getByRole('button', { name: 'Volver a como estaba antes', exact: true }).click();
+  await p.getByRole('button', { name: 'Sí, restaurar', exact: true }).click();
+
+  // Pide el PIN: uno equivocado se rechaza y la ventana sigue abierta.
+  const pinBox = p.getByLabel('Escribí el PIN', { exact: true });
+  await expect(pinBox).toBeVisible({ timeout: 20000 });
+  await pinBox.fill('1111');
+  await p.getByRole('button', { name: 'Autorizar', exact: true }).click();
+  await expect(p.getByText('PIN incorrecto. Probá de nuevo.', { exact: true })).toBeVisible({ timeout: 20000 });
+  await p.screenshot({ path: shot('19-pin-incorrecto') });
+  expect((await data(p)).confirmed.materiales).toHaveLength(0);
+
+  await pinBox.fill('2468');
+  await p.getByRole('button', { name: 'Autorizar', exact: true }).click();
+  await expect.poll(async () => (await data(p)).confirmed.materiales.length, { timeout: 30000 }).toBe(1);
+  await expect(p.getByText(/Volvió a como estaba antes de “Borró el material Rueda”/)).toBeVisible();
+  await expect(p.getByText(/Designó responsable a Ana Gómez/)).toBeVisible();
+  expect(errors).toEqual([]);
+});

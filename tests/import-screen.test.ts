@@ -8,6 +8,8 @@ vi.mock('../src/components/FeedbackSettings', () => ({ FeedbackSettings: () => n
 vi.mock('react-native', () => ({ View: 'View', Text: 'Text', Pressable: 'Pressable', Share: { share: vi.fn() } }));
 vi.mock('expo-constants', () => ({ default: { expoConfig: { version: '1.0.0' } } }));
 vi.mock('../src/components/LocalBackupActions', () => ({ LocalBackupActions: () => null }));
+vi.mock('../src/components/ResponsableCard', () => ({ ResponsableCard: () => null }));
+vi.mock('../src/context/PinContext', () => ({ usePin: () => ({ withPin: (_r: string, f: (p: string) => unknown) => f('') }) }));
 vi.mock('lucide-react-native', () => new Proxy({}, { get: (_t, k) => (k === '__esModule' ? false : k === 'then' ? undefined : String(k)), has: () => true }));
 vi.mock('../src/services/depotSettings', () => ({
   loadDepot: vi.fn(async () => ({

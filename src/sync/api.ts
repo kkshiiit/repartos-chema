@@ -3,7 +3,9 @@ import { SHARED_CONFIG } from './config';
 export class SyncError extends Error {
   constructor(
     message: string,
-    readonly kind: 'offline' | 'not-found' | 'invalid' | 'server',
+    readonly kind: 'offline' | 'not-found' | 'invalid' | 'server' | 'pin',
+    /** Código del servidor (p. ej. PIN_INCORRECTO). */
+    readonly code = '',
   ) {
     super(message);
   }
@@ -17,6 +19,10 @@ const messages: Record<string, string> = {
   OPERACION_GRANDE: 'El cambio es demasiado grande para enviarlo.',
   DEMASIADOS_EQUIPOS: 'Se crearon demasiados equipos en poco tiempo. Probá de nuevo en una hora.',
   LIMITE_EQUIPO: 'El equipo llegó al límite de espacio del servidor. Exportá una copia y avisá al responsable.',
+  PIN_REQUERIDO: 'Esta acción necesita el PIN del responsable.',
+  PIN_INCORRECTO: 'PIN incorrecto. Probá de nuevo.',
+  PIN_BLOQUEADO: 'Demasiados intentos con PIN incorrecto. Esperá 15 minutos y probá de nuevo.',
+  PIN_FORMATO: 'El PIN tiene que ser de 4 a 8 números.',
   COPIA_INVALIDA: 'La copia no tiene el formato esperado. No se modificó nada.',
   DEMASIADAS_COPIAS: 'Se hicieron demasiadas restauraciones seguidas. Esperá unos minutos.',
   FOTO_INVALIDA: 'Una foto no se pudo enviar porque el archivo no es válido.',
@@ -57,6 +63,12 @@ export async function rpc<T>(name: string, body: Record<string, unknown>, timeou
       throw new SyncError('Ese código ya está en uso. Generá otro.', 'invalid');
     throw new SyncError('El servidor no respondió bien. Se reintentará solo.', 'server');
   }
+  // Errores que el servidor devuelve como {"error": "..."} (p. ej. PIN) para no perder el conteo de intentos.
+  const failure = (data as { error?: unknown } | null)?.error;
+  if (data && typeof data === 'object' && !Array.isArray(data) && typeof failure === 'string') {
+    const kind = failure.startsWith('PIN_') && failure !== 'PIN_FORMATO' ? 'pin' : 'invalid';
+    throw new SyncError(messages[failure] || 'El servidor rechazó la acción.', kind, failure);
+  }
   return data as T;
 }
 
@@ -70,6 +82,11 @@ export interface Member {
   id: string;
   name: string;
   lastSeen?: string | null;
+}
+export interface PinStatus {
+  hasPin: boolean;
+  responsable?: string | null;
+  lockedUntil?: string | null;
 }
 export interface BackupInfo {
   id: number;
@@ -92,8 +109,15 @@ export const api = {
   join: (code: string) => rpc<TeamInfo>('c2_join', { p_code: code }),
   addMember: (code: string, name: string) =>
     rpc<Member>('c2_member_add', { p_code: code, p_name: name }),
-  removeMember: (code: string, id: string) =>
-    rpc<Member[]>('c2_member_remove', { p_code: code, p_member: id }),
+  removeMember: (code: string, id: string, pin?: string) =>
+    rpc<Member[]>('c2_member_remove', { p_code: code, p_member: id, p_pin: pin || null }),
+  pinVerify: (code: string, pin: string) => rpc<{ ok: boolean }>('c2_pin_verify', { p_code: code, p_pin: pin || null }),
+  pinStatus: (code: string) =>
+    rpc<PinStatus>('c2_pin_status', { p_code: code }),
+  pinSet: (code: string, newPin: string, responsable: string, currentPin?: string) =>
+    rpc<PinStatus>('c2_pin_set', { p_code: code, p_new_pin: newPin, p_responsable: responsable, p_current_pin: currentPin || null }),
+  protectedPush: (code: string, pin: string, item: unknown) =>
+    rpc<{ opId: string; seq: number }>('c2_protected_push', { p_code: code, p_pin: pin || null, p_item: item }, 60000),
   members: (code: string) => rpc<Member[]>('c2_members', { p_code: code }),
   push: (code: string, ops: unknown[]) =>
     rpc<{ opId: string; seq: number }[]>('c2_push', { p_code: code, p_ops: ops }, 45000),
@@ -103,8 +127,8 @@ export const api = {
     rpc<{ saved: boolean; id?: number }>('c2_backup_put', { p_code: code, p_seq: seq, p_data: data, p_reason: reason, p_by: by ?? null }, 60000),
   backupList: (code: string) => rpc<BackupInfo[]>('c2_backup_list', { p_code: code }),
   backupGet: (code: string, id: number) => rpc<unknown>('c2_backup_get', { p_code: code, p_id: id }, 60000),
-  rotateCode: (code: string, newCode: string) =>
-    rpc<boolean>('c2_rotate_code', { p_code: code, p_new_code: newCode }),
+  rotateCode: (code: string, newCode: string, pin?: string) =>
+    rpc<{ ok: boolean }>('c2_rotate_code', { p_code: code, p_new_code: newCode, p_pin: pin || null }),
   photoPut: (code: string, id: string, data: string) =>
     rpc<boolean>('c2_photo_put', { p_code: code, p_id: id, p_data: data }, 60000),
   photoGet: (code: string, id: string) =>
