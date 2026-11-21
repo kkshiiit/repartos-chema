@@ -24,7 +24,7 @@ export interface Storage {
   setItem(key: string, value: string): Promise<void>;
 }
 export interface Transport {
-  push(ops: unknown[]): Promise<{ opId: string; seq: number }[]>;
+  push(ops: unknown[]): Promise<{ opId: string; seq: number | null; rejected?: string }[]>;
   pull(after: number): Promise<{ ops: { seq: number; op: unknown }[]; lastSeq: number }>;
   uploadPhoto?(id: string): Promise<void>;
 }
@@ -157,7 +157,7 @@ export class SyncStore {
                 }
                 d.uploadedPhotos.push(id);
               }
-        await this.transport.push(
+        const results = await this.transport.push(
           batch.map((op) => ({
             opId: op.id,
             actorId: op.actor.uid,
@@ -166,6 +166,19 @@ export class SyncStore {
             op,
           })),
         );
+        // El servidor no acepta por esta vía acciones que requieren el PIN del responsable.
+        for (const r of results || [])
+          if (r.rejected) {
+            const i = d.pending.findIndex((p) => p.id === r.opId);
+            if (i >= 0) {
+              d.rejected.unshift({
+                op: d.pending[i]!,
+                error: 'Esta acción necesita el PIN del responsable. Volvé a hacerla desde la app.',
+                at: new Date().toISOString(),
+              });
+              d.pending.splice(i, 1);
+            }
+          }
         // Quedan en `pending` hasta verlas volver confirmadas en el pull.
         if (batch.length < 40 || (await this.pullAll()) === 0) break;
       }

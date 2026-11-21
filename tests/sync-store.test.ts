@@ -86,3 +86,22 @@ describe('sincronización entre teléfonos', () => {
     expect(a.current()!.state.logs[1]!.accion).toMatch(/Importó/);
   });
 });
+
+describe('acciones que requieren PIN', () => {
+  it('si el servidor rechaza una importación sin PIN, sale de pendientes y se avisa', async () => {
+    const transport: Transport = {
+      async push(ops) {
+        return (ops as { opId: string }[]).map((o) => ({ opId: o.opId, seq: null, rejected: 'PIN_REQUERIDO' }));
+      },
+      async pull() {
+        return { ops: [], lastSeq: 0 };
+      },
+    };
+    const a = new SyncStore(mem(), 't1', transport);
+    await a.load();
+    await a.dispatch(op('Ana', { type: 'IMPORT_SNAPSHOT', origen: 'x', snapshot: { obras: [], materiales: [], combos: [], responsables: [], notificaciones: [] } }));
+    await a.sync();
+    expect(a.current()!.pending).toHaveLength(0);
+    expect(a.current()!.rejected[0]!.error).toMatch(/PIN del responsable/);
+  });
+});

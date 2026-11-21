@@ -50,11 +50,18 @@ Colores de las tarjetas: **rojo** atrasado · **amarillo** hoy · **violeta** po
 - **Volver a antes de un cambio:** en la **Auditoría**, tocá el cambio → **Volver a como estaba antes**. La app muestra *Ahora* y *Quedaría así* antes de confirmar. Se deshace ese cambio y todo lo posterior.
 - Antes de cualquier restauración se guarda una copia de cómo estaba, así que **restaurar también se puede deshacer**. Todo queda en la Auditoría.
 
-## 6. Sin señal
+## 6. Responsable y PIN
+
+- En **Ajustes → Responsable** se elige una persona de confianza y un PIN de 4 a 8 números.
+- Con PIN, estas acciones lo piden: **importar o restaurar copias, empezar vacío, volver a antes de un cambio, cambiar el código del equipo y sacar personas**. Necesitan conexión.
+- El trabajo diario no pide PIN.
+- Cinco intentos equivocados lo bloquean 15 minutos. Si el responsable se olvida el PIN, se puede resetear desde el servidor (pedíselo a quien administra Supabase).
+
+## 7. Sin señal
 
 La app funciona igual. El punto de arriba a la izquierda indica el estado: **verde** sincronizado, **amarillo** cambios por enviar o sin conexión. Tocarlo sincroniza en el momento.
 
-## 7. Ajustes útiles
+## 8. Ajustes útiles
 
 - **Sol / Noche / Auto**: Sol es para leer a pleno día.
 - **Cambiar de persona**: para compartir un teléfono.
@@ -62,7 +69,7 @@ La app funciona igual. El punto de arriba a la izquierda indica el estado: **ver
 - **Responsables de reparto**: nombres que aparecen al entregar y retirar.
 - **Salir del equipo**: el teléfono deja de ver los datos (no se borran del equipo).
 
-## 8. Preguntas frecuentes
+## 9. Preguntas frecuentes
 
 - **¿Necesito internet?** Sólo para crear o unirte a un equipo. Después funciona sin señal.
 - **Alguien borró o importó algo por error.** Auditoría → tocar ese cambio → **Volver a como estaba antes**.

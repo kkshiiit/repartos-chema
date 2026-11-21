@@ -19,11 +19,11 @@ interface AuthValue {
   joinTeam: (code: string) => Promise<TeamSession>;
   enterAs: (name: string) => Promise<void>;
   refreshMembers: () => Promise<Member[]>;
-  removeMember: (id: string) => Promise<void>;
+  removeMember: (id: string, pin?: string) => Promise<void>;
   switchUser: () => Promise<void>;
   leaveTeam: () => Promise<void>;
   /** Genera un código nuevo; el anterior deja de funcionar en todos los teléfonos. */
-  rotateCode: () => Promise<string>;
+  rotateCode: (pin?: string) => Promise<string>;
   /** El servidor ya no reconoce el código guardado (otra persona lo cambió). */
   codeLost: () => Promise<void>;
   notice: string;
@@ -118,17 +118,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         refreshMembers().catch(() => undefined);
       },
       refreshMembers,
-      async removeMember(id) {
+      async removeMember(id, pin) {
         if (!session) return;
-        setMembers(await api.removeMember(session.code, id));
+        setMembers(await api.removeMember(session.code, id, pin));
       },
       async switchUser() {
         if (session) await save({ ...session, member: undefined });
       },
-      async rotateCode() {
+      async rotateCode(pin) {
         if (!session) throw new Error('Primero entrá a un equipo.');
         const code = newTeamCode((n) => Crypto.getRandomBytes(n));
-        await api.rotateCode(session.code, code);
+        await api.rotateCode(session.code, code, pin);
         await save({ ...session, code });
         return code;
       },

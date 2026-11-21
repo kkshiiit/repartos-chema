@@ -13,9 +13,10 @@ import { userError } from '../services/errors';
 import { photoBytes, storePhoto } from '../services/photoCache';
 import { api, SyncError } from '../sync/api';
 import { kv } from '../sync/kv';
-import type { SyncAction } from '../sync/ops';
+import { applySync, type SyncAction } from '../sync/ops';
 import { SyncStore, type View } from '../sync/store';
 import { useAuth } from './AuthContext';
+import { usePin } from './PinContext';
 import { InventoryDataContext, type InventoryValue } from './InventoryState';
 
 export const makeId = () => Crypto.randomUUID();
@@ -40,6 +41,7 @@ function serialize(state: InventoryValue['state']) {
 
 export function InventoryProvider({ children }: { children: React.ReactNode }) {
   const { session, user, codeLost } = useAuth();
+  const { withPin } = usePin();
   const code = session?.code || '';
   const teamId = session?.teamId || '';
   const store = useMemo(
@@ -123,12 +125,29 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
   const dispatchSync = useCallback(
     async (action: SyncAction) => {
       if (!store || !user) throw new Error('Ingresá con tu nombre.');
-      await store.dispatch({ id: makeId(), createdAt: new Date().toISOString(), actor: user, action });
+      const op = { id: makeId(), createdAt: new Date().toISOString(), actor: user, action };
+      if (action.type === 'IMPORT_SNAPSHOT') {
+        // Reemplaza los datos de todo el equipo: va directo al servidor y, si el equipo tiene
+        // responsable, con su PIN. Necesita conexión.
+        const now = store.current();
+        if (!now) throw new Error('Los datos todavía se están cargando.');
+        applySync(now.state, op);
+        await withPin('Esto reemplaza los datos de todo el equipo.', (pin) =>
+          api.protectedPush(code, pin, {
+            opId: op.id,
+            actorId: user.uid,
+            actorName: user.nombre,
+            clientAt: op.createdAt,
+            op,
+          }),
+        );
+        await store.sync();
+      } else await store.dispatch(op);
       setError('');
       haptic();
       void retry();
     },
-    [store, user, retry],
+    [store, user, retry, withPin, code],
   );
 
   // Registro de ingreso (una vez por persona y teléfono) y alta automática como responsable.
