@@ -37,7 +37,7 @@ Si dos personas usan el mismo material a la vez, ambas operaciones llegan al ser
 
 ## Servidor
 
-Esquema completo en `supabase/migrations/20261117000000_inicial.sql`.
+Esquema en `supabase/migrations/`: una migración por versión (`inicial`, `cambiar_codigo`, `copias`, `responsable_pin`). Para cambios nuevos, agregar siempre un archivo nuevo con fecha; nunca editar uno ya aplicado.
 
 | Función | Uso |
 |---|---|
