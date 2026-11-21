@@ -7,6 +7,7 @@ import { View, ActivityIndicator, Text } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider, useAuth } from '../src/context/AuthContext';
 import { InventoryProvider } from '../src/context/InventoryContext';
+import { PinProvider } from '../src/context/PinContext';
 import { useUI } from '../src/components/ui';
 
 const OPEN_ROUTES = ['bienvenida', 'quien', 'guia'];
@@ -30,6 +31,7 @@ function Navigation() {
     );
   const blocked = !user && !OPEN_ROUTES.includes(first);
   return (
+    <PinProvider>
     <InventoryProvider key={session?.teamId || "none"}>
       <FeedbackProvider>
         {blocked ? (
@@ -48,6 +50,7 @@ function Navigation() {
         )}
       </FeedbackProvider>
     </InventoryProvider>
+    </PinProvider>
   );
 }
 export default function Root() {

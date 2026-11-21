@@ -42,6 +42,9 @@ import {
 import { loadDepot } from '../src/services/depotSettings';
 import { DEFAULT_DEPOT } from '../src/utils/trip';
 import { fonts } from '../src/theme/tokens';
+import { ResponsableCard } from '../src/components/ResponsableCard';
+import { usePin } from '../src/context/PinContext';
+import { api } from '../src/sync/api';
 
 type Panel = 'feedback' | 'responsables' | 'copies' | 'depot' | 'members';
 const titles: Record<Panel, string> = {
@@ -135,6 +138,7 @@ export default function Settings() {
   const theme = useTheme();
   const { user, session, members, refreshMembers, removeMember, switchUser, leaveTeam, rotateCode } = useAuth();
   const { state, dispatch, note, retry } = useInventory();
+  const { withPin } = usePin();
   const [panel, setPanel] = useState<Panel | null>(null);
   const [depot, setDepot] = useState(DEFAULT_DEPOT);
   const [names, setNames] = useState<string | null>(null);
@@ -208,6 +212,8 @@ export default function Settings() {
         <Button label="Cambiar de persona" icon={UserRoundCog} variant="secondary" onPress={switchUser} />
       </View>
 
+      <ResponsableCard />
+
       <View style={[s.card, { gap: 12 }]}>
         <Text style={s.h2}>Código del equipo</Text>
         <Text style={s.muted}>
@@ -239,11 +245,14 @@ export default function Settings() {
           variant="secondary"
           title="Cambiar el código del equipo"
           description="Usalo si el código llegó a alguien que no debía tenerlo. Se genera uno nuevo y el anterior deja de funcionar al instante: los demás teléfonos van a tener que entrar de nuevo con el código nuevo (no pierden nada). Después compartí el código nuevo con tu equipo."
-          onConfirm={async () => {
-            await note?.('Cambió el código del equipo');
-            await retry();
-            await rotateCode();
-          }}
+          onConfirm={() =>
+            withPin('Cambiar el código saca del equipo a todos los teléfonos hasta que usen el nuevo.', async (pin) => {
+              await api.pinVerify(session!.code, pin);
+              await note?.('Cambió el código del equipo');
+              await retry();
+              await rotateCode(pin);
+            })
+          }
         />
         <Button
           label={`Personas del equipo (${members.length})`}
@@ -362,7 +371,9 @@ export default function Settings() {
                   <Pressable
                     accessibilityRole="button"
                     accessibilityLabel={`Quitar a ${m.name} de la lista`}
-                    onPress={() => void run(() => removeMember(m.id))}
+                    onPress={() =>
+                      void run(() => withPin(`Sacar a ${m.name} de la lista del equipo.`, (pin) => removeMember(m.id, pin)))
+                    }
                     style={{ minWidth: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center' }}
                   >
                     <X size={20} color={C.danger} />

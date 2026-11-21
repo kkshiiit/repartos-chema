@@ -37,7 +37,7 @@ Si dos personas usan el mismo material a la vez, ambas operaciones llegan al ser
 
 ## Servidor
 
-Esquema completo en `supabase/migrations/20261117000000_inicial.sql`.
+Esquema en `supabase/migrations/`: una migración por versión (`inicial`, `cambiar_codigo`, `copias`, `responsable_pin`). Para cambios nuevos, agregar siempre un archivo nuevo con fecha; nunca editar uno ya aplicado.
 
 | Función | Uso |
 |---|---|
@@ -48,6 +48,13 @@ Esquema completo en `supabase/migrations/20261117000000_inicial.sql`.
 | `c2_pull(code, after, limit)` | Devuelve operaciones a partir de un número de orden. |
 | `c2_photo_put / c2_photo_get` | Fotos JPEG comprimidas (base64). |
 | `c2_backup_put / c2_backup_list / c2_backup_get` | Copias del inventario: semanal automática (máx. una cada 6 días, se guardan 8) y "antes de restaurar". |
+
+## Responsable con PIN
+
+- `c2_teams.pin_hash` (bcrypt), `responsable`, conteo de fallos y bloqueo de 15 minutos.
+- Las operaciones `IMPORT_SNAPSHOT` (importar, empezar vacío, restaurar) se envían con `c2_protected_push`, que verifica el PIN. Si el equipo tiene PIN, `c2_push` las ignora y la app las muestra como rechazadas.
+- `c2_rotate_code` y `c2_member_remove` también verifican el PIN. Los errores de PIN se devuelven como `{"error": …}` para que el conteo de fallos no se deshaga.
+- En la app, `src/context/PinContext.tsx` (`withPin`) pide el PIN sólo si el equipo lo tiene y lo vuelve a pedir si es incorrecto.
 
 ## Copias y restauración
 

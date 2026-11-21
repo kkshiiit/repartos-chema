@@ -1,5 +1,11 @@
 # Registro de cambios
 
+## 1.2.0 — 21/11/2026
+
+- **Responsable con PIN** (Ajustes → Responsable). Con PIN, importar o restaurar copias, empezar vacío, volver a antes de un cambio, cambiar el código y sacar personas piden la autorización del responsable. Lo controla el servidor: una app vieja o modificada no puede saltearlo.
+- Cinco intentos equivocados bloquean el PIN 15 minutos. El trabajo diario no pide PIN.
+- La publicación de versiones es automática: GitHub compila el APK y crea el Release después de la aprobación del responsable.
+
 ## 1.1.0 — 20/11/2026
 
 - **Copia de seguridad semanal automática** en el servidor (se conservan las últimas 8). Pantalla nueva *Copias y restauración* en Ajustes para restaurar una copia con un toque.
