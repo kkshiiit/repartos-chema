@@ -259,8 +259,8 @@ test('cambiar código: el viejo deja de servir, el otro teléfono recibe aviso y
   await synced(b);
 
   await a.goto('/configuracion');
-  await a.getByRole('button', { name: 'Cambiar código', exact: true }).click();
-  await a.getByRole('button', { name: 'Confirmar', exact: true }).click();
+  await a.getByRole('button', { name: 'Cambiar código', exact: true }).first().click();
+  await a.getByRole('button', { name: 'Cambiar código', exact: true }).last().click();
   await expect.poll(async () => (await session(a)).code, { timeout: 30000 }).not.toBe(oldCode);
   const newCode = (await session(a)).code as string;
   await expect(a.getByText(newCode, { exact: true })).toBeVisible();

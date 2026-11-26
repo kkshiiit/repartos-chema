@@ -8,14 +8,12 @@ import {
   Camera,
   ImagePlus,
   MapPin,
-  Navigation,
-  MessageCircle,
   Pencil,
   Package,
   Truck,
   ArrowRightLeft,
-  Download,
   CalendarDays,
+  ArrowRight,
   MoreHorizontal,
 } from 'lucide-react-native';
 import * as Location from 'expo-location';
@@ -33,14 +31,14 @@ import {
   useUI,
 } from '../../src/components/ui';
 import { PhotoImage } from '../../src/components/PhotoImage';
-import { TicketShareButton } from '../../src/components/TicketShare';
+import { ContactBar, NextStep } from '../../src/components/RentalHeader';
+import { rentalTaskForDate } from '../../src/utils/listPresentation';
+import { fonts } from '../../src/theme/tokens';
 import { DeleteRentalButton } from '../../src/components/DeleteRentalButton';
 import { StatusChip } from '../../src/components/StatusChip';
 import { SmartCounter } from '../../src/components/SmartCounter';
 import { LoadEditor } from '../../src/components/LoadEditor';
 import { OperationForm } from '../../src/components/OperationForm';
-import { mapsUrl, whatsappUrl } from '../../src/utils/whatsapp';
-import { openLink } from '../../src/services/links';
 import { selectPhoto } from '../../src/services/storageService';
 import { businessDate } from '../../src/domain/rules';
 import { useBusinessClock } from '../../src/hooks/useBusinessClock';
@@ -86,6 +84,27 @@ export default function Detail() {
     );
   const incident = o.faltantesRegistrados?.find((i) => i.id === recoverId);
   const countdown = retirementCountdown(o, now);
+  const task = rentalTaskForDate(o, businessDate(now));
+  const stepColor =
+    task.group === 'overdue'
+      ? C.danger
+      : task.group === 'today'
+        ? C.warning
+        : task.kind === 'DELIVER'
+          ? C.blue
+          : task.kind === 'RETIRE'
+            ? C.success
+            : C.muted;
+  const stepBackground =
+    task.group === 'overdue'
+      ? C.dangerBackground
+      : task.group === 'today'
+        ? C.warningBackground
+        : task.kind === 'DELIVER'
+          ? C.infoBackground
+          : task.kind === 'RETIRE'
+            ? C.successBackground
+            : C.panel2;
   const materialIds = [
     ...new Set([
       ...o.materialesCargados.map((m) => m.materialId),
@@ -116,80 +135,77 @@ export default function Detail() {
     >
       <View style={{ maxWidth: 760, width: '100%', alignSelf: 'center', gap: 16 }}>
         <View style={{ gap: 8 }}>
-          <View style={[s.row, { alignItems: 'flex-start' }]}>
+          <View style={[s.row, { alignItems: 'flex-start', gap: 4 }]}>
             <Text accessibilityRole="header" style={[s.title, s.grow]}>
               {o.clienteNombre}
             </Text>
             <DeleteRentalButton obra={o} onDeleted={() => router.replace('/')} />
           </View>
-          <View style={[s.row, { justifyContent: 'space-between', flexWrap: 'wrap' }]}>
-            <View style={[s.row, { flex: 1, minWidth: 140, gap: 8 }]}>
-              <MapPin size={18} color={C.muted} />
-              <Text style={[s.muted, s.grow]}>{o.localidadBarrio}</Text>
-            </View>
+          <View style={[s.row, { gap: 8, flexWrap: 'wrap' }]}>
             <StatusChip obra={o} today={businessDate(now)} />
-          </View>
-          <Text style={s.body}>{o.direccion}</Text>
-          <View style={[s.row, { alignItems: 'stretch', gap: 8, flexWrap: 'wrap' }]}>
-            <Button
-              label="GPS"
-              icon={Navigation}
-              variant="secondary"
-              disabled={busy}
-              style={{
-                flex: 1,
-                minWidth: 80,
-                minHeight: 48,
-                paddingHorizontal: 10,
-                gap: 6,
-              }}
-              onPress={() => run(() => openLink(mapsUrl(o)))}
-            />
-            <TicketShareButton
-              obra={o}
-              style={{ flex: 2, minWidth: 160, minHeight: 48, paddingHorizontal: 10, gap: 6 }}
-            />
+            <View style={[s.row, { gap: 4, flexShrink: 1 }]}>
+              <MapPin size={16} color={C.muted} />
+              <Text style={[s.muted, { color: C.text, flexShrink: 1 }]}>
+                {o.direccion}
+                <Text style={{ color: C.muted }}>{`, ${o.localidadBarrio}`}</Text>
+              </Text>
+            </View>
           </View>
         </View>
-        <View
-          style={[
-            s.row,
-            { backgroundColor: C.panel, borderRadius: 16, borderWidth: 1, borderColor: C.hairline, padding: 16, flexWrap: 'wrap', gap: 16 },
-          ]}
-        >
-          <CalendarDays size={24} color={C.muted} />
-          <View style={{ flex: 1, minWidth: 90, gap: 4 }}>
+        <ContactBar
+          obra={o}
+          onError={(e) => {
+            setError(userError(e));
+            setModal('error');
+          }}
+        />
+        <NextStep
+          title={
+            task.kind === 'FINISHED'
+              ? o.estadoProceso === 'RETIRADO'
+                ? 'Cerrar el reingreso'
+                : 'Alquiler terminado'
+              : task.kind === 'DELIVER'
+                ? 'Entregar el material'
+                : 'Retirar el material'
+          }
+          detail={
+            task.kind === 'FINISHED'
+              ? o.estadoProceso === 'RETIRADO'
+                ? 'El material ya volvió: revisalo y cerrá el reingreso.'
+                : `Retirado el ${formatDate(o.fechaRetiroEfectiva || o.fechaRetiroEstimada)}.`
+              : `${task.label}${task.date ? ` (${formatDate(task.date)})` : ''}.`
+          }
+          color={stepColor}
+          background={stepBackground}
+        />
+        <View style={[s.row, { backgroundColor: C.panel, borderRadius: 16, borderWidth: 1, borderColor: C.hairline, paddingVertical: 14, paddingHorizontal: 16, gap: 12 }]}>
+          <CalendarDays size={22} color={C.muted} />
+          <View style={{ flex: 1, gap: 2 }}>
             <Text style={s.muted}>Entrega prevista</Text>
-            <Text style={[s.label, { fontVariant: ['tabular-nums'] }]}>
+            <Text style={{ color: C.text, fontFamily: fonts.displaySemi, fontSize: 20, fontVariant: ['tabular-nums'] }}>
               {formatDate(o.fechaEntrega)}
             </Text>
           </View>
-          <View
-            style={{
-              flex: 1,
-              minWidth: 90,
-              gap: 4,
-              borderLeftWidth: 1,
-              borderLeftColor: C.hairline,
-              paddingLeft: 16,
-            }}
-          >
+          <ArrowRight size={18} color={C.subtle} />
+          <View style={{ flex: 1, gap: 2 }}>
             <Text style={s.muted}>Alquilado hasta</Text>
-            <Text style={[s.label, { fontVariant: ['tabular-nums'] }]}>
+            <Text style={{ color: C.text, fontFamily: fonts.displaySemi, fontSize: 20, fontVariant: ['tabular-nums'] }}>
               {formatDate(o.fechaRetiroEstimada, false, 'Sin fecha de retiro')}
             </Text>
             {!countdown.finished && countdown.days !== null ? (
-              <Text accessibilityLiveRegion="polite" style={s.body}>
+              <Text accessibilityLiveRegion="polite" style={[s.muted, { fontSize: 14 }]}>
                 {countdown.label}
               </Text>
             ) : null}
           </View>
         </View>
-        {o.fechaEntregaEfectiva ? (
-          <Text style={s.muted}>Entrega efectiva: {formatDate(o.fechaEntregaEfectiva)}</Text>
-        ) : null}
-        {o.fechaRetiroEfectiva ? (
-          <Text style={s.muted}>Retiro efectivo: {formatDate(o.fechaRetiroEfectiva)}</Text>
+        {o.fechaEntregaEfectiva || o.fechaRetiroEfectiva ? (
+          <Text style={[s.muted, { marginTop: -6, paddingHorizontal: 4 }]}>
+            {[o.fechaEntregaEfectiva ? `Entrega efectiva: ${formatDate(o.fechaEntregaEfectiva)}` : '', o.fechaRetiroEfectiva ? `Retiro efectivo: ${formatDate(o.fechaRetiroEfectiva)}` : '']
+              .filter(Boolean)
+              .join('   ')}
+          </Text>
         ) : null}
         <View style={{ gap: 12 }}>
           <Text accessibilityRole="header" style={s.h2}>

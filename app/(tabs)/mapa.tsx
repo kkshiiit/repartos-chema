@@ -74,7 +74,7 @@ const dateLabel = (date: string) =>
 type SortKind = 'DISTANCE' | 'ASC' | 'DESC';
 export default function Trip() {
   const { C, s } = useUI(),
-    { state, ready: inventoryReady, workspaceId, workspaceKey, queue } = useInventory(),
+    { state, ready: inventoryReady, workspaceId, workspaceKey } = useInventory(),
     { user } = useAuth();
   const now = useBusinessClock(),
     today = businessDate(now);
@@ -99,7 +99,6 @@ export default function Trip() {
     [panel, setPanel] = useState<
       'options' | 'routes' | 'stop' | 'depot' | 'confirmSort' | 'locationReview' | null
     >(null),
-    [published, setPublished] = useState(false),
     [editor, setEditor] = useState(false),
     [selectedId, setSelectedId] = useState<string | null>(null),
     [pendingSort, setPendingSort] = useState<SortKind | null>(null),

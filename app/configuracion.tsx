@@ -13,6 +13,7 @@ import {
   BookOpen,
   FileDown,
   FileText,
+  KeyRound,
   Layers,
   MapPin,
   Moon,
@@ -46,13 +47,14 @@ import { ResponsableCard } from '../src/components/ResponsableCard';
 import { usePin } from '../src/context/PinContext';
 import { api } from '../src/sync/api';
 
-type Panel = 'feedback' | 'responsables' | 'copies' | 'depot' | 'members';
+type Panel = 'feedback' | 'responsables' | 'copies' | 'depot' | 'members' | 'rotate';
 const titles: Record<Panel, string> = {
   feedback: 'Avisos y sonidos',
   responsables: 'Responsables de reparto',
   copies: 'Exportar e importar',
   depot: 'Depósito',
   members: 'Personas del equipo',
+  rotate: 'Cambiar el código del equipo',
 };
 
 function ResponsibleEditor({
@@ -185,152 +187,62 @@ export default function Settings() {
   const version = Constants.expoConfig?.version || '1.0.0';
   return (
     <Screen title="Ajustes" back>
-      <View style={[s.card, { gap: 14 }]}>
-        <View style={[s.row, { gap: 14 }]}>
-          <View
-            style={{
-              width: 56,
-              height: 56,
-              borderRadius: 28,
-              backgroundColor: C.primary,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Text style={{ color: C.onPrimary, fontSize: 22, fontFamily: fonts.semibold, fontWeight: '700' }}>
-              {initials(user?.nombre)}
-            </Text>
-          </View>
-          <View style={s.grow}>
-            <Text style={[s.h2]}>{user?.nombre}</Text>
-            <Text style={s.muted}>Equipo: {session?.teamName}</Text>
-          </View>
+      {/* Quién está usando este teléfono: lo primero que hay que confirmar. */}
+      <View style={[s.row, { gap: 14, paddingVertical: 4 }]}>
+        <View style={{ width: 60, height: 60, borderRadius: 30, backgroundColor: C.primary, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ color: C.onPrimary, fontSize: 24, fontFamily: fonts.display }}>{initials(user?.nombre)}</Text>
         </View>
-        <Text style={s.muted}>
-          Todo lo que hagas queda registrado con tu nombre en la Auditoría.
-        </Text>
-        <Button label="Cambiar de persona" icon={UserRoundCog} variant="secondary" onPress={switchUser} />
+        <View style={s.grow}>
+          <Text style={s.h2}>{user?.nombre}</Text>
+          <Text style={s.muted}>{session?.teamName} · todo queda en la Auditoría con tu nombre</Text>
+        </View>
       </View>
 
-      <ResponsableCard />
+      <ToolGroup title="Equipo">
+        <ToolRow label="Compartir código del equipo" detail={session?.code} icon={Share2} onPress={shareCode} />
+        <ToolRow label="Personas del equipo" value={String(members.length)} icon={UsersRound} onPress={() => open('members')} />
+        <ResponsableCard />
+        <ToolRow label="Cambiar código" detail="Si llegó a alguien que no debía tenerlo" icon={KeyRound} onPress={() => open('rotate')} />
+        <ToolRow label="Cambiar de persona" detail="Para usar este teléfono con otro nombre" icon={UserRoundCog} onPress={switchUser} last />
+      </ToolGroup>
 
-      <View style={[s.card, { gap: 12 }]}>
-        <Text style={s.h2}>Código del equipo</Text>
-        <Text style={s.muted}>
-          Compartilo con quienes tengan que usar la app. Con este código ven y cargan los mismos datos
-          desde su teléfono.
+      <View style={{ gap: 8 }}>
+        <Text accessibilityRole="header" style={{ color: C.muted, fontFamily: fonts.semibold, fontSize: 15, paddingLeft: 4 }}>
+          Apariencia
         </Text>
-        <Text
-          selectable
-          accessibilityLabel={`Código ${session?.code.split('').join(' ')}`}
-          style={{
-            color: C.text,
-            fontFamily: fonts.monoMedium,
-            fontSize: 26,
-            letterSpacing: 2,
-            textAlign: 'center',
-            paddingVertical: 14,
-            borderRadius: 14,
-            borderWidth: 2,
-            borderStyle: 'dashed',
-            borderColor: C.accent,
-            backgroundColor: C.selection,
-          }}
-        >
-          {session?.code}
-        </Text>
-        <Button label="Compartir código" icon={Share2} onPress={shareCode} />
-        <ConfirmButton
-          label="Cambiar código"
-          variant="secondary"
-          title="Cambiar el código del equipo"
-          description="Usalo si el código llegó a alguien que no debía tenerlo. Se genera uno nuevo y el anterior deja de funcionar al instante: los demás teléfonos van a tener que entrar de nuevo con el código nuevo (no pierden nada). Después compartí el código nuevo con tu equipo."
-          onConfirm={() =>
-            withPin('Cambiar el código saca del equipo a todos los teléfonos hasta que usen el nuevo.', async (pin) => {
-              await api.pinVerify(session!.code, pin);
-              await note?.('Cambió el código del equipo');
-              await retry();
-              await rotateCode(pin);
-            })
-          }
-        />
-        <Button
-          label={`Personas del equipo (${members.length})`}
-          icon={UsersRound}
-          variant="secondary"
-          onPress={() => open('members')}
-        />
-      </View>
-
-      <View style={[s.card, { gap: 12 }]}>
-        <Text style={s.h2}>Apariencia</Text>
-        <View accessibilityRole="radiogroup" style={[s.row, { gap: 10, alignItems: 'stretch' }]}>
-          <ThemeOption
-            label="Sol"
-            detail="Máximo contraste de día"
-            icon={SunMedium}
-            selected={theme.preference === 'light'}
-            onPress={() => theme.setPreference('light')}
-          />
-          <ThemeOption
-            label="Noche"
-            detail="Oscuro, no encandila"
-            icon={Moon}
-            selected={theme.preference === 'dark'}
-            onPress={() => theme.setPreference('dark')}
-          />
-          <ThemeOption
-            label="Auto"
-            detail="Igual que el teléfono"
-            icon={SmartphoneNfc}
-            selected={theme.preference === 'system'}
-            onPress={() => theme.setPreference('system')}
-          />
+        <View accessibilityRole="radiogroup" style={[s.row, { gap: 8, alignItems: 'stretch' }]}>
+          <ThemeOption label="Sol" detail="Para la calle" icon={SunMedium} selected={theme.preference === 'light'} onPress={() => theme.setPreference('light')} />
+          <ThemeOption label="Noche" detail="No encandila" icon={Moon} selected={theme.preference === 'dark'} onPress={() => theme.setPreference('dark')} />
+          <ThemeOption label="Auto" detail="Como el teléfono" icon={SmartphoneNfc} selected={theme.preference === 'system'} onPress={() => theme.setPreference('system')} />
         </View>
         {theme.error ? <Notice text={theme.error} tone="error" /> : null}
       </View>
 
-      <ToolGroup title="Datos">
-        <ToolRow
-          label="Copias y restauración"
-          detail="Copia semanal automática · volver atrás"
-          icon={ShieldCheck}
-          onPress={() => router.push('/copias')}
-        />
-        <ToolRow
-          label="Exportar e importar copia"
-          detail="Todo el inventario en un archivo JSON"
-          icon={FileDown}
-          onPress={() => open('copies')}
-        />
-        <ToolRow
-          label="Planillas Word y Excel"
-          detail="Remitos y reportes"
-          icon={FileText}
-          onPress={() => router.push('/exportar')}
-        />
+      <ToolGroup title="Datos y copias">
+        <ToolRow label="Copias y restauración" detail="Copia semanal y volver atrás" icon={ShieldCheck} onPress={() => router.push('/copias')} />
+        <ToolRow label="Exportar e importar copia" detail="Todo en un archivo JSON" icon={FileDown} onPress={() => open('copies')} />
+        <ToolRow label="Planillas Word y Excel" detail="Remitos y reportes" icon={FileText} onPress={() => router.push('/exportar')} last />
+      </ToolGroup>
+
+      <ToolGroup title="Trabajo">
         <ToolRow label="Combos de carga" icon={Layers} onPress={() => router.push('/combos')} />
-        <ToolRow
-          label="Responsables de reparto"
-          detail={`${state.responsables.length} cargados`}
-          icon={UsersRound}
-          onPress={() => open('responsables')}
-        />
-        <ToolRow label={depot.nombre} detail={depot.direccion} icon={MapPin} onPress={() => open('depot')} last />
+        <ToolRow label="Responsables de reparto" value={String(state.responsables.length)} icon={UsersRound} onPress={() => open('responsables')} />
+        <ToolRow label="Depósito" detail={depot.direccion} icon={MapPin} onPress={() => open('depot')} />
+        <ToolRow label="Avisos y sonidos" icon={Bell} onPress={() => open('feedback')} last />
       </ToolGroup>
+
       <ToolGroup title="Ayuda">
-        <ToolRow label="Avisos y sonidos" icon={Bell} onPress={() => open('feedback')} />
-        <ToolRow label="Guía de uso" detail="Cada sección explicada" icon={BookOpen} onPress={() => router.push('/guia')} last />
+        <ToolRow label="Guía de uso" detail="Cada parte de la app, explicada" icon={BookOpen} onPress={() => router.push('/guia')} last />
       </ToolGroup>
+
       <ConfirmButton
         label="Salir del equipo en este teléfono"
+        variant="secondary"
         title="Salir del equipo"
         description="Este teléfono deja de ver los datos del equipo. Los datos no se borran: siguen en los demás teléfonos y podés volver a entrar con el código."
         onConfirm={leaveTeam}
       />
-      <Text style={[s.muted, { textAlign: 'center' }]}>
-        Chema Andamios {version} · Sincronizado en la nube
-      </Text>
+      <Text style={[s.muted, { textAlign: 'center', fontSize: 13 }]}>Chema Andamios {version}</Text>
 
       <Sheet
         visible={panel !== null}
@@ -340,6 +252,31 @@ export default function Settings() {
         protectChanges={panel === 'depot' || panel === 'responsables' || panel === 'feedback'}
         hasChanges={panel === 'responsables' && names !== null && names !== state.responsables.join('\n')}
       >
+        {panel === 'rotate' ? (
+          <>
+            <Text style={s.body}>
+              Se genera un código nuevo y el anterior deja de funcionar al instante. Los demás teléfonos van a tener
+              que entrar de nuevo con el código nuevo (no pierden nada). Después compartí el código nuevo.
+            </Text>
+            <Button
+              label="Cambiar código"
+              variant="danger"
+              loading={busy}
+              onPress={() =>
+                run(() =>
+                  withPin('Cambiar el código saca del equipo a todos los teléfonos hasta que usen el nuevo.', async (pin) => {
+                    await api.pinVerify(session!.code, pin);
+                    await note?.('Cambió el código del equipo');
+                    await retry();
+                    await rotateCode(pin);
+                  }),
+                ).then((ok) => {
+                  if (ok) close();
+                })
+              }
+            />
+          </>
+        ) : null}
         {panel === 'members' ? (
           <>
             {members.map((m) => (

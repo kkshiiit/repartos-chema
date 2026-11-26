@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
 import { DeleteMaterialButton } from '../../src/components/DeleteMaterialButton';
+import { StatBoard } from '../../src/components/StatBoard';
 import { userError } from '../../src/services/errors';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, useWindowDimensions } from 'react-native';
@@ -84,6 +85,15 @@ export default function WarehousePage() {
     setSource('');
     setModal(mode);
   };
+  const totals = state.materiales.reduce(
+    (t, m) => ({
+      galpon: t.galpon + m.cantidadGalpon,
+      obra: t.obra + m.cantidadEnObra,
+      taller: t.taller + m.cantidadEnTaller,
+      perdido: t.perdido + m.cantidadPerdido,
+    }),
+    { galpon: 0, obra: 0, taller: 0, perdido: 0 },
+  );
   return (
     <Screen
       title="Depósito"
@@ -104,9 +114,16 @@ export default function WarehousePage() {
         keyExtractor={(m) => m.id}
         ListHeaderComponent={
           <View style={{ gap: spacing.md, paddingBottom: spacing.lg }}>
+            <StatBoard
+              items={[
+                { key: 'galpon', label: 'En depósito', n: totals.galpon, color: C.success },
+                { key: 'obra', label: 'En obras', n: totals.obra, color: C.blue },
+                { key: 'taller', label: 'A reparar', n: totals.taller, color: C.warning },
+                { key: 'perdido', label: 'Perdidas', n: totals.perdido, color: C.danger },
+              ]}
+            />
             <Text style={s.muted}>
-              {state.materiales.length} tipos de pieza ·{' '}
-              {state.materiales.filter((m) => m.cantidadGalpon > 0).length} con stock disponible
+              {state.materiales.length} tipos de pieza · {state.materiales.filter((m) => m.cantidadGalpon > 0).length} con stock disponible
             </Text>
             <Field
               label="Buscar pieza"
