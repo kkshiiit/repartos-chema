@@ -38,15 +38,13 @@ export function DeleteRentalButton({
         style={({ pressed }) => ({
           width: size,
           height: size,
-          borderRadius: 14,
+          borderRadius: size / 2,
           alignItems: 'center',
           justifyContent: 'center',
-          borderWidth: 1,
-          borderColor: C.danger,
-          backgroundColor: pressed ? C.dangerBackground : C.panel,
+          backgroundColor: pressed ? C.dangerBackground : 'transparent',
         })}
       >
-        <Trash2 size={Math.round(size * 0.46)} color={C.danger} />
+        {({ pressed }) => <Trash2 size={Math.round(size * 0.5)} color={pressed ? C.danger : C.subtle} />}
       </Pressable>
       <Sheet visible={open} title="¿Borrar este alquiler?" busy={busy} onClose={() => setOpen(false)}>
         <View style={{ gap: 4 }}>

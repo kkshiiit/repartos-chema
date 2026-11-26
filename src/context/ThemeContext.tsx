@@ -33,9 +33,12 @@ interface Value extends ReturnType<typeof useMotionPreferences> {
 const Context = createContext<Value | null>(null);
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [fontsLoaded, fontError] = useFonts({
-    Geist: require('../../assets/fonts/Geist-Regular.ttf'),
-    GeistMedium: require('../../assets/fonts/Geist-Medium.ttf'),
-    GeistSemiBold: require('../../assets/fonts/Geist-SemiBold.ttf'),
+    Barlow: require('../../assets/fonts/Barlow-Regular.ttf'),
+    BarlowMedium: require('../../assets/fonts/Barlow-Medium.ttf'),
+    BarlowSemiBold: require('../../assets/fonts/Barlow-SemiBold.ttf'),
+    BarlowBold: require('../../assets/fonts/Barlow-Bold.ttf'),
+    BarlowCondensedSemiBold: require('../../assets/fonts/BarlowCondensed-SemiBold.ttf'),
+    BarlowCondensedBold: require('../../assets/fonts/BarlowCondensed-Bold.ttf'),
     GeistMono: require('../../assets/fonts/GeistMono-Regular.ttf'),
     GeistMonoMedium: require('../../assets/fonts/GeistMono-Medium.ttf'),
   });

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Animated, Pressable } from 'react-native';
 import { Moon, Sun } from 'lucide-react-native';
 import { useTheme } from '../context/ThemeContext';
-export function ThemeToggle() {
+/** Cambia entre Sol y Noche. `tone="band"` para usarlo sobre la franja de marca. */
+export function ThemeToggle({ tone = 'surface' }: { tone?: 'surface' | 'band' }) {
   const { mode, colors, toggle, motionEnabled } = useTheme();
   const Icon = mode === 'dark' ? Sun : Moon;
   const [transition] = useState(() => new Animated.Value(1));
@@ -26,14 +27,12 @@ export function ThemeToggle() {
       accessibilityLabel={mode === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'}
       onPress={toggle}
       style={({ pressed }) => ({
-        minWidth: 48,
-        minHeight: 48,
+        width: 44,
+        height: 44,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 14,
-        borderWidth: 1,
-        borderColor: colors.hairline,
-        backgroundColor: pressed ? colors.selection : colors.panel,
+        borderRadius: 22,
+        backgroundColor: pressed ? (tone === 'band' ? '#FFFFFF2E' : colors.panel2) : 'transparent',
       })}
     >
       <Animated.View
@@ -49,7 +48,7 @@ export function ThemeToggle() {
           ],
         }}
       >
-        <Icon size={21} color={colors.accent} />
+        <Icon size={24} color={tone === 'band' ? colors.onBand : colors.text} />
       </Animated.View>
     </Pressable>
   );

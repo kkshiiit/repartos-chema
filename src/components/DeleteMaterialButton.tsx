@@ -31,15 +31,13 @@ export function DeleteMaterialButton({ material: m }: { material: MaterialItem }
         style={({ pressed }) => ({
           width: 48,
           height: 48,
-          borderRadius: 14,
+          borderRadius: 24,
           alignItems: 'center',
           justifyContent: 'center',
-          borderWidth: 1,
-          borderColor: C.danger,
-          backgroundColor: pressed ? C.dangerBackground : C.panel,
+          backgroundColor: pressed ? C.dangerBackground : 'transparent',
         })}
       >
-        <Trash2 size={22} color={C.danger} />
+        {({ pressed }) => <Trash2 size={22} color={pressed ? C.danger : C.subtle} />}
       </Pressable>
       <Sheet visible={open} title="¿Borrar este material?" busy={busy} onClose={() => setOpen(false)}>
         <View style={{ gap: 4 }}>

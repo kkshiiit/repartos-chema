@@ -249,10 +249,6 @@ export default function Guia() {
     LayoutAnimation.configureNext(LayoutAnimation.create(160, 'easeInEaseOut', 'opacity'));
     setOpen((v) => (v === id ? null : id));
   };
-  const jump = (id: string) => {
-    setOpen(id);
-    scroll.current?.scrollTo({ y: Math.max(0, (positions.current[id] || 0) - 8), animated: true });
-  };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: C.bg }}>
       <ScrollView ref={scroll} contentContainerStyle={{ padding: 16, paddingBottom: 40 }}>
@@ -267,38 +263,14 @@ export default function Guia() {
               Guía de uso
             </Text>
           </View>
-          <Text style={s.body}>Tocá una sección para ver cómo se usa. Todo se explica en pocas líneas.</Text>
-          <View accessibilityRole="tablist" style={[s.wrap, { gap: 8 }]}>
-            {SECTIONS.map((sec, i) => (
-              <Pressable
-                key={sec.id}
-                accessibilityRole="button"
-                accessibilityLabel={`Ir a ${sec.title}`}
-                onPress={() => jump(sec.id)}
-                style={({ pressed }) => ({
-                  minHeight: 44,
-                  paddingHorizontal: 12,
-                  borderRadius: 22,
-                  borderWidth: 1,
-                  borderColor: open === sec.id ? C.accent : C.hairline,
-                  backgroundColor: open === sec.id || pressed ? C.selection : C.panel,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 6,
-                })}
-              >
-                <Text style={{ color: C.accent, fontFamily: fonts.monoMedium, fontSize: 13 }}>{i + 1}</Text>
-                <Text style={{ color: C.text, fontFamily: fonts.medium, fontSize: 14 }}>{sec.title}</Text>
-              </Pressable>
-            ))}
-          </View>
+          <Text style={s.body}>Tocá un tema para ver cómo se hace.</Text>
           {SECTIONS.map((sec, i) => {
             const expanded = open === sec.id;
             return (
               <View
                 key={sec.id}
                 onLayout={(e) => (positions.current[sec.id] = e.nativeEvent.layout.y)}
-                style={[s.card, { padding: 0, overflow: 'hidden', borderColor: expanded ? C.accent : C.hairline, borderWidth: expanded ? 2 : 1 }]}
+                style={[s.card, { padding: 0, overflow: 'hidden' }]}
               >
                 <Pressable
                   accessibilityRole="button"
@@ -320,10 +292,8 @@ export default function Guia() {
                     <sec.icon size={24} color={expanded ? C.onPrimary : C.text} />
                   </View>
                   <View style={s.grow}>
-                    <Text style={{ color: C.accent, fontFamily: fonts.monoMedium, fontSize: 12 }}>
-                      SECCIÓN {i + 1} · {sec.where.toUpperCase()}
-                    </Text>
-                    <Text style={[s.body, { fontFamily: fonts.semibold, fontSize: 17, fontWeight: '700' }]}>{sec.title}</Text>
+                    <Text style={{ color: C.text, fontFamily: fonts.semibold, fontSize: 18, lineHeight: 23 }}>{sec.title}</Text>
+                    <Text style={[s.muted, { fontSize: 14 }]}>{sec.where}</Text>
                   </View>
                   <ChevronDown
                     size={22}

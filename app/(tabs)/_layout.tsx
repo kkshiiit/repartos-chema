@@ -41,40 +41,37 @@ function TabItem({ link, active }: { link: (typeof links)[number]; active: boole
       style={({ pressed }) => ({
         flex: 1,
         minWidth: 0,
-        minHeight: 64,
+        minHeight: 62,
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 4,
-        paddingVertical: 7,
+        gap: 2,
+        paddingTop: 8,
+        paddingBottom: 6,
         paddingHorizontal: 2,
-        borderRadius: 10,
-        backgroundColor: pressed ? C.selection : 'transparent',
+        backgroundColor: pressed ? C.panel2 : 'transparent',
       })}
     >
+      {/* Barra superior roja que marca la pestaña activa. */}
       <Animated.View
         pointerEvents="none"
         style={{
           position: 'absolute',
-          top: 7,
-          zIndex: 0,
-          width: 58,
-          height: 32,
-          borderRadius: 16,
-          backgroundColor: C.selection,
+          top: 0,
+          height: 3,
+          width: 40,
+          borderBottomLeftRadius: 3,
+          borderBottomRightRadius: 3,
+          backgroundColor: C.accent,
           opacity: progress,
-          transform: [
-            { scaleX: progress.interpolate({ inputRange: [0, 1], outputRange: [0.7, 1] }) },
-          ],
+          transform: [{ scaleX: progress.interpolate({ inputRange: [0, 1], outputRange: [0.4, 1] }) }],
         }}
       />
-      <View style={{ zIndex: 1, height: 32, justifyContent: 'center' }}>
-        <link.icon size={24} color={active ? C.accent : C.muted} strokeWidth={active ? 2.5 : 2} />
-      </View>
+      <link.icon size={25} color={active ? C.accent : C.muted} strokeWidth={active ? 2.4 : 1.9} />
       <Text
         style={{
-          fontFamily: active ? fonts.semibold : fonts.regular,
+          fontFamily: active ? fonts.semibold : fonts.medium,
           color: active ? C.text : C.muted,
-          fontSize: 13,
+          fontSize: 13.5,
           lineHeight: 18,
           textAlign: 'center',
           maxWidth: '100%',
@@ -99,7 +96,7 @@ export default function Tabs() {
       <View
         style={{
           borderTopWidth: 1,
-          borderColor: C.line,
+          borderColor: C.hairline,
           backgroundColor: C.panel,
           paddingBottom: Math.max(insets.bottom, 6),
           paddingHorizontal: 8,

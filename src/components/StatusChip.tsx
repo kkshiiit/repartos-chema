@@ -33,7 +33,7 @@ export function StatusChip({
         borderWidth: 0,
         borderColor: `${color}55`,
         backgroundColor: `${color}16`,
-        paddingHorizontal: compact ? 7 : 10,
+        paddingHorizontal: compact ? 9 : 10,
         paddingVertical: compact ? 3 : 6,
         flexDirection: 'row',
         alignItems: 'center',
@@ -43,7 +43,7 @@ export function StatusChip({
       {!compact ? <Icon size={16} color={color} /> : null}
       <Text
         style={{
-          fontSize: compact ? 12 : 14,
+          fontSize: compact ? 13 : 14,
           lineHeight: compact ? 18 : 20,
           fontWeight: '700',
           color: color,
