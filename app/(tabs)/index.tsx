@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, ActivityIndicator, Pressable, Text } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { FlashListRef } from '@shopify/flash-list';
 import { Plus } from 'lucide-react-native';
@@ -8,6 +8,7 @@ import { useInventory } from '../../src/context/InventoryContext';
 import { useAuth } from '../../src/context/AuthContext';
 import { Button, Empty, Notice, Screen, Select, Sheet, useUI } from '../../src/components/ui';
 import { CardObra } from '../../src/components/CardObra';
+import { StatBoard } from '../../src/components/StatBoard';
 import { LegacyImport } from '../../src/components/LegacyImport';
 import { DataList } from '../../src/components/DataList';
 import { SearchToolbar, SectionHeading } from '../../src/components/ListStructure';
@@ -28,7 +29,6 @@ import {
 } from '../../src/services/rentalListPreferences';
 import { BUSINESS_TIME_ZONE } from '../../src/utils/retirementCalendar';
 import { useBusinessClock } from '../../src/hooks/useBusinessClock';
-import { fonts } from '../../src/theme/tokens';
 import type { ObraCard } from '../../src/types';
 
 export default function Home() {
@@ -373,63 +373,5 @@ function SummaryTiles({
     { key: 'PENDIENTE', label: 'A entregar', n: counts.pending, color: C.blue },
     { key: 'EN_OBRA', label: 'En obra', n: counts.working, color: C.success },
   ];
-  // Un solo tablero con cuatro columnas: se lee de un vistazo y cada número filtra la lista.
-  return (
-    <View
-      style={{
-        flexDirection: 'row',
-        backgroundColor: C.panel,
-        borderRadius: 16,
-        borderWidth: 1,
-        borderColor: C.hairline,
-        overflow: 'hidden',
-      }}
-    >
-      {tiles.map((t, i) => {
-        const selected = value === t.key;
-        const quiet = t.n === 0 && !selected;
-        return (
-          <Pressable
-            key={t.key}
-            accessibilityRole="button"
-            accessibilityState={{ selected }}
-            accessibilityLabel={`${t.label}: ${t.n}. ${selected ? 'Filtro activo, tocar para ver todos' : 'Tocar para filtrar'}`}
-            onPress={() => onChange(t.key)}
-            style={({ pressed }) => ({
-              flex: 1,
-              minWidth: 0,
-              minHeight: 92,
-              paddingTop: 12,
-              paddingBottom: 10,
-              paddingHorizontal: 6,
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 2,
-              borderLeftWidth: i ? 1 : 0,
-              borderColor: C.hairline,
-              backgroundColor: pressed || selected ? C.panel2 : 'transparent',
-            })}
-          >
-            <Text
-              style={{
-                color: quiet ? C.subtle : t.color,
-                fontFamily: fonts.display,
-                fontSize: 38,
-                lineHeight: 42,
-                fontVariant: ['tabular-nums'],
-              }}
-            >
-              {t.n}
-            </Text>
-            <Text numberOfLines={1} style={{ color: C.text, fontFamily: fonts.medium, fontSize: 14, maxWidth: '100%' }}>
-              {t.label}
-            </Text>
-            {selected ? (
-              <View style={{ position: 'absolute', left: 10, right: 10, bottom: 0, height: 4, borderTopLeftRadius: 4, borderTopRightRadius: 4, backgroundColor: t.color }} />
-            ) : null}
-          </Pressable>
-        );
-      })}
-    </View>
-  );
+  return <StatBoard items={tiles} value={value} onChange={onChange} />;
 }

@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { View, Text, AppState, Platform, Pressable, ScrollView } from 'react-native';
 import { useFocusEffect } from 'expo-router';
-import { History, ArrowRight, ChevronRight, ArrowDown, ArrowUp, RotateCcw } from 'lucide-react-native';
+import { ArrowRight, ChevronRight, RotateCcw } from 'lucide-react-native';
 import { useInventory } from '../../src/context/InventoryContext';
 import { useAuth } from '../../src/context/AuthContext';
 import { undoReason } from '../../src/domain/engine';
@@ -10,6 +10,7 @@ import {
   Button,
   Chip,
   ConfirmButton,
+  initials,
   Empty,
   Field,
   Notice,
@@ -22,6 +23,7 @@ import { SearchToolbar, SectionHeading } from '../../src/components/ListStructur
 import { historyRows } from '../../src/utils/listPresentation';
 import type { ActivityLog } from '../../src/types';
 import { DataList } from '../../src/components/DataList';
+import { fonts } from '../../src/theme/tokens';
 import { RestoreSheet } from '../../src/components/RestoreSheet';
 export default function HistoryPage() {
   const { C, s } = useUI();
@@ -115,12 +117,6 @@ export default function HistoryPage() {
         renderItem={({ item }) => {
           if (item.kind === 'section') return <SectionHeading title={item.title} />;
           const l = item.log;
-          const EntryIcon = /retir/i.test(l.accion)
-            ? ArrowUp
-            : /entreg/i.test(l.accion)
-              ? ArrowDown
-              : History;
-          const entryColor = /retir/i.test(l.accion) ? C.green : C.link;
           return (
             <Pressable
               accessibilityRole="button"
@@ -137,23 +133,24 @@ export default function HistoryPage() {
                 alignItems: 'flex-start',
               })}
             >
-              <View style={{ width: 32, alignItems: 'center', alignSelf: 'stretch' }}>
+              <View style={{ width: 38, alignItems: 'center', alignSelf: 'stretch' }}>
+                {/* La auditoría responde "¿quién?": sus iniciales van primero. */}
                 <View
                   style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: 16,
-                    backgroundColor: C.selection,
+                    width: 38,
+                    height: 38,
+                    borderRadius: 19,
+                    backgroundColor: C.panel2,
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
                 >
-                  <EntryIcon size={17} color={entryColor} />
+                  <Text style={{ color: C.text, fontFamily: fonts.display, fontSize: 16 }}>{initials(l.usuarioNombre)}</Text>
                 </View>
-                <View style={{ width: 1, flex: 1, marginTop: 6, backgroundColor: C.hairline }} />
+                
               </View>
               <View style={[s.grow, { gap: 3 }]}>
-                <Text style={s.label}>{l.accion}</Text>
+                <Text style={[s.body, { fontFamily: fonts.medium }]}>{l.accion}</Text>
                 {name(l) ? <Text style={s.body}>{name(l)}</Text> : null}
                 <Text numberOfLines={1} style={[s.muted, { color: C.text }]}>
                   <Text style={{ fontWeight: '700' }}>{l.usuarioNombre}</Text>

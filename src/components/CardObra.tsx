@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { router } from 'expo-router';
-import { ChevronRight } from 'lucide-react-native';
+import { ChevronRight, Truck } from 'lucide-react-native';
 import type { ObraCard, MaterialItem } from '../types';
 import { useUI } from './ui';
 import { fonts } from '../theme/tokens';
@@ -48,6 +48,8 @@ export function CardObra({
     : task.kind === 'DELIVER' || !isCalendarDate(o.fechaRetiroEstimada)
       ? 'Sin fecha de retiro'
       : '';
+  // En lo urgente (hoy o atrasado) la acción va directo en la tarjeta: un toque en vez de tres.
+  const quick = task.kind !== 'FINISHED' && task.date !== null && (task.group === 'overdue' || task.group === 'today');
   return (
     <Pressable
       accessibilityRole="button"
@@ -91,7 +93,29 @@ export function CardObra({
           </Text>
         ) : null}
         <View style={s.grow} />
-        {when ? (
+        {quick ? (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={`${task.kind === 'DELIVER' ? 'Registrar entrega' : 'Registrar retiro'} de ${o.clienteNombre}`}
+            hitSlop={6}
+            onPress={() => router.push(`/obra/${o.id}?accion=${task.kind === 'DELIVER' ? 'entrega' : 'retiro'}`)}
+            style={({ pressed }) => ({
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 6,
+              minHeight: 40,
+              paddingHorizontal: 16,
+              borderRadius: 20,
+              backgroundColor: C.primary,
+              opacity: pressed ? 0.85 : 1,
+            })}
+          >
+            <Truck size={17} color={C.onPrimary} />
+            <Text style={{ color: C.onPrimary, fontFamily: fonts.semibold, fontSize: 15 }}>
+              {task.kind === 'DELIVER' ? 'Entregar' : 'Retirar'}
+            </Text>
+          </Pressable>
+        ) : when ? (
           <Text style={{ color: C.muted, fontFamily: fonts.displaySemi, fontSize: 17, fontVariant: ['tabular-nums'] }}>
             {when}
           </Text>

@@ -165,7 +165,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         await value.enterAs(name);
       },
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     [session, members, loading, error, notice, save, refreshMembers],
   );
   return <Context.Provider value={value}>{children}</Context.Provider>;
