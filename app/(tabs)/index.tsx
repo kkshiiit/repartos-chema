@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { View, ActivityIndicator, Pressable, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { FlashListRef } from '@shopify/flash-list';
-import { AlertTriangle, CalendarClock, HardHat, PackagePlus, Plus } from 'lucide-react-native';
+import { Plus } from 'lucide-react-native';
 import { router } from 'expo-router';
 import { useInventory } from '../../src/context/InventoryContext';
 import { useAuth } from '../../src/context/AuthContext';
@@ -368,15 +368,26 @@ function SummaryTiles({
     return { overdue, todayCount, pending, working };
   }, [obras, today]);
   const tiles = [
-    { key: 'ATRASADOS', label: 'Atrasados', n: counts.overdue, icon: AlertTriangle, color: C.danger, bg: C.dangerBackground },
-    { key: 'HOY', label: 'Para hoy', n: counts.todayCount, icon: CalendarClock, color: C.warning, bg: C.warningBackground },
-    { key: 'PENDIENTE', label: 'Por entregar', n: counts.pending, icon: PackagePlus, color: C.purple, bg: C.panel2 },
-    { key: 'EN_OBRA', label: 'En obra', n: counts.working, icon: HardHat, color: C.success, bg: C.successBackground },
+    { key: 'ATRASADOS', label: 'Atrasados', n: counts.overdue, color: C.danger },
+    { key: 'HOY', label: 'Hoy', n: counts.todayCount, color: C.warning },
+    { key: 'PENDIENTE', label: 'A entregar', n: counts.pending, color: C.blue },
+    { key: 'EN_OBRA', label: 'En obra', n: counts.working, color: C.success },
   ];
+  // Un solo tablero con cuatro columnas: se lee de un vistazo y cada número filtra la lista.
   return (
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-      {tiles.map((t) => {
+    <View
+      style={{
+        flexDirection: 'row',
+        backgroundColor: C.panel,
+        borderRadius: 16,
+        borderWidth: 1,
+        borderColor: C.hairline,
+        overflow: 'hidden',
+      }}
+    >
+      {tiles.map((t, i) => {
         const selected = value === t.key;
+        const quiet = t.n === 0 && !selected;
         return (
           <Pressable
             key={t.key}
@@ -385,31 +396,37 @@ function SummaryTiles({
             accessibilityLabel={`${t.label}: ${t.n}. ${selected ? 'Filtro activo, tocar para ver todos' : 'Tocar para filtrar'}`}
             onPress={() => onChange(t.key)}
             style={({ pressed }) => ({
-              flexGrow: 1,
-              flexBasis: '45%',
-              minHeight: 74,
-              borderRadius: 16,
-              paddingHorizontal: 14,
-              paddingVertical: 10,
-              borderWidth: selected ? 2.5 : 1,
-              borderColor: selected ? t.color : C.hairline,
-              backgroundColor: pressed ? C.selection : selected ? t.bg : C.panel,
-              flexDirection: 'row',
+              flex: 1,
+              minWidth: 0,
+              minHeight: 92,
+              paddingTop: 12,
+              paddingBottom: 10,
+              paddingHorizontal: 6,
               alignItems: 'center',
-              gap: 10,
+              justifyContent: 'center',
+              gap: 2,
+              borderLeftWidth: i ? 1 : 0,
+              borderColor: C.hairline,
+              backgroundColor: pressed || selected ? C.panel2 : 'transparent',
             })}
           >
-            <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: t.bg, alignItems: 'center', justifyContent: 'center' }}>
-              <t.icon size={22} color={t.color} />
-            </View>
-            <View style={{ flex: 1, minWidth: 0 }}>
-              <Text style={{ color: C.text, fontFamily: fonts.semibold, fontSize: 26, lineHeight: 30, fontWeight: '700', fontVariant: ['tabular-nums'] }}>
-                {t.n}
-              </Text>
-              <Text numberOfLines={1} style={{ color: C.muted, fontFamily: fonts.medium, fontSize: 13 }}>
-                {t.label}
-              </Text>
-            </View>
+            <Text
+              style={{
+                color: quiet ? C.subtle : t.color,
+                fontFamily: fonts.display,
+                fontSize: 38,
+                lineHeight: 42,
+                fontVariant: ['tabular-nums'],
+              }}
+            >
+              {t.n}
+            </Text>
+            <Text numberOfLines={1} style={{ color: C.text, fontFamily: fonts.medium, fontSize: 14, maxWidth: '100%' }}>
+              {t.label}
+            </Text>
+            {selected ? (
+              <View style={{ position: 'absolute', left: 10, right: 10, bottom: 0, height: 4, borderTopLeftRadius: 4, borderTopRightRadius: 4, backgroundColor: t.color }} />
+            ) : null}
           </Pressable>
         );
       })}
