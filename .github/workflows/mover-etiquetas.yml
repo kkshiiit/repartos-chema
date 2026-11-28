@@ -1,0 +1,29 @@
+# Uso único (se borra después): mueve las etiquetas de versión a la historia nueva, sin los APK viejos.
+# Cada commit nuevo tiene exactamente los mismos archivos que el viejo; sólo cambia su identificador.
+name: Mover etiquetas a la historia liviana
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  mover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Mover v1.0.3, v1.1.0 y v1.2.0
+        run: |
+          set -e
+          mover() {
+            git merge-base --is-ancestor "$2" origin/main || { echo "::error::$2 no está en main"; exit 1; }
+            git push --force origin "$2:refs/tags/$1"
+            echo "$1 -> $2"
+          }
+          mover v1.0.3 a0dd663f53e36fbcbdf1d8a5b4fbc0497abec11f
+          mover v1.1.0 1a423aeb45b860e523ca4bf4ec2dde8e67e1745b
+          mover v1.2.0 4389dc2b5a9a8811c9cdd4d35d128ac034ffbc5e
