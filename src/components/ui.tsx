@@ -883,6 +883,16 @@ export function Screen({
         </View>
         {subtitle ? <Text style={s.muted}>{subtitle}</Text> : null}
       </View>
+      {back && (!inv.online || pending) ? (
+        // En pantallas internas no se ve la cabecera: el estado de envío tiene que seguir a la vista.
+        <View
+          accessibilityRole="text"
+          style={[s.row, { gap: 8, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 10, backgroundColor: C.warningBackground }]}
+        >
+          <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: C.warning }} />
+          <Text style={{ color: C.text, fontFamily: fonts.medium, fontSize: 14, flex: 1 }}>{syncText}{!inv.online ? ". Se envía solo al volver la señal." : ""}</Text>
+        </View>
+      ) : null}
       {authError ? <Notice text={authError} tone="error" /> : null}
       {inv.error ? (
         <View style={{ gap: 8 }}>
@@ -979,7 +989,10 @@ export function ConfirmButton({
   onConfirm,
   variant = 'danger',
   confirmLabel = 'Confirmar',
+  trigger,
 }: {
+  /** Disparador propio (fila con ícono, ícono solo) en lugar del botón grande. */
+  trigger?: (open: () => void) => React.ReactNode;
   label: string;
   title: string;
   description: string;
@@ -994,7 +1007,7 @@ export function ConfirmButton({
     [error, setError] = useState('');
   return (
     <>
-      <Button label={label} variant={variant} onPress={() => setOpen(true)} />
+      {trigger ? trigger(() => setOpen(true)) : <Button label={label} variant={variant} onPress={() => setOpen(true)} />}
       <Sheet visible={open} title={title} busy={busy} onClose={() => !busy && setOpen(false)}>
         <Text style={s.body}>{description}</Text>
         {error ? <Notice text={error} tone="error" /> : null}

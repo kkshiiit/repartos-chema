@@ -82,7 +82,7 @@ export function BackupImport() {
       {success ? <Notice text={success} tone="success" /> : null}
       <Sheet
         visible={selection !== null}
-        title="Revisar importación JSON"
+        title="Revisar la copia antes de importar"
         scroll={false}
         busy={busy}
         onClose={() => !busy && setSelection(null)}

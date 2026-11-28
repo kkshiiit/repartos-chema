@@ -2,7 +2,7 @@ import { Disclosure } from '../../src/components/Editorial';
 import { RentalReminderPanel } from '../../src/components/RentalReminderPanel';
 import { userError } from '../../src/services/errors';
 import React, { useRef, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import {
   Bell,
@@ -18,7 +18,12 @@ import {
   ArrowRight,
   MoreVertical,
   TriangleAlert,
+  LocateFixed,
+  PackageCheck,
+  RotateCcw,
+  Trash2,
 } from 'lucide-react-native';
+import { coordsFromText } from '../../src/utils/coords';
 import { ToolGroup, ToolRow } from '../../src/components/ToolsLayout';
 import * as Location from 'expo-location';
 import { useInventory, makeId } from '../../src/context/InventoryContext';
@@ -64,6 +69,7 @@ export default function Detail() {
     [n, setN] = useState(1),
     [reason, setReason] = useState(''),
     [lat, setLat] = useState(''),
+    [mapsText, setMapsText] = useState(''),
     [lng, setLng] = useState('');
   const running = useRef(false);
   const run = async (f: () => Promise<unknown>) => {
@@ -403,7 +409,7 @@ export default function Detail() {
           </View>
           <View style={s.wrap}>
             {o.fotos?.map((p) => (
-              <View key={p.id} style={{ width: 150, gap: 8 }}>
+              <View key={p.id} style={{ width: 150 }}>
                 <PhotoImage photo={p} />
                 {user?.role === 'ADMIN' || p.usuarioUid === user?.uid ? (
                   <ConfirmButton
@@ -414,6 +420,26 @@ export default function Detail() {
                     onConfirm={async () => {
                       await dispatch({ type: 'DELETE_PHOTO', obraId: o.id, photoId: p.id });
                     }}
+                    trigger={(openConfirm) => (
+                      <Pressable
+                        accessibilityRole="button"
+                        accessibilityLabel="Borrar foto"
+                        onPress={openConfirm}
+                        style={({ pressed }) => ({
+                          position: 'absolute',
+                          top: 6,
+                          right: 6,
+                          width: 40,
+                          height: 40,
+                          borderRadius: 20,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: pressed ? '#000000CC' : '#00000099',
+                        })}
+                      >
+                        <Trash2 size={20} color="#FFFFFF" />
+                      </Pressable>
+                    )}
                   />
                 ) : null}
               </View>
@@ -507,6 +533,48 @@ export default function Detail() {
                   />
                 </>
               ) : null}
+              {o.estadoProceso === 'RETIRADO' ? (
+                <ConfirmButton
+                  label="Reingresar"
+                  confirmLabel="Cerrar reingreso"
+                  trigger={(openConfirm) => (
+                    <ToolRow
+                      label="Cerrar reingreso"
+                      detail="El material ya volvió: cerrar la revisión"
+                      icon={PackageCheck}
+                      onPress={openConfirm}
+                    />
+                  )}
+                  title="Cerrar reingreso"
+                  description="El inventario ya se distribuyó al confirmar el retiro. Este paso cierra la revisión, sin volver a sumar material."
+                  variant="secondary"
+                  onConfirm={async () => {
+                    await dispatch({ type: 'REENTER', obraId: o.id });
+                    setModal('');
+                  }}
+                />
+              ) : null}
+              {user?.role === 'ADMIN' && ['RETIRADO', 'REINGRESADO'].includes(o.estadoProceso) ? (
+                <ConfirmButton
+                  label="Reactivar"
+                  confirmLabel="Volver a pendiente"
+                  trigger={(openConfirm) => (
+                    <ToolRow
+                      label="Reactivar"
+                      detail="Volver a pendiente para entregar de nuevo"
+                      icon={RotateCcw}
+                      onPress={openConfirm}
+                    />
+                  )}
+                  title="Preparar nueva entrega"
+                  description="El alquiler volverá a pendiente. Revisa fechas y carga antes de entregar de nuevo."
+                  variant="secondary"
+                  onConfirm={async () => {
+                    await dispatch({ type: 'REACTIVATE', obraId: o.id });
+                    setModal('');
+                  }}
+                />
+              ) : null}
               <ToolRow
                 label="Ubicación en el mapa"
                 detail={
@@ -519,34 +587,11 @@ export default function Detail() {
                 onPress={() => {
                   setLat(String(o.coordenadas?.lat ?? ''));
                   setLng(String(o.coordenadas?.lng ?? ''));
+                  setMapsText('');
                   setModal('ubicacion');
                 }}
               />
             </ToolGroup>
-            {o.estadoProceso === 'RETIRADO' ? (
-              <ConfirmButton
-                label="Reingresar"
-                title="Cerrar reingreso"
-                description="El inventario ya se distribuyó al confirmar el retiro. Este paso cierra la revisión, sin volver a sumar material."
-                variant="secondary"
-                onConfirm={async () => {
-                  await dispatch({ type: 'REENTER', obraId: o.id });
-                  setModal('');
-                }}
-              />
-            ) : null}
-            {user?.role === 'ADMIN' && ['RETIRADO', 'REINGRESADO'].includes(o.estadoProceso) ? (
-              <ConfirmButton
-                label="Reactivar"
-                title="Preparar nueva entrega"
-                description="El alquiler volverá a pendiente. Revisa fechas y carga antes de entregar de nuevo."
-                variant="secondary"
-                onConfirm={async () => {
-                  await dispatch({ type: 'REACTIVATE', obraId: o.id });
-                  setModal('');
-                }}
-              />
-            ) : null}
           </>
         ) : null}
         {modal === 'carga' ? <LoadEditor obra={o} onDone={() => setModal('')} /> : null}
@@ -600,8 +645,14 @@ export default function Detail() {
         ) : null}
         {modal === 'ubicacion' ? (
           <>
+            <Text style={s.muted}>
+              {lat && lng
+                ? `Ubicación cargada: ${Number(lat).toFixed(5)}, ${Number(lng).toFixed(5)}`
+                : 'Todavía sin ubicación.'}
+            </Text>
             <Button
               label="Usar mi GPS"
+              icon={LocateFixed}
               loading={busy}
               variant="secondary"
               onPress={() =>
@@ -617,19 +668,41 @@ export default function Detail() {
                 })
               }
             />
-            <Notice text="Usa tu GPS solo si estás físicamente en este alquiler. También puedes ingresar coordenadas manualmente." />
+            <Text style={s.muted}>Sólo si estás parado en la obra.</Text>
             <Field
-              label="Latitud"
-              value={lat}
-              onChangeText={setLat}
-              keyboardType="numbers-and-punctuation"
+              label="O pegá el enlace de Google Maps"
+              placeholder="https://maps.google.com/… o -34.60, -58.38"
+              value={mapsText}
+              onChangeText={(value) => {
+                setMapsText(value);
+                const found = coordsFromText(value);
+                if (found) {
+                  setLat(String(found.lat));
+                  setLng(String(found.lng));
+                }
+              }}
+              autoCapitalize="none"
             />
-            <Field
-              label="Longitud"
-              value={lng}
-              onChangeText={setLng}
-              keyboardType="numbers-and-punctuation"
-            />
+            {mapsText && !coordsFromText(mapsText) ? (
+              <Notice
+                text="No encontré coordenadas en ese texto. En Google Maps tocá el punto y copiá el enlace o los números."
+                tone="error"
+              />
+            ) : null}
+            <Disclosure title="Escribir latitud y longitud" compact initiallyOpen={false}>
+              <Field
+                label="Latitud"
+                value={lat}
+                onChangeText={setLat}
+                keyboardType="numbers-and-punctuation"
+              />
+              <Field
+                label="Longitud"
+                value={lng}
+                onChangeText={setLng}
+                keyboardType="numbers-and-punctuation"
+              />
+            </Disclosure>
             <Button
               label="Guardar ubicación"
               loading={busy}
