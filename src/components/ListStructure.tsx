@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, Pressable } from 'react-native';
 import { Search, SlidersHorizontal } from 'lucide-react-native';
 import { IconButton, useUI } from './ui';
+import { fonts } from '../theme/tokens';
 
 /** One integrated toolbar shared by operational lists. Filters live in a panel. */
 export function SearchToolbar({
@@ -40,11 +41,15 @@ export function SearchToolbar({
 export function SectionHeading({ title, count }: { title: string; count?: number }) {
   const { s, C } = useUI();
   return (
-    <View style={[s.row, { paddingTop: 8, paddingBottom: 8, justifyContent: 'space-between' }]}>
-      <Text accessibilityRole="header" style={[s.label, s.grow]}>
+    <View style={[s.row, { paddingTop: 14, paddingBottom: 8, gap: 8 }]}>
+      <Text accessibilityRole="header" style={[s.h2, { fontSize: 20, lineHeight: 24 }]}>
         {title}
       </Text>
-      {count !== undefined ? <Text style={[s.muted, { color: C.muted }]}>{count}</Text> : null}
+      {count !== undefined ? (
+        <View style={{ minWidth: 24, height: 22, paddingHorizontal: 7, borderRadius: 11, backgroundColor: C.panel2, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ color: C.muted, fontFamily: fonts.semibold, fontSize: 13 }}>{count}</Text>
+        </View>
+      ) : null}
     </View>
   );
 }

@@ -6,7 +6,7 @@ import { seed } from '../src/data/seed';
 import { light } from '../src/theme/tokens';
 import { validDate } from '../src/domain/rules';
 import Detail from '../app/obra/[id]';
-import Home from '../app/(tabs)/index';
+import Home from '../app/(tabs)/alquileres';
 import { formatDate } from '../src/utils/formatters';
 import { rememberedRentalList } from '../src/services/rentalListPreferences';
 import type { DomainSnapshot } from '../src/types';
@@ -67,6 +67,7 @@ vi.mock('../src/components/ui', () => {
       },
     }),
     Button: host('Button'),
+    IconButton: host('IconButton'),
     ConfirmButton: host('ConfirmButton'),
     Empty: host('Empty'),
     Field: host('Field'),
@@ -306,7 +307,7 @@ describe('consulta de detalle y listado con reloj empresarial', () => {
       expect(textContent()).toContain('Sin fecha de retiro');
       expect(textContent()).not.toMatch(/NaN|Invalid Date|vencido hace/);
       const edit = view!.root.findAll(
-        (node) => node.type === 'Button' && node.props.label === 'Editar alquiler',
+        (node) => node.type === 'IconButton' && node.props.label === 'Editar alquiler',
       );
       expect(edit).toHaveLength(role === 'ADMIN' ? 1 : 0);
       if (edit[0]) {

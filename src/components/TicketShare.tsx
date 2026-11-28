@@ -17,7 +17,16 @@ const ICONS: Record<TicketFormat, React.ComponentType<{ size: number; color: str
   excel: FileSpreadsheet,
 };
 
-export function TicketShareButton({ obra, style }: { obra: ObraCard; style?: object }) {
+export function TicketShareButton({
+  obra,
+  style,
+  trigger,
+}: {
+  obra: ObraCard;
+  style?: object;
+  /** Dibuja un disparador propio (por ejemplo, un ícono de la barra de contacto). */
+  trigger?: (open: () => void) => React.ReactNode;
+}) {
   const { C, s } = useUI();
   const { user, session } = useAuth();
   const inv = useInventory();
@@ -43,7 +52,11 @@ export function TicketShareButton({ obra, style }: { obra: ObraCard; style?: obj
   };
   return (
     <>
-      <Button label="Compartir ticket" icon={Receipt} variant="secondary" style={style} onPress={() => setOpen(true)} />
+      {trigger ? (
+        trigger(() => setOpen(true))
+      ) : (
+        <Button label="Compartir ticket" icon={Receipt} variant="secondary" style={style} onPress={() => setOpen(true)} />
+      )}
       <Sheet visible={open} title="Compartir ticket" busy={!!busy} onClose={() => setOpen(false)}>
         <Text style={s.body}>Elegí el formato. Se comparte lo alquilado por {obra.clienteNombre}.</Text>
         {data ? (

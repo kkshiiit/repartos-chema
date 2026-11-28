@@ -58,16 +58,11 @@ const makeStyles = (C: Colors) =>
       padding: spacing.lg,
       gap: spacing.md,
     },
-    title: {
-      color: C.text,
-      ...typography.title,
-      fontFamily: fonts.semibold,
-      fontWeight: '700',
-    },
-    h2: { color: C.text, ...typography.section, fontWeight: '700' },
+    title: { color: C.text, ...typography.title, letterSpacing: 0.2 },
+    h2: { color: C.text, ...typography.section, letterSpacing: 0.2 },
     body: { color: C.text, ...typography.body },
     muted: { color: C.muted, ...typography.secondary },
-    label: { color: C.text, ...typography.secondary, fontWeight: '600' },
+    label: { color: C.text, ...typography.secondary, fontFamily: fonts.semibold },
     input: {
       backgroundColor: C.panel,
       borderWidth: 1,
@@ -77,6 +72,7 @@ const makeStyles = (C: Colors) =>
       paddingHorizontal: 14,
       paddingVertical: 13,
       fontSize: typography.body.fontSize,
+      fontFamily: fonts.regular,
       minHeight: 52,
     },
     divider: { height: 1, backgroundColor: C.hairline },
@@ -97,8 +93,13 @@ export function Button({
   disabled = false,
   loading = false,
   style,
+  text,
+  compact = false,
 }: {
   label: string;
+  /** Texto visible más corto que `label` (que queda para lectores de pantalla). */
+  text?: string;
+  compact?: boolean;
   onPress: () => void | Promise<void>;
   icon?: React.ComponentType<{ size: number; color: string }>;
   variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
@@ -186,9 +187,9 @@ export function Button({
         onPressOut={() => press(1)}
         style={({ pressed }) => [
           {
-            minHeight: variant === 'primary' ? 54 : 50,
-            borderRadius: radius.input,
-            paddingHorizontal: 16,
+            minHeight: compact ? 40 : variant === 'primary' ? 50 : 46,
+            borderRadius: compact ? 10 : radius.input,
+            paddingHorizontal: compact ? 12 : 18,
             paddingVertical: 11,
             flexDirection: 'row',
             justifyContent: 'center',
@@ -200,11 +201,15 @@ export function Button({
                 : variant === 'danger'
                   ? C.red
                   : variant === 'secondary'
-                    ? C.panel2
-                    : 'transparent',
+                    ? pressed
+                      ? C.panel2
+                      : C.panel
+                    : pressed
+                      ? C.panel2
+                      : 'transparent',
             borderWidth: variant === 'secondary' ? 1 : 0,
-            borderColor: variant === 'primary' ? C.primary : C.line,
-            opacity: disabled ? 0.4 : pressed ? 0.92 : 1,
+            borderColor: C.controlBorder,
+            opacity: disabled ? 0.45 : pressed && (variant === 'primary' || variant === 'danger') ? 0.88 : 1,
           },
           style,
           { flex: undefined, flexGrow: undefined, flexShrink: undefined, width: undefined },
@@ -219,14 +224,13 @@ export function Button({
           style={{
             color: foreground,
             fontFamily: fonts.semibold,
-            fontSize: 16,
-            lineHeight: 22,
-            fontWeight: '700',
+            fontSize: compact ? 15 : 16,
+            lineHeight: 21,
             flexShrink: 1,
             textAlign: 'center',
           }}
         >
-          {label}
+          {text ?? label}
         </Text>
       </Pressable>
       {pressError ? <Notice text={pressError} tone="error" /> : null}
@@ -253,13 +257,13 @@ export function IconButton({
         minWidth: 48,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: pressed ? C.selection : C.panel,
-        borderRadius: radius.input,
-        borderWidth: 1,
+        backgroundColor: pressed ? C.panel2 : 'transparent',
+        borderRadius: radius.pill,
+        borderWidth: 0,
         borderColor: C.hairline,
       })}
     >
-      <Icon size={21} color={C.text} />
+      <Icon size={24} color={C.text} />
     </Pressable>
   );
 }
@@ -284,11 +288,30 @@ export function Field({ label, ...props }: TextInputProps & { label: string }) {
     </View>
   );
 }
+/** Filtro o etiqueta en forma de píldora. Seleccionado = tinta llena (alto contraste al sol). */
+/** Título de paso numerado ("1 Qué se lleva"): ordena el formulario en el mismo orden en que se trabaja. */
+export function StepTitle({ n, title, hint }: { n?: number; title: string; hint?: string }) {
+  const { C } = useUI();
+  return (
+    <View style={{ gap: 2, paddingTop: 4 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        {n ? (
+          <View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: C.text, alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{ color: C.bg, fontFamily: fonts.bold, fontSize: 13 }}>{n}</Text>
+          </View>
+        ) : null}
+        <Text accessibilityRole="header" style={{ color: C.text, fontFamily: fonts.display, fontSize: 19, lineHeight: 23, flexShrink: 1 }}>
+          {title}
+        </Text>
+      </View>
+      {hint ? <Text style={{ color: C.muted, fontFamily: fonts.regular, fontSize: 14, lineHeight: 19, paddingLeft: n ? 32 : 0 }}>{hint}</Text> : null}
+    </View>
+  );
+}
 export function Chip({
   label,
   selected,
   onPress,
-  color: suppliedColor,
 }: {
   label: string;
   selected?: boolean;
@@ -296,37 +319,35 @@ export function Chip({
   color?: string;
 }) {
   const { C } = useUI();
-  const color = suppliedColor || C.text;
   return (
     <Pressable
       accessibilityRole={onPress ? 'button' : 'text'}
       accessibilityState={{ selected }}
       aria-pressed={onPress ? selected : undefined}
       onPress={onPress}
-      style={{
-        minHeight: onPress ? 48 : 28,
+      style={({ pressed }) => ({
+        minHeight: onPress ? 44 : 28,
         maxWidth: '100%',
         flexShrink: 1,
-        paddingHorizontal: 13,
-        paddingVertical: onPress ? 10 : 5,
-        borderRadius: radius.input,
-        borderWidth: 1,
-        borderColor: selected ? C.accent : C.controlBorder,
-        backgroundColor: selected ? C.selection : C.panel,
+        paddingHorizontal: onPress ? 16 : 10,
+        paddingVertical: onPress ? 9 : 4,
+        borderRadius: radius.pill,
+        borderWidth: selected ? 0 : 1,
+        borderColor: C.controlBorder,
+        backgroundColor: selected ? C.text : pressed ? C.panel2 : C.panel,
         flexDirection: 'row',
         alignItems: 'center',
         gap: 6,
-      }}
+      })}
     >
-      {selected && onPress ? <Check size={13} color={color} /> : null}
+      {selected && onPress ? <Check size={15} color={C.bg} strokeWidth={3} /> : null}
       <Text
         style={{
-          color: selected ? C.selectionText : C.muted,
-          fontFamily: fonts.medium,
+          color: selected ? C.bg : C.text,
+          fontFamily: selected ? fonts.semibold : fonts.medium,
           flexShrink: 1,
-          fontSize: 14,
+          fontSize: 15,
           lineHeight: 20,
-          fontWeight: '600',
         }}
       >
         {label}
@@ -749,6 +770,7 @@ export function Screen({
   footer,
   back = false,
   scroll = true,
+  fab,
 }: {
   title: string;
   subtitle?: string;
@@ -757,11 +779,14 @@ export function Screen({
   footer?: React.ReactNode;
   back?: boolean;
   scroll?: boolean;
+  /** Botón flotante abajo a la derecha (patrón de Android: Gmail, Drive, Contactos). */
+  fab?: { label: string; icon: React.ComponentType<{ size: number; color: string }>; onPress: () => void };
 }) {
   const { C, s } = useUI();
-  const { user, session, error: authError } = useAuth(),
+  const { session, error: authError } = useAuth(),
     inv = useInventory(),
-    { width } = useWindowDimensions();
+    { width } = useWindowDimensions(),
+    insets = useSafeAreaInsets();
   const pending = inv.queue.length;
   const syncTone = !inv.online ? C.warning : inv.error ? C.danger : pending ? C.warning : C.success;
   const syncText = !inv.online
@@ -773,10 +798,65 @@ export function Screen({
         : pending
           ? `${pending} por enviar`
           : 'Sincronizado';
+  const band = !back ? (
+    <View style={{ backgroundColor: C.band, paddingTop: insets.top, borderBottomWidth: C.band === C.red ? 0 : 3, borderBottomColor: C.red }}>
+      <View
+        style={[
+          s.row,
+          {
+            gap: 4,
+            paddingLeft: width > 800 ? 24 : 16,
+            paddingRight: width > 800 ? 16 : 8,
+            minHeight: 56,
+            width: '100%',
+            maxWidth: 1100,
+            alignSelf: 'center',
+          },
+        ]}
+      >
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`${session?.teamName || 'Chema Andamios'}. ${syncText}. Tocar para sincronizar ahora.`}
+          onPress={() => void inv.retry()}
+          style={({ pressed }) => [s.grow, { opacity: pressed ? 0.75 : 1, minHeight: 52, justifyContent: 'center' }]}
+        >
+          <Text
+            numberOfLines={1}
+            style={{ color: C.onBand, fontFamily: fonts.display, fontSize: 19, lineHeight: 23, letterSpacing: 0.3 }}
+          >
+            {session?.teamName || 'Chema Andamios'}
+          </Text>
+          <View style={[s.row, { gap: 6 }]}>
+            {inv.syncing ? (
+              <ActivityIndicator size="small" color={C.onBand} />
+            ) : (
+              <View
+                style={{
+                  width: 9,
+                  height: 9,
+                  borderRadius: 5,
+                  backgroundColor: syncTone,
+                  borderWidth: 1.5,
+                  borderColor: C.onBand,
+                }}
+              />
+            )}
+            <Text numberOfLines={1} style={{ color: C.onBandMuted, fontFamily: fonts.medium, fontSize: 14 }}>
+              {syncText}
+            </Text>
+          </View>
+        </Pressable>
+        <BandIcon label="Guía de uso" icon={HelpCircle} onPress={() => router.push('/guia')} />
+        <ThemeToggle tone="band" />
+      </View>
+    </View>
+  ) : null;
   const body = (
     <View
       style={{
-        padding: width > 800 ? 24 : 16,
+        paddingHorizontal: width > 800 ? 24 : 16,
+        paddingTop: back ? 8 : 18,
+        paddingBottom: 16,
         gap: 16,
         width: '100%',
         maxWidth: 1100,
@@ -784,51 +864,8 @@ export function Screen({
         flex: scroll ? undefined : 1,
       }}
     >
-      <View style={{ gap: 6 }}>
-        {!back ? (
-          <View style={[s.row, { justifyContent: 'space-between', gap: 8 }]}>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={`${session?.teamName || 'Chema Andamios'}. ${syncText}. Tocar para sincronizar ahora.`}
-              onPress={() => void inv.retry()}
-              style={({ pressed }) => [s.grow, { opacity: pressed ? 0.7 : 1, minHeight: 48, justifyContent: 'center' }]}
-            >
-              <Text numberOfLines={1} style={[s.label, { fontSize: 13, color: C.muted }]}>
-                {session?.teamName || 'Chema Andamios'}
-              </Text>
-              <View style={[s.row, { gap: 6 }]}>
-                {inv.syncing ? (
-                  <ActivityIndicator size="small" color={syncTone} />
-                ) : (
-                  <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: syncTone }} />
-                )}
-                <Text numberOfLines={1} style={{ color: C.text, fontFamily: fonts.medium, fontSize: 13 }}>
-                  {syncText}
-                </Text>
-              </View>
-            </Pressable>
-            <IconButton label="Guía de uso" icon={HelpCircle} onPress={() => router.push('/guia')} />
-            <ThemeToggle />
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={`Sesión de ${user?.nombre || ''}. Abrir ajustes`}
-              onPress={() => router.push('/configuracion')}
-              style={({ pressed }) => ({
-                minHeight: 48,
-                minWidth: 48,
-                borderRadius: 24,
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: pressed ? C.selection : C.primary,
-              })}
-            >
-              <Text style={{ color: C.onPrimary, fontFamily: fonts.semibold, fontSize: 17, fontWeight: '700' }}>
-                {initials(user?.nombre)}
-              </Text>
-            </Pressable>
-          </View>
-        ) : null}
-        <View style={[s.row, { justifyContent: 'space-between' }]}>
+      <View style={{ gap: 4 }}>
+        <View style={[s.row, { justifyContent: 'space-between', gap: 4 }]}>
           {back ? (
             <IconButton
               label="Volver"
@@ -836,13 +873,26 @@ export function Screen({
               onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))}
             />
           ) : null}
-          <Text accessibilityRole="header" style={[s.title, { flex: 1, minWidth: 0 }]}>
+          <Text
+            accessibilityRole="header"
+            style={[s.title, { flex: 1, minWidth: 0 }, back && { fontSize: 24, lineHeight: 28 }]}
+          >
             {title}
           </Text>
           {action ? <View style={{ flexShrink: 0 }}>{action}</View> : null}
         </View>
         {subtitle ? <Text style={s.muted}>{subtitle}</Text> : null}
       </View>
+      {back && (!inv.online || pending) ? (
+        // En pantallas internas no se ve la cabecera: el estado de envío tiene que seguir a la vista.
+        <View
+          accessibilityRole="text"
+          style={[s.row, { gap: 8, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 10, backgroundColor: C.warningBackground }]}
+        >
+          <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: C.warning }} />
+          <Text style={{ color: C.text, fontFamily: fonts.medium, fontSize: 14, flex: 1 }}>{syncText}{!inv.online ? ". Se envía solo al volver la señal." : ""}</Text>
+        </View>
+      ) : null}
       {authError ? <Notice text={authError} tone="error" /> : null}
       {inv.error ? (
         <View style={{ gap: 8 }}>
@@ -862,13 +912,14 @@ export function Screen({
   );
   return (
     <SafeAreaView
-      edges={back ? ['top', 'bottom', 'left', 'right'] : ['top', 'left', 'right']}
+      edges={back ? ['top', 'bottom', 'left', 'right'] : ['left', 'right']}
       style={{ flex: 1, backgroundColor: C.bg }}
     >
+      {band}
       {scroll ? (
         <ScrollView
           keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{ paddingBottom: 30 }}
+          contentContainerStyle={{ paddingBottom: fab ? 96 : 30 }}
         >
           {body}
         </ScrollView>
@@ -878,17 +929,57 @@ export function Screen({
       {footer ? (
         <View
           style={{
-            backgroundColor: C.bg,
+            backgroundColor: C.panel,
             borderTopWidth: 1,
             borderColor: C.hairline,
             paddingHorizontal: width > 800 ? 24 : 16,
-            paddingVertical: 12,
+            paddingVertical: 10,
           }}
         >
           <View style={{ width: '100%', maxWidth: 1052, alignSelf: 'center' }}>{footer}</View>
         </View>
       ) : null}
+      {fab ? <Fab {...fab} /> : null}
     </SafeAreaView>
+  );
+}
+function Fab({
+  label,
+  icon: Icon,
+  onPress,
+}: {
+  label: string;
+  icon: React.ComponentType<{ size: number; color: string }>;
+  onPress: () => void;
+}) {
+  const { C } = useUI();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      onPress={onPress}
+      style={({ pressed }) => ({
+        position: 'absolute',
+        right: 16,
+        bottom: 16,
+        minHeight: 56,
+        paddingHorizontal: 20,
+        borderRadius: 18,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+        backgroundColor: C.primary,
+        opacity: pressed ? 0.9 : 1,
+        shadowColor: '#000',
+        shadowOpacity: 0.25,
+        shadowRadius: 10,
+        shadowOffset: { width: 0, height: 4 },
+        elevation: 6,
+      })}
+    >
+      <Icon size={22} color={C.onPrimary} />
+      <Text style={{ color: C.onPrimary, fontFamily: fonts.semibold, fontSize: 16 }}>{label}</Text>
+    </Pressable>
   );
 }
 export function ConfirmButton({
@@ -897,10 +988,16 @@ export function ConfirmButton({
   description,
   onConfirm,
   variant = 'danger',
+  confirmLabel = 'Confirmar',
+  trigger,
 }: {
+  /** Disparador propio (fila con ícono, ícono solo) en lugar del botón grande. */
+  trigger?: (open: () => void) => React.ReactNode;
   label: string;
   title: string;
   description: string;
+  /** Verbo concreto en el botón final («Salir del equipo» en vez de «Confirmar»). */
+  confirmLabel?: string;
   onConfirm: () => Promise<void>;
   variant?: 'danger' | 'secondary' | 'primary';
 }) {
@@ -910,12 +1007,13 @@ export function ConfirmButton({
     [error, setError] = useState('');
   return (
     <>
-      <Button label={label} variant={variant} onPress={() => setOpen(true)} />
+      {trigger ? trigger(() => setOpen(true)) : <Button label={label} variant={variant} onPress={() => setOpen(true)} />}
       <Sheet visible={open} title={title} busy={busy} onClose={() => !busy && setOpen(false)}>
         <Text style={s.body}>{description}</Text>
         {error ? <Notice text={error} tone="error" /> : null}
         <Button
-          label="Confirmar"
+          label={confirmLabel}
+          variant={variant === 'danger' ? 'danger' : 'primary'}
           loading={busy}
           onPress={async () => {
             setBusy(true);
@@ -963,5 +1061,35 @@ function RejectedNotice() {
       <Text style={s.muted}>Revisá los datos actualizados y, si hace falta, cargá el cambio de nuevo.</Text>
       <Button label="Entendido" variant="secondary" onPress={() => inv.dismissRejected?.()} />
     </View>
+  );
+}
+
+/** Ícono sobre la franja de marca: sin caja, blanco, círculo al tocar. */
+function BandIcon({
+  label,
+  icon: Icon,
+  onPress,
+}: {
+  label: string;
+  icon: React.ComponentType<{ size: number; color: string }>;
+  onPress: () => void;
+}) {
+  const { C } = useUI();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      onPress={onPress}
+      style={({ pressed }) => ({
+        width: 44,
+        height: 44,
+        borderRadius: 22,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: pressed ? '#FFFFFF2E' : 'transparent',
+      })}
+    >
+      <Icon size={24} color={C.onBand} />
+    </Pressable>
   );
 }

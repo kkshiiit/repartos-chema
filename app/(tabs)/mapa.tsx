@@ -10,6 +10,7 @@ import {
   Navigation,
   Route,
   Warehouse,
+  GripVertical,
 } from 'lucide-react-native';
 import * as Location from 'expo-location';
 import { useInventory } from '../../src/context/InventoryContext';
@@ -20,6 +21,7 @@ import {
   Notice,
   Screen,
   Select,
+  StepTitle,
   IconButton,
   Sheet,
   useUI,
@@ -74,7 +76,7 @@ const dateLabel = (date: string) =>
 type SortKind = 'DISTANCE' | 'ASC' | 'DESC';
 export default function Trip() {
   const { C, s } = useUI(),
-    { state, ready: inventoryReady, workspaceId, workspaceKey, queue } = useInventory(),
+    { state, ready: inventoryReady, workspaceId, workspaceKey } = useInventory(),
     { user } = useAuth();
   const now = useBusinessClock(),
     today = businessDate(now);
@@ -99,7 +101,6 @@ export default function Trip() {
     [panel, setPanel] = useState<
       'options' | 'routes' | 'stop' | 'depot' | 'confirmSort' | 'locationReview' | null
     >(null),
-    [published, setPublished] = useState(false),
     [editor, setEditor] = useState(false),
     [selectedId, setSelectedId] = useState<string | null>(null),
     [pendingSort, setPendingSort] = useState<SortKind | null>(null),
@@ -594,15 +595,17 @@ export default function Trip() {
               detail={
                 stops.length
                   ? 'No hay paradas con estos filtros.'
-                  : 'Los alquileres con carga o saldo pendiente aparecen aquí.'
+                  : 'Cuando haya algo para entregar o retirar, aparece acá en orden de recorrido.'
               }
             />
-            <Button
-              label="Restablecer filtros"
-              variant="secondary"
-              disabled={!ready || busy}
-              onPress={() => run(() => commit((p) => ({ ...p, task: 'ALL', zone: 'TODAS' })))}
-            />
+            {stops.length ? (
+              <Button
+                label="Restablecer filtros"
+                variant="secondary"
+                disabled={!ready || busy}
+                onPress={() => run(() => commit((p) => ({ ...p, task: 'ALL', zone: 'TODAS' })))}
+              />
+            ) : null}
           </View>
         }
         contentContainerStyle={{ paddingBottom: 16 }}
@@ -627,8 +630,26 @@ export default function Trip() {
       >
         {panel === 'options' ? (
           <>
-            <Text style={s.label}>Ordenar las paradas visibles</Text>
-            <Text style={s.muted}>{originLabel}</Text>
+            <StepTitle title="Ordenar a mano" hint="Arrastrá las paradas en el orden que quieras." />
+            <Button
+              label="Cambiar orden"
+              icon={GripVertical}
+              variant="secondary"
+              disabled={!ready || visible.length < 2}
+              onPress={() => {
+                setPanel(null);
+                setEditor(true);
+              }}
+            />
+            {prefs.previousIds ? (
+              <Button
+                label="Deshacer último orden"
+                variant="secondary"
+                onPress={() => run(undoOrder)}
+              />
+            ) : null}
+            <View style={s.divider} />
+            <StepTitle title="Ordenar por cercanía" hint={`Distancia en línea recta, sin tráfico. ${originLabel}.`} />
             <Button
               label="Usar depósito como origen"
               icon={Warehouse}
@@ -677,14 +698,12 @@ export default function Trip() {
             ) : null}
             <Button
               label="Ordenar por cercanía"
-              variant="secondary"
+              icon={Navigation}
               disabled={!ready || busy || !visible.length}
               onPress={() => requestSort('DISTANCE')}
             />
-            <Text style={s.muted}>
-              Distancia en línea recta desde un único origen. Sin tráfico ni cálculo de capacidad de
-              carga. Cambiar el origen no cambia el orden.
-            </Text>
+            <View style={s.divider} />
+            <StepTitle title="Ordenar por material" hint="Saldo en obra para retiros y carga prevista para entregas." />
             <Select
               label="Material para comparar"
               value={basisKey}
@@ -709,26 +728,7 @@ export default function Trip() {
               disabled={!ready || !prefs.basis || !visible.length}
               onPress={() => requestSort('DESC')}
             />
-            <Text style={s.muted}>
-              Se compara sólo este material y medida: saldo en obra para retiros y carga prevista
-              para entregas. No convertimos piezas en cuerpos.
-            </Text>
-            <Button
-              label="Cambiar orden"
-              variant="secondary"
-              disabled={!ready || visible.length < 2}
-              onPress={() => {
-                setPanel(null);
-                setEditor(true);
-              }}
-            />
-            {prefs.previousIds ? (
-              <Button
-                label="Deshacer último orden"
-                variant="secondary"
-                onPress={() => run(undoOrder)}
-              />
-            ) : null}
+            <View style={s.divider} />
             <Button
               label="Volver al depósito"
               icon={CornerDownLeft}
@@ -824,7 +824,6 @@ export default function Trip() {
             <Button
               label="Cómo llegar"
               icon={Navigation}
-              variant="secondary"
               onPress={() => run(() => openLink(mapsUrl(selected.obra)))}
             />
             <Button

@@ -2,27 +2,35 @@ import { Disclosure } from '../../src/components/Editorial';
 import { RentalReminderPanel } from '../../src/components/RentalReminderPanel';
 import { userError } from '../../src/services/errors';
 import React, { useRef, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import {
+  Bell,
   Camera,
+  FileText,
   ImagePlus,
   MapPin,
-  Navigation,
-  MessageCircle,
   Pencil,
   Package,
   Truck,
   ArrowRightLeft,
-  Download,
   CalendarDays,
-  MoreHorizontal,
+  ArrowRight,
+  MoreVertical,
+  TriangleAlert,
+  LocateFixed,
+  PackageCheck,
+  RotateCcw,
+  Trash2,
 } from 'lucide-react-native';
+import { coordsFromText } from '../../src/utils/coords';
+import { ToolGroup, ToolRow } from '../../src/components/ToolsLayout';
 import * as Location from 'expo-location';
 import { useInventory, makeId } from '../../src/context/InventoryContext';
 import { useAuth } from '../../src/context/AuthContext';
 import {
   Button,
+  IconButton,
   ConfirmButton,
   Empty,
   Field,
@@ -33,14 +41,14 @@ import {
   useUI,
 } from '../../src/components/ui';
 import { PhotoImage } from '../../src/components/PhotoImage';
-import { TicketShareButton } from '../../src/components/TicketShare';
+import { ContactBar, NextStep } from '../../src/components/RentalHeader';
+import { rentalTaskForDate } from '../../src/utils/listPresentation';
+import { fonts } from '../../src/theme/tokens';
 import { DeleteRentalButton } from '../../src/components/DeleteRentalButton';
 import { StatusChip } from '../../src/components/StatusChip';
 import { SmartCounter } from '../../src/components/SmartCounter';
 import { LoadEditor } from '../../src/components/LoadEditor';
 import { OperationForm } from '../../src/components/OperationForm';
-import { mapsUrl, whatsappUrl } from '../../src/utils/whatsapp';
-import { openLink } from '../../src/services/links';
 import { selectPhoto } from '../../src/services/storageService';
 import { businessDate } from '../../src/domain/rules';
 import { useBusinessClock } from '../../src/hooks/useBusinessClock';
@@ -61,6 +69,7 @@ export default function Detail() {
     [n, setN] = useState(1),
     [reason, setReason] = useState(''),
     [lat, setLat] = useState(''),
+    [mapsText, setMapsText] = useState(''),
     [lng, setLng] = useState('');
   const running = useRef(false);
   const run = async (f: () => Promise<unknown>) => {
@@ -86,6 +95,27 @@ export default function Detail() {
     );
   const incident = o.faltantesRegistrados?.find((i) => i.id === recoverId);
   const countdown = retirementCountdown(o, now);
+  const task = rentalTaskForDate(o, businessDate(now));
+  const stepColor =
+    task.group === 'overdue'
+      ? C.danger
+      : task.group === 'today'
+        ? C.warning
+        : task.kind === 'DELIVER'
+          ? C.purple
+          : task.kind === 'RETIRE'
+            ? C.success
+            : C.muted;
+  const stepBackground =
+    task.group === 'overdue'
+      ? C.dangerBackground
+      : task.group === 'today'
+        ? C.warningBackground
+        : task.kind === 'DELIVER'
+          ? C.infoBackground
+          : task.kind === 'RETIRE'
+            ? C.successBackground
+            : C.panel2;
   const materialIds = [
     ...new Set([
       ...o.materialesCargados.map((m) => m.materialId),
@@ -116,80 +146,121 @@ export default function Detail() {
     >
       <View style={{ maxWidth: 760, width: '100%', alignSelf: 'center', gap: 16 }}>
         <View style={{ gap: 8 }}>
-          <View style={[s.row, { alignItems: 'flex-start' }]}>
+          <View style={[s.row, { alignItems: 'flex-start', gap: 4 }]}>
             <Text accessibilityRole="header" style={[s.title, s.grow]}>
               {o.clienteNombre}
             </Text>
-            <DeleteRentalButton obra={o} onDeleted={() => router.replace('/')} />
+            {user?.role === 'ADMIN' ? (
+              <IconButton
+                label="Editar alquiler"
+                icon={Pencil}
+                onPress={() => router.push(`/obra/editar?id=${o.id}`)}
+              />
+            ) : null}
+            <IconButton
+              label="Más acciones"
+              icon={MoreVertical}
+              onPress={() => setModal('acciones')}
+            />
+            <DeleteRentalButton obra={o} onDeleted={() => router.replace('/alquileres')} />
           </View>
-          <View style={[s.row, { justifyContent: 'space-between', flexWrap: 'wrap' }]}>
-            <View style={[s.row, { flex: 1, minWidth: 140, gap: 8 }]}>
-              <MapPin size={18} color={C.muted} />
-              <Text style={[s.muted, s.grow]}>{o.localidadBarrio}</Text>
-            </View>
+          <View style={[s.row, { gap: 8, flexWrap: 'wrap' }]}>
             <StatusChip obra={o} today={businessDate(now)} />
-          </View>
-          <Text style={s.body}>{o.direccion}</Text>
-          <View style={[s.row, { alignItems: 'stretch', gap: 8, flexWrap: 'wrap' }]}>
-            <Button
-              label="GPS"
-              icon={Navigation}
-              variant="secondary"
-              disabled={busy}
-              style={{
-                flex: 1,
-                minWidth: 80,
-                minHeight: 48,
-                paddingHorizontal: 10,
-                gap: 6,
-              }}
-              onPress={() => run(() => openLink(mapsUrl(o)))}
-            />
-            <TicketShareButton
-              obra={o}
-              style={{ flex: 2, minWidth: 160, minHeight: 48, paddingHorizontal: 10, gap: 6 }}
-            />
+            <View style={[s.row, { gap: 4, flexShrink: 1 }]}>
+              <MapPin size={16} color={C.muted} />
+              <Text style={[s.muted, { color: C.text, flexShrink: 1 }]}>
+                {o.direccion}
+                <Text style={{ color: C.muted }}>{`, ${o.localidadBarrio}`}</Text>
+              </Text>
+            </View>
           </View>
         </View>
+        <ContactBar
+          obra={o}
+          onError={(e) => {
+            setError(userError(e));
+            setModal('error');
+          }}
+        />
+        <NextStep
+          title={
+            task.kind === 'FINISHED'
+              ? o.estadoProceso === 'RETIRADO'
+                ? 'Cerrar el reingreso'
+                : 'Alquiler terminado'
+              : task.kind === 'DELIVER'
+                ? 'Entregar el material'
+                : 'Retirar el material'
+          }
+          detail={
+            task.kind === 'FINISHED'
+              ? o.estadoProceso === 'RETIRADO'
+                ? 'El material ya volvió: revisalo y cerrá el reingreso.'
+                : `Retirado el ${formatDate(o.fechaRetiroEfectiva || o.fechaRetiroEstimada)}.`
+              : `${task.label}${task.date ? ` (${formatDate(task.date)})` : ''}.`
+          }
+          color={stepColor}
+          background={stepBackground}
+        />
         <View
           style={[
             s.row,
-            { backgroundColor: C.panel, borderRadius: 16, borderWidth: 1, borderColor: C.hairline, padding: 16, flexWrap: 'wrap', gap: 16 },
+            {
+              backgroundColor: C.panel,
+              borderRadius: 16,
+              borderWidth: 1,
+              borderColor: C.hairline,
+              paddingVertical: 14,
+              paddingHorizontal: 16,
+              gap: 12,
+            },
           ]}
         >
-          <CalendarDays size={24} color={C.muted} />
-          <View style={{ flex: 1, minWidth: 90, gap: 4 }}>
+          <CalendarDays size={22} color={C.muted} />
+          <View style={{ flex: 1, gap: 2 }}>
             <Text style={s.muted}>Entrega prevista</Text>
-            <Text style={[s.label, { fontVariant: ['tabular-nums'] }]}>
+            <Text
+              style={{
+                color: C.text,
+                fontFamily: fonts.displaySemi,
+                fontSize: 20,
+                fontVariant: ['tabular-nums'],
+              }}
+            >
               {formatDate(o.fechaEntrega)}
             </Text>
           </View>
-          <View
-            style={{
-              flex: 1,
-              minWidth: 90,
-              gap: 4,
-              borderLeftWidth: 1,
-              borderLeftColor: C.hairline,
-              paddingLeft: 16,
-            }}
-          >
+          <ArrowRight size={18} color={C.subtle} />
+          <View style={{ flex: 1, gap: 2 }}>
             <Text style={s.muted}>Alquilado hasta</Text>
-            <Text style={[s.label, { fontVariant: ['tabular-nums'] }]}>
+            <Text
+              style={{
+                color: C.text,
+                fontFamily: fonts.displaySemi,
+                fontSize: 20,
+                fontVariant: ['tabular-nums'],
+              }}
+            >
               {formatDate(o.fechaRetiroEstimada, false, 'Sin fecha de retiro')}
             </Text>
             {!countdown.finished && countdown.days !== null ? (
-              <Text accessibilityLiveRegion="polite" style={s.body}>
+              <Text accessibilityLiveRegion="polite" style={[s.muted, { fontSize: 14 }]}>
                 {countdown.label}
               </Text>
             ) : null}
           </View>
         </View>
-        {o.fechaEntregaEfectiva ? (
-          <Text style={s.muted}>Entrega efectiva: {formatDate(o.fechaEntregaEfectiva)}</Text>
-        ) : null}
-        {o.fechaRetiroEfectiva ? (
-          <Text style={s.muted}>Retiro efectivo: {formatDate(o.fechaRetiroEfectiva)}</Text>
+        {o.fechaEntregaEfectiva || o.fechaRetiroEfectiva ? (
+          <Text style={[s.muted, { marginTop: -6, paddingHorizontal: 4 }]}>
+            {[
+              o.fechaEntregaEfectiva
+                ? `Entrega efectiva: ${formatDate(o.fechaEntregaEfectiva)}`
+                : '',
+              o.fechaRetiroEfectiva ? `Retiro efectivo: ${formatDate(o.fechaRetiroEfectiva)}` : '',
+            ]
+              .filter(Boolean)
+              .join('   ')}
+          </Text>
         ) : null}
         <View style={{ gap: 12 }}>
           <Text accessibilityRole="header" style={s.h2}>
@@ -254,28 +325,15 @@ export default function Detail() {
             />
           ) : null}
         </View>
-        <View style={{ gap: 12 }}>
-          <Text accessibilityRole="header" style={s.h2}>
-            Acciones
-          </Text>
-          <Button
-            label="Más acciones"
-            icon={MoreHorizontal}
-            variant="secondary"
-            onPress={() => setModal('acciones')}
-          />
-          {user?.role === 'ADMIN' ? (
-            <Button
-              label="Editar alquiler"
-              icon={Pencil}
-              variant="ghost"
-              onPress={() => router.push(`/obra/editar?id=${o.id}`)}
-            />
-          ) : null}
-        </View>
         <Disclosure
           key={o.faltantesRegistrados?.length || 0}
           title="Faltantes y recuperaciones"
+          icon={TriangleAlert}
+          detail={
+            o.faltantesRegistrados?.length
+              ? `${o.faltantesRegistrados.filter((i) => i.recuperado < i.cantidad).length} sin recuperar`
+              : 'Ninguno'
+          }
           initiallyOpen={!!o.faltantesRegistrados?.some((i) => i.recuperado < i.cantidad)}
         >
           {o.faltantesRegistrados?.length ? (
@@ -313,10 +371,16 @@ export default function Detail() {
               />
             ))}
         </Disclosure>
-        <Disclosure title="Fotos">
-          <Text style={s.muted}>
-            Las fotos se comparten con todo el equipo al sincronizar.
-          </Text>
+        <Disclosure
+          title="Fotos"
+          icon={Camera}
+          detail={
+            o.fotos?.length || o.fotosUrls?.length
+              ? `${o.fotos?.length || o.fotosUrls?.length} guardadas`
+              : 'Sin fotos'
+          }
+        >
+          <Text style={s.muted}>Las fotos se comparten con todo el equipo al sincronizar.</Text>
           <View style={s.wrap}>
             <Button
               label="Tomar foto"
@@ -345,23 +409,48 @@ export default function Detail() {
           </View>
           <View style={s.wrap}>
             {o.fotos?.map((p) => (
-              <View key={p.id} style={{ width: 150, gap: 8 }}>
+              <View key={p.id} style={{ width: 150 }}>
                 <PhotoImage photo={p} />
                 {user?.role === 'ADMIN' || p.usuarioUid === user?.uid ? (
                   <ConfirmButton
                     label="Borrar foto"
                     title="Eliminar foto"
+                    confirmLabel="Borrar foto"
                     description="Se quitará del alquiler para todo el equipo. Queda registrado en la auditoría."
                     onConfirm={async () => {
                       await dispatch({ type: 'DELETE_PHOTO', obraId: o.id, photoId: p.id });
                     }}
+                    trigger={(openConfirm) => (
+                      <Pressable
+                        accessibilityRole="button"
+                        accessibilityLabel="Borrar foto"
+                        onPress={openConfirm}
+                        style={({ pressed }) => ({
+                          position: 'absolute',
+                          top: 6,
+                          right: 6,
+                          width: 40,
+                          height: 40,
+                          borderRadius: 20,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: pressed ? '#000000CC' : '#00000099',
+                        })}
+                      >
+                        <Trash2 size={20} color="#FFFFFF" />
+                      </Pressable>
+                    )}
                   />
                 ) : null}
               </View>
             ))}
           </View>
         </Disclosure>
-        <Disclosure title="Datos del alquiler">
+        <Disclosure
+          title="Datos del alquiler"
+          icon={FileText}
+          detail="Fechas, quién recibió, quién entregó"
+        >
           {o.estadoProceso !== 'PENDIENTE_ENTREGA' && o.materialesCargados.length ? (
             <View style={{ gap: 8 }}>
               <Text style={s.label}>Carga original</Text>
@@ -373,43 +462,31 @@ export default function Detail() {
               ))}
             </View>
           ) : null}
-          <Info label="ENTREGA PREVISTA" value={formatDate(o.fechaEntrega)} />
-          <Info
-            label="ENTREGA EFECTIVA"
-            value={formatDate(o.fechaEntregaEfectiva, false, 'Sin registro efectivo separado')}
-          />
-          {o.observaciones ? <Info label="OBSERVACIONES" value={o.observaciones} /> : null}
-          <Info
-            label="RETIRO ESTIMADO"
-            value={formatDate(o.fechaRetiroEstimada, false, 'Sin fecha de retiro')}
-          />
-          {o.fechaRetiroEfectiva ? (
-            <Info label="RETIRO EFECTIVO" value={formatDate(o.fechaRetiroEfectiva)} />
-          ) : null}
-          <Info label="TELÉFONO" value={o.clienteTelefono || 'Sin teléfono'} />
-          <Info label="RECIBIÓ" value={o.recibidoPor || 'Sin registrar'} />
-          <Info label="ENTREGADO POR" value={o.entregadoPor?.join(', ') || 'Por asignar'} />
-          <Info label="RETIRADO POR" value={o.retiradoPor?.join(', ') || 'Por asignar'} />
-          {user?.role === 'ADMIN' ? (
-            <Button
-              label="Editar datos"
-              icon={Pencil}
-              variant="secondary"
-              onPress={() => router.push(`/obra/editar?id=${o.id}`)}
+          <View>
+            <Info label="Teléfono" value={o.clienteTelefono || 'Sin teléfono'} />
+            <Info label="Entrega prevista" value={formatDate(o.fechaEntrega)} />
+            <Info
+              label="Entrega efectiva"
+              value={formatDate(
+                o.fechaEntregaEfectiva,
+                false,
+                o.estadoProceso === 'PENDIENTE_ENTREGA' ? 'Todavía no' : 'Sin registrar',
+              )}
             />
-          ) : null}
-          <Button
-            label="Ubicación"
-            icon={MapPin}
-            variant="secondary"
-            onPress={() => {
-              setLat(String(o.coordenadas?.lat ?? ''));
-              setLng(String(o.coordenadas?.lng ?? ''));
-              setModal('ubicacion');
-            }}
-          />
+            <Info
+              label="Retiro estimado"
+              value={formatDate(o.fechaRetiroEstimada, false, 'Sin fecha de retiro')}
+            />
+            {o.fechaRetiroEfectiva ? (
+              <Info label="Retiro efectivo" value={formatDate(o.fechaRetiroEfectiva)} />
+            ) : null}
+            <Info label="Recibió" value={o.recibidoPor || 'Sin registrar'} />
+            <Info label="Entregó" value={o.entregadoPor?.join(', ') || 'Por asignar'} />
+            <Info label="Retiró" value={o.retiradoPor?.join(', ') || 'Por asignar'} />
+            {o.observaciones ? <Info label="Notas" value={o.observaciones} last /> : null}
+          </View>
         </Disclosure>
-        <Disclosure title="Recordatorios">
+        <Disclosure title="Recordatorios" icon={Bell} detail="Avisos antes del retiro">
           <RentalReminderPanel obra={o} />
         </Disclosure>
       </View>
@@ -420,10 +497,10 @@ export default function Detail() {
             acciones: 'Más acciones',
             error: 'No se pudo completar la acción',
             carga: 'Preparar carga',
-            entrega: 'Confirmar entrega',
-            retiro: 'Inspección de retiro',
-            faltante: 'Registrar faltante',
-            transferencia: 'Triangulación directa',
+            entrega: 'Registrar entrega',
+            retiro: 'Registrar retiro',
+            faltante: 'Faltante o daño en obra',
+            transferencia: 'Pasar material a otra obra',
             recuperar: 'Devolver al depósito',
             ubicacion: 'Ubicación del alquiler',
           }[modal] || 'Operación'
@@ -439,58 +516,82 @@ export default function Detail() {
         {error ? <Notice text={error} tone="error" /> : null}
         {modal === 'acciones' ? (
           <>
-            <Text style={s.muted}>
-              Gestioná este alquiler sin alterar la carga hasta confirmar cada operación.
-            </Text>
-            {o.estadoProceso === 'ENTREGADO' ? (
-              <>
-                <Button
-                  label="Con faltante"
+            <ToolGroup>
+              {o.estadoProceso === 'ENTREGADO' ? (
+                <>
+                  <ToolRow
+                    label="Faltante o daño en obra"
+                    detail="Algo se perdió o se rompió sin retirar todo"
+                    icon={TriangleAlert}
+                    onPress={() => setModal('faltante')}
+                  />
+                  <ToolRow
+                    label="Pasar material a otra obra"
+                    detail="Llevarlo directo, sin pasar por el depósito"
+                    icon={ArrowRightLeft}
+                    onPress={() => setModal('transferencia')}
+                  />
+                </>
+              ) : null}
+              {o.estadoProceso === 'RETIRADO' ? (
+                <ConfirmButton
+                  label="Reingresar"
+                  confirmLabel="Cerrar reingreso"
+                  trigger={(openConfirm) => (
+                    <ToolRow
+                      label="Cerrar reingreso"
+                      detail="El material ya volvió: cerrar la revisión"
+                      icon={PackageCheck}
+                      onPress={openConfirm}
+                    />
+                  )}
+                  title="Cerrar reingreso"
+                  description="El inventario ya se distribuyó al confirmar el retiro. Este paso cierra la revisión, sin volver a sumar material."
                   variant="secondary"
-                  onPress={() => setModal('faltante')}
+                  onConfirm={async () => {
+                    await dispatch({ type: 'REENTER', obraId: o.id });
+                    setModal('');
+                  }}
                 />
-                <Button
-                  label="Triangular"
-                  icon={ArrowRightLeft}
+              ) : null}
+              {user?.role === 'ADMIN' && ['RETIRADO', 'REINGRESADO'].includes(o.estadoProceso) ? (
+                <ConfirmButton
+                  label="Reactivar"
+                  confirmLabel="Volver a pendiente"
+                  trigger={(openConfirm) => (
+                    <ToolRow
+                      label="Reactivar"
+                      detail="Volver a pendiente para entregar de nuevo"
+                      icon={RotateCcw}
+                      onPress={openConfirm}
+                    />
+                  )}
+                  title="Preparar nueva entrega"
+                  description="El alquiler volverá a pendiente. Revisa fechas y carga antes de entregar de nuevo."
                   variant="secondary"
-                  onPress={() => setModal('transferencia')}
+                  onConfirm={async () => {
+                    await dispatch({ type: 'REACTIVATE', obraId: o.id });
+                    setModal('');
+                  }}
                 />
-              </>
-            ) : null}
-            {o.estadoProceso === 'RETIRADO' ? (
-              <ConfirmButton
-                label="Reingresar"
-                title="Cerrar reingreso"
-                description="El inventario ya se distribuyó al confirmar el retiro. Este paso cierra la revisión, sin volver a sumar material."
-                variant="secondary"
-                onConfirm={async () => {
-                  await dispatch({ type: 'REENTER', obraId: o.id });
-                  setModal('');
+              ) : null}
+              <ToolRow
+                label="Ubicación en el mapa"
+                detail={
+                  o.coordenadas
+                    ? 'Ya tiene ubicación · cambiarla'
+                    : 'Para ordenar el viaje por cercanía'
+                }
+                icon={MapPin}
+                last
+                onPress={() => {
+                  setLat(String(o.coordenadas?.lat ?? ''));
+                  setLng(String(o.coordenadas?.lng ?? ''));
+                  setMapsText('');
+                  setModal('ubicacion');
                 }}
               />
-            ) : null}
-            {user?.role === 'ADMIN' && ['RETIRADO', 'REINGRESADO'].includes(o.estadoProceso) ? (
-              <ConfirmButton
-                label="Reactivar"
-                title="Preparar nueva entrega"
-                description="El alquiler volverá a pendiente. Revisa fechas y carga antes de entregar de nuevo."
-                variant="secondary"
-                onConfirm={async () => {
-                  await dispatch({ type: 'REACTIVATE', obraId: o.id });
-                  setModal('');
-                }}
-              />
-            ) : null}
-            <Button
-              label="Ubicación"
-              icon={MapPin}
-              variant="secondary"
-              onPress={() => {
-                setLat(String(o.coordenadas?.lat ?? ''));
-                setLng(String(o.coordenadas?.lng ?? ''));
-                setModal('ubicacion');
-              }}
-            />
+            </ToolGroup>
           </>
         ) : null}
         {modal === 'carga' ? <LoadEditor obra={o} onDone={() => setModal('')} /> : null}
@@ -544,8 +645,14 @@ export default function Detail() {
         ) : null}
         {modal === 'ubicacion' ? (
           <>
+            <Text style={s.muted}>
+              {lat && lng
+                ? `Ubicación cargada: ${Number(lat).toFixed(5)}, ${Number(lng).toFixed(5)}`
+                : 'Todavía sin ubicación.'}
+            </Text>
             <Button
               label="Usar mi GPS"
+              icon={LocateFixed}
               loading={busy}
               variant="secondary"
               onPress={() =>
@@ -561,19 +668,41 @@ export default function Detail() {
                 })
               }
             />
-            <Notice text="Usa tu GPS solo si estás físicamente en este alquiler. También puedes ingresar coordenadas manualmente." />
+            <Text style={s.muted}>Sólo si estás parado en la obra.</Text>
             <Field
-              label="Latitud"
-              value={lat}
-              onChangeText={setLat}
-              keyboardType="numbers-and-punctuation"
+              label="O pegá el enlace de Google Maps"
+              placeholder="https://maps.google.com/… o -34.60, -58.38"
+              value={mapsText}
+              onChangeText={(value) => {
+                setMapsText(value);
+                const found = coordsFromText(value);
+                if (found) {
+                  setLat(String(found.lat));
+                  setLng(String(found.lng));
+                }
+              }}
+              autoCapitalize="none"
             />
-            <Field
-              label="Longitud"
-              value={lng}
-              onChangeText={setLng}
-              keyboardType="numbers-and-punctuation"
-            />
+            {mapsText && !coordsFromText(mapsText) ? (
+              <Notice
+                text="No encontré coordenadas en ese texto. En Google Maps tocá el punto y copiá el enlace o los números."
+                tone="error"
+              />
+            ) : null}
+            <Disclosure title="Escribir latitud y longitud" compact initiallyOpen={false}>
+              <Field
+                label="Latitud"
+                value={lat}
+                onChangeText={setLat}
+                keyboardType="numbers-and-punctuation"
+              />
+              <Field
+                label="Longitud"
+                value={lng}
+                onChangeText={setLng}
+                keyboardType="numbers-and-punctuation"
+              />
+            </Disclosure>
             <Button
               label="Guardar ubicación"
               loading={busy}
@@ -595,12 +724,24 @@ export default function Detail() {
     </Screen>
   );
 }
-function Info({ label, value }: { label: string; value: string }) {
-  const { s } = useUI();
+/** Ficha de dos columnas: el dato a la derecha, alineado, fácil de recorrer con la vista. */
+function Info({ label, value, last }: { label: string; value: string; last?: boolean }) {
+  const { s, C } = useUI();
   return (
-    <View style={{ gap: 5 }}>
-      <Text style={s.label}>{label}</Text>
-      <Text style={s.body}>{value}</Text>
+    <View
+      style={[
+        s.row,
+        {
+          gap: 12,
+          paddingVertical: 9,
+          alignItems: 'flex-start',
+          borderBottomWidth: last ? 0 : 1,
+          borderBottomColor: C.hairline,
+        },
+      ]}
+    >
+      <Text style={[s.muted, { width: 130 }]}>{label}</Text>
+      <Text style={[s.body, s.grow, { fontFamily: fonts.medium }]}>{value}</Text>
     </View>
   );
 }

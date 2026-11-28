@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, create, type ReactTestRenderer } from 'react-test-renderer';
 import { beforeEach, expect, it, vi } from 'vitest';
-import Home from '../app/(tabs)/index';
+import Home from '../app/(tabs)/alquileres';
 import { rememberedRentalList, rememberRentalList } from '../src/services/rentalListPreferences';
 import { emptyState } from '../src/data/seed';
 const mocks = vi.hoisted(() => ({

@@ -1,0 +1,40 @@
+# Mantener el servidor activo: el plan gratis de Supabase pausa el proyecto tras 7 días sin uso.
+# Cada 3 días hace una consulta real a la base (buscar un equipo que no existe): no lee ni cambia datos.
+# Si el servidor no contesta como se espera, la ejecución falla y GitHub avisa por correo al dueño del repo.
+name: Mantener servidor activo
+
+on:
+  schedule:
+    # 13:17 UTC = 10:17 en Argentina, cada 3 días.
+    - cron: '17 13 */3 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    name: Consultar la base
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Consultar la base de datos
+        env:
+          # Clave publicable (pública por diseño, la misma que lleva la app). No es un secreto.
+          URL: https://lttfkynkhveomntejqhc.supabase.co
+          KEY: sb_publishable_ks3tD0iqLwM5qhrodDxIKA_tLEbB7JN
+        run: |
+          for intento in 1 2 3; do
+            respuesta=$(curl -sS -m 30 -X POST "$URL/rest/v1/rpc/c2_join" \
+              -H "apikey: $KEY" -H "content-type: application/json" \
+              -d '{"p_code":"MANTENER-ACTIVO"}' || true)
+            echo "Respuesta: $respuesta"
+            # La base buscó el equipo y contestó que no existe: el servidor está vivo.
+            if echo "$respuesta" | grep -q 'EQUIPO_NO_ENCONTRADO'; then
+              echo "Servidor activo."
+              exit 0
+            fi
+            sleep 20
+          done
+          echo "::error::El servidor no respondió. Puede estar pausado: entrá a supabase.com y tocá «Restore»."
+          exit 1

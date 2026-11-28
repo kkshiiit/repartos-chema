@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
 import { DeleteMaterialButton } from '../../src/components/DeleteMaterialButton';
+import { StatBoard } from '../../src/components/StatBoard';
 import { userError } from '../../src/services/errors';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, useWindowDimensions } from 'react-native';
@@ -11,7 +12,11 @@ import {
   Wrench,
   TriangleAlert,
   MoreHorizontal,
+  ArrowRightLeft,
+  Calculator,
+  Pencil,
 } from 'lucide-react-native';
+import { ToolGroup, ToolRow } from '../../src/components/ToolsLayout';
 import type { MaterialItem, StockBucket, CategoriaMaterial } from '../../src/types';
 import { useInventory, makeId } from '../../src/context/InventoryContext';
 import { useAuth } from '../../src/context/AuthContext';
@@ -59,7 +64,7 @@ export default function WarehousePage() {
   };
   const metrics = [
     { key: 'cantidadGalpon', label: 'Disponibles', color: C.green, icon: Warehouse },
-    { key: 'cantidadEnObra', label: 'Alquilados', color: C.blue, icon: HardHat },
+    { key: 'cantidadEnObra', label: 'Alquilados', color: C.success, icon: HardHat },
     { key: 'cantidadEnTaller', label: 'A reparar', color: C.orange, icon: Wrench },
     {
       key: 'cantidadPerdido',
@@ -84,6 +89,15 @@ export default function WarehousePage() {
     setSource('');
     setModal(mode);
   };
+  const totals = state.materiales.reduce(
+    (t, m) => ({
+      galpon: t.galpon + m.cantidadGalpon,
+      obra: t.obra + m.cantidadEnObra,
+      taller: t.taller + m.cantidadEnTaller,
+      perdido: t.perdido + m.cantidadPerdido,
+    }),
+    { galpon: 0, obra: 0, taller: 0, perdido: 0 },
+  );
   return (
     <Screen
       title="Depósito"
@@ -104,9 +118,16 @@ export default function WarehousePage() {
         keyExtractor={(m) => m.id}
         ListHeaderComponent={
           <View style={{ gap: spacing.md, paddingBottom: spacing.lg }}>
+            <StatBoard
+              items={[
+                { key: 'galpon', label: 'En depósito', n: totals.galpon, color: C.text },
+                { key: 'obra', label: 'En obras', n: totals.obra, color: C.success },
+                { key: 'taller', label: 'A reparar', n: totals.taller, color: C.warning },
+                { key: 'perdido', label: 'Perdidas', n: totals.perdido, color: C.danger },
+              ]}
+            />
             <Text style={s.muted}>
-              {state.materiales.length} tipos de pieza ·{' '}
-              {state.materiales.filter((m) => m.cantidadGalpon > 0).length} con stock disponible
+              {state.materiales.length} tipos de pieza · {state.materiales.filter((m) => m.cantidadGalpon > 0).length} con stock disponible
             </Text>
             <Field
               label="Buscar pieza"
@@ -131,7 +152,11 @@ export default function WarehousePage() {
           </View>
         }
         ListEmptyComponent={
-          <Empty title="Sin piezas" detail="Cambia los filtros o agrega una pieza." />
+          state.materiales.length ? (
+            <Empty title="Sin resultados" detail="Ninguna pieza coincide. Probá otra búsqueda o tocá «Todos»." />
+          ) : (
+            <Empty title="Todavía no hay piezas" detail="Tocá «Agregar material» para cargar lo que hay en el depósito (marcos, tablones, diagonales…)." />
+          )
         }
         ItemSeparatorComponent={() => <View style={s.divider} />}
         renderItem={({ item: m }) => (
@@ -203,13 +228,27 @@ export default function WarehousePage() {
             <Text style={s.h2}>
               {edit?.nombre} {edit?.medida}
             </Text>
-            <Button label="Editar" variant="secondary" onPress={() => setModal('material')} />
-            <Button
-              label="Mover stock"
-              variant="secondary"
-              onPress={() => setModal('movimiento')}
-            />
-            <Button label="Ajustar" variant="secondary" onPress={() => setModal('ajuste')} />
+            <ToolGroup>
+              <ToolRow
+                label="Ajustar cantidad"
+                detail="Compra, recuento o baja: suma o resta stock"
+                icon={Calculator}
+                onPress={() => setModal('ajuste')}
+              />
+              <ToolRow
+                label="Mover stock"
+                detail="Entre depósito, taller y perdidos"
+                icon={ArrowRightLeft}
+                onPress={() => setModal('movimiento')}
+              />
+              <ToolRow
+                label="Editar pieza"
+                detail="Nombre, categoría y medida"
+                icon={Pencil}
+                last
+                onPress={() => setModal('material')}
+              />
+            </ToolGroup>
           </View>
         ) : modal === 'material' ? (
           <>

@@ -1,5 +1,22 @@
 # Registro de cambios
 
+## 1.3.0 — 28/11/2026
+
+Rediseño completo de la interfaz, pensado para encontrar todo rápido y leerlo en la calle.
+
+- **Pantalla Hoy** (nueva, primera pestaña): lo atrasado primero, lo de hoy después y lo hecho tildado, con «Faltan 2 de 4» y barra de progreso. Botones **Entregar** y **Retirar** directos. Lista *Terminá de configurar* para equipos nuevos.
+- **Cinco pestañas** abajo, como en las apps de todos los días: Hoy · Alquileres · Depósito · Viaje · Más. La Auditoría, las copias y los ajustes pasan a **Más**.
+- **Colores con sentido:** azul = botón que hace algo; rojo sólo para lo urgente o peligroso; amarillo hoy, verde en obra, violeta por entregar. Cabecera oscura con línea roja de la marca.
+- **Entregar y retirar por pasos** (qué, quién, cuándo). Los faltantes quedan detrás de «¿Falta algo o volvió roto?».
+- **Carga tipo catálogo:** «+ Agregar» en cada pieza y − / + para la cantidad; combos con un toque.
+- Detalle del alquiler con **editar, más acciones y borrar arriba**; datos como ficha; secciones con ícono y resumen.
+- **Ubicación pegando el enlace de Google Maps** que llega por WhatsApp.
+- Acciones peligrosas al final y separadas; los botones de confirmar dicen qué hacen («Salir del equipo», «Borrar foto»).
+- Franja «Sin conexión · N por enviar» también dentro de cada alquiler; mensajes claros en listas vacías.
+- Letra Barlow (cartelería vial) en toda la app, también en las fechas.
+- Arreglo: el alta automática como responsable de reparto espera a sincronizar y se reintenta si la app se cierra en ese momento (antes podía no quedar anotado o pisar la lista).
+- Servidor: tarea automática de GitHub que lo consulta cada 3 días para que el plan gratuito no se pause.
+
 ## 1.2.0 — 21/11/2026
 
 - **Responsable con PIN** (Ajustes → Responsable). Con PIN, importar o restaurar copias, empezar vacío, volver a antes de un cambio, cambiar el código y sacar personas piden la autorización del responsable. Lo controla el servidor: una app vieja o modificada no puede saltearlo.

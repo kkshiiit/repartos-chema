@@ -9,15 +9,18 @@ import { useTheme } from '../src/context/ThemeContext';
 import React, { useEffect, useState } from 'react';
 import { View, Text, Share, Pressable } from 'react-native';
 import {
+  ArchiveRestore,
   Bell,
+  ClipboardList,
+  FileSpreadsheet,
+  Truck,
   BookOpen,
   FileDown,
-  FileText,
+  KeyRound,
   Layers,
   MapPin,
   Moon,
   Share2,
-  ShieldCheck,
   SunMedium,
   SmartphoneNfc,
   UserRoundCog,
@@ -35,6 +38,7 @@ import {
   Notice,
   Screen,
   Sheet,
+  StepTitle,
   useUI,
   usePanelChanges,
   initials,
@@ -46,13 +50,14 @@ import { ResponsableCard } from '../src/components/ResponsableCard';
 import { usePin } from '../src/context/PinContext';
 import { api } from '../src/sync/api';
 
-type Panel = 'feedback' | 'responsables' | 'copies' | 'depot' | 'members';
+type Panel = 'feedback' | 'responsables' | 'copies' | 'depot' | 'members' | 'rotate';
 const titles: Record<Panel, string> = {
   feedback: 'Avisos y sonidos',
   responsables: 'Responsables de reparto',
   copies: 'Exportar e importar',
   depot: 'Depósito',
   members: 'Personas del equipo',
+  rotate: 'Cambiar el código del equipo',
 };
 
 function ResponsibleEditor({
@@ -133,7 +138,11 @@ function ThemeOption({
   );
 }
 
-export default function Settings() {
+export default function Configuracion() {
+  return <SettingsScreen />;
+}
+/** Ajustes. En la pestaña «Más» se muestra sin flecha de volver y con la Auditoría arriba. */
+export function SettingsScreen({ tab = false }: { tab?: boolean }) {
   const { C, s } = useUI();
   const theme = useTheme();
   const { user, session, members, refreshMembers, removeMember, switchUser, leaveTeam, rotateCode } = useAuth();
@@ -184,153 +193,68 @@ export default function Settings() {
       .catch(() => undefined);
   const version = Constants.expoConfig?.version || '1.0.0';
   return (
-    <Screen title="Ajustes" back>
-      <View style={[s.card, { gap: 14 }]}>
-        <View style={[s.row, { gap: 14 }]}>
-          <View
-            style={{
-              width: 56,
-              height: 56,
-              borderRadius: 28,
-              backgroundColor: C.primary,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Text style={{ color: C.onPrimary, fontSize: 22, fontFamily: fonts.semibold, fontWeight: '700' }}>
-              {initials(user?.nombre)}
-            </Text>
-          </View>
-          <View style={s.grow}>
-            <Text style={[s.h2]}>{user?.nombre}</Text>
-            <Text style={s.muted}>Equipo: {session?.teamName}</Text>
-          </View>
+    <Screen title={tab ? "Más" : "Ajustes"} back={!tab}>
+      {/* Quién está usando este teléfono: lo primero que hay que confirmar. */}
+      <View style={[s.row, { gap: 14, paddingVertical: 4 }]}>
+        <View style={{ width: 60, height: 60, borderRadius: 30, backgroundColor: C.primary, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ color: C.onPrimary, fontSize: 24, fontFamily: fonts.display }}>{initials(user?.nombre)}</Text>
         </View>
-        <Text style={s.muted}>
-          Todo lo que hagas queda registrado con tu nombre en la Auditoría.
-        </Text>
-        <Button label="Cambiar de persona" icon={UserRoundCog} variant="secondary" onPress={switchUser} />
+        <View style={s.grow}>
+          <Text style={s.h2}>{user?.nombre}</Text>
+          <Text style={s.muted}>{session?.teamName} · todo queda en la Auditoría con tu nombre</Text>
+        </View>
       </View>
 
-      <ResponsableCard />
+      <ToolGroup title="Registro">
+        <ToolRow label="Auditoría" detail="Quién hizo cada cambio y cuándo" icon={ClipboardList} onPress={() => router.push('/historial')} />
+        <ToolRow label="Copias y volver atrás" detail="Copia semanal automática" icon={ArchiveRestore} onPress={() => router.push('/copias')} last />
+      </ToolGroup>
 
-      <View style={[s.card, { gap: 12 }]}>
-        <Text style={s.h2}>Código del equipo</Text>
-        <Text style={s.muted}>
-          Compartilo con quienes tengan que usar la app. Con este código ven y cargan los mismos datos
-          desde su teléfono.
-        </Text>
-        <Text
-          selectable
-          accessibilityLabel={`Código ${session?.code.split('').join(' ')}`}
-          style={{
-            color: C.text,
-            fontFamily: fonts.monoMedium,
-            fontSize: 26,
-            letterSpacing: 2,
-            textAlign: 'center',
-            paddingVertical: 14,
-            borderRadius: 14,
-            borderWidth: 2,
-            borderStyle: 'dashed',
-            borderColor: C.accent,
-            backgroundColor: C.selection,
-          }}
-        >
-          {session?.code}
-        </Text>
-        <Button label="Compartir código" icon={Share2} onPress={shareCode} />
-        <ConfirmButton
-          label="Cambiar código"
-          variant="secondary"
-          title="Cambiar el código del equipo"
-          description="Usalo si el código llegó a alguien que no debía tenerlo. Se genera uno nuevo y el anterior deja de funcionar al instante: los demás teléfonos van a tener que entrar de nuevo con el código nuevo (no pierden nada). Después compartí el código nuevo con tu equipo."
-          onConfirm={() =>
-            withPin('Cambiar el código saca del equipo a todos los teléfonos hasta que usen el nuevo.', async (pin) => {
-              await api.pinVerify(session!.code, pin);
-              await note?.('Cambió el código del equipo');
-              await retry();
-              await rotateCode(pin);
-            })
-          }
-        />
-        <Button
-          label={`Personas del equipo (${members.length})`}
-          icon={UsersRound}
-          variant="secondary"
-          onPress={() => open('members')}
-        />
-      </View>
+      <ToolGroup title="Trabajo">
+        <ToolRow label="Combos de carga" detail="Cargas armadas para elegir rápido" icon={Layers} onPress={() => router.push('/combos')} />
+        <ToolRow label="Responsables de reparto" value={String(state.responsables.length)} icon={Truck} onPress={() => open('responsables')} />
+        <ToolRow label="Dirección del depósito" detail={depot.direccion} icon={MapPin} onPress={() => open('depot')} />
+        <ToolRow label="Planillas Word y Excel" detail="Remitos y reportes" icon={FileSpreadsheet} onPress={() => router.push('/exportar')} />
+        <ToolRow label="Avisos y sonidos" icon={Bell} onPress={() => open('feedback')} last />
+      </ToolGroup>
 
-      <View style={[s.card, { gap: 12 }]}>
-        <Text style={s.h2}>Apariencia</Text>
-        <View accessibilityRole="radiogroup" style={[s.row, { gap: 10, alignItems: 'stretch' }]}>
-          <ThemeOption
-            label="Sol"
-            detail="Máximo contraste de día"
-            icon={SunMedium}
-            selected={theme.preference === 'light'}
-            onPress={() => theme.setPreference('light')}
-          />
-          <ThemeOption
-            label="Noche"
-            detail="Oscuro, no encandila"
-            icon={Moon}
-            selected={theme.preference === 'dark'}
-            onPress={() => theme.setPreference('dark')}
-          />
-          <ThemeOption
-            label="Auto"
-            detail="Igual que el teléfono"
-            icon={SmartphoneNfc}
-            selected={theme.preference === 'system'}
-            onPress={() => theme.setPreference('system')}
-          />
+      <ToolGroup title="Equipo">
+        <ToolRow label="Compartir código del equipo" detail={session?.code} icon={Share2} onPress={shareCode} />
+        <ToolRow label="Personas del equipo" value={String(members.length)} icon={UsersRound} onPress={() => open('members')} />
+        <ResponsableCard />
+        <ToolRow label="Cambiar código" detail="Si llegó a alguien que no debía tenerlo" icon={KeyRound} onPress={() => open('rotate')} />
+        <ToolRow label="Cambiar de persona" detail="Para usar este teléfono con otro nombre" icon={UserRoundCog} onPress={switchUser} last />
+      </ToolGroup>
+
+      <View style={{ gap: 8 }}>
+        <Text accessibilityRole="header" style={{ color: C.muted, fontFamily: fonts.semibold, fontSize: 15, paddingLeft: 4 }}>
+          Apariencia
+        </Text>
+        <View accessibilityRole="radiogroup" style={[s.row, { gap: 8, alignItems: 'stretch' }]}>
+          <ThemeOption label="Sol" detail="Para la calle" icon={SunMedium} selected={theme.preference === 'light'} onPress={() => theme.setPreference('light')} />
+          <ThemeOption label="Noche" detail="No encandila" icon={Moon} selected={theme.preference === 'dark'} onPress={() => theme.setPreference('dark')} />
+          <ThemeOption label="Auto" detail="Como el teléfono" icon={SmartphoneNfc} selected={theme.preference === 'system'} onPress={() => theme.setPreference('system')} />
         </View>
         {theme.error ? <Notice text={theme.error} tone="error" /> : null}
       </View>
 
       <ToolGroup title="Datos">
-        <ToolRow
-          label="Copias y restauración"
-          detail="Copia semanal automática · volver atrás"
-          icon={ShieldCheck}
-          onPress={() => router.push('/copias')}
-        />
-        <ToolRow
-          label="Exportar e importar copia"
-          detail="Todo el inventario en un archivo JSON"
-          icon={FileDown}
-          onPress={() => open('copies')}
-        />
-        <ToolRow
-          label="Planillas Word y Excel"
-          detail="Remitos y reportes"
-          icon={FileText}
-          onPress={() => router.push('/exportar')}
-        />
-        <ToolRow label="Combos de carga" icon={Layers} onPress={() => router.push('/combos')} />
-        <ToolRow
-          label="Responsables de reparto"
-          detail={`${state.responsables.length} cargados`}
-          icon={UsersRound}
-          onPress={() => open('responsables')}
-        />
-        <ToolRow label={depot.nombre} detail={depot.direccion} icon={MapPin} onPress={() => open('depot')} last />
+        <ToolRow label="Exportar e importar copia" detail="Todo en un archivo JSON" icon={FileDown} onPress={() => open('copies')} last />
       </ToolGroup>
+
       <ToolGroup title="Ayuda">
-        <ToolRow label="Avisos y sonidos" icon={Bell} onPress={() => open('feedback')} />
-        <ToolRow label="Guía de uso" detail="Cada sección explicada" icon={BookOpen} onPress={() => router.push('/guia')} last />
+        <ToolRow label="Guía de uso" detail="Cada parte de la app, explicada" icon={BookOpen} onPress={() => router.push('/guia')} last />
       </ToolGroup>
+
       <ConfirmButton
         label="Salir del equipo en este teléfono"
+        variant="secondary"
         title="Salir del equipo"
+        confirmLabel="Salir del equipo"
         description="Este teléfono deja de ver los datos del equipo. Los datos no se borran: siguen en los demás teléfonos y podés volver a entrar con el código."
         onConfirm={leaveTeam}
       />
-      <Text style={[s.muted, { textAlign: 'center' }]}>
-        Chema Andamios {version} · Sincronizado en la nube
-      </Text>
+      <Text style={[s.muted, { textAlign: 'center', fontSize: 13 }]}>Chema Andamios {version}</Text>
 
       <Sheet
         visible={panel !== null}
@@ -340,6 +264,31 @@ export default function Settings() {
         protectChanges={panel === 'depot' || panel === 'responsables' || panel === 'feedback'}
         hasChanges={panel === 'responsables' && names !== null && names !== state.responsables.join('\n')}
       >
+        {panel === 'rotate' ? (
+          <>
+            <Text style={s.body}>
+              Se genera un código nuevo y el anterior deja de funcionar al instante. Los demás teléfonos van a tener
+              que entrar de nuevo con el código nuevo (no pierden nada). Después compartí el código nuevo.
+            </Text>
+            <Button
+              label="Cambiar código"
+              variant="danger"
+              loading={busy}
+              onPress={() =>
+                run(() =>
+                  withPin('Cambiar el código saca del equipo a todos los teléfonos hasta que usen el nuevo.', async (pin) => {
+                    await api.pinVerify(session!.code, pin);
+                    await note?.('Cambió el código del equipo');
+                    await retry();
+                    await rotateCode(pin);
+                  }),
+                ).then((ok) => {
+                  if (ok) close();
+                })
+              }
+            />
+          </>
+        ) : null}
         {panel === 'members' ? (
           <>
             {members.map((m) => (
@@ -417,10 +366,13 @@ export default function Settings() {
         {panel === 'copies' ? (
           <>
             <Notice text="Exportar guarda TODO (alquileres, depósito, combos, auditoría y fotos) en un archivo JSON. Importar reemplaza los datos del equipo por los del archivo, en todos los teléfonos, y queda registrado en la Auditoría." />
-            <Text style={s.h2}>Exportar</Text>
-            <LocalBackupActions />
-            <Text style={s.h2}>Importar</Text>
+            <StepTitle title="Exportar" hint="Guarda un archivo con todo, para tener afuera del teléfono." />
+            <LocalBackupActions part="safe" />
+            <StepTitle title="Importar" hint="Reemplaza los datos del equipo por los del archivo." />
             <BackupImport />
+            <View style={s.divider} />
+            <StepTitle title="Empezar de cero" hint="Deja el inventario vacío. Antes se guarda una copia para poder volver." />
+            <LocalBackupActions part="danger" />
           </>
         ) : null}
         {error ? <Notice text={error} tone="error" /> : null}

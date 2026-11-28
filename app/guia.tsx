@@ -9,8 +9,10 @@ import {
   CloudOff,
   FileDown,
   History,
-  LayoutGrid,
-  Map,
+  CalendarCheck,
+  MoreVertical,
+  Construction,
+  Truck,
   PackageCheck,
   PackageOpen,
   KeyRound,
@@ -41,42 +43,57 @@ const SECTIONS: Section[] = [
   {
     id: 'equipo',
     title: 'Equipo e ingreso',
-    where: 'Primera pantalla · Ajustes',
+    where: 'Primera pantalla · Más',
     icon: UsersRound,
     summary: 'Todos los teléfonos con el mismo código ven y cargan los mismos datos. Cada persona entra con su nombre.',
     steps: [
       'La primera persona toca "Crear un equipo nuevo" y escribe el nombre del negocio.',
-      'En Ajustes aparece el código del equipo: tocá "Compartir código" y mandalo por WhatsApp.',
+      'En «Más» aparece el código del equipo: tocá "Compartir código" y mandalo por WhatsApp.',
       'El resto instala la app, toca "Unirme a un equipo", escribe el código y elige su nombre.',
-      'Para cambiar de persona en un mismo teléfono: tocá tu inicial (arriba a la derecha) → "Cambiar de persona".',
-      'Si el código llegó a quien no debía: Ajustes → "Cambiar código". El viejo deja de servir y el resto entra con el nuevo.',
+      'Para cambiar de persona en un mismo teléfono: Más → "Cambiar de persona".',
+      'Si el código llegó a quien no debía: Más → "Cambiar código". El viejo deja de servir y el resto entra con el nuevo.',
     ],
     route: '/configuracion',
   },
   {
+    id: 'hoy',
+    title: 'Hoy (inicio)',
+    where: 'Pestaña «Hoy»',
+    icon: CalendarCheck,
+    summary: 'Lo que hay que hacer hoy, primero lo atrasado. Arriba dice cuántas tareas faltan.',
+    steps: [
+      'Rojo = atrasado. Tocá el botón azul (Entregar o Retirar) para hacerlo directo.',
+      'Lo que ya se hizo hoy queda abajo, tildado en verde.',
+      '«Terminá de configurar» muestra los pasos que faltan para dejar el equipo listo; desaparece al completarlos.',
+      '«Próximos días» lleva a la lista completa de alquileres.',
+    ],
+    route: '/',
+  },
+  {
     id: 'inicio',
-    title: 'Alquileres (inicio)',
-    where: 'Pestaña 1',
-    icon: LayoutGrid,
+    title: 'Alquileres',
+    where: 'Pestaña «Alquileres»',
+    icon: Construction,
     summary: 'La lista de todos los alquileres, ordenada por lo urgente. Los cuadros de arriba muestran el día de un vistazo.',
     steps: [
       'Rojo = atrasado, amarillo = es hoy, verde = al día, violeta = falta entregar.',
       'Tocá un cuadro (Hoy, Atrasados, Por entregar, En obra) para filtrar la lista.',
       'Usá la lupa para buscar por cliente, dirección o barrio.',
       'Tocá un alquiler para ver el detalle y sus acciones.',
+      'Botón azul «Nuevo» (abajo a la derecha): crea un alquiler.',
       'Papelera roja: borra el alquiler entero (cliente y materiales cargados) de un toque, con confirmación. Sólo si todavía no se entregó o ya se cerró.',
     ],
-    route: '/',
+    route: '/alquileres',
   },
   {
     id: 'nuevo',
     title: 'Cargar un alquiler nuevo',
-    where: 'Inicio → botón "Nuevo alquiler"',
+    where: 'Alquileres → botón azul "Nuevo"',
     icon: Plus,
     summary: 'Tres pasos: cliente, materiales y revisar. Nada sale del depósito hasta que confirmás la entrega.',
     steps: [
       'Cliente: nombre, teléfono, dirección, barrio y fechas de entrega y retiro.',
-      'Carga: sumá andamios, tablones y accesorios con + y −, o elegí un combo armado.',
+      'Carga: tocá "+ Agregar" en cada pieza del depósito y ajustá la cantidad con − y +, o tocá "Usar combo".',
       'Revisar: controlá todo y guardá.',
     ],
     route: '/obra/nueva',
@@ -84,24 +101,40 @@ const SECTIONS: Section[] = [
   {
     id: 'entregar',
     title: 'Entregar',
-    where: 'Detalle del alquiler → "Entregar"',
+    where: 'Hoy → botón azul "Entregar" · o detalle → "Registrar entrega"',
     icon: PackageCheck,
-    summary: 'Al confirmar, los materiales salen del depósito y quedan "en obra".',
+    summary: 'Tres pasos. Al confirmar, los materiales salen del depósito y quedan "en obra".',
     steps: [
-      'Elegí quién llevó el material (responsables) y quién lo recibió.',
+      '① Qué se lleva: revisá la lista de piezas.',
+      '② Quién lo lleva: tocá uno o más nombres. Si falta alguien, "+ Agregar nombre".',
+      '③ Quién recibe y hasta cuándo: nombre de quien recibe y fecha de retiro.',
       'Confirmá: el stock se descuenta solo y queda registrado con tu nombre.',
     ],
   },
   {
     id: 'retirar',
     title: 'Retirar',
-    where: 'Detalle del alquiler → "Retirar"',
+    where: 'Hoy → botón azul "Retirar" · o detalle → "Registrar retiro"',
     icon: PackageOpen,
-    summary: 'Al volver con el material, separá lo que vuelve bien, lo dañado y lo perdido.',
+    summary: 'Al volver con el material, lo sano vuelve al depósito; lo dañado va a taller y lo perdido queda anotado.',
     steps: [
-      'Indicá faltantes o roturas si los hay. Lo dañado va a taller, lo perdido queda anotado.',
-      'Lo demás vuelve al depósito automáticamente.',
-      'Después podés marcar "Reingresado" cuando todo quedó acomodado.',
+      '① Qué vuelve: la app muestra cuántas piezas sanas vuelven.',
+      '② Quién lo retira: tocá los nombres.',
+      'Si falta algo o volvió roto: "¿Falta algo o volvió roto?" → elegí la pieza, la cantidad y Perdido o Dañado.',
+      'Después, en los tres puntos de arriba: "Cerrar reingreso" cuando todo quedó acomodado.',
+    ],
+  },
+  {
+    id: 'acciones',
+    title: 'Más acciones de un alquiler',
+    where: 'Detalle del alquiler → tres puntos arriba a la derecha',
+    icon: MoreVertical,
+    summary: 'Lo que no se hace todos los días, con una explicación en cada opción.',
+    steps: [
+      'Faltante o daño en obra: algo se perdió o rompió sin retirar todo.',
+      'Pasar material a otra obra: directo, sin pasar por el depósito.',
+      'Ubicación en el mapa: con tu GPS estando en la obra, o pegando el enlace de Google Maps que te mandaron por WhatsApp.',
+      'Lápiz = editar datos · papelera = borrar el alquiler.',
     ],
   },
   {
@@ -120,7 +153,7 @@ const SECTIONS: Section[] = [
   {
     id: 'deposito',
     title: 'Depósito',
-    where: 'Pestaña 2',
+    where: 'Pestaña «Depósito»',
     icon: Warehouse,
     summary: 'Cuánto hay de cada material: en depósito, en obras, en taller y perdido.',
     steps: [
@@ -134,8 +167,8 @@ const SECTIONS: Section[] = [
   {
     id: 'viaje',
     title: 'Viaje',
-    where: 'Pestaña 3',
-    icon: Map,
+    where: 'Pestaña «Viaje»',
+    icon: Truck,
     summary: 'Arma el recorrido del día con entregas y retiros, y lo abre en Google Maps.',
     steps: [
       'Ordená las paradas por cercanía o a mano.',
@@ -146,7 +179,7 @@ const SECTIONS: Section[] = [
   {
     id: 'auditoria',
     title: 'Auditoría',
-    where: 'Pestaña 4',
+    where: 'Más → Auditoría',
     icon: History,
     summary: 'Registro de TODO lo que pasa en la app: quién, qué, cuándo y qué materiales se movieron.',
     steps: [
@@ -159,7 +192,7 @@ const SECTIONS: Section[] = [
   {
     id: 'copias',
     title: 'Exportar e importar',
-    where: 'Ajustes → "Exportar e importar copia"',
+    where: 'Más → "Exportar e importar copia"',
     icon: FileDown,
     summary: 'Guardá todo en un archivo JSON o recuperá datos desde uno.',
     steps: [
@@ -172,11 +205,11 @@ const SECTIONS: Section[] = [
   {
     id: 'responsable',
     title: 'Responsable y PIN',
-    where: 'Ajustes → "Responsable"',
+    where: 'Más → "Responsable"',
     icon: KeyRound,
     summary: 'Una persona de confianza tiene un PIN. Sin ese PIN nadie puede reemplazar los datos de todo el equipo.',
     steps: [
-      'En Ajustes tocá "Elegir responsable y PIN" y elegí un PIN de 4 a 8 números.',
+      'En «Más» tocá "Elegir responsable y PIN" y elegí un PIN de 4 a 8 números.',
       'Desde ese momento, importar o restaurar copias, empezar vacío, cambiar el código y sacar personas piden el PIN.',
       'El trabajo diario (alquileres, entregas, retiros, stock, papelera) no pide PIN.',
       'Cinco intentos equivocados bloquean el PIN 15 minutos.',
@@ -186,24 +219,24 @@ const SECTIONS: Section[] = [
   {
     id: 'restaurar',
     title: 'Copias y volver atrás',
-    where: 'Ajustes → "Copias y restauración" · Auditoría',
+    where: 'Más → "Copias y restauración" · Auditoría',
     icon: RotateCcw,
     summary: 'Cada semana se guarda sola una copia completa. Y si algo se borró o se cargó mal, se puede volver a como estaba antes de ese cambio.',
     steps: [
       'Abrí la Auditoría y tocá el cambio que querés deshacer.',
       'Tocá "Volver a como estaba antes": vas a ver cómo está ahora y cómo quedaría.',
       'Confirmá con "Sí, restaurar". Antes se guarda una copia de cómo estaba, así que también se puede deshacer.',
-      'En Ajustes → "Copias y restauración" están las copias semanales para restaurar con un toque.',
+      'En Más → "Copias y restauración" están las copias semanales para restaurar con un toque.',
     ],
     route: '/copias',
   },
   {
     id: 'apariencia',
     title: 'Sol y noche',
-    where: 'Botón sol/luna arriba · Ajustes',
+    where: 'Botón sol/luna arriba · Más',
     icon: SunMoon,
     summary: 'Modo Sol con máximo contraste para la calle, y modo Noche oscuro que no encandila.',
-    steps: ['Tocá el sol/luna de arriba para cambiar rápido, o elegí "Auto" en Ajustes.'],
+    steps: ['Tocá el sol/luna de arriba para cambiar rápido, o elegí "Auto" en Más.'],
   },
   {
     id: 'offline',
@@ -249,10 +282,6 @@ export default function Guia() {
     LayoutAnimation.configureNext(LayoutAnimation.create(160, 'easeInEaseOut', 'opacity'));
     setOpen((v) => (v === id ? null : id));
   };
-  const jump = (id: string) => {
-    setOpen(id);
-    scroll.current?.scrollTo({ y: Math.max(0, (positions.current[id] || 0) - 8), animated: true });
-  };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: C.bg }}>
       <ScrollView ref={scroll} contentContainerStyle={{ padding: 16, paddingBottom: 40 }}>
@@ -267,38 +296,14 @@ export default function Guia() {
               Guía de uso
             </Text>
           </View>
-          <Text style={s.body}>Tocá una sección para ver cómo se usa. Todo se explica en pocas líneas.</Text>
-          <View accessibilityRole="tablist" style={[s.wrap, { gap: 8 }]}>
-            {SECTIONS.map((sec, i) => (
-              <Pressable
-                key={sec.id}
-                accessibilityRole="button"
-                accessibilityLabel={`Ir a ${sec.title}`}
-                onPress={() => jump(sec.id)}
-                style={({ pressed }) => ({
-                  minHeight: 44,
-                  paddingHorizontal: 12,
-                  borderRadius: 22,
-                  borderWidth: 1,
-                  borderColor: open === sec.id ? C.accent : C.hairline,
-                  backgroundColor: open === sec.id || pressed ? C.selection : C.panel,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 6,
-                })}
-              >
-                <Text style={{ color: C.accent, fontFamily: fonts.monoMedium, fontSize: 13 }}>{i + 1}</Text>
-                <Text style={{ color: C.text, fontFamily: fonts.medium, fontSize: 14 }}>{sec.title}</Text>
-              </Pressable>
-            ))}
-          </View>
+          <Text style={s.body}>Tocá un tema para ver cómo se hace.</Text>
           {SECTIONS.map((sec, i) => {
             const expanded = open === sec.id;
             return (
               <View
                 key={sec.id}
                 onLayout={(e) => (positions.current[sec.id] = e.nativeEvent.layout.y)}
-                style={[s.card, { padding: 0, overflow: 'hidden', borderColor: expanded ? C.accent : C.hairline, borderWidth: expanded ? 2 : 1 }]}
+                style={[s.card, { padding: 0, overflow: 'hidden' }]}
               >
                 <Pressable
                   accessibilityRole="button"
@@ -320,10 +325,8 @@ export default function Guia() {
                     <sec.icon size={24} color={expanded ? C.onPrimary : C.text} />
                   </View>
                   <View style={s.grow}>
-                    <Text style={{ color: C.accent, fontFamily: fonts.monoMedium, fontSize: 12 }}>
-                      SECCIÓN {i + 1} · {sec.where.toUpperCase()}
-                    </Text>
-                    <Text style={[s.body, { fontFamily: fonts.semibold, fontSize: 17, fontWeight: '700' }]}>{sec.title}</Text>
+                    <Text style={{ color: C.text, fontFamily: fonts.semibold, fontSize: 18, lineHeight: 23 }}>{sec.title}</Text>
+                    <Text style={[s.muted, { fontSize: 14 }]}>{sec.where}</Text>
                   </View>
                   <ChevronDown
                     size={22}

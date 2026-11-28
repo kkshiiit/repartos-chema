@@ -75,6 +75,7 @@ vi.mock('../src/components/ui', () => ({
   Screen: 'Screen',
   Button: 'Button',
   Chip: 'Chip',
+  StepTitle: 'StepTitle',
   ConfirmButton: 'ConfirmButton',
   Field: 'Field',
   Notice: 'Notice',

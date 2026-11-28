@@ -1,15 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-import { KeyRound, ShieldAlert, ShieldCheck } from 'lucide-react-native';
+import { Text } from 'react-native';
+import { ShieldAlert, ShieldCheck } from 'lucide-react-native';
 import { useAuth } from '../context/AuthContext';
 import { useInventory } from '../context/InventoryContext';
 import { api, type PinStatus } from '../sync/api';
 import { userError } from '../services/errors';
 import { Button, Field, Notice, Sheet, useUI } from './ui';
+import { ToolRow } from './ToolsLayout';
 
 /** Responsable del equipo: su PIN protege importar, restaurar, empezar vacío, cambiar código y sacar personas. */
 export function ResponsableCard() {
-  const { C, s } = useUI();
+  const { s } = useUI();
   const { session, user } = useAuth();
   const inv = useInventory();
   const [status, setStatus] = useState<PinStatus | null>(null),
@@ -36,31 +37,18 @@ export function ResponsableCard() {
   };
   const digits = (v: string) => v.replace(/\D/g, '').slice(0, 8);
   return (
-    <View style={[s.card, { gap: 12 }]}>
-      <View style={s.row}>
-        {has ? <ShieldCheck size={24} color={C.success} /> : <ShieldAlert size={24} color={C.warning} />}
-        <Text style={[s.h2, s.grow]}>Responsable</Text>
-      </View>
-      {has ? (
-        <Text style={s.body}>
-          <Text style={{ fontWeight: '700' }}>{status?.responsable}</Text> autoriza con su PIN las acciones que
-          cambian todo el equipo: importar o restaurar copias, empezar vacío, cambiar el código y sacar personas.
-          El trabajo diario no pide PIN.
-        </Text>
-      ) : (
-        <Text style={s.body}>
-          Todavía no hay responsable: cualquiera puede importar, restaurar o cambiar el código. Recomendado: elegí un
-          responsable con un PIN de 4 a 8 números.
-        </Text>
-      )}
-      {done ? <Notice tone="success" text={done} /> : null}
-      <Button
-        label={has ? 'Cambiar PIN o responsable' : 'Elegir responsable y PIN'}
-        icon={KeyRound}
-        variant={has ? 'secondary' : 'primary'}
+    <>
+      <ToolRow
+        label={has ? `Responsable: ${status?.responsable}` : 'Elegir responsable y PIN'}
+        detail={done || (has ? 'Su PIN autoriza importar, restaurar y cambiar el código' : 'Recomendado: hoy cualquiera puede reemplazar los datos')}
+        icon={has ? ShieldCheck : ShieldAlert}
         onPress={openSheet}
       />
       <Sheet visible={open} title={has ? 'Cambiar PIN' : 'Responsable y PIN'} busy={busy} onClose={() => setOpen(false)}>
+        <Text style={s.body}>
+          El responsable autoriza con su PIN lo que cambia todo el equipo: importar o restaurar copias, empezar vacío,
+          cambiar el código y sacar personas. El trabajo diario no pide PIN.
+        </Text>
         <Field label="Responsable (nombre)" value={name} onChangeText={setName} maxLength={60} />
         {has ? (
           <Field
@@ -97,6 +85,6 @@ export function ResponsableCard() {
           }}
         />
       </Sheet>
-    </View>
+    </>
   );
 }

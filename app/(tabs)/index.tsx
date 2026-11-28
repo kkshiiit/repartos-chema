@@ -1,418 +1,356 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, ActivityIndicator, Pressable, Text } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import type { FlashListRef } from '@shopify/flash-list';
-import { AlertTriangle, CalendarClock, HardHat, PackagePlus, Plus } from 'lucide-react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { View, Text, Pressable } from 'react-native';
 import { router } from 'expo-router';
+import {
+  CalendarClock,
+  Check,
+  ChevronRight,
+  CircleAlert,
+  PackageMinus,
+  PackagePlus,
+  Plus,
+} from 'lucide-react-native';
 import { useInventory } from '../../src/context/InventoryContext';
 import { useAuth } from '../../src/context/AuthContext';
-import { Button, Empty, Notice, Screen, Select, Sheet, useUI } from '../../src/components/ui';
-import { CardObra } from '../../src/components/CardObra';
+import { Button, Screen, useUI } from '../../src/components/ui';
 import { LegacyImport } from '../../src/components/LegacyImport';
-import { DataList } from '../../src/components/DataList';
-import { SearchToolbar, SectionHeading } from '../../src/components/ListStructure';
 import { businessDate } from '../../src/domain/rules';
-import {
-  rentalRows,
-  rentalTaskForDate,
-  matchesPresentationStatusFilter,
-  matchesRentalSearch,
-  type RentalRow,
-} from '../../src/utils/listPresentation';
-import {
-  createRentalListPreferences,
-  emptyRentalListPreferences,
-  rememberedRentalList,
-  rememberRentalList,
-  type RentalListPreferences,
-} from '../../src/services/rentalListPreferences';
+import { rentalTaskForDate } from '../../src/utils/listPresentation';
 import { BUSINESS_TIME_ZONE } from '../../src/utils/retirementCalendar';
 import { useBusinessClock } from '../../src/hooks/useBusinessClock';
+import { api } from '../../src/sync/api';
 import { fonts } from '../../src/theme/tokens';
 import type { ObraCard } from '../../src/types';
 
-export default function Home() {
-  const inventory = useInventory();
+/**
+ * Hoy: la primera pantalla responde una sola pregunta, «¿qué tengo que hacer ahora?».
+ * - Lo atrasado va primero y lo de hoy después (posición serial: lo primero se ve y se recuerda).
+ * - «Hechas 2 de 5» y la barra muestran lo que falta (efecto Zeigarnik: lo inconcluso empuja a terminar).
+ * - Sólo el día: lo de mañana se ve en Alquileres (ley de Parkinson: un plazo corto y claro).
+ * - Un solo color de acción (azul) y rojo sólo para lo atrasado (atención selectiva).
+ */
+export default function Today() {
+  const { C, s } = useUI();
+  const { state } = useInventory();
   const { user } = useAuth();
-  const workspace =
-    'workspaceId' in inventory && typeof inventory.workspaceId === 'string'
-      ? inventory.workspaceId
-      : inventory.workspaceKey || 'local';
-  const scope = `${workspace}:${user?.uid || 'anonymous'}`;
-  return <RentalList key={scope} scope={scope} />;
-}
-function RentalList({ scope }: { scope: string }) {
-  const { C } = useUI();
-  const inventory = useInventory();
-  const { state } = inventory;
-  const { user } = useAuth();
-  const store = useMemo(() => createRentalListPreferences(AsyncStorage, scope), [scope]);
-  const [recalled] = useState(() => rememberedRentalList(scope));
-  const [view, setView] = useState<RentalListPreferences>(
-    () => recalled?.preferences || emptyRentalListPreferences(),
-  );
-  const current = useRef(view);
-  const mounted = useRef(true);
-  const list = useRef<FlashListRef<RentalRow>>(null);
-  const restoredScroll = useRef(false);
-  // onLoad starts a native scroll request; it does not confirm its final offset.
-  // Ignore the initial zero event until that request reaches its target (or the
-  // actual end of a list whose content has shortened while detail was open).
-  const restoringOffset = useRef<number | null>(null);
-  const writesBlocked = useRef(recalled?.writesBlocked ?? true);
-  const changedBeforeLoad = useRef(false);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [ready, setReady] = useState(!!recalled);
-  const [viewError, setViewError] = useState(recalled?.error || '');
-  const [filtersOpen, setFiltersOpen] = useState(false);
-  const { query, status, zone } = view;
   const now = useBusinessClock();
   const today = businessDate(now);
-  const zones = useMemo(
-    () => [...new Set(state.obras.map((o) => o.localidadBarrio))].sort(),
-    [state.obras],
-  );
-  const filtered = useMemo(
-    () =>
-      state.obras.filter(
-        (o) =>
-          (zone === 'TODAS' || o.localidadBarrio === zone) &&
-          matchesPresentationStatusFilter(o, status, today) &&
-          matchesRentalSearch(o, query),
-      ),
-    [state.obras, zone, status, query, today],
-  );
-  const rows = useMemo(() => rentalRows(filtered, today), [filtered, today]);
   const workingDate = new Intl.DateTimeFormat('es-AR', {
     weekday: 'long',
     day: 'numeric',
-    month: 'short',
+    month: 'long',
     timeZone: BUSINESS_TIME_ZONE,
   }).format(now);
-
-  const saveView = useCallback(
-    (next: RentalListPreferences) => {
-      if (writesBlocked.current) return;
-      void store
-        .save(next)
-        .then(() => {
-          if (mounted.current && current.current === next) {
-            rememberRentalList(scope, next, '', false);
-            if (mounted.current) setViewError('');
-          }
-        })
-        .catch(() => {
-          const error = 'La vista se mantiene abierta, pero no pudo guardarse en este teléfono.';
-          if (mounted.current) {
-            rememberRentalList(scope, current.current, error, writesBlocked.current);
-            setViewError(error);
-          } else {
-            const latest = rememberedRentalList(scope);
-            if (latest && JSON.stringify(latest.preferences) === JSON.stringify(current.current))
-              rememberRentalList(scope, latest.preferences, error, latest.writesBlocked);
-          }
-        });
-    },
-    [scope, store],
-  );
-  useEffect(() => {
-    mounted.current = true;
-    let active = true;
-    if (!recalled) {
-      void store
-        .load()
-        .then((value) => {
-          if (!active) return;
-          writesBlocked.current = false;
-          if (changedBeforeLoad.current) {
-            rememberRentalList(scope, current.current);
-            saveView(current.current);
-            return;
-          }
-          current.current = value;
-          setView(value);
-          rememberRentalList(scope, value);
-        })
-        .catch(() => {
-          if (!active) return;
-          writesBlocked.current = true;
-          const error =
-            'No se pudo recuperar la vista anterior. El original se conserva; podés consultar sin guardar filtros.';
-          rememberRentalList(scope, current.current, error, true);
-          setViewError(error);
-        })
-        .finally(() => {
-          if (active) setReady(true);
-        });
-    }
-    return () => {
-      active = false;
-      mounted.current = false;
-      if (timer.current) {
-        clearTimeout(timer.current);
-        timer.current = null;
-        saveView(current.current);
+  const plan = useMemo(() => {
+    const overdue: ObraCard[] = [],
+      due: ObraCard[] = [],
+      done: { obra: ObraCard; kind: 'DELIVER' | 'RETIRE' }[] = [];
+    let upcoming = 0,
+      nextDate = '';
+    for (const o of state.obras) {
+      const task = rentalTaskForDate(o, today);
+      if (task.group === 'overdue') overdue.push(o);
+      else if (task.group === 'today') due.push(o);
+      else if (task.group === 'upcoming') {
+        upcoming++;
+        if (!nextDate || (task.date && task.date < nextDate)) nextDate = task.date || '';
       }
-    };
-  }, [scope, store, recalled, saveView]);
-  const changeView = (patch: Partial<RentalListPreferences>) => {
-    if (patch.query && patch.query.length > 1000) {
-      setViewError('La búsqueda admite hasta 1000 caracteres. La consulta anterior se conserva.');
-      return;
+      if (o.fechaRetiroEfectiva === today) done.push({ obra: o, kind: 'RETIRE' });
+      else if (o.fechaEntregaEfectiva === today) done.push({ obra: o, kind: 'DELIVER' });
     }
-    changedBeforeLoad.current = true;
-    const next = { ...current.current, ...patch, scroll: 0 };
-    current.current = next;
-    restoringOffset.current = null;
-    setView(next);
-    rememberRentalList(scope, next, viewError, writesBlocked.current);
-    list.current?.scrollToOffset({ offset: 0, animated: false });
-    saveView(next);
-  };
-  const clearFilters = () => {
-    changeView({ query: '', status: 'TODAS', zone: 'TODAS' });
-    setFiltersOpen(false);
-  };
-  const hasFilters = query.trim() !== '' || status !== 'TODAS' || zone !== 'TODAS';
+    const byDate = (a: ObraCard, b: ObraCard) =>
+      (rentalTaskForDate(a, today).date || '').localeCompare(rentalTaskForDate(b, today).date || '');
+    overdue.sort(byDate);
+    return { overdue, due, done, upcoming, nextDate };
+  }, [state.obras, today]);
+  const total = plan.overdue.length + plan.due.length + plan.done.length;
+  const left = plan.overdue.length + plan.due.length;
   return (
     <Screen
-      title="Alquileres"
-      subtitle={`${workingDate} · ${filtered.length} ${filtered.length === 1 ? 'alquiler' : 'alquileres'}${zone !== 'TODAS' ? ` · ${zone}` : ''}`}
-      scroll={false}
-      footer={
-        user?.role === 'ADMIN' ? (
-          <Button label="Nuevo alquiler" icon={Plus} onPress={() => router.push('/obra/nueva')} />
-        ) : undefined
-      }
+      title="Hoy"
+      subtitle={workingDate.charAt(0).toUpperCase() + workingDate.slice(1)}
     >
       <LegacyImport />
-      <View style={{ gap: 10 }}>
-        <SearchToolbar
-          label="Buscar alquileres"
-          value={query}
-          onChange={(value) => changeView({ query: value })}
-          placeholder="Cliente, dirección o localidad"
-          onFilter={() => setFiltersOpen(true)}
-        />
-        <SummaryTiles obras={state.obras} today={today} value={status} onChange={(value) => changeView({ status: status === value ? 'TODAS' : value })} />
-        {hasFilters ? (
-          <View style={{ alignItems: 'flex-start' }}>
-            <Button label="Limpiar filtros" variant="ghost" onPress={clearFilters} />
-          </View>
-        ) : null}
-      </View>
-      {viewError ? (
-        <View style={{ gap: 4 }}>
-          <Notice text={viewError} />
-          <Button
-            label="Reintentar vista"
-            variant="ghost"
-            onPress={async () => {
-              try {
-                await store.load();
-                writesBlocked.current = false;
-                await store.save(current.current);
-                rememberRentalList(scope, current.current);
-                setViewError('');
-              } catch {
-                setViewError(
-                  'La vista no pudo guardarse. El original y el inventario se conservan.',
-                );
-              }
-            }}
-          />
-        </View>
+      <Progress done={plan.done.length} total={total} left={left} />
+      {plan.overdue.length ? (
+        <Group title="Atrasadas" tone={C.danger} count={plan.overdue.length}>
+          {plan.overdue.map((o, i) => (
+            <TaskRow key={o.id} obra={o} today={today} last={i === plan.overdue.length - 1} />
+          ))}
+        </Group>
       ) : null}
-      {!ready ? (
-        <ActivityIndicator accessibilityLabel="Recuperando vista de alquileres" color={C.text} />
-      ) : (
-        <DataList
-          ref={list}
-          testID="lista-alquileres"
-          data={rows}
-          keyExtractor={(r) => r.id}
-          getItemType={(r) => r.kind}
-          keyboardShouldPersistTaps="handled"
-          onLoad={() => {
-            if (!restoredScroll.current) {
-              restoringOffset.current = current.current.scroll > 0 ? current.current.scroll : null;
-              restoredScroll.current = true;
-              list.current?.scrollToOffset({ offset: current.current.scroll, animated: false });
-            }
-          }}
-          onScrollBeginDrag={() => {
-            // A deliberate gesture takes precedence over a pending restoration.
-            restoringOffset.current = null;
-          }}
-          onScroll={(event) => {
-            if (!restoredScroll.current) return;
-            const scroll = Math.max(0, event.nativeEvent.contentOffset.y);
-            if (restoringOffset.current !== null) {
-              const { contentSize, layoutMeasurement } = event.nativeEvent;
-              const maximum = contentSize.height - layoutMeasurement.height;
-              const target =
-                maximum > 0 ? Math.min(restoringOffset.current, maximum) : restoringOffset.current;
-              // Fractional layout/font rounding may shift the requested offset.
-              if (Math.abs(scroll - target) > 4) return;
-              restoringOffset.current = null;
-            }
-            const next = { ...current.current, scroll };
-            current.current = next;
-            rememberRentalList(scope, next, viewError, writesBlocked.current);
-            if (timer.current) clearTimeout(timer.current);
-            timer.current = setTimeout(() => {
-              timer.current = null;
-              saveView(current.current);
-            }, 250);
-          }}
-          scrollEventThrottle={100}
-          ListEmptyComponent={
-            <View style={{ gap: 12 }}>
-              <Empty
-                title={
-                  inventory.error
-                    ? 'Datos no disponibles'
-                    : hasFilters
-                      ? 'Sin resultados'
-                      : 'Sin alquileres'
-                }
-                detail={
-                  inventory.error
-                    ? 'Los datos guardados se conservan. Usá Reintentar para recuperarlos.'
-                    : hasFilters
-                      ? 'Probá otra búsqueda o quitá los filtros.'
-                      : 'Creá el primer alquiler para registrar materiales, cliente y destino.'
-                }
-              />
-              {hasFilters ? (
-                <Button label="Ver todos" variant="secondary" onPress={clearFilters} />
-              ) : null}
-            </View>
-          }
-          renderItem={({ item, index }) =>
-            item.kind === 'section' ? (
-              <SectionHeading title={item.title} count={item.count} />
-            ) : (
-              <CardObra
-                obra={item.obra}
-                materials={state.materiales}
-                now={now}
-                first={rows[index - 1]?.kind === 'section'}
-                last={!rows[index + 1] || rows[index + 1]?.kind === 'section'}
-              />
-            )
-          }
-          contentContainerStyle={{ paddingBottom: 20 }}
-        />
-      )}
-      <Sheet visible={filtersOpen} title="Filtrar alquileres" onClose={() => setFiltersOpen(false)}>
-        <Select
-          label="Zona"
-          value={zone}
-          options={[
-            { value: 'TODAS', label: 'Todas las zonas' },
-            ...zones.map((value) => ({ value, label: value })),
-          ]}
-          onChange={(value) => changeView({ zone: value })}
-        />
-        <Select
-          label="Tarea o estado"
-          value={status}
-          options={[
-            { value: 'TODAS', label: 'Todos' },
-            { value: 'HOY', label: 'Entregas y retiros de hoy' },
-            { value: 'ATRASADOS', label: 'Entregas y retiros atrasados' },
-            { value: 'PROXIMOS', label: 'Próximas tareas' },
-            { value: 'PENDIENTE', label: 'Por entregar' },
-            { value: 'EN_OBRA', label: 'En obra' },
-            { value: 'ROJO', label: 'Retiros vencidos' },
-            { value: 'AMARILLO', label: 'Retiros de hoy' },
-            { value: 'VERDE', label: 'Al día' },
-            { value: 'SIN_FECHA', label: 'Sin fecha de retiro' },
-            { value: 'RETIRADO', label: 'Retirados' },
-          ]}
-          onChange={(value) => changeView({ status: value })}
-        />
-        <Button label="Ver resultados" onPress={() => setFiltersOpen(false)} />
-        <Button label="Limpiar filtros" variant="ghost" onPress={clearFilters} />
-      </Sheet>
+      {plan.due.length ? (
+        <Group title="Para hoy" count={plan.due.length}>
+          {plan.due.map((o, i) => (
+            <TaskRow key={o.id} obra={o} today={today} last={i === plan.due.length - 1} />
+          ))}
+        </Group>
+      ) : null}
+      {plan.done.length ? (
+        <Group title="Hechas hoy" count={plan.done.length}>
+          {plan.done.map(({ obra, kind }, i) => (
+            <Pressable
+              key={obra.id}
+              accessibilityRole="button"
+              accessibilityLabel={`Abrir ${obra.clienteNombre}. ${kind === 'DELIVER' ? 'Entregado' : 'Retirado'} hoy`}
+              onPress={() => router.push(`/obra/${obra.id}`)}
+              style={({ pressed }) => [
+                s.row,
+                rowStyle(C, i === plan.done.length - 1),
+                { backgroundColor: pressed ? C.panel2 : C.panel },
+              ]}
+            >
+              <View style={[dot, { backgroundColor: C.successBackground }]}>
+                <Check size={18} color={C.success} strokeWidth={3} />
+              </View>
+              <View style={{ flex: 1, minWidth: 0 }}>
+                <Text numberOfLines={1} style={{ color: C.muted, fontFamily: fonts.medium, fontSize: 16 }}>
+                  {obra.clienteNombre}
+                </Text>
+                <Text style={{ color: C.success, fontFamily: fonts.medium, fontSize: 14 }}>
+                  {kind === 'DELIVER' ? 'Entregado' : 'Retirado'}
+                </Text>
+              </View>
+            </Pressable>
+          ))}
+        </Group>
+      ) : null}
+      <Setup />
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`Ver todos los alquileres. ${plan.upcoming} con tareas en los próximos días`}
+        onPress={() => router.push('/alquileres')}
+        style={({ pressed }) => [
+          s.row,
+          {
+            gap: 12,
+            padding: 14,
+            borderRadius: 14,
+            borderWidth: 1,
+            borderColor: C.hairline,
+            backgroundColor: pressed ? C.panel2 : C.panel,
+          },
+        ]}
+      >
+        <CalendarClock size={22} color={C.muted} />
+        <View style={{ flex: 1 }}>
+          <Text style={{ color: C.text, fontFamily: fonts.semibold, fontSize: 16 }}>Próximos días</Text>
+          <Text style={{ color: C.muted, fontSize: 14, fontFamily: fonts.regular }}>
+            {plan.upcoming
+              ? `${plan.upcoming} ${plan.upcoming === 1 ? 'tarea' : 'tareas'} · la primera el ${formatShort(plan.nextDate)}`
+              : 'Nada programado todavía'}
+          </Text>
+        </View>
+        <ChevronRight size={20} color={C.muted} />
+      </Pressable>
+      {user?.role === 'ADMIN' ? (
+        <Button label="Nuevo alquiler" icon={Plus} variant="secondary" onPress={() => router.push('/obra/nueva')} />
+      ) : null}
     </Screen>
   );
 }
 
-/** Resumen del día: cuatro números grandes que además filtran la lista al tocarlos. */
-function SummaryTiles({
-  obras,
-  today,
-  value,
-  onChange,
-}: {
-  obras: ObraCard[];
-  today: string;
-  value: string;
-  onChange: (value: string) => void;
-}) {
+const dot = { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' } as const;
+function rowStyle(C: ReturnType<typeof useUI>['C'], last: boolean) {
+  return {
+    gap: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderBottomWidth: last ? 0 : 1,
+    borderColor: C.hairline,
+  } as const;
+}
+function formatShort(date: string) {
+  if (!date) return '';
+  const [y, m, d] = date.split('-').map(Number);
+  return new Intl.DateTimeFormat('es-AR', { weekday: 'short', day: 'numeric', timeZone: 'UTC' }).format(
+    new Date(Date.UTC(y!, m! - 1, d!)),
+  );
+}
+
+/** «Hechas 2 de 5»: el número que falta es el que empuja a seguir. */
+function Progress({ done, total, left }: { done: number; total: number; left: number }) {
   const { C } = useUI();
-  const counts = useMemo(() => {
-    let overdue = 0,
-      todayCount = 0,
-      pending = 0,
-      working = 0;
-    for (const o of obras) {
-      const group = rentalTaskForDate(o, today).group;
-      if (group === 'overdue') overdue++;
-      if (group === 'today') todayCount++;
-      if (o.estadoProceso === 'PENDIENTE_ENTREGA') pending++;
-      if (o.estadoProceso === 'ENTREGADO') working++;
-    }
-    return { overdue, todayCount, pending, working };
-  }, [obras, today]);
-  const tiles = [
-    { key: 'ATRASADOS', label: 'Atrasados', n: counts.overdue, icon: AlertTriangle, color: C.danger, bg: C.dangerBackground },
-    { key: 'HOY', label: 'Para hoy', n: counts.todayCount, icon: CalendarClock, color: C.warning, bg: C.warningBackground },
-    { key: 'PENDIENTE', label: 'Por entregar', n: counts.pending, icon: PackagePlus, color: C.purple, bg: C.panel2 },
-    { key: 'EN_OBRA', label: 'En obra', n: counts.working, icon: HardHat, color: C.success, bg: C.successBackground },
-  ];
+  const ratio = total ? done / total : 0;
+  const title = !total
+    ? 'Sin entregas ni retiros para hoy'
+    : left === 0
+      ? '¡Listo! Terminaste lo de hoy'
+      : `Falta${left === 1 ? '' : 'n'} ${left} de ${total}`;
   return (
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-      {tiles.map((t) => {
-        const selected = value === t.key;
-        return (
+    <View
+      accessibilityRole="summary"
+      accessibilityLabel={total ? `${title}. Hechas ${done} de ${total}.` : title}
+      style={{ gap: 10, padding: 16, borderRadius: 16, backgroundColor: C.panel, borderWidth: 1, borderColor: C.hairline }}
+    >
+      <View style={{ flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', gap: 8 }}>
+        <Text style={{ color: C.text, fontFamily: fonts.display, fontSize: 24, lineHeight: 28, flexShrink: 1 }}>{title}</Text>
+        {total ? (
+          <Text style={{ color: C.muted, fontFamily: fonts.medium, fontSize: 14 }}>
+            {done} {done === 1 ? 'hecha' : 'hechas'}
+          </Text>
+        ) : null}
+      </View>
+      {total ? (
+        <View style={{ height: 8, borderRadius: 4, backgroundColor: C.panel2, overflow: 'hidden' }}>
+          <View style={{ width: `${Math.max(ratio * 100, done ? 4 : 0)}%`, height: 8, borderRadius: 4, backgroundColor: C.success }} />
+        </View>
+      ) : (
+        <Text style={{ color: C.muted, fontSize: 14, fontFamily: fonts.regular }}>
+          Cuando haya algo para entregar o retirar, aparece acá primero.
+        </Text>
+      )}
+    </View>
+  );
+}
+
+function Group({ title, count, tone, children }: { title: string; count: number; tone?: string; children: React.ReactNode }) {
+  const { C } = useUI();
+  return (
+    <View style={{ gap: 8 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        {tone ? <CircleAlert size={18} color={tone} /> : null}
+        <Text accessibilityRole="header" style={{ color: tone || C.text, fontFamily: fonts.display, fontSize: 20, lineHeight: 24 }}>
+          {title}
+        </Text>
+        <Text style={{ color: C.muted, fontFamily: fonts.semibold, fontSize: 14 }}>{count}</Text>
+      </View>
+      <View style={{ borderRadius: 14, borderWidth: 1, borderColor: tone || C.hairline, overflow: 'hidden', backgroundColor: C.panel }}>
+        {children}
+      </View>
+    </View>
+  );
+}
+
+function TaskRow({ obra, today, last }: { obra: ObraCard; today: string; last: boolean }) {
+  const { C, s } = useUI();
+  const task = rentalTaskForDate(obra, today);
+  const deliver = task.kind === 'DELIVER';
+  const Icon = deliver ? PackagePlus : PackageMinus;
+  const late = task.group === 'overdue';
+  const verb = deliver ? 'Entregar' : 'Retirar';
+  return (
+    <View style={[s.row, rowStyle(C, last)]}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`Abrir ${obra.clienteNombre}`}
+        accessibilityHint={`${obra.direccion}, ${obra.localidadBarrio}. ${task.label}.`}
+        onPress={() => router.push(`/obra/${obra.id}`)}
+        style={({ pressed }) => [s.row, { flex: 1, minWidth: 0, gap: 12, opacity: pressed ? 0.7 : 1 }]}
+      >
+        <View style={[dot, { backgroundColor: late ? C.dangerBackground : C.panel2 }]}>
+          <Icon size={19} color={late ? C.danger : C.text} />
+        </View>
+        <View style={{ flex: 1, minWidth: 0 }}>
+          <Text numberOfLines={1} style={{ color: C.text, fontFamily: fonts.semibold, fontSize: 16 }}>
+            {obra.clienteNombre}
+          </Text>
+          <Text numberOfLines={1} style={{ color: C.muted, fontFamily: fonts.regular, fontSize: 14 }}>
+            {obra.direccion}
+            {obra.localidadBarrio ? `, ${obra.localidadBarrio}` : ''}
+          </Text>
+          {late ? (
+            <Text style={{ color: C.danger, fontFamily: fonts.semibold, fontSize: 13 }}>{task.label}</Text>
+          ) : null}
+        </View>
+      </Pressable>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`${verb} ${obra.clienteNombre}`}
+        onPress={() => router.push(`/obra/${obra.id}?accion=${deliver ? 'entrega' : 'retiro'}`)}
+        style={({ pressed }) => ({
+          minHeight: 40,
+          paddingHorizontal: 14,
+          borderRadius: 10,
+          justifyContent: 'center',
+          backgroundColor: C.primary,
+          opacity: pressed ? 0.85 : 1,
+        })}
+      >
+        <Text style={{ color: C.onPrimary, fontFamily: fonts.semibold, fontSize: 15 }}>{verb}</Text>
+      </Pressable>
+    </View>
+  );
+}
+
+/**
+ * Lista corta para dejar el equipo andando. El primer paso ya viene hecho (crear el equipo):
+ * una lista empezada se termina más que una vacía. Desaparece cuando está completa.
+ */
+function Setup() {
+  const { C, s } = useUI();
+  const { state } = useInventory();
+  const { session, members } = useAuth();
+  const [hasPin, setHasPin] = useState<boolean | null>(null);
+  useEffect(() => {
+    let alive = true;
+    if (session)
+      api
+        .pinStatus(session.code)
+        .then((v) => alive && setHasPin(!!v?.hasPin))
+        .catch(() => undefined);
+    return () => {
+      alive = false;
+    };
+  }, [session]);
+  const steps = [
+    { label: 'Crear el equipo', done: true, go: () => undefined },
+    { label: 'Cargar los materiales del depósito', done: state.materiales.length > 0, go: () => router.push('/galpon') },
+    { label: 'Sumar a tu equipo', done: members.length > 1, go: () => router.push('/configuracion') },
+    { label: 'Elegir responsable con PIN', done: hasPin !== false, go: () => router.push('/configuracion') },
+    { label: 'Crear el primer alquiler', done: state.obras.length > 0, go: () => router.push('/obra/nueva') },
+  ];
+  const doneCount = steps.filter((v) => v.done).length;
+  if (doneCount === steps.length) return null;
+  return (
+    <View style={{ gap: 8 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        <Text accessibilityRole="header" style={{ color: C.text, fontFamily: fonts.display, fontSize: 20, lineHeight: 24 }}>
+          Terminá de configurar
+        </Text>
+        <Text style={{ color: C.muted, fontFamily: fonts.semibold, fontSize: 14 }}>
+          {doneCount} de {steps.length}
+        </Text>
+      </View>
+      <View style={{ borderRadius: 14, borderWidth: 1, borderColor: C.hairline, overflow: 'hidden', backgroundColor: C.panel }}>
+        {steps.map((step, i) => (
           <Pressable
-            key={t.key}
+            key={step.label}
             accessibilityRole="button"
-            accessibilityState={{ selected }}
-            accessibilityLabel={`${t.label}: ${t.n}. ${selected ? 'Filtro activo, tocar para ver todos' : 'Tocar para filtrar'}`}
-            onPress={() => onChange(t.key)}
-            style={({ pressed }) => ({
-              flexGrow: 1,
-              flexBasis: '45%',
-              minHeight: 74,
-              borderRadius: 16,
-              paddingHorizontal: 14,
-              paddingVertical: 10,
-              borderWidth: selected ? 2.5 : 1,
-              borderColor: selected ? t.color : C.hairline,
-              backgroundColor: pressed ? C.selection : selected ? t.bg : C.panel,
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 10,
-            })}
+            accessibilityLabel={`${step.label}${step.done ? ', hecho' : ''}`}
+            disabled={step.done}
+            onPress={step.go}
+            style={({ pressed }) => [s.row, rowStyle(C, i === steps.length - 1), { backgroundColor: pressed ? C.panel2 : C.panel }]}
           >
-            <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: t.bg, alignItems: 'center', justifyContent: 'center' }}>
-              <t.icon size={22} color={t.color} />
+            <View
+              style={{
+                width: 24,
+                height: 24,
+                borderRadius: 12,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: step.done ? C.success : 'transparent',
+                borderWidth: step.done ? 0 : 2,
+                borderColor: C.controlBorder,
+              }}
+            >
+              {step.done ? <Check size={15} color={C.bg} strokeWidth={3.2} /> : null}
             </View>
-            <View style={{ flex: 1, minWidth: 0 }}>
-              <Text style={{ color: C.text, fontFamily: fonts.semibold, fontSize: 26, lineHeight: 30, fontWeight: '700', fontVariant: ['tabular-nums'] }}>
-                {t.n}
-              </Text>
-              <Text numberOfLines={1} style={{ color: C.muted, fontFamily: fonts.medium, fontSize: 13 }}>
-                {t.label}
-              </Text>
-            </View>
+            <Text
+              style={{
+                flex: 1,
+                color: step.done ? C.muted : C.text,
+                fontFamily: step.done ? fonts.regular : fonts.medium,
+                fontSize: 15,
+                textDecorationLine: step.done ? 'line-through' : 'none',
+              }}
+            >
+              {step.label}
+            </Text>
+            {step.done ? null : <ChevronRight size={18} color={C.muted} />}
           </Pressable>
-        );
-      })}
+        ))}
+      </View>
     </View>
   );
 }
