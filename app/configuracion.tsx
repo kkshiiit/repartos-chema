@@ -9,16 +9,18 @@ import { useTheme } from '../src/context/ThemeContext';
 import React, { useEffect, useState } from 'react';
 import { View, Text, Share, Pressable } from 'react-native';
 import {
+  ArchiveRestore,
   Bell,
+  ClipboardList,
+  FileSpreadsheet,
+  Truck,
   BookOpen,
   FileDown,
-  FileText,
   KeyRound,
   Layers,
   MapPin,
   Moon,
   Share2,
-  ShieldCheck,
   SunMedium,
   SmartphoneNfc,
   UserRoundCog,
@@ -135,7 +137,11 @@ function ThemeOption({
   );
 }
 
-export default function Settings() {
+export default function Configuracion() {
+  return <SettingsScreen />;
+}
+/** Ajustes. En la pestaña «Más» se muestra sin flecha de volver y con la Auditoría arriba. */
+export function SettingsScreen({ tab = false }: { tab?: boolean }) {
   const { C, s } = useUI();
   const theme = useTheme();
   const { user, session, members, refreshMembers, removeMember, switchUser, leaveTeam, rotateCode } = useAuth();
@@ -186,7 +192,7 @@ export default function Settings() {
       .catch(() => undefined);
   const version = Constants.expoConfig?.version || '1.0.0';
   return (
-    <Screen title="Ajustes" back>
+    <Screen title={tab ? "Más" : "Ajustes"} back={!tab}>
       {/* Quién está usando este teléfono: lo primero que hay que confirmar. */}
       <View style={[s.row, { gap: 14, paddingVertical: 4 }]}>
         <View style={{ width: 60, height: 60, borderRadius: 30, backgroundColor: C.primary, alignItems: 'center', justifyContent: 'center' }}>
@@ -197,6 +203,19 @@ export default function Settings() {
           <Text style={s.muted}>{session?.teamName} · todo queda en la Auditoría con tu nombre</Text>
         </View>
       </View>
+
+      <ToolGroup title="Registro">
+        <ToolRow label="Auditoría" detail="Quién hizo cada cambio y cuándo" icon={ClipboardList} onPress={() => router.push('/historial')} />
+        <ToolRow label="Copias y volver atrás" detail="Copia semanal automática" icon={ArchiveRestore} onPress={() => router.push('/copias')} last />
+      </ToolGroup>
+
+      <ToolGroup title="Trabajo">
+        <ToolRow label="Combos de carga" detail="Cargas armadas para elegir rápido" icon={Layers} onPress={() => router.push('/combos')} />
+        <ToolRow label="Responsables de reparto" value={String(state.responsables.length)} icon={Truck} onPress={() => open('responsables')} />
+        <ToolRow label="Dirección del depósito" detail={depot.direccion} icon={MapPin} onPress={() => open('depot')} />
+        <ToolRow label="Planillas Word y Excel" detail="Remitos y reportes" icon={FileSpreadsheet} onPress={() => router.push('/exportar')} />
+        <ToolRow label="Avisos y sonidos" icon={Bell} onPress={() => open('feedback')} last />
+      </ToolGroup>
 
       <ToolGroup title="Equipo">
         <ToolRow label="Compartir código del equipo" detail={session?.code} icon={Share2} onPress={shareCode} />
@@ -218,17 +237,8 @@ export default function Settings() {
         {theme.error ? <Notice text={theme.error} tone="error" /> : null}
       </View>
 
-      <ToolGroup title="Datos y copias">
-        <ToolRow label="Copias y restauración" detail="Copia semanal y volver atrás" icon={ShieldCheck} onPress={() => router.push('/copias')} />
-        <ToolRow label="Exportar e importar copia" detail="Todo en un archivo JSON" icon={FileDown} onPress={() => open('copies')} />
-        <ToolRow label="Planillas Word y Excel" detail="Remitos y reportes" icon={FileText} onPress={() => router.push('/exportar')} last />
-      </ToolGroup>
-
-      <ToolGroup title="Trabajo">
-        <ToolRow label="Combos de carga" icon={Layers} onPress={() => router.push('/combos')} />
-        <ToolRow label="Responsables de reparto" value={String(state.responsables.length)} icon={UsersRound} onPress={() => open('responsables')} />
-        <ToolRow label="Depósito" detail={depot.direccion} icon={MapPin} onPress={() => open('depot')} />
-        <ToolRow label="Avisos y sonidos" icon={Bell} onPress={() => open('feedback')} last />
+      <ToolGroup title="Datos">
+        <ToolRow label="Exportar e importar copia" detail="Todo en un archivo JSON" icon={FileDown} onPress={() => open('copies')} last />
       </ToolGroup>
 
       <ToolGroup title="Ayuda">

@@ -16,12 +16,12 @@ export const dark = {
   surfaceMuted: '#20252D',
   text: '#EEF1F4',
   muted: '#A6AFBB',
-  primary: '#E0213F',
+  primary: '#2563EB',
   onPrimary: '#FFFFFF',
   onDanger: '#FFFFFF',
-  link: '#FF8A99',
-  selection: '#2A1A1E',
-  selectionText: '#FFB3BD',
+  link: '#8AB6FF',
+  selection: '#16233A',
+  selectionText: '#A8CBFF',
   line: '#2C323B',
   controlBorder: '#6B7480',
   infoBackground: '#14243A',
@@ -40,14 +40,14 @@ export const dark = {
   red: '#E0213F',
   green: '#5FD38D',
   yellow: '#F7B955',
-  blue: '#7FB0FF',
+  blue: '#8AB6FF',
   orange: '#F7B955',
-  purple: '#7FB0FF',
+  purple: '#C4A6FF',
   neutral: '#A6AFBB',
   dangerBg: '#3A1219',
-  focus: '#FF6B7D',
+  focus: '#8AB6FF',
   disabled: '#8B95A2',
-  accent: '#FF4D63',
+  accent: '#8AB6FF',
   glass: '#181C22',
   reflection: '#20252D',
   overlay: '#000000B8',
@@ -59,19 +59,23 @@ export const dark = {
   onBandMuted: '#C9CFD7',
 };
 export type Colors = typeof dark;
-/** Sol: gris hormigón claro con tarjetas blancas, tinta casi negra y el rojo de la marca. */
+/**
+ * Sol: gris hormigón claro con tarjetas blancas y tinta casi negra.
+ * Un solo color de acción (azul de señal obligatoria): los botones que hacen algo son azules.
+ * El rojo queda reservado a lo urgente (atrasos, borrar) y a la marca, para que salte a la vista.
+ */
 export const light: Colors = {
   background: '#F2F3F5',
   surface: '#FFFFFF',
   surfaceMuted: '#E9ECEF',
   text: '#15191E',
   muted: '#4F5864',
-  primary: '#C8102E',
+  primary: '#1A56DB',
   onPrimary: '#FFFFFF',
   onDanger: '#FFFFFF',
-  link: '#A50D26',
-  selection: '#FBE7EA',
-  selectionText: '#8E0B21',
+  link: '#1A56DB',
+  selection: '#E7EEFC',
+  selectionText: '#123F87',
   line: '#D5DAE0',
   controlBorder: '#737C88',
   infoBackground: '#E6EFFD',
@@ -90,22 +94,22 @@ export const light: Colors = {
   red: '#C8102E',
   green: '#12703A',
   yellow: '#8A4B00',
-  blue: '#1D4FB8',
+  blue: '#1A56DB',
   orange: '#8A4B00',
-  purple: '#1D4FB8',
+  purple: '#6D28D9',
   neutral: '#4F5864',
   dangerBg: '#FCE8EB',
-  focus: '#C8102E',
+  focus: '#1A56DB',
   disabled: '#8A939E',
-  accent: '#C8102E',
+  accent: '#1A56DB',
   glass: '#FFFFFF',
   reflection: '#E9ECEF',
   overlay: '#15191EB3',
   shadow: '#15191E',
   auroraOpacity: 0,
-  band: '#C8102E',
+  band: '#15191E',
   onBand: '#FFFFFF',
-  onBandMuted: '#FFD9DE',
+  onBandMuted: '#C9CFD7',
 };
 /**
  * Barlow: letra de cartelería vial, clara a pleno sol. Condensed para títulos y números grandes,
@@ -135,10 +139,10 @@ export const spacing = {
 } as const;
 export const radius = { input: 12, object: 16, sheet: 24, pill: 999 } as const;
 export const typography = {
-  title: { fontSize: 32, lineHeight: 36, fontFamily: fonts.display },
-  section: { fontSize: 22, lineHeight: 26, fontFamily: fonts.display },
-  body: { fontSize: 17, lineHeight: 24, fontFamily: fonts.regular },
-  secondary: { fontSize: 15, lineHeight: 21, fontFamily: fonts.regular },
+  title: { fontSize: 28, lineHeight: 32, fontFamily: fonts.display },
+  section: { fontSize: 20, lineHeight: 24, fontFamily: fonts.display },
+  body: { fontSize: 16, lineHeight: 22, fontFamily: fonts.regular },
+  secondary: { fontSize: 14, lineHeight: 20, fontFamily: fonts.regular },
   caption: { fontSize: 13, lineHeight: 18, fontFamily: fonts.medium },
 } as const;
 export const motionMs = {

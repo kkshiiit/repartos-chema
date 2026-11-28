@@ -41,7 +41,7 @@ test('dos teléfonos: equipo, nombres, stock, alquiler, entrega, ticket, retiro 
   await expect(a.getByRole('heading', { name: '¿Quién sos?' })).toBeVisible({ timeout: 30000 });
   await a.getByLabel('Tu nombre y apellido', { exact: true }).fill('Ana Gómez');
   await a.getByRole('button', { name: 'Entrar con este nombre', exact: true }).click();
-  await expect(a.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible();
+  await expect(a.getByRole('heading', { name: 'Hoy', exact: true })).toBeVisible();
   await synced(a);
   const code = (await session(a)).code as string;
   expect(code).toMatch(/^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/);
@@ -101,6 +101,8 @@ test('dos teléfonos: equipo, nombres, stock, alquiler, entrega, ticket, retiro 
   await b.screenshot({ path: shot('05-quien-noche') });
   await b.getByLabel('Tu nombre y apellido', { exact: true }).fill('Beto Ruiz');
   await b.getByRole('button', { name: 'Entrar con este nombre', exact: true }).click();
+  await expect(b.getByRole('heading', { name: 'Hoy', exact: true })).toBeVisible({ timeout: 30000 });
+  await b.goto('/alquileres');
   await expect(b.getByRole('button', { name: /Abrir Constructora Prueba/ })).toBeVisible({ timeout: 30000 });
   await synced(b);
   await b.screenshot({ path: shot('06-inicio-noche') });
@@ -160,7 +162,7 @@ test('papelera: un alquiler cargado se borra de un toque con confirmación y que
   await p.getByRole('button', { name: 'Crear equipo', exact: true }).click();
   await p.getByLabel('Tu nombre y apellido', { exact: true }).fill('Ana Gómez');
   await p.getByRole('button', { name: 'Entrar con este nombre', exact: true }).click();
-  await expect(p.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible();
+  await expect(p.getByRole('heading', { name: 'Hoy', exact: true })).toBeVisible();
   await p.goto('/galpon');
   await p.getByRole('button', { name: 'Agregar material', exact: true }).click();
   await p.getByLabel('Nombre del material', { exact: true }).fill('Cuerpo de andamio');
@@ -186,7 +188,7 @@ test('papelera: un alquiler cargado se borra de un toque con confirmación y que
   await p.getByRole('button', { name: 'Agregar material', exact: true }).last().click();
   await p.getByRole('button', { name: 'Guardar carga', exact: true }).click();
   await expect.poll(async () => (await data(p)).confirmed.obras[0]?.materialesCargados.length, { timeout: 30000 }).toBe(1);
-  await p.goto('/');
+  await p.goto('/alquileres');
   const trash = p.getByRole('button', { name: 'Borrar alquiler de Cliente Arrepentido', exact: true });
   await expect(trash).toBeVisible();
   await p.screenshot({ path: shot('10-papelera-en-tarjeta') });
@@ -212,7 +214,7 @@ test('papelera del depósito: un material se borra con confirmación y queda aud
   await p.getByRole('button', { name: 'Crear equipo', exact: true }).click();
   await p.getByLabel('Tu nombre y apellido', { exact: true }).fill('Ana Gómez');
   await p.getByRole('button', { name: 'Entrar con este nombre', exact: true }).click();
-  await expect(p.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible({ timeout: 30000 });
+  await expect(p.getByRole('heading', { name: 'Hoy', exact: true })).toBeVisible({ timeout: 30000 });
   await p.goto('/galpon');
   await p.getByRole('button', { name: 'Agregar material', exact: true }).click();
   await p.getByLabel('Nombre del material', { exact: true }).fill('Rueda');
@@ -243,7 +245,7 @@ test('cambiar código: el viejo deja de servir, el otro teléfono recibe aviso y
   await a.getByRole('button', { name: 'Crear equipo', exact: true }).click();
   await a.getByLabel('Tu nombre y apellido', { exact: true }).fill('Ana Gómez');
   await a.getByRole('button', { name: 'Entrar con este nombre', exact: true }).click();
-  await expect(a.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible({ timeout: 30000 });
+  await expect(a.getByRole('heading', { name: 'Hoy', exact: true })).toBeVisible({ timeout: 30000 });
   await synced(a);
   const oldCode = (await session(a)).code as string;
 
@@ -255,7 +257,7 @@ test('cambiar código: el viejo deja de servir, el otro teléfono recibe aviso y
   await b.getByRole('button', { name: 'Entrar', exact: true }).click();
   await b.getByLabel('Tu nombre y apellido', { exact: true }).fill('Beto Ruiz');
   await b.getByRole('button', { name: 'Entrar con este nombre', exact: true }).click();
-  await expect(b.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible({ timeout: 30000 });
+  await expect(b.getByRole('heading', { name: 'Hoy', exact: true })).toBeVisible({ timeout: 30000 });
   await synced(b);
 
   await a.goto('/configuracion');
@@ -277,7 +279,7 @@ test('cambiar código: el viejo deja de servir, el otro teléfono recibe aviso y
   await b.getByLabel('Código del equipo (12 letras y números)', { exact: true }).fill(newCode);
   await b.getByRole('button', { name: 'Entrar', exact: true }).click();
   await b.getByRole('button', { name: 'Entrar como Beto Ruiz', exact: true }).click();
-  await expect(b.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible({ timeout: 30000 });
+  await expect(b.getByRole('heading', { name: 'Hoy', exact: true })).toBeVisible({ timeout: 30000 });
   await synced(b);
 
   // A sigue adentro y la auditoría registra el cambio.
@@ -297,7 +299,7 @@ test('copias: se guarda la copia semanal y un borrado por error se deshace volvi
   await p.getByRole('button', { name: 'Crear equipo', exact: true }).click();
   await p.getByLabel('Tu nombre y apellido', { exact: true }).fill('Ana Gómez');
   await p.getByRole('button', { name: 'Entrar con este nombre', exact: true }).click();
-  await expect(p.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible({ timeout: 30000 });
+  await expect(p.getByRole('heading', { name: 'Hoy', exact: true })).toBeVisible({ timeout: 30000 });
   await p.goto('/galpon');
   await p.getByRole('button', { name: 'Agregar material', exact: true }).click();
   await p.getByLabel('Nombre del material', { exact: true }).fill('Rueda');
@@ -349,7 +351,7 @@ test('responsable con PIN: restaurar pide el PIN, rechaza uno equivocado y acept
   await p.getByRole('button', { name: 'Crear equipo', exact: true }).click();
   await p.getByLabel('Tu nombre y apellido', { exact: true }).fill('Ana Gómez');
   await p.getByRole('button', { name: 'Entrar con este nombre', exact: true }).click();
-  await expect(p.getByRole('heading', { name: 'Alquileres', exact: true })).toBeVisible({ timeout: 30000 });
+  await expect(p.getByRole('heading', { name: 'Hoy', exact: true })).toBeVisible({ timeout: 30000 });
 
   // Designar responsable con PIN.
   await p.goto('/configuracion');

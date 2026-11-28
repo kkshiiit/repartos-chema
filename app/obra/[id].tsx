@@ -91,7 +91,7 @@ export default function Detail() {
       : task.group === 'today'
         ? C.warning
         : task.kind === 'DELIVER'
-          ? C.blue
+          ? C.purple
           : task.kind === 'RETIRE'
             ? C.success
             : C.muted;
@@ -139,7 +139,7 @@ export default function Detail() {
             <Text accessibilityRole="header" style={[s.title, s.grow]}>
               {o.clienteNombre}
             </Text>
-            <DeleteRentalButton obra={o} onDeleted={() => router.replace('/')} />
+            <DeleteRentalButton obra={o} onDeleted={() => router.replace('/alquileres')} />
           </View>
           <View style={[s.row, { gap: 8, flexWrap: 'wrap' }]}>
             <StatusChip obra={o} today={businessDate(now)} />

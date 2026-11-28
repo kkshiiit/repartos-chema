@@ -36,8 +36,8 @@ export function StatBoard({ items, value, onChange }: { items: Stat[]; value?: s
               style={{
                 color: quiet ? C.subtle : t.color,
                 fontFamily: fonts.display,
-                fontSize: t.n > 999 ? 30 : 38,
-                lineHeight: 42,
+                fontSize: t.n > 999 ? 26 : 32,
+                lineHeight: 36,
                 fontVariant: ['tabular-nums'],
               }}
             >
