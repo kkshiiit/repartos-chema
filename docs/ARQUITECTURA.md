@@ -49,6 +49,10 @@ Esquema en `supabase/migrations/`: una migración por versión (`inicial`, `camb
 | `c2_photo_put / c2_photo_get` | Fotos JPEG comprimidas (base64). |
 | `c2_backup_put / c2_backup_list / c2_backup_get` | Copias del inventario: semanal automática (máx. una cada 6 días, se guardan 8) y "antes de restaurar". |
 
+### Servidor siempre activo
+
+El plan gratuito de Supabase pausa el proyecto tras 7 días sin uso. `.github/workflows/mantener-servidor.yml` llama cada 3 días a `c2_join` con un código inexistente: la base hace una búsqueda real y responde `EQUIPO_NO_ENCONTRADO`, sin leer ni cambiar datos. Si no responde así, la ejecución falla y GitHub avisa por correo. Se puede correr a mano desde *Actions → Mantener servidor activo → Run workflow*.
+
 ## Responsable con PIN
 
 - `c2_teams.pin_hash` (bcrypt), `responsable`, conteo de fallos y bloqueo de 15 minutos.
