@@ -309,10 +309,10 @@ export function ObraForm({ obra }: { obra?: ObraCard }) {
                 {field('direccion', 'Dirección', direccion, setDireccion, {
                   placeholder: 'Calle y número',
                 })}
-                {field('zona', 'Barrio / localidad', zona, setZona)}
+                {field('zona', 'Barrio / localidad', zona, setZona, { placeholder: 'Para agrupar el viaje por zona' })}
                 <View style={s.divider} />
                 <Text accessibilityRole="header" style={s.h2}>
-                  Planificación
+                  Fechas
                 </Text>
                 <View style={[s.row, { alignItems: 'flex-start', flexWrap: 'wrap' }]}>
                   <View style={{ flex: 1, minWidth: 140 }}>

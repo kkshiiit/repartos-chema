@@ -43,6 +43,7 @@ vi.mock('../src/components/ui', () => {
   return {
     Button: host('Button'),
     Chip: host('Chip'),
+    StepTitle: host('StepTitle'),
     Field: host('Field'),
     Notice: host('Notice'),
     Select: host('Select'),

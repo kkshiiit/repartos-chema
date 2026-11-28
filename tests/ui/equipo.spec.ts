@@ -54,7 +54,7 @@ test('dos teléfonos: equipo, nombres, stock, alquiler, entrega, ticket, retiro 
   await a.getByRole('button', { name: 'Guardar cambios', exact: true }).click();
   await a.getByRole('button', { name: 'Confirmar', exact: true }).click();
   await a.getByRole('button', { name: 'Opciones de Cuerpo de andamio 1.30m', exact: true }).click();
-  await a.getByRole('button', { name: 'Ajustar', exact: true }).click();
+  await a.getByRole('button', { name: 'Ajustar cantidad', exact: true }).click();
   await a.getByLabel('Diferencia entera (+ o −)', { exact: true }).fill('20');
   await a.getByLabel('Procedencia / destino', { exact: true }).fill('Inventario inicial');
   await a.getByLabel('Motivo y comprobante', { exact: true }).fill('Recuento físico');
@@ -170,7 +170,7 @@ test('papelera: un alquiler cargado se borra de un toque con confirmación y que
   await p.getByRole('button', { name: 'Guardar cambios', exact: true }).click();
   await p.getByRole('button', { name: 'Confirmar', exact: true }).click();
   await p.getByRole('button', { name: 'Opciones de Cuerpo de andamio 1.30m', exact: true }).click();
-  await p.getByRole('button', { name: 'Ajustar', exact: true }).click();
+  await p.getByRole('button', { name: 'Ajustar cantidad', exact: true }).click();
   await p.getByLabel('Diferencia entera (+ o −)', { exact: true }).fill('20');
   await p.getByLabel('Procedencia / destino', { exact: true }).fill('Inventario inicial');
   await p.getByLabel('Motivo y comprobante', { exact: true }).fill('Recuento');
@@ -306,7 +306,7 @@ test('copias: se guarda la copia semanal y un borrado por error se deshace volvi
   await p.getByRole('button', { name: 'Guardar cambios', exact: true }).click();
   await p.getByRole('button', { name: 'Confirmar', exact: true }).click();
   await p.getByRole('button', { name: /^Opciones de Rueda/ }).click();
-  await p.getByRole('button', { name: 'Ajustar', exact: true }).click();
+  await p.getByRole('button', { name: 'Ajustar cantidad', exact: true }).click();
   await p.getByLabel('Diferencia entera (+ o −)', { exact: true }).fill('12');
   await p.getByLabel('Procedencia / destino', { exact: true }).fill('Compra');
   await p.getByLabel('Motivo y comprobante', { exact: true }).fill('Factura 1');

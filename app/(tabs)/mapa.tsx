@@ -10,6 +10,7 @@ import {
   Navigation,
   Route,
   Warehouse,
+  GripVertical,
 } from 'lucide-react-native';
 import * as Location from 'expo-location';
 import { useInventory } from '../../src/context/InventoryContext';
@@ -20,6 +21,7 @@ import {
   Notice,
   Screen,
   Select,
+  StepTitle,
   IconButton,
   Sheet,
   useUI,
@@ -626,8 +628,26 @@ export default function Trip() {
       >
         {panel === 'options' ? (
           <>
-            <Text style={s.label}>Ordenar las paradas visibles</Text>
-            <Text style={s.muted}>{originLabel}</Text>
+            <StepTitle title="Ordenar a mano" hint="Arrastrá las paradas en el orden que quieras." />
+            <Button
+              label="Cambiar orden"
+              icon={GripVertical}
+              variant="secondary"
+              disabled={!ready || visible.length < 2}
+              onPress={() => {
+                setPanel(null);
+                setEditor(true);
+              }}
+            />
+            {prefs.previousIds ? (
+              <Button
+                label="Deshacer último orden"
+                variant="secondary"
+                onPress={() => run(undoOrder)}
+              />
+            ) : null}
+            <View style={s.divider} />
+            <StepTitle title="Ordenar por cercanía" hint={`Distancia en línea recta, sin tráfico. ${originLabel}.`} />
             <Button
               label="Usar depósito como origen"
               icon={Warehouse}
@@ -676,14 +696,12 @@ export default function Trip() {
             ) : null}
             <Button
               label="Ordenar por cercanía"
-              variant="secondary"
+              icon={Navigation}
               disabled={!ready || busy || !visible.length}
               onPress={() => requestSort('DISTANCE')}
             />
-            <Text style={s.muted}>
-              Distancia en línea recta desde un único origen. Sin tráfico ni cálculo de capacidad de
-              carga. Cambiar el origen no cambia el orden.
-            </Text>
+            <View style={s.divider} />
+            <StepTitle title="Ordenar por material" hint="Saldo en obra para retiros y carga prevista para entregas." />
             <Select
               label="Material para comparar"
               value={basisKey}
@@ -708,26 +726,7 @@ export default function Trip() {
               disabled={!ready || !prefs.basis || !visible.length}
               onPress={() => requestSort('DESC')}
             />
-            <Text style={s.muted}>
-              Se compara sólo este material y medida: saldo en obra para retiros y carga prevista
-              para entregas. No convertimos piezas en cuerpos.
-            </Text>
-            <Button
-              label="Cambiar orden"
-              variant="secondary"
-              disabled={!ready || visible.length < 2}
-              onPress={() => {
-                setPanel(null);
-                setEditor(true);
-              }}
-            />
-            {prefs.previousIds ? (
-              <Button
-                label="Deshacer último orden"
-                variant="secondary"
-                onPress={() => run(undoOrder)}
-              />
-            ) : null}
+            <View style={s.divider} />
             <Button
               label="Volver al depósito"
               icon={CornerDownLeft}

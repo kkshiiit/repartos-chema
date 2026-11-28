@@ -110,6 +110,7 @@ export default function Combos() {
             <ConfirmButton
               label="Eliminar"
               title="Eliminar combo"
+              confirmLabel="Eliminar combo"
               description="Las cargas ya preparadas conservarán sus materiales."
               onConfirm={async () => {
                 await dispatch({ type: 'DELETE_COMBO', comboId: actions.id });

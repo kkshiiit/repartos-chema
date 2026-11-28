@@ -1,5 +1,5 @@
 import React, { useEffect, useId, useRef, useState } from 'react';
-import { radius } from '../theme/tokens';
+import { fonts, radius } from '../theme/tokens';
 import { usePanelChanges, useUI } from './ui';
 import {
   type DateTimeFieldProps,
@@ -54,14 +54,14 @@ function DateTimeField({
     width: '100%',
     minWidth: 0,
     minHeight: 48,
-    border: `1px solid ${error ? C.danger : C.line}`,
+    border: `1px solid ${error ? C.danger : C.controlBorder}`,
     borderRadius: radius.input,
     backgroundColor: C.panel,
     color: C.text,
     padding: '12px 14px',
     fontSize: 16,
-    fontFamily: 'inherit',
-    colorScheme: C.background === '#121A22' ? 'dark' : 'light',
+    fontFamily: fonts.regular,
+    colorScheme: parseInt(C.background.slice(1, 3), 16) < 0x80 ? 'dark' : 'light',
     opacity: disabled ? 0.5 : 1,
     accentColor: C.primary,
   };
@@ -70,7 +70,7 @@ function DateTimeField({
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8, minWidth: 0 }}>
       <label
         htmlFor={manual ? `${id}-manual` : id}
-        style={{ color: C.text, fontSize: 14, fontWeight: 600 }}
+        style={{ color: C.text, fontSize: 14, fontFamily: fonts.semibold }}
       >
         {label}
       </label>
@@ -116,7 +116,7 @@ function DateTimeField({
           }
         />
       ) : value && !valid ? (
-        <span style={{ color: C.muted, fontSize: 14 }}>
+        <span style={{ color: C.muted, fontSize: 14, fontFamily: fonts.regular }}>
           Borrador: {displayPickerValue(value, mode)}
         </span>
       ) : null}
@@ -132,7 +132,7 @@ function DateTimeField({
           background: 'transparent',
           color: C.link,
           fontSize: 14,
-          fontFamily: 'inherit',
+          fontFamily: fonts.medium,
           cursor: disabled ? 'default' : 'pointer',
           opacity: disabled ? 0.5 : 1,
         }}
@@ -146,7 +146,7 @@ function DateTimeField({
             : 'Escribir hora'}
       </button>
       {error ? (
-        <span id={errorId} role="alert" style={{ color: C.danger, fontSize: 14 }}>
+        <span id={errorId} role="alert" style={{ color: C.danger, fontSize: 14, fontFamily: fonts.medium }}>
           {error}
         </span>
       ) : null}

@@ -93,8 +93,13 @@ export function Button({
   disabled = false,
   loading = false,
   style,
+  text,
+  compact = false,
 }: {
   label: string;
+  /** Texto visible más corto que `label` (que queda para lectores de pantalla). */
+  text?: string;
+  compact?: boolean;
   onPress: () => void | Promise<void>;
   icon?: React.ComponentType<{ size: number; color: string }>;
   variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
@@ -182,9 +187,9 @@ export function Button({
         onPressOut={() => press(1)}
         style={({ pressed }) => [
           {
-            minHeight: variant === 'primary' ? 50 : 46,
-            borderRadius: radius.input,
-            paddingHorizontal: 18,
+            minHeight: compact ? 40 : variant === 'primary' ? 50 : 46,
+            borderRadius: compact ? 10 : radius.input,
+            paddingHorizontal: compact ? 12 : 18,
             paddingVertical: 11,
             flexDirection: 'row',
             justifyContent: 'center',
@@ -219,13 +224,13 @@ export function Button({
           style={{
             color: foreground,
             fontFamily: fonts.semibold,
-            fontSize: 16,
+            fontSize: compact ? 15 : 16,
             lineHeight: 21,
             flexShrink: 1,
             textAlign: 'center',
           }}
         >
-          {label}
+          {text ?? label}
         </Text>
       </Pressable>
       {pressError ? <Notice text={pressError} tone="error" /> : null}
@@ -284,6 +289,25 @@ export function Field({ label, ...props }: TextInputProps & { label: string }) {
   );
 }
 /** Filtro o etiqueta en forma de píldora. Seleccionado = tinta llena (alto contraste al sol). */
+/** Título de paso numerado ("1 Qué se lleva"): ordena el formulario en el mismo orden en que se trabaja. */
+export function StepTitle({ n, title, hint }: { n?: number; title: string; hint?: string }) {
+  const { C } = useUI();
+  return (
+    <View style={{ gap: 2, paddingTop: 4 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        {n ? (
+          <View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: C.text, alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{ color: C.bg, fontFamily: fonts.bold, fontSize: 13 }}>{n}</Text>
+          </View>
+        ) : null}
+        <Text accessibilityRole="header" style={{ color: C.text, fontFamily: fonts.display, fontSize: 19, lineHeight: 23, flexShrink: 1 }}>
+          {title}
+        </Text>
+      </View>
+      {hint ? <Text style={{ color: C.muted, fontFamily: fonts.regular, fontSize: 14, lineHeight: 19, paddingLeft: n ? 32 : 0 }}>{hint}</Text> : null}
+    </View>
+  );
+}
 export function Chip({
   label,
   selected,
@@ -954,10 +978,13 @@ export function ConfirmButton({
   description,
   onConfirm,
   variant = 'danger',
+  confirmLabel = 'Confirmar',
 }: {
   label: string;
   title: string;
   description: string;
+  /** Verbo concreto en el botón final («Salir del equipo» en vez de «Confirmar»). */
+  confirmLabel?: string;
   onConfirm: () => Promise<void>;
   variant?: 'danger' | 'secondary' | 'primary';
 }) {
@@ -972,7 +999,8 @@ export function ConfirmButton({
         <Text style={s.body}>{description}</Text>
         {error ? <Notice text={error} tone="error" /> : null}
         <Button
-          label="Confirmar"
+          label={confirmLabel}
+          variant={variant === 'danger' ? 'danger' : 'primary'}
           loading={busy}
           onPress={async () => {
             setBusy(true);
