@@ -4,7 +4,8 @@ import { useInventory } from '../context/InventoryContext';
 import { userError } from '../services/errors';
 import type { BackupDestination } from '../services/files';
 import { Button, Chip, ConfirmButton, Notice, Sheet, useUI } from './ui';
-export function LocalBackupActions() {
+/** `safe`: descargar y recuperar. `danger`: empezar vacío, separado al final para no tocarlo sin querer. */
+export function LocalBackupActions({ part = 'all' }: { part?: 'all' | 'safe' | 'danger' } = {}) {
   const { s } = useUI();
   const inv = useInventory();
   const [open, setOpen] = useState(false),
@@ -40,27 +41,31 @@ export function LocalBackupActions() {
     (result?.saved || (result?.prepared && manual)) && revision === inv.state.revision;
   return (
     <View style={s.section}>
-      <Button
-        label="Descargar copia"
-        variant="secondary"
-        loading={busy}
-        onPress={() => void save()}
-      />
+      {part !== 'danger' ? (
+        <Button
+          label="Descargar copia"
+          variant="secondary"
+          loading={busy}
+          onPress={() => void save()}
+        />
+      ) : null}
       {message && !open ? (
         <Notice text={message} tone={result?.saved ? 'success' : 'info'} />
       ) : null}
       {error && !open ? <Notice text={error} tone="error" /> : null}
-      <Button
-        label="Empezar vacío"
-        variant="danger"
-        onPress={() => {
-          setResult(null);
-          setManual(false);
-          setError('');
-          setMessage('');
-          setOpen(true);
-        }}
-      />
+      {part !== 'safe' ? (
+        <Button
+          label="Empezar vacío"
+          variant="danger"
+          onPress={() => {
+            setResult(null);
+            setManual(false);
+            setError('');
+            setMessage('');
+            setOpen(true);
+          }}
+        />
+      ) : null}
       <Sheet
         busy={busy}
         visible={open}
@@ -83,7 +88,7 @@ export function LocalBackupActions() {
         ) : null}
         {error ? <Notice text={error} tone="error" /> : null}
         <Button
-          label="Confirmar"
+          label="Vaciar inventario"
           variant="danger"
           loading={busy}
           disabled={!allowed}
@@ -102,18 +107,20 @@ export function LocalBackupActions() {
           }}
         />
       </Sheet>
-      <Button
-        label="Ver recuperaciones"
-        variant="secondary"
-        onPress={async () => {
-          try {
-            setCopies(await inv.archives());
-            setError('');
-          } catch (e) {
-            setError(userError(e));
-          }
-        }}
-      />
+      {part !== 'danger' ? (
+        <Button
+          label="Ver recuperaciones"
+          variant="secondary"
+          onPress={async () => {
+            try {
+              setCopies(await inv.archives());
+              setError('');
+            } catch (e) {
+              setError(userError(e));
+            }
+          }}
+        />
+      ) : null}
       {copies.map((c) => (
         <View key={c.key} style={[s.section, { borderTopWidth: 1, paddingTop: 16 }]}>
           <Text style={s.body}>
@@ -129,6 +136,7 @@ export function LocalBackupActions() {
           <ConfirmButton
             label="Recuperar copia"
             title="Recuperar esta copia"
+            confirmLabel="Recuperar copia"
             description="Se archivarán los datos actuales antes de recuperar la copia elegida. No se combinan inventarios."
             onConfirm={async () => {
               await inv.recoverArchive(c.key);

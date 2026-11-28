@@ -1,12 +1,12 @@
 import { userError } from '../services/errors';
 import { useFeedback } from '../context/FeedbackContext';
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import type { MaterialCargado, ObraCard } from '../types';
 import { useInventory } from '../context/InventoryContext';
 import { mergeLoads } from '../domain/engine';
-import { Button, Chip, Field, Notice, Select, Sheet, useUI, usePanelChanges } from './ui';
-import { Layers } from 'lucide-react-native';
+import { Button, Chip, Field, Notice, Sheet, useUI, usePanelChanges } from './ui';
+import { Layers, Plus } from 'lucide-react-native';
 import { Disclosure } from './Editorial';
 import { SmartCounter } from './SmartCounter';
 
@@ -18,193 +18,176 @@ export function LoadDraft({
   items: MaterialCargado[];
   onChange: (items: MaterialCargado[]) => void;
 }) {
-  const { s } = useUI();
+  const { s, C } = useUI();
   const { markDirty } = usePanelChanges();
   const { state } = useInventory();
   const [search, setSearch] = useState('');
-  const [selected, setSelected] = useState(state.materiales[0]?.id || '');
   const [error, setError] = useState('');
   const [showCombos, setShowCombos] = useState(false);
-  const [combo, setCombo] = useState('');
   const change = (next: MaterialCargado[]) => {
     markDirty();
     onChange(next);
   };
   const update = (id: string, patch: Partial<MaterialCargado>) =>
     change(items.map((i) => (i.materialId === id ? { ...i, ...patch } : i)));
-  const materials = state.materiales.filter((m) =>
-    `${m.nombre} ${m.medida || ''}`
-      .toLocaleLowerCase('es')
-      .includes(search.toLocaleLowerCase('es')),
+  const query = search.trim().toLocaleLowerCase('es');
+  const matches = (text: string) => !query || text.toLocaleLowerCase('es').includes(query);
+  // Lo elegido arriba (lo que ya está en la carga), el resto del depósito abajo: como un carrito.
+  const rest = state.materiales.filter(
+    (m) => !items.some((i) => i.materialId === m.id) && matches(`${m.nombre} ${m.medida || ''}`),
   );
+  const total = items.reduce((sum, i) => sum + i.cantidad, 0);
+  const add = (m: (typeof state.materiales)[number]) => {
+    try {
+      change(mergeLoads(items, [{ materialId: m.id, nombre: m.nombre, medida: m.medida, cantidad: 1 }]));
+      setError('');
+    } catch (e) {
+      setError(userError(e));
+    }
+  };
+  const box = { borderRadius: 12, borderWidth: 1, borderColor: C.hairline, backgroundColor: C.panel, overflow: 'hidden' as const };
   return (
-    <View style={{ gap: 16 }}>
-      <View style={[s.row, { justifyContent: 'space-between', flexWrap: 'wrap' }]}>
-        <Text style={[s.label, { flex: 1, minWidth: 120 }]}>
-          {items.reduce((sum, i) => sum + i.cantidad, 0)} piezas seleccionadas
-        </Text>
-        <Button
-          label="Usar combo"
-          icon={Layers}
-          variant="secondary"
-          onPress={() => setShowCombos(true)}
-        />
+    <View style={{ gap: 14 }}>
+      <View style={[s.row, { justifyContent: 'space-between', gap: 8 }]}>
+        <View style={s.grow}>
+          <Text style={s.h2}>{total ? `${total} ${total === 1 ? 'pieza' : 'piezas'}` : 'Carga vacía'}</Text>
+          <Text style={s.muted}>
+            {items.length ? `${items.length} ${items.length === 1 ? 'material' : 'materiales'}` : 'Tocá «Agregar» o usá un combo'}
+          </Text>
+        </View>
+        <Button label="Usar combo" icon={Layers} variant="secondary" compact onPress={() => setShowCombos(true)} />
       </View>
-      <Field
-        label="Buscar material"
-        value={search}
-        onChangeText={setSearch}
-        placeholder="Nombre o medida"
-      />
-      <Disclosure
-        key={search ? 'search' : items.length ? 'selected' : 'empty'}
-        title="Agregar materiales"
-        compact
-        initiallyOpen={!!search || !items.length}
-      >
-        {!materials.length ? (
-          <Text style={s.muted}>No hay materiales que coincidan con la búsqueda.</Text>
-        ) : (
-          <>
-            <Select
-              label="Agregar material"
-              value={selected}
-              options={materials.map((m) => ({
-                label: `${m.nombre} · ${m.medida || 'Sin medida'} · ${m.cantidadGalpon} en depósito`,
-                value: m.id,
-              }))}
-              onChange={setSelected}
-            />
-            <Button
-              label="Agregar material"
-              variant="secondary"
-              onPress={() => {
-                try {
-                  const m = materials.find((m) => m.id === selected);
-                  if (!m) throw new Error('Seleccioná un material de la lista.');
-                  change(
-                    mergeLoads(items, [
-                      { materialId: m.id, nombre: m.nombre, medida: m.medida, cantidad: 1 },
-                    ]),
-                  );
-                  setError('');
-                } catch (e) {
-                  setError(userError(e));
-                }
-              }}
-            />
-          </>
-        )}
-      </Disclosure>
       {error ? <Notice text={error} tone="error" /> : null}
-      {!items.length ? (
-        <Text style={s.muted}>
-          Agregá materiales o un combo. Podés guardar el alquiler sin carga y prepararla después.
-        </Text>
-      ) : null}
-      <View>
-        {items.map((i) => {
-          const m = state.materiales.find((m) => m.id === i.materialId);
-          return (
-            <View
-              key={i.materialId}
-              style={{
-                gap: 4,
-                paddingVertical: 8,
-                borderBottomWidth: 1,
-                borderBottomColor: s.divider.backgroundColor,
-              }}
-            >
-              <View style={[s.row, { flexWrap: 'wrap', gap: 12 }]}>
-                <View style={{ flex: 1, minWidth: 112, gap: 4 }}>
-                  <Text style={s.label}>{i.nombre}</Text>
-                  <Text style={s.muted}>
-                    {i.medida || 'Sin medida'} · {m?.cantidadGalpon ?? 0} en depósito
-                  </Text>
+      {items.length ? (
+        <View style={box}>
+          {items.map((i, index) => {
+            const m = state.materiales.find((m) => m.id === i.materialId);
+            const low = !!m && i.cantidad > m.cantidadGalpon;
+            return (
+              <View key={i.materialId} style={{ gap: 6, padding: 12, borderTopWidth: index ? 1 : 0, borderColor: C.hairline }}>
+                <View style={[s.row, { gap: 10 }]}>
+                  <View style={s.grow}>
+                    <Text style={s.label}>
+                      {i.nombre}
+                      {i.apodo ? <Text style={s.muted}>{` · ${i.apodo}`}</Text> : null}
+                    </Text>
+                    <Text style={[s.muted, low && { color: C.danger }]}>
+                      {i.medida || 'Sin medida'} · {m?.cantidadGalpon ?? 0} en depósito
+                    </Text>
+                  </View>
+                  <SmartCounter
+                    label={`${i.nombre} ${i.medida || ''}`}
+                    value={i.cantidad}
+                    onChange={(cantidad) =>
+                      cantidad === 0
+                        ? change(items.filter((x) => x.materialId !== i.materialId))
+                        : update(i.materialId, { cantidad })
+                    }
+                  />
                 </View>
-                <SmartCounter
-                  label={`${i.nombre} ${i.medida || ''}`}
-                  value={i.cantidad}
-                  onChange={(cantidad) => update(i.materialId, { cantidad })}
-                />
+                {low ? (
+                  <Notice
+                    tone="error"
+                    text={`Hay ${m!.cantidadGalpon} en el depósito. Podés guardar igual; al entregar hay que sacar lo que falta de otro alquiler.`}
+                  />
+                ) : null}
+                <Disclosure title="Apodo o quitar" compact>
+                  <View style={s.wrap}>
+                    {['Con orejas', 'Antideslizante', 'Reforzado', 'De madera'].map((apodo) => (
+                      <Chip
+                        key={apodo}
+                        label={apodo}
+                        selected={i.apodo === apodo}
+                        onPress={() => update(i.materialId, { apodo })}
+                      />
+                    ))}
+                  </View>
+                  <Field
+                    label="Apodo de esta carga"
+                    value={i.apodo || ''}
+                    onChangeText={(apodo) => update(i.materialId, { apodo })}
+                    maxLength={80}
+                  />
+                  <Button
+                    label="Quitar material"
+                    variant="ghost"
+                    onPress={() => change(items.filter((x) => x.materialId !== i.materialId))}
+                  />
+                </Disclosure>
               </View>
-              {m && i.cantidad > m.cantidadGalpon ? (
-                <Notice
-                  text={`Stock bajo: Pedidos ${i.cantidad} | En Depósito ${m.cantidadGalpon}. Puedes guardar la carga. La entrega requiere procedencia autorizada.`}
-                />
-              ) : null}
-              <Disclosure title={`Detalles de ${i.nombre}`} compact>
-                <Text style={s.muted}>
-                  Medida: {i.medida || 'Sin medida'}. Para otra medida, selecciona su material
-                  maestro.
-                </Text>
-                <View style={s.wrap}>
-                  {['Con orejas', 'Antideslizante', 'Reforzado', 'De madera'].map((apodo) => (
-                    <Chip
-                      key={apodo}
-                      label={apodo}
-                      selected={i.apodo === apodo}
-                      onPress={() => update(i.materialId, { apodo })}
-                    />
-                  ))}
-                </View>
-                <Field
-                  label="Apodo de esta carga"
-                  value={i.apodo || ''}
-                  onChangeText={(apodo) => update(i.materialId, { apodo })}
-                  maxLength={80}
-                />
-                <Button
-                  label="Quitar material"
-                  variant="ghost"
-                  onPress={() => change(items.filter((x) => x.materialId !== i.materialId))}
-                />
-              </Disclosure>
-            </View>
-          );
-        })}
-      </View>
-      <Text style={s.muted}>
-        La carga se prepara aquí. Las existencias se mueven al confirmar la entrega.
+            );
+          })}
+        </View>
+      ) : null}
+      <Text accessibilityRole="header" style={[s.label, { color: C.muted }]}>
+        Del depósito
       </Text>
+      {state.materiales.length > 6 ? (
+        <Field label="Buscar material" value={search} onChangeText={setSearch} placeholder="Nombre o medida" />
+      ) : null}
+      {!rest.length ? (
+        <Text style={s.muted}>
+          {state.materiales.length ? 'No hay más materiales que coincidan.' : 'Cargá materiales en la pestaña Depósito.'}
+        </Text>
+      ) : (
+        <View style={box}>
+          {rest.map((m, index) => (
+            <View key={m.id} style={[s.row, { gap: 10, paddingHorizontal: 12, paddingVertical: 8, borderTopWidth: index ? 1 : 0, borderColor: C.hairline }]}>
+              <View style={s.grow}>
+                <Text style={s.label}>{m.nombre}</Text>
+                <Text style={s.muted}>
+                  {m.medida || 'Sin medida'} · {m.cantidadGalpon} en depósito
+                </Text>
+              </View>
+              <Button label="Agregar material" text="+ Agregar" variant="secondary" compact onPress={() => add(m)} />
+            </View>
+          ))}
+        </View>
+      )}
+      <Text style={s.muted}>La carga se prepara acá. El stock se mueve recién al confirmar la entrega.</Text>
       <Sheet visible={showCombos} title="Usar combo" onClose={() => setShowCombos(false)}>
         <View style={{ gap: 12 }}>
           {!state.combos.length ? (
             <Text style={s.muted}>Todavía no hay combos guardados.</Text>
           ) : (
-            <>
-              <Select
-                label="Cargar combo"
-                value={combo}
-                options={state.combos.map((c) => ({ label: c.nombreCombo, value: c.id }))}
-                onChange={setCombo}
-              />
-              <Button
-                label="Revisar combo"
-                variant="secondary"
-                onPress={() => {
-                  try {
-                    const c = state.combos.find((c) => c.id === combo);
-                    if (!c) throw new Error('Selecciona un combo.');
-                    const loads = c.items.map((i) => {
-                      const m = state.materiales.find((m) => m.id === i.materialId);
-                      if (!m) throw new Error('El combo contiene un material inexistente.');
-                      return {
-                        materialId: m.id,
-                        nombre: m.nombre,
-                        medida: m.medida,
-                        cantidad: i.cantidad,
-                      };
-                    });
-                    change(mergeLoads(items, loads));
-                    setError('');
-                    setShowCombos(false);
-                  } catch (e) {
-                    setError(userError(e));
-                  }
-                }}
-              />
-            </>
+            <View style={{ borderRadius: 12, borderWidth: 1, borderColor: C.hairline, overflow: 'hidden' }}>
+              {state.combos.map((c, index) => (
+                <Pressable
+                  key={c.id}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Cargar combo ${c.nombreCombo}`}
+                  onPress={() => {
+                    try {
+                      const loads = c.items.map((i) => {
+                        const m = state.materiales.find((m) => m.id === i.materialId);
+                        if (!m) throw new Error('El combo contiene un material inexistente.');
+                        return { materialId: m.id, nombre: m.nombre, medida: m.medida, cantidad: i.cantidad };
+                      });
+                      change(mergeLoads(items, loads));
+                      setError('');
+                      setShowCombos(false);
+                    } catch (e) {
+                      setError(userError(e));
+                    }
+                  }}
+                  style={({ pressed }) => [
+                    s.row,
+                    { gap: 12, padding: 14, borderTopWidth: index ? 1 : 0, borderColor: C.hairline, backgroundColor: pressed ? C.panel2 : C.panel },
+                  ]}
+                >
+                  <Layers size={22} color={C.accent} />
+                  <View style={s.grow}>
+                    <Text style={s.label}>{c.nombreCombo}</Text>
+                    <Text style={s.muted} numberOfLines={2}>
+                      {c.items
+                        .map((i) => `${i.cantidad} × ${state.materiales.find((m) => m.id === i.materialId)?.nombre || '?'}`)
+                        .join(' · ')}
+                    </Text>
+                  </View>
+                  <Plus size={20} color={C.accent} />
+                </Pressable>
+              ))}
+            </View>
           )}
         </View>
         {error ? <Notice text={error} tone="error" /> : null}

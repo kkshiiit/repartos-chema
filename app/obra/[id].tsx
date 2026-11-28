@@ -5,7 +5,9 @@ import React, { useRef, useState } from 'react';
 import { View, Text } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import {
+  Bell,
   Camera,
+  FileText,
   ImagePlus,
   MapPin,
   Pencil,
@@ -14,13 +16,16 @@ import {
   ArrowRightLeft,
   CalendarDays,
   ArrowRight,
-  MoreHorizontal,
+  MoreVertical,
+  TriangleAlert,
 } from 'lucide-react-native';
+import { ToolGroup, ToolRow } from '../../src/components/ToolsLayout';
 import * as Location from 'expo-location';
 import { useInventory, makeId } from '../../src/context/InventoryContext';
 import { useAuth } from '../../src/context/AuthContext';
 import {
   Button,
+  IconButton,
   ConfirmButton,
   Empty,
   Field,
@@ -139,6 +144,18 @@ export default function Detail() {
             <Text accessibilityRole="header" style={[s.title, s.grow]}>
               {o.clienteNombre}
             </Text>
+            {user?.role === 'ADMIN' ? (
+              <IconButton
+                label="Editar alquiler"
+                icon={Pencil}
+                onPress={() => router.push(`/obra/editar?id=${o.id}`)}
+              />
+            ) : null}
+            <IconButton
+              label="Más acciones"
+              icon={MoreVertical}
+              onPress={() => setModal('acciones')}
+            />
             <DeleteRentalButton obra={o} onDeleted={() => router.replace('/alquileres')} />
           </View>
           <View style={[s.row, { gap: 8, flexWrap: 'wrap' }]}>
@@ -179,18 +196,45 @@ export default function Detail() {
           color={stepColor}
           background={stepBackground}
         />
-        <View style={[s.row, { backgroundColor: C.panel, borderRadius: 16, borderWidth: 1, borderColor: C.hairline, paddingVertical: 14, paddingHorizontal: 16, gap: 12 }]}>
+        <View
+          style={[
+            s.row,
+            {
+              backgroundColor: C.panel,
+              borderRadius: 16,
+              borderWidth: 1,
+              borderColor: C.hairline,
+              paddingVertical: 14,
+              paddingHorizontal: 16,
+              gap: 12,
+            },
+          ]}
+        >
           <CalendarDays size={22} color={C.muted} />
           <View style={{ flex: 1, gap: 2 }}>
             <Text style={s.muted}>Entrega prevista</Text>
-            <Text style={{ color: C.text, fontFamily: fonts.displaySemi, fontSize: 20, fontVariant: ['tabular-nums'] }}>
+            <Text
+              style={{
+                color: C.text,
+                fontFamily: fonts.displaySemi,
+                fontSize: 20,
+                fontVariant: ['tabular-nums'],
+              }}
+            >
               {formatDate(o.fechaEntrega)}
             </Text>
           </View>
           <ArrowRight size={18} color={C.subtle} />
           <View style={{ flex: 1, gap: 2 }}>
             <Text style={s.muted}>Alquilado hasta</Text>
-            <Text style={{ color: C.text, fontFamily: fonts.displaySemi, fontSize: 20, fontVariant: ['tabular-nums'] }}>
+            <Text
+              style={{
+                color: C.text,
+                fontFamily: fonts.displaySemi,
+                fontSize: 20,
+                fontVariant: ['tabular-nums'],
+              }}
+            >
               {formatDate(o.fechaRetiroEstimada, false, 'Sin fecha de retiro')}
             </Text>
             {!countdown.finished && countdown.days !== null ? (
@@ -202,7 +246,12 @@ export default function Detail() {
         </View>
         {o.fechaEntregaEfectiva || o.fechaRetiroEfectiva ? (
           <Text style={[s.muted, { marginTop: -6, paddingHorizontal: 4 }]}>
-            {[o.fechaEntregaEfectiva ? `Entrega efectiva: ${formatDate(o.fechaEntregaEfectiva)}` : '', o.fechaRetiroEfectiva ? `Retiro efectivo: ${formatDate(o.fechaRetiroEfectiva)}` : '']
+            {[
+              o.fechaEntregaEfectiva
+                ? `Entrega efectiva: ${formatDate(o.fechaEntregaEfectiva)}`
+                : '',
+              o.fechaRetiroEfectiva ? `Retiro efectivo: ${formatDate(o.fechaRetiroEfectiva)}` : '',
+            ]
               .filter(Boolean)
               .join('   ')}
           </Text>
@@ -270,28 +319,15 @@ export default function Detail() {
             />
           ) : null}
         </View>
-        <View style={{ gap: 12 }}>
-          <Text accessibilityRole="header" style={s.h2}>
-            Acciones
-          </Text>
-          <Button
-            label="Más acciones"
-            icon={MoreHorizontal}
-            variant="secondary"
-            onPress={() => setModal('acciones')}
-          />
-          {user?.role === 'ADMIN' ? (
-            <Button
-              label="Editar alquiler"
-              icon={Pencil}
-              variant="ghost"
-              onPress={() => router.push(`/obra/editar?id=${o.id}`)}
-            />
-          ) : null}
-        </View>
         <Disclosure
           key={o.faltantesRegistrados?.length || 0}
           title="Faltantes y recuperaciones"
+          icon={TriangleAlert}
+          detail={
+            o.faltantesRegistrados?.length
+              ? `${o.faltantesRegistrados.filter((i) => i.recuperado < i.cantidad).length} sin recuperar`
+              : 'Ninguno'
+          }
           initiallyOpen={!!o.faltantesRegistrados?.some((i) => i.recuperado < i.cantidad)}
         >
           {o.faltantesRegistrados?.length ? (
@@ -329,10 +365,16 @@ export default function Detail() {
               />
             ))}
         </Disclosure>
-        <Disclosure title="Fotos">
-          <Text style={s.muted}>
-            Las fotos se comparten con todo el equipo al sincronizar.
-          </Text>
+        <Disclosure
+          title="Fotos"
+          icon={Camera}
+          detail={
+            o.fotos?.length || o.fotosUrls?.length
+              ? `${o.fotos?.length || o.fotosUrls?.length} guardadas`
+              : 'Sin fotos'
+          }
+        >
+          <Text style={s.muted}>Las fotos se comparten con todo el equipo al sincronizar.</Text>
           <View style={s.wrap}>
             <Button
               label="Tomar foto"
@@ -367,6 +409,7 @@ export default function Detail() {
                   <ConfirmButton
                     label="Borrar foto"
                     title="Eliminar foto"
+                    confirmLabel="Borrar foto"
                     description="Se quitará del alquiler para todo el equipo. Queda registrado en la auditoría."
                     onConfirm={async () => {
                       await dispatch({ type: 'DELETE_PHOTO', obraId: o.id, photoId: p.id });
@@ -377,7 +420,11 @@ export default function Detail() {
             ))}
           </View>
         </Disclosure>
-        <Disclosure title="Datos del alquiler">
+        <Disclosure
+          title="Datos del alquiler"
+          icon={FileText}
+          detail="Fechas, quién recibió, quién entregó"
+        >
           {o.estadoProceso !== 'PENDIENTE_ENTREGA' && o.materialesCargados.length ? (
             <View style={{ gap: 8 }}>
               <Text style={s.label}>Carga original</Text>
@@ -389,43 +436,31 @@ export default function Detail() {
               ))}
             </View>
           ) : null}
-          <Info label="ENTREGA PREVISTA" value={formatDate(o.fechaEntrega)} />
-          <Info
-            label="ENTREGA EFECTIVA"
-            value={formatDate(o.fechaEntregaEfectiva, false, 'Sin registro efectivo separado')}
-          />
-          {o.observaciones ? <Info label="OBSERVACIONES" value={o.observaciones} /> : null}
-          <Info
-            label="RETIRO ESTIMADO"
-            value={formatDate(o.fechaRetiroEstimada, false, 'Sin fecha de retiro')}
-          />
-          {o.fechaRetiroEfectiva ? (
-            <Info label="RETIRO EFECTIVO" value={formatDate(o.fechaRetiroEfectiva)} />
-          ) : null}
-          <Info label="TELÉFONO" value={o.clienteTelefono || 'Sin teléfono'} />
-          <Info label="RECIBIÓ" value={o.recibidoPor || 'Sin registrar'} />
-          <Info label="ENTREGADO POR" value={o.entregadoPor?.join(', ') || 'Por asignar'} />
-          <Info label="RETIRADO POR" value={o.retiradoPor?.join(', ') || 'Por asignar'} />
-          {user?.role === 'ADMIN' ? (
-            <Button
-              label="Editar datos"
-              icon={Pencil}
-              variant="secondary"
-              onPress={() => router.push(`/obra/editar?id=${o.id}`)}
+          <View>
+            <Info label="Teléfono" value={o.clienteTelefono || 'Sin teléfono'} />
+            <Info label="Entrega prevista" value={formatDate(o.fechaEntrega)} />
+            <Info
+              label="Entrega efectiva"
+              value={formatDate(
+                o.fechaEntregaEfectiva,
+                false,
+                o.estadoProceso === 'PENDIENTE_ENTREGA' ? 'Todavía no' : 'Sin registrar',
+              )}
             />
-          ) : null}
-          <Button
-            label="Ubicación"
-            icon={MapPin}
-            variant="secondary"
-            onPress={() => {
-              setLat(String(o.coordenadas?.lat ?? ''));
-              setLng(String(o.coordenadas?.lng ?? ''));
-              setModal('ubicacion');
-            }}
-          />
+            <Info
+              label="Retiro estimado"
+              value={formatDate(o.fechaRetiroEstimada, false, 'Sin fecha de retiro')}
+            />
+            {o.fechaRetiroEfectiva ? (
+              <Info label="Retiro efectivo" value={formatDate(o.fechaRetiroEfectiva)} />
+            ) : null}
+            <Info label="Recibió" value={o.recibidoPor || 'Sin registrar'} />
+            <Info label="Entregó" value={o.entregadoPor?.join(', ') || 'Por asignar'} />
+            <Info label="Retiró" value={o.retiradoPor?.join(', ') || 'Por asignar'} />
+            {o.observaciones ? <Info label="Notas" value={o.observaciones} last /> : null}
+          </View>
         </Disclosure>
-        <Disclosure title="Recordatorios">
+        <Disclosure title="Recordatorios" icon={Bell} detail="Avisos antes del retiro">
           <RentalReminderPanel obra={o} />
         </Disclosure>
       </View>
@@ -436,10 +471,10 @@ export default function Detail() {
             acciones: 'Más acciones',
             error: 'No se pudo completar la acción',
             carga: 'Preparar carga',
-            entrega: 'Confirmar entrega',
-            retiro: 'Inspección de retiro',
-            faltante: 'Registrar faltante',
-            transferencia: 'Triangulación directa',
+            entrega: 'Registrar entrega',
+            retiro: 'Registrar retiro',
+            faltante: 'Faltante o daño en obra',
+            transferencia: 'Pasar material a otra obra',
             recuperar: 'Devolver al depósito',
             ubicacion: 'Ubicación del alquiler',
           }[modal] || 'Operación'
@@ -455,24 +490,39 @@ export default function Detail() {
         {error ? <Notice text={error} tone="error" /> : null}
         {modal === 'acciones' ? (
           <>
-            <Text style={s.muted}>
-              Gestioná este alquiler sin alterar la carga hasta confirmar cada operación.
-            </Text>
-            {o.estadoProceso === 'ENTREGADO' ? (
-              <>
-                <Button
-                  label="Con faltante"
-                  variant="secondary"
-                  onPress={() => setModal('faltante')}
-                />
-                <Button
-                  label="Triangular"
-                  icon={ArrowRightLeft}
-                  variant="secondary"
-                  onPress={() => setModal('transferencia')}
-                />
-              </>
-            ) : null}
+            <ToolGroup>
+              {o.estadoProceso === 'ENTREGADO' ? (
+                <>
+                  <ToolRow
+                    label="Faltante o daño en obra"
+                    detail="Algo se perdió o se rompió sin retirar todo"
+                    icon={TriangleAlert}
+                    onPress={() => setModal('faltante')}
+                  />
+                  <ToolRow
+                    label="Pasar material a otra obra"
+                    detail="Llevarlo directo, sin pasar por el depósito"
+                    icon={ArrowRightLeft}
+                    onPress={() => setModal('transferencia')}
+                  />
+                </>
+              ) : null}
+              <ToolRow
+                label="Ubicación en el mapa"
+                detail={
+                  o.coordenadas
+                    ? 'Ya tiene ubicación · cambiarla'
+                    : 'Para ordenar el viaje por cercanía'
+                }
+                icon={MapPin}
+                last
+                onPress={() => {
+                  setLat(String(o.coordenadas?.lat ?? ''));
+                  setLng(String(o.coordenadas?.lng ?? ''));
+                  setModal('ubicacion');
+                }}
+              />
+            </ToolGroup>
             {o.estadoProceso === 'RETIRADO' ? (
               <ConfirmButton
                 label="Reingresar"
@@ -497,16 +547,6 @@ export default function Detail() {
                 }}
               />
             ) : null}
-            <Button
-              label="Ubicación"
-              icon={MapPin}
-              variant="secondary"
-              onPress={() => {
-                setLat(String(o.coordenadas?.lat ?? ''));
-                setLng(String(o.coordenadas?.lng ?? ''));
-                setModal('ubicacion');
-              }}
-            />
           </>
         ) : null}
         {modal === 'carga' ? <LoadEditor obra={o} onDone={() => setModal('')} /> : null}
@@ -611,12 +651,24 @@ export default function Detail() {
     </Screen>
   );
 }
-function Info({ label, value }: { label: string; value: string }) {
-  const { s } = useUI();
+/** Ficha de dos columnas: el dato a la derecha, alineado, fácil de recorrer con la vista. */
+function Info({ label, value, last }: { label: string; value: string; last?: boolean }) {
+  const { s, C } = useUI();
   return (
-    <View style={{ gap: 5 }}>
-      <Text style={s.label}>{label}</Text>
-      <Text style={s.body}>{value}</Text>
+    <View
+      style={[
+        s.row,
+        {
+          gap: 12,
+          paddingVertical: 9,
+          alignItems: 'flex-start',
+          borderBottomWidth: last ? 0 : 1,
+          borderBottomColor: C.hairline,
+        },
+      ]}
+    >
+      <Text style={[s.muted, { width: 130 }]}>{label}</Text>
+      <Text style={[s.body, s.grow, { fontFamily: fonts.medium }]}>{value}</Text>
     </View>
   );
 }

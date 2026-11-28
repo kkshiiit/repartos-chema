@@ -12,7 +12,11 @@ import {
   Wrench,
   TriangleAlert,
   MoreHorizontal,
+  ArrowRightLeft,
+  Calculator,
+  Pencil,
 } from 'lucide-react-native';
+import { ToolGroup, ToolRow } from '../../src/components/ToolsLayout';
 import type { MaterialItem, StockBucket, CategoriaMaterial } from '../../src/types';
 import { useInventory, makeId } from '../../src/context/InventoryContext';
 import { useAuth } from '../../src/context/AuthContext';
@@ -220,13 +224,27 @@ export default function WarehousePage() {
             <Text style={s.h2}>
               {edit?.nombre} {edit?.medida}
             </Text>
-            <Button label="Editar" variant="secondary" onPress={() => setModal('material')} />
-            <Button
-              label="Mover stock"
-              variant="secondary"
-              onPress={() => setModal('movimiento')}
-            />
-            <Button label="Ajustar" variant="secondary" onPress={() => setModal('ajuste')} />
+            <ToolGroup>
+              <ToolRow
+                label="Ajustar cantidad"
+                detail="Compra, recuento o baja: suma o resta stock"
+                icon={Calculator}
+                onPress={() => setModal('ajuste')}
+              />
+              <ToolRow
+                label="Mover stock"
+                detail="Entre depósito, taller y perdidos"
+                icon={ArrowRightLeft}
+                onPress={() => setModal('movimiento')}
+              />
+              <ToolRow
+                label="Editar pieza"
+                detail="Nombre, categoría y medida"
+                icon={Pencil}
+                last
+                onPress={() => setModal('material')}
+              />
+            </ToolGroup>
           </View>
         ) : modal === 'material' ? (
           <>

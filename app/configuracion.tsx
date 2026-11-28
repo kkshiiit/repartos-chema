@@ -38,6 +38,7 @@ import {
   Notice,
   Screen,
   Sheet,
+  StepTitle,
   useUI,
   usePanelChanges,
   initials,
@@ -249,6 +250,7 @@ export function SettingsScreen({ tab = false }: { tab?: boolean }) {
         label="Salir del equipo en este teléfono"
         variant="secondary"
         title="Salir del equipo"
+        confirmLabel="Salir del equipo"
         description="Este teléfono deja de ver los datos del equipo. Los datos no se borran: siguen en los demás teléfonos y podés volver a entrar con el código."
         onConfirm={leaveTeam}
       />
@@ -364,10 +366,13 @@ export function SettingsScreen({ tab = false }: { tab?: boolean }) {
         {panel === 'copies' ? (
           <>
             <Notice text="Exportar guarda TODO (alquileres, depósito, combos, auditoría y fotos) en un archivo JSON. Importar reemplaza los datos del equipo por los del archivo, en todos los teléfonos, y queda registrado en la Auditoría." />
-            <Text style={s.h2}>Exportar</Text>
-            <LocalBackupActions />
-            <Text style={s.h2}>Importar</Text>
+            <StepTitle title="Exportar" hint="Guarda un archivo con todo, para tener afuera del teléfono." />
+            <LocalBackupActions part="safe" />
+            <StepTitle title="Importar" hint="Reemplaza los datos del equipo por los del archivo." />
             <BackupImport />
+            <View style={s.divider} />
+            <StepTitle title="Empezar de cero" hint="Deja el inventario vacío. Antes se guarda una copia para poder volver." />
+            <LocalBackupActions part="danger" />
           </>
         ) : null}
         {error ? <Notice text={error} tone="error" /> : null}
