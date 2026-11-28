@@ -37,7 +37,7 @@ export function CardObra({
       : task.group === 'today'
         ? C.warning
         : o.estadoProceso === 'PENDIENTE_ENTREGA'
-          ? C.blue
+          ? C.purple
           : o.estadoProceso === 'ENTREGADO'
             ? C.success
             : C.line;

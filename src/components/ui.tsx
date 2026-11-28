@@ -182,7 +182,7 @@ export function Button({
         onPressOut={() => press(1)}
         style={({ pressed }) => [
           {
-            minHeight: variant === 'primary' ? 54 : 50,
+            minHeight: variant === 'primary' ? 50 : 46,
             borderRadius: radius.input,
             paddingHorizontal: 18,
             paddingVertical: 11,
@@ -219,8 +219,8 @@ export function Button({
           style={{
             color: foreground,
             fontFamily: fonts.semibold,
-            fontSize: 17,
-            lineHeight: 22,
+            fontSize: 16,
+            lineHeight: 21,
             flexShrink: 1,
             textAlign: 'center',
           }}
@@ -746,6 +746,7 @@ export function Screen({
   footer,
   back = false,
   scroll = true,
+  fab,
 }: {
   title: string;
   subtitle?: string;
@@ -754,9 +755,11 @@ export function Screen({
   footer?: React.ReactNode;
   back?: boolean;
   scroll?: boolean;
+  /** Botón flotante abajo a la derecha (patrón de Android: Gmail, Drive, Contactos). */
+  fab?: { label: string; icon: React.ComponentType<{ size: number; color: string }>; onPress: () => void };
 }) {
   const { C, s } = useUI();
-  const { user, session, error: authError } = useAuth(),
+  const { session, error: authError } = useAuth(),
     inv = useInventory(),
     { width } = useWindowDimensions(),
     insets = useSafeAreaInsets();
@@ -780,7 +783,7 @@ export function Screen({
             gap: 4,
             paddingLeft: width > 800 ? 24 : 16,
             paddingRight: width > 800 ? 16 : 8,
-            minHeight: 60,
+            minHeight: 56,
             width: '100%',
             maxWidth: 1100,
             alignSelf: 'center',
@@ -795,7 +798,7 @@ export function Screen({
         >
           <Text
             numberOfLines={1}
-            style={{ color: C.onBand, fontFamily: fonts.display, fontSize: 20, lineHeight: 24, letterSpacing: 0.3 }}
+            style={{ color: C.onBand, fontFamily: fonts.display, fontSize: 19, lineHeight: 23, letterSpacing: 0.3 }}
           >
             {session?.teamName || 'Chema Andamios'}
           </Text>
@@ -821,25 +824,6 @@ export function Screen({
         </Pressable>
         <BandIcon label="Guía de uso" icon={HelpCircle} onPress={() => router.push('/guia')} />
         <ThemeToggle tone="band" />
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={`Sesión de ${user?.nombre || ''}. Abrir ajustes`}
-          onPress={() => router.push('/configuracion')}
-          style={({ pressed }) => ({
-            width: 44,
-            height: 44,
-            marginLeft: 4,
-            borderRadius: 22,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: C.onBand,
-            opacity: pressed ? 0.8 : 1,
-          })}
-        >
-          <Text style={{ color: C.band === C.onBand ? C.text : C.band, fontFamily: fonts.display, fontSize: 18 }}>
-            {initials(user?.nombre)}
-          </Text>
-        </Pressable>
       </View>
     </View>
   ) : null;
@@ -901,7 +885,7 @@ export function Screen({
       {scroll ? (
         <ScrollView
           keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{ paddingBottom: 30 }}
+          contentContainerStyle={{ paddingBottom: fab ? 96 : 30 }}
         >
           {body}
         </ScrollView>
@@ -921,7 +905,47 @@ export function Screen({
           <View style={{ width: '100%', maxWidth: 1052, alignSelf: 'center' }}>{footer}</View>
         </View>
       ) : null}
+      {fab ? <Fab {...fab} /> : null}
     </SafeAreaView>
+  );
+}
+function Fab({
+  label,
+  icon: Icon,
+  onPress,
+}: {
+  label: string;
+  icon: React.ComponentType<{ size: number; color: string }>;
+  onPress: () => void;
+}) {
+  const { C } = useUI();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      onPress={onPress}
+      style={({ pressed }) => ({
+        position: 'absolute',
+        right: 16,
+        bottom: 16,
+        minHeight: 56,
+        paddingHorizontal: 20,
+        borderRadius: 18,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+        backgroundColor: C.primary,
+        opacity: pressed ? 0.9 : 1,
+        shadowColor: '#000',
+        shadowOpacity: 0.25,
+        shadowRadius: 10,
+        shadowOffset: { width: 0, height: 4 },
+        elevation: 6,
+      })}
+    >
+      <Icon size={22} color={C.onPrimary} />
+      <Text style={{ color: C.onPrimary, fontFamily: fonts.semibold, fontSize: 16 }}>{label}</Text>
+    </Pressable>
   );
 }
 export function ConfirmButton({

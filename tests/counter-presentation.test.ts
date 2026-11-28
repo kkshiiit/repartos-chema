@@ -6,7 +6,7 @@ import { seed } from '../src/data/seed';
 import { light } from '../src/theme/tokens';
 import { validDate } from '../src/domain/rules';
 import Detail from '../app/obra/[id]';
-import Home from '../app/(tabs)/index';
+import Home from '../app/(tabs)/alquileres';
 import { formatDate } from '../src/utils/formatters';
 import { rememberedRentalList } from '../src/services/rentalListPreferences';
 import type { DomainSnapshot } from '../src/types';

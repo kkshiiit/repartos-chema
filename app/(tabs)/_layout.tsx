@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Slot, router, usePathname } from 'expo-router';
 import { Animated, View, Text, Pressable } from 'react-native';
-import { LayoutGrid, Warehouse, Map, ShieldCheck } from 'lucide-react-native';
+import { CalendarCheck, Construction, Warehouse, Truck, Menu } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useUI } from '../../src/components/ui';
 import { useTheme } from '../../src/context/ThemeContext';
 import { fonts, motionMs } from '../../src/theme/tokens';
+/**
+ * Barra inferior de 5 destinos, como Mercado Libre, WhatsApp o Gmail (ley de Jakob):
+ * lo del día primero, «Más» al final con lo que se usa de vez en cuando.
+ */
 const links = [
-  { path: '/', label: 'Alquileres', icon: LayoutGrid },
-  { path: '/galpon', label: 'Depósito', icon: Warehouse },
-  { path: '/mapa', label: 'Viaje', icon: Map },
-  { path: '/historial', label: 'Auditoría', icon: ShieldCheck },
+  { path: '/', label: 'Hoy', icon: CalendarCheck, also: [] as string[] },
+  { path: '/alquileres', label: 'Alquileres', icon: Construction, also: [] as string[] },
+  { path: '/galpon', label: 'Depósito', icon: Warehouse, also: [] as string[] },
+  { path: '/mapa', label: 'Viaje', icon: Truck, also: [] as string[] },
+  { path: '/mas', label: 'Más', icon: Menu, also: ['/historial'] },
 ];
 function TabItem({ link, active }: { link: (typeof links)[number]; active: boolean }) {
   const { C } = useUI();
@@ -36,12 +41,12 @@ function TabItem({ link, active }: { link: (typeof links)[number]; active: boole
       accessibilityState={{ selected: active }}
       aria-selected={active}
       onPress={() => {
-        if (!active) router.replace(link.path as '/');
+        if (!active || link.also.length) router.replace(link.path as '/');
       }}
       style={({ pressed }) => ({
         flex: 1,
         minWidth: 0,
-        minHeight: 62,
+        minHeight: 58,
         alignItems: 'center',
         justifyContent: 'center',
         gap: 2,
@@ -66,12 +71,12 @@ function TabItem({ link, active }: { link: (typeof links)[number]; active: boole
           transform: [{ scaleX: progress.interpolate({ inputRange: [0, 1], outputRange: [0.4, 1] }) }],
         }}
       />
-      <link.icon size={25} color={active ? C.accent : C.muted} strokeWidth={active ? 2.4 : 1.9} />
+      <link.icon size={24} color={active ? C.accent : C.muted} strokeWidth={active ? 2.4 : 1.9} />
       <Text
         style={{
           fontFamily: active ? fonts.semibold : fonts.medium,
           color: active ? C.text : C.muted,
-          fontSize: 13.5,
+          fontSize: 13,
           lineHeight: 18,
           textAlign: 'center',
           maxWidth: '100%',
@@ -114,7 +119,7 @@ export default function Tabs() {
           }}
         >
           {links.map((link) => (
-            <TabItem key={link.path} link={link} active={path === link.path} />
+            <TabItem key={link.path} link={link} active={path === link.path || link.also.includes(path)} />
           ))}
         </View>
       </View>

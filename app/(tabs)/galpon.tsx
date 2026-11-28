@@ -60,7 +60,7 @@ export default function WarehousePage() {
   };
   const metrics = [
     { key: 'cantidadGalpon', label: 'Disponibles', color: C.green, icon: Warehouse },
-    { key: 'cantidadEnObra', label: 'Alquilados', color: C.blue, icon: HardHat },
+    { key: 'cantidadEnObra', label: 'Alquilados', color: C.success, icon: HardHat },
     { key: 'cantidadEnTaller', label: 'A reparar', color: C.orange, icon: Wrench },
     {
       key: 'cantidadPerdido',
@@ -116,8 +116,8 @@ export default function WarehousePage() {
           <View style={{ gap: spacing.md, paddingBottom: spacing.lg }}>
             <StatBoard
               items={[
-                { key: 'galpon', label: 'En depósito', n: totals.galpon, color: C.success },
-                { key: 'obra', label: 'En obras', n: totals.obra, color: C.blue },
+                { key: 'galpon', label: 'En depósito', n: totals.galpon, color: C.text },
+                { key: 'obra', label: 'En obras', n: totals.obra, color: C.success },
                 { key: 'taller', label: 'A reparar', n: totals.taller, color: C.warning },
                 { key: 'perdido', label: 'Perdidas', n: totals.perdido, color: C.danger },
               ]}
