@@ -4,6 +4,7 @@ import type { IncidentInput, ObraCard } from '../types';
 import { useInventory } from '../context/InventoryContext';
 import { Button, Chip, Field, Select, Notice, useUI, usePanelChanges } from './ui';
 import { SmartCounter } from './SmartCounter';
+import { Disclosure } from './Editorial';
 export function FaltantesForm({
   obra,
   value,
@@ -45,41 +46,58 @@ export function FaltantesForm({
         ]}
         onChange={setSelected}
       />
-      <Button label="Agregar faltante" variant="secondary" onPress={() => add(selected)} />
+      <Button
+        label="Agregar faltante"
+        text="+ Agregar faltante"
+        variant="secondary"
+        onPress={() => add(selected)}
+      />
       {value.map((i, index) => {
         const set = (change: Partial<IncidentInput>) => {
           markDirty();
           onChange(value.map((v, n) => (n === index ? { ...v, ...change } : v)));
         };
+        const name = state.materiales.find((m) => m.id === i.materialId);
+        const over =
+          !!i.materialId &&
+          value
+            .filter((v) => v.materialId === i.materialId)
+            .reduce((sum, v) => sum + v.cantidad, 0) > (obra.saldosEnObra[i.materialId] || 0);
         return (
           <View
             key={index}
             style={{
-              gap: 12,
-              paddingVertical: 16,
-              borderBottomWidth: 1,
-              borderBottomColor: C.hairline,
+              gap: 10,
+              padding: 12,
+              borderRadius: 12,
+              borderWidth: 1,
+              borderColor: i.tipo === 'DANADO' ? C.warning : C.danger,
+              backgroundColor: C.panel,
             }}
           >
-            <Text style={s.label}>
-              {state.materiales.find((m) => m.id === i.materialId)?.nombre ||
-                'Sin stock maestro · no mueve existencias'}
-            </Text>
-            <SmartCounter
-              value={i.cantidad}
-              label={`Faltante ${index + 1}`}
-              onChange={(cantidad) => set({ cantidad })}
-            />
-            {i.materialId &&
-            value
-              .filter((v) => v.materialId === i.materialId)
-              .reduce((sum, v) => sum + v.cantidad, 0) > (obra.saldosEnObra[i.materialId] || 0) ? (
-              <Notice
-                text="Las cantidades registradas superan el saldo alquilado de este material."
-                tone="error"
+            <View style={[s.row, { gap: 8 }]}>
+              <Text style={[s.label, s.grow]}>
+                {name
+                  ? `${name.nombre}${name.medida ? ` · ${name.medida}` : ''}`
+                  : 'Ítem fuera del inventario'}
+              </Text>
+              <Button
+                label="Quitar"
+                text="Quitar"
+                variant="ghost"
+                compact
+                onPress={() => {
+                  markDirty();
+                  onChange(value.filter((_, n) => n !== index));
+                }}
               />
-            ) : null}
-            <View style={s.wrap}>
+            </View>
+            <View style={[s.row, { gap: 10, flexWrap: 'wrap' }]}>
+              <SmartCounter
+                value={i.cantidad}
+                label={`Faltante ${index + 1}`}
+                onChange={(cantidad) => set({ cantidad })}
+              />
               <Chip
                 label="Perdido"
                 selected={i.tipo === 'PERDIDO'}
@@ -91,33 +109,54 @@ export function FaltantesForm({
                 onPress={() => set({ tipo: 'DANADO' })}
               />
             </View>
-            <Field
-              label="Ítem específico"
-              value={i.itemNombre || ''}
-              placeholder={
-                i.materialId
-                  ? 'Opcional · detalle del material'
-                  : 'Obligatorio · ej. candado de seguridad'
-              }
-              onChangeText={(itemNombre) => set({ itemNombre })}
-            />
-            {!i.materialId && !i.itemNombre?.trim() ? (
-              <Notice text="Indicá el nombre del ítem fuera del inventario." tone="error" />
+            <Text style={s.muted}>
+              {i.tipo === 'DANADO' ? 'Va a taller para reparar.' : 'Sale del stock como perdido.'}
+              {name ? '' : ' No mueve stock.'}
+            </Text>
+            {over ? (
+              <Notice
+                text="Las cantidades registradas superan el saldo alquilado de este material."
+                tone="error"
+              />
             ) : null}
-            <Field
-              label="Notas"
-              value={i.notas || ''}
-              onChangeText={(notas) => set({ notas })}
-              multiline
-            />
-            <Button
-              label="Quitar"
-              variant="ghost"
-              onPress={() => {
-                markDirty();
-                onChange(value.filter((_, n) => n !== index));
-              }}
-            />
+            {i.materialId ? (
+              <Disclosure
+                title="Detalle y notas (opcional)"
+                compact
+                initiallyOpen={!!(i.itemNombre || i.notas)}
+              >
+                <Field
+                  label="Ítem específico"
+                  value={i.itemNombre || ''}
+                  placeholder="Ej. con orejas, n.º de serie"
+                  onChangeText={(itemNombre) => set({ itemNombre })}
+                />
+                <Field
+                  label="Notas"
+                  value={i.notas || ''}
+                  onChangeText={(notas) => set({ notas })}
+                  multiline
+                />
+              </Disclosure>
+            ) : (
+              <>
+                <Field
+                  label="Ítem específico"
+                  value={i.itemNombre || ''}
+                  placeholder="Obligatorio · ej. candado de seguridad"
+                  onChangeText={(itemNombre) => set({ itemNombre })}
+                />
+                {!i.itemNombre?.trim() ? (
+                  <Notice text="Indicá el nombre del ítem fuera del inventario." tone="error" />
+                ) : null}
+                <Field
+                  label="Notas"
+                  value={i.notas || ''}
+                  onChangeText={(notas) => set({ notas })}
+                  multiline
+                />
+              </>
+            )}
           </View>
         );
       })}

@@ -152,7 +152,11 @@ export default function WarehousePage() {
           </View>
         }
         ListEmptyComponent={
-          <Empty title="Sin piezas" detail="Cambia los filtros o agrega una pieza." />
+          state.materiales.length ? (
+            <Empty title="Sin resultados" detail="Ninguna pieza coincide. Probá otra búsqueda o tocá «Todos»." />
+          ) : (
+            <Empty title="Todavía no hay piezas" detail="Tocá «Agregar material» para cargar lo que hay en el depósito (marcos, tablones, diagonales…)." />
+          )
         }
         ItemSeparatorComponent={() => <View style={s.divider} />}
         renderItem={({ item: m }) => (

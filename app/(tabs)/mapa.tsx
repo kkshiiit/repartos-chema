@@ -595,15 +595,17 @@ export default function Trip() {
               detail={
                 stops.length
                   ? 'No hay paradas con estos filtros.'
-                  : 'Los alquileres con carga o saldo pendiente aparecen aquí.'
+                  : 'Cuando haya algo para entregar o retirar, aparece acá en orden de recorrido.'
               }
             />
-            <Button
-              label="Restablecer filtros"
-              variant="secondary"
-              disabled={!ready || busy}
-              onPress={() => run(() => commit((p) => ({ ...p, task: 'ALL', zone: 'TODAS' })))}
-            />
+            {stops.length ? (
+              <Button
+                label="Restablecer filtros"
+                variant="secondary"
+                disabled={!ready || busy}
+                onPress={() => run(() => commit((p) => ({ ...p, task: 'ALL', zone: 'TODAS' })))}
+              />
+            ) : null}
           </View>
         }
         contentContainerStyle={{ paddingBottom: 16 }}
@@ -822,7 +824,6 @@ export default function Trip() {
             <Button
               label="Cómo llegar"
               icon={Navigation}
-              variant="secondary"
               onPress={() => run(() => openLink(mapsUrl(selected.obra)))}
             />
             <Button

@@ -302,8 +302,7 @@ export function OperationForm({
       ) : null}
       {mode === 'transferencia' ? (
         <>
-          {driverBlock(1, 'Quién lo lleva')}
-          <StepTitle n={2} title="A qué alquiler y cuánto" hint="Traslado directo entre obras. No pasa por el depósito." />
+          <StepTitle n={1} title="A qué alquiler y cuánto" hint="Traslado directo entre obras. No pasa por el depósito." />
           <Select
             label="Alquiler destino"
             value={target}
@@ -335,7 +334,8 @@ export function OperationForm({
             }}
           />
           <SmartCounter value={cantidad} onChange={setCantidad} />
-          <Field label="Motivo de transferencia" value={motivo} onChangeText={setMotivo} />
+          {driverBlock(2, 'Quién lo lleva')}
+          <Field label="Motivo de transferencia" value={motivo} onChangeText={setMotivo} placeholder="Ej. el cliente lo pidió para otra obra" />
         </>
       ) : null}
       <View style={{ height: 4 }} />
@@ -346,7 +346,7 @@ export function OperationForm({
             entrega: 'Confirmar entrega',
             retiro: 'Confirmar retiro',
             faltante: 'Confirmar faltante',
-            transferencia: 'Confirmar triangulación',
+            transferencia: 'Confirmar traslado',
           }[mode]
         }
         loading={busy}
