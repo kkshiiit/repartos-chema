@@ -149,24 +149,32 @@ export function InventoryProvider({ children }: { children: React.ReactNode }) {
     [store, user, retry, withPin, code],
   );
 
+  const announcing = useRef('');
   // Registro de ingreso (una vez por persona y teléfono) y alta automática como responsable.
   useEffect(() => {
-    if (!store || !user || !view || !teamId) return;
+    // Espera la primera sincronización: sin la lista del equipo, agregarse pisaría los nombres
+    // que ya estaban. La marca se guarda recién al final, así un cierre a mitad de camino se reintenta.
+    if (!store || !user || !view?.lastSyncAt || !teamId) return;
     const key = `chema2:announced:${teamId}:${user.uid}`;
     let cancelled = false;
     void (async () => {
       if (await kv.getItem(key)) return;
-      if (cancelled) return;
-      await kv.setItem(key, '1');
-      await dispatchSync({ type: 'NOTE', accion: `${user.nombre} ingresó desde un teléfono` });
-      const current = store.current()?.state;
-      if (current && !current.responsables.includes(user.nombre))
-        await dispatchSync({ type: 'RESPONSABLES', nombres: [...current.responsables, user.nombre] });
+      if (cancelled || announcing.current === key) return;
+      announcing.current = key;
+      try {
+        await dispatchSync({ type: 'NOTE', accion: `${user.nombre} ingresó desde un teléfono` });
+        const current = store.current()?.state;
+        if (current && !current.responsables.includes(user.nombre))
+          await dispatchSync({ type: 'RESPONSABLES', nombres: [...current.responsables, user.nombre] });
+        await kv.setItem(key, '1');
+      } finally {
+        announcing.current = '';
+      }
     })().catch(() => undefined);
     return () => {
       cancelled = true;
     };
-  }, [store, user, view, teamId, dispatchSync]);
+  }, [store, user, view?.lastSyncAt, teamId, dispatchSync]);
 
   // Copia automática semanal: el primer teléfono que sincroniza en la semana la sube (el servidor
   // ignora las repetidas). Se revisa como máximo una vez por día y por teléfono.
