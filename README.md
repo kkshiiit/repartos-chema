@@ -24,10 +24,11 @@
 
 | | |
 |---|---|
+| **Hoy** | Primera pantalla: lo atrasado primero, lo de hoy después y lo hecho tildado, con «Faltan 2 de 4». Entregar y retirar de un toque. |
 | **Equipo sincronizado** | Todos los teléfonos con el mismo código de equipo ven y cargan los mismos datos. Funciona sin señal y sincroniza solo. |
 | **Ingreso por nombre** | Cada persona elige su nombre; no hay contraseñas. |
 | **Auditoría** | Cada cambio queda registrado con persona, fecha, hora y materiales movidos. No se puede borrar desde la app. |
-| **Alquileres** | Cliente, carga, entrega, retiro con faltantes/daños, reingreso, fotos y recordatorios. |
+| **Alquileres** | Cliente, carga tipo catálogo, entrega y retiro por pasos, faltantes/daños, traslado entre obras, reingreso, fotos, ubicación pegando el enlace de Maps y recordatorios. |
 | **Depósito** | Stock en depósito, en obra, en taller y perdido; ajustes y movimientos con motivo. |
 | **Viaje** | Recorrido del día ordenado y abierto en Google Maps. |
 | **Tickets** | PDF profesional, WhatsApp al cliente, texto, Word o Excel. |
@@ -36,8 +37,8 @@
 | **Guía** | Guía de uso por secciones dentro de la app, exportable en PDF. |
 
 <p align="center">
-  <img src="docs/capturas/02b-inicio-con-datos-sol.png" width="230" alt="Inicio, modo Sol" />
-  <img src="docs/capturas/06-inicio-noche.png" width="230" alt="Inicio, modo Noche" />
+  <img src="docs/capturas/02b-inicio-con-datos-sol.png" width="230" alt="Hoy, modo Sol" />
+  <img src="docs/capturas/06-inicio-noche.png" width="230" alt="Alquileres, modo Noche" />
   <img src="docs/capturas/04-ticket-formatos.png" width="230" alt="Compartir ticket" />
 </p>
 
